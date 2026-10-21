@@ -1,0 +1,17 @@
+schemaVersion: 1
+id: furnace-untouched
+description: >-
+  A fresh furnace at the same place the smelting scenarios use is empty and cold. Run after them in one batch
+  (one Minecraft launch per version), it proves the world is reset between scenarios.
+world: flat-void
+maxTicks: 100
+tolerance:
+  "*": { abs: 0 }
+  # 1.19.2 shows the lit state as a block-state property, 1.7.10 swaps the block (lit_furnace)
+  "block:[0,64,0]": { ignore: true }
+steps:
+  - place_block: { at: [0, 64, 0], block: "minecraft:furnace", facing: north }
+  - sample: { every: 1, what: ["nbt:[0,64,0]/CookTime", "nbt:[0,64,0]/BurnTime", "item:[0,64,0]#0", "item:[0,64,0]#1", "item:[0,64,0]#2", "block:[0,65,0]", "drops:[0,64,0]"] }
+  - tick: 20
+  - assert: { expr: "item:[0,64,0]#0 == null && item:[0,64,0]#1 == null && item:[0,64,0]#2 == null", message: "no items left over from an earlier scenario" }
+  - assert: { expr: "nbt:[0,64,0]/BurnTime == 0 && nbt:[0,64,0]/CookTime == 0", message: "cold furnace" }

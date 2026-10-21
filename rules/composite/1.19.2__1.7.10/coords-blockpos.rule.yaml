@@ -1,0 +1,701 @@
+# Hand-written rules Forge 1.19.2 -> Forge 1.7.10 (10.13.4.1614, MCP stable_12). Every source member was
+# checked against the Mojang 1.19.2 mappings, every target member against the MCP 1.7.10 jar (javap).
+# Synthetic tests only. Generated from a compact spec; edit freely, keep one test per rule at least.
+# Coordinates: BlockPos/Vec3i map onto the porter shim (dev.porter.shim.BlockPos), same method names.
+schemaVersion: 1
+id: r-1.19.2-1.7.10-type-blockpos
+description: "1.7.10 has no position type; the thin porter shim mirrors the 1.19.2 BlockPos API."
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.core.BlockPos"
+replace: "dev.porter.shim.BlockPos"
+preconditions: ["shim:blockpos"]
+confidence: 0.95
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "import net.minecraft.core.BlockPos;"
+    after: "import dev.porter.shim.BlockPos;"
+  - name: "simple name stays (import is rewritten)"
+    before: "BlockPos p = null;"
+    after: "BlockPos p = null;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-type-vec3i
+description: "Vec3i values become shim BlockPos (integer vectors share the API)."
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.core.Vec3i"
+replace: "dev.porter.shim.BlockPos"
+preconditions: ["shim:blockpos"]
+confidence: 0.9
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "import net.minecraft.core.Vec3i;"
+    after: "import dev.porter.shim.BlockPos;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-new-blockpos-int
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  new: "net.minecraft.core.BlockPos(int, int, int)"
+  bind: { args: ["$x", "$y", "$z"] }
+replace: "new BlockPos($x, $y, $z)"
+imports: ["dev.porter.shim.BlockPos"]
+preconditions: ["shim:blockpos"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "int x; int y; int z"
+    before: "Object p = new BlockPos(x, y + 1, z);"
+    after: "Object p = new BlockPos(x, y + 1, z);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-new-blockpos-double
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  new: "net.minecraft.core.BlockPos(double, double, double)"
+  bind: { args: ["$x", "$y", "$z"] }
+replace: "new BlockPos($x, $y, $z)"
+imports: ["dev.porter.shim.BlockPos"]
+preconditions: ["shim:blockpos"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "double x; double y; double z"
+    before: "Object p = new BlockPos(x, y, z);"
+    after: "Object p = new BlockPos(x, y, z);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-field-blockpos-zero
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "net.minecraft.core.BlockPos#ZERO"
+  bind: { recv: "$t" }
+replace: "$t.ZERO"
+preconditions: ["shim:blockpos"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "Object p = BlockPos.ZERO;"
+    after: "Object p = BlockPos.ZERO;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockpos-above
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.BlockPos#above()"
+  bind: { recv: "$p" }
+replace: "$p.above()"
+preconditions: ["shim:blockpos"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "BlockPos p; Direction d; Direction.Axis a; int n; double dd; BlockPos v; import net.minecraft.core.BlockPos; import net.minecraft.core.Direction"
+    before: "Object o = p.above();"
+    after: "Object o = p.above();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockpos-above-int
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.BlockPos#above(int)"
+  bind: { recv: "$p", args: ["$a0"] }
+replace: "$p.above($a0)"
+preconditions: ["shim:blockpos"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "BlockPos p; Direction d; Direction.Axis a; int n; double dd; BlockPos v; import net.minecraft.core.BlockPos; import net.minecraft.core.Direction"
+    before: "Object o = p.above(n);"
+    after: "Object o = p.above(n);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockpos-below
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.BlockPos#below()"
+  bind: { recv: "$p" }
+replace: "$p.below()"
+preconditions: ["shim:blockpos"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "BlockPos p; Direction d; Direction.Axis a; int n; double dd; BlockPos v; import net.minecraft.core.BlockPos; import net.minecraft.core.Direction"
+    before: "Object o = p.below();"
+    after: "Object o = p.below();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockpos-below-int
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.BlockPos#below(int)"
+  bind: { recv: "$p", args: ["$a0"] }
+replace: "$p.below($a0)"
+preconditions: ["shim:blockpos"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "BlockPos p; Direction d; Direction.Axis a; int n; double dd; BlockPos v; import net.minecraft.core.BlockPos; import net.minecraft.core.Direction"
+    before: "Object o = p.below(n);"
+    after: "Object o = p.below(n);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockpos-north
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.BlockPos#north()"
+  bind: { recv: "$p" }
+replace: "$p.north()"
+preconditions: ["shim:blockpos"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "BlockPos p; Direction d; Direction.Axis a; int n; double dd; BlockPos v; import net.minecraft.core.BlockPos; import net.minecraft.core.Direction"
+    before: "Object o = p.north();"
+    after: "Object o = p.north();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockpos-north-int
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.BlockPos#north(int)"
+  bind: { recv: "$p", args: ["$a0"] }
+replace: "$p.north($a0)"
+preconditions: ["shim:blockpos"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "BlockPos p; Direction d; Direction.Axis a; int n; double dd; BlockPos v; import net.minecraft.core.BlockPos; import net.minecraft.core.Direction"
+    before: "Object o = p.north(n);"
+    after: "Object o = p.north(n);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockpos-south
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.BlockPos#south()"
+  bind: { recv: "$p" }
+replace: "$p.south()"
+preconditions: ["shim:blockpos"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "BlockPos p; Direction d; Direction.Axis a; int n; double dd; BlockPos v; import net.minecraft.core.BlockPos; import net.minecraft.core.Direction"
+    before: "Object o = p.south();"
+    after: "Object o = p.south();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockpos-south-int
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.BlockPos#south(int)"
+  bind: { recv: "$p", args: ["$a0"] }
+replace: "$p.south($a0)"
+preconditions: ["shim:blockpos"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "BlockPos p; Direction d; Direction.Axis a; int n; double dd; BlockPos v; import net.minecraft.core.BlockPos; import net.minecraft.core.Direction"
+    before: "Object o = p.south(n);"
+    after: "Object o = p.south(n);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockpos-east
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.BlockPos#east()"
+  bind: { recv: "$p" }
+replace: "$p.east()"
+preconditions: ["shim:blockpos"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "BlockPos p; Direction d; Direction.Axis a; int n; double dd; BlockPos v; import net.minecraft.core.BlockPos; import net.minecraft.core.Direction"
+    before: "Object o = p.east();"
+    after: "Object o = p.east();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockpos-east-int
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.BlockPos#east(int)"
+  bind: { recv: "$p", args: ["$a0"] }
+replace: "$p.east($a0)"
+preconditions: ["shim:blockpos"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "BlockPos p; Direction d; Direction.Axis a; int n; double dd; BlockPos v; import net.minecraft.core.BlockPos; import net.minecraft.core.Direction"
+    before: "Object o = p.east(n);"
+    after: "Object o = p.east(n);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockpos-west
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.BlockPos#west()"
+  bind: { recv: "$p" }
+replace: "$p.west()"
+preconditions: ["shim:blockpos"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "BlockPos p; Direction d; Direction.Axis a; int n; double dd; BlockPos v; import net.minecraft.core.BlockPos; import net.minecraft.core.Direction"
+    before: "Object o = p.west();"
+    after: "Object o = p.west();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockpos-west-int
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.BlockPos#west(int)"
+  bind: { recv: "$p", args: ["$a0"] }
+replace: "$p.west($a0)"
+preconditions: ["shim:blockpos"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "BlockPos p; Direction d; Direction.Axis a; int n; double dd; BlockPos v; import net.minecraft.core.BlockPos; import net.minecraft.core.Direction"
+    before: "Object o = p.west(n);"
+    after: "Object o = p.west(n);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockpos-relative-direction
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.BlockPos#relative(net.minecraft.core.Direction)"
+  bind: { recv: "$p", args: ["$a0"] }
+replace: "$p.relative($a0)"
+preconditions: ["shim:blockpos"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "BlockPos p; Direction d; Direction.Axis a; int n; double dd; BlockPos v; import net.minecraft.core.BlockPos; import net.minecraft.core.Direction"
+    before: "Object o = p.relative(d);"
+    after: "Object o = p.relative(d);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockpos-relative-direction-int
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.BlockPos#relative(net.minecraft.core.Direction, int)"
+  bind: { recv: "$p", args: ["$a0", "$a1"] }
+replace: "$p.relative($a0, $a1)"
+preconditions: ["shim:blockpos"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "BlockPos p; Direction d; Direction.Axis a; int n; double dd; BlockPos v; import net.minecraft.core.BlockPos; import net.minecraft.core.Direction"
+    before: "Object o = p.relative(d, n);"
+    after: "Object o = p.relative(d, n);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockpos-relative-axis-int
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.BlockPos#relative(net.minecraft.core.Direction$Axis, int)"
+  bind: { recv: "$p", args: ["$a0", "$a1"] }
+replace: "$p.relative($a0, $a1)"
+preconditions: ["shim:blockpos"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "BlockPos p; Direction d; Direction.Axis a; int n; double dd; BlockPos v; import net.minecraft.core.BlockPos; import net.minecraft.core.Direction"
+    before: "Object o = p.relative(a, n);"
+    after: "Object o = p.relative(a, n);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockpos-offset-int-int-int
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.BlockPos#offset(int, int, int)"
+  bind: { recv: "$p", args: ["$a0", "$a1", "$a2"] }
+replace: "$p.offset($a0, $a1, $a2)"
+preconditions: ["shim:blockpos"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "BlockPos p; Direction d; Direction.Axis a; int n; double dd; BlockPos v; import net.minecraft.core.BlockPos; import net.minecraft.core.Direction"
+    before: "Object o = p.offset(n, n, n);"
+    after: "Object o = p.offset(n, n, n);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockpos-offset-vec3i
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.BlockPos#offset(net.minecraft.core.Vec3i)"
+  bind: { recv: "$p", args: ["$a0"] }
+replace: "$p.offset($a0)"
+preconditions: ["shim:blockpos"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "BlockPos p; Direction d; Direction.Axis a; int n; double dd; BlockPos v; import net.minecraft.core.BlockPos; import net.minecraft.core.Direction"
+    before: "Object o = p.offset(v);"
+    after: "Object o = p.offset(v);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockpos-subtract-vec3i
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.BlockPos#subtract(net.minecraft.core.Vec3i)"
+  bind: { recv: "$p", args: ["$a0"] }
+replace: "$p.subtract($a0)"
+preconditions: ["shim:blockpos"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "BlockPos p; Direction d; Direction.Axis a; int n; double dd; BlockPos v; import net.minecraft.core.BlockPos; import net.minecraft.core.Direction"
+    before: "Object o = p.subtract(v);"
+    after: "Object o = p.subtract(v);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockpos-multiply-int
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.BlockPos#multiply(int)"
+  bind: { recv: "$p", args: ["$a0"] }
+replace: "$p.multiply($a0)"
+preconditions: ["shim:blockpos"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "BlockPos p; Direction d; Direction.Axis a; int n; double dd; BlockPos v; import net.minecraft.core.BlockPos; import net.minecraft.core.Direction"
+    before: "Object o = p.multiply(n);"
+    after: "Object o = p.multiply(n);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockpos-immutable
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.BlockPos#immutable()"
+  bind: { recv: "$p" }
+replace: "$p.immutable()"
+preconditions: ["shim:blockpos"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "BlockPos p; Direction d; Direction.Axis a; int n; double dd; BlockPos v; import net.minecraft.core.BlockPos; import net.minecraft.core.Direction"
+    before: "Object o = p.immutable();"
+    after: "Object o = p.immutable();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockpos-aty-int
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.BlockPos#atY(int)"
+  bind: { recv: "$p", args: ["$a0"] }
+replace: "$p.atY($a0)"
+preconditions: ["shim:blockpos"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "BlockPos p; Direction d; Direction.Axis a; int n; double dd; BlockPos v; import net.minecraft.core.BlockPos; import net.minecraft.core.Direction"
+    before: "Object o = p.atY(n);"
+    after: "Object o = p.atY(n);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockpos-aslong
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.BlockPos#asLong()"
+  bind: { recv: "$p" }
+replace: "$p.asLong()"
+preconditions: ["shim:blockpos"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "BlockPos p; Direction d; Direction.Axis a; int n; double dd; BlockPos v; import net.minecraft.core.BlockPos; import net.minecraft.core.Direction"
+    before: "Object o = p.asLong();"
+    after: "Object o = p.asLong();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockpos-getx
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.Vec3i#getX()"
+  bind: { recv: "$p" }
+replace: "$p.getX()"
+preconditions: ["shim:blockpos"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "BlockPos p; Direction d; Direction.Axis a; int n; double dd; BlockPos v; import net.minecraft.core.BlockPos; import net.minecraft.core.Direction"
+    before: "Object o = p.getX();"
+    after: "Object o = p.getX();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockpos-gety
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.Vec3i#getY()"
+  bind: { recv: "$p" }
+replace: "$p.getY()"
+preconditions: ["shim:blockpos"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "BlockPos p; Direction d; Direction.Axis a; int n; double dd; BlockPos v; import net.minecraft.core.BlockPos; import net.minecraft.core.Direction"
+    before: "Object o = p.getY();"
+    after: "Object o = p.getY();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockpos-getz
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.Vec3i#getZ()"
+  bind: { recv: "$p" }
+replace: "$p.getZ()"
+preconditions: ["shim:blockpos"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "BlockPos p; Direction d; Direction.Axis a; int n; double dd; BlockPos v; import net.minecraft.core.BlockPos; import net.minecraft.core.Direction"
+    before: "Object o = p.getZ();"
+    after: "Object o = p.getZ();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockpos-distsqr-vec3i
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.Vec3i#distSqr(net.minecraft.core.Vec3i)"
+  bind: { recv: "$p", args: ["$a0"] }
+replace: "$p.distSqr($a0)"
+preconditions: ["shim:blockpos"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "BlockPos p; Direction d; Direction.Axis a; int n; double dd; BlockPos v; import net.minecraft.core.BlockPos; import net.minecraft.core.Direction"
+    before: "Object o = p.distSqr(v);"
+    after: "Object o = p.distSqr(v);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockpos-distmanhattan-vec3i
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.Vec3i#distManhattan(net.minecraft.core.Vec3i)"
+  bind: { recv: "$p", args: ["$a0"] }
+replace: "$p.distManhattan($a0)"
+preconditions: ["shim:blockpos"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "BlockPos p; Direction d; Direction.Axis a; int n; double dd; BlockPos v; import net.minecraft.core.BlockPos; import net.minecraft.core.Direction"
+    before: "Object o = p.distManhattan(v);"
+    after: "Object o = p.distManhattan(v);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockpos-closerthan-vec3i-double
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.Vec3i#closerThan(net.minecraft.core.Vec3i, double)"
+  bind: { recv: "$p", args: ["$a0", "$a1"] }
+replace: "$p.closerThan($a0, $a1)"
+preconditions: ["shim:blockpos"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "BlockPos p; Direction d; Direction.Axis a; int n; double dd; BlockPos v; import net.minecraft.core.BlockPos; import net.minecraft.core.Direction"
+    before: "Object o = p.closerThan(v, dd);"
+    after: "Object o = p.closerThan(v, dd);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockpos-get-axis
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.Vec3i#get(net.minecraft.core.Direction$Axis)"
+  bind: { recv: "$p", args: ["$a0"] }
+replace: "$p.get($a0)"
+preconditions: ["shim:blockpos"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "BlockPos p; Direction d; Direction.Axis a; int n; double dd; BlockPos v; import net.minecraft.core.BlockPos; import net.minecraft.core.Direction"
+    before: "Object o = p.get(a);"
+    after: "Object o = p.get(a);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockpos-toshortstring
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.Vec3i#toShortString()"
+  bind: { recv: "$p" }
+replace: "$p.toShortString()"
+preconditions: ["shim:blockpos"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "BlockPos p; Direction d; Direction.Axis a; int n; double dd; BlockPos v; import net.minecraft.core.BlockPos; import net.minecraft.core.Direction"
+    before: "Object o = p.toShortString();"
+    after: "Object o = p.toShortString();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockpos-static-of-1
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.BlockPos#of(long)"
+  bind: { recv: "$t", args: ["$a0"] }
+replace: "$t.of($a0)"
+preconditions: ["shim:blockpos"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "long l; int n"
+    before: "Object o = BlockPos.of(l);"
+    after: "Object o = BlockPos.of(l);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockpos-static-aslong-3
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.BlockPos#asLong(int, int, int)"
+  bind: { recv: "$t", args: ["$a0", "$a1", "$a2"] }
+replace: "$t.asLong($a0, $a1, $a2)"
+preconditions: ["shim:blockpos"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "long l; int n"
+    before: "Object o = BlockPos.asLong(n, n, n);"
+    after: "Object o = BlockPos.asLong(n, n, n);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockpos-static-getx-1
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.BlockPos#getX(long)"
+  bind: { recv: "$t", args: ["$a0"] }
+replace: "$t.getX($a0)"
+preconditions: ["shim:blockpos"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "long l; int n"
+    before: "Object o = BlockPos.getX(l);"
+    after: "Object o = BlockPos.getX(l);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockpos-static-gety-1
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.BlockPos#getY(long)"
+  bind: { recv: "$t", args: ["$a0"] }
+replace: "$t.getY($a0)"
+preconditions: ["shim:blockpos"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "long l; int n"
+    before: "Object o = BlockPos.getY(l);"
+    after: "Object o = BlockPos.getY(l);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockpos-static-getz-1
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.BlockPos#getZ(long)"
+  bind: { recv: "$t", args: ["$a0"] }
+replace: "$t.getZ($a0)"
+preconditions: ["shim:blockpos"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "long l; int n"
+    before: "Object o = BlockPos.getZ(l);"
+    after: "Object o = BlockPos.getZ(l);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-type-mutableblockpos
+description: "BlockPos.MutableBlockPos -> the shim's mutable cursor (same method names: set/move/setWithOffset/immutable)."
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.core.BlockPos$MutableBlockPos"
+replace: "dev.porter.shim.BlockPos.MutableBlockPos"
+preconditions: ["shim:blockpos"]
+confidence: 0.95
+provenance: { source: agent, ref: "closure-steam agent: Mojang 1.19.2 mappings (BlockPos$MutableBlockPos); target = porter shim" }
+tests:
+  - before: "import net.minecraft.core.BlockPos.MutableBlockPos;"
+    after: "import dev.porter.shim.BlockPos.MutableBlockPos;"

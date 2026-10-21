@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "source": { "version": "forge-1.19.2", "modId": "tinymod" },
+  "nodes": [
+    {
+      "kind": "mod",
+      "id": "tinymod",
+      "name": "Tiny Mod",
+      "version": "0.1.0",
+      "provenance": { "file": "src/main/java/org/example/tiny/TinyMod.java", "line": 8, "version": "forge-1.19.2" }
+    },
+    {
+      "kind": "item",
+      "id": "tinymod:pebble",
+      "confidence": 0.8,
+      "extensions": { "extract:registeredVia": "custom helper, argument resolved by constant folding" },
+      "provenance": { "file": "src/main/java/org/example/tiny/TinyItems.java", "line": 17, "version": "forge-1.19.2" }
+    },
+    {
+      "kind": "unknown",
+      "reason": "registry call via custom helper TinyRegistry.registerAll(...) with a computed id",
+      "snippet": "TinyRegistry.registerAll(REGISTRY, \"tiny_\" + variant, Block::new);",
+      "conceptHint": "block",
+      "provenance": { "file": "src/main/java/org/example/tiny/TinyBlocks.java", "line": 42, "version": "forge-1.19.2" }
+    }
+  ]
+}

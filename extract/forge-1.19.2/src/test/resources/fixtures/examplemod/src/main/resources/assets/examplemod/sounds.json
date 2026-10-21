@@ -1,0 +1,7 @@
+{
+  "press_run": {
+    "category": "block",
+    "subtitle": "subtitles.examplemod.press_run",
+    "sounds": ["examplemod:machines/press_run", {"name": "examplemod:machines/press_run2", "volume": 0.5, "weight": 2}]
+  }
+}

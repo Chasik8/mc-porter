@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:porter:contract:candidate",
+  "title": "porter rule candidate",
+  "description": "One manual or agent fix, logged as a candidate for a rule. Logs are JSON Lines (*.candidates.jsonl): one candidate per line, each line validated on its own. loop aggregates by 'normalized'; count >= 3 produces a draft rule in rules/_proposed/.",
+  "type": "object",
+  "required": ["schemaVersion", "error", "file", "before", "after", "author", "count"],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "id": { "type": "string", "pattern": "^c-[a-z0-9][a-z0-9._-]*$", "description": "Stable id; loop assigns sha-based ids." },
+    "from": { "type": "string", "pattern": "^(forge|neoforge|fabric|vanilla)-[0-9]+\\.[0-9]+(\\.[0-9]+)?$" },
+    "to": { "type": "string", "pattern": "^(forge|neoforge|fabric|vanilla)-[0-9]+\\.[0-9]+(\\.[0-9]+)?$" },
+    "error": { "type": "string", "minLength": 1, "description": "Compiler error message as reported (javac text)." },
+    "errorClass": {
+      "description": "loop classifier result.",
+      "enum": ["missing_class", "missing_method", "signature_mismatch", "incompatible_types", "no_override", "java_syntax", "other"]
+    },
+    "file": { "type": "string", "minLength": 1, "description": "Source file relative to the project root." },
+    "line": { "type": "integer", "minimum": 1 },
+    "before": { "type": "string", "description": "Code before the fix (statement or minimal snippet)." },
+    "after": { "type": "string", "description": "Code after the fix." },
+    "symbol": { "type": "string", "description": "Symbol involved, 'Owner#name(Params)' or a class FQN, in the 'from' version when known." },
+    "normalized": { "type": "string", "description": "Normalized form used for aggregation (identifiers abstracted to placeholders)." },
+    "author": {
+      "description": "Who made the fix: agent:<name>, human:<name> or rule:<rule-id> (the latter for audit only).",
+      "type": "string",
+      "pattern": "^(agent|human|rule):[A-Za-z0-9_.-]+$"
+    },
+    "count": { "type": "integer", "minimum": 1 },
+    "ruleId": { "type": "string", "pattern": "^r-[a-z0-9][a-z0-9._-]*$", "description": "Rule drafted/accepted from this candidate, once it exists." }
+  }
+}

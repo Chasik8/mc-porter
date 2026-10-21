@@ -1,0 +1,12 @@
+# Invalid: a rule without a before/after test is never accepted.
+schemaVersion: 1
+id: r-1.19.2-1.7.10-no-tests
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: net.minecraft.world.item.ItemStack
+replace: net.minecraft.item.ItemStack
+confidence: 1.0
+provenance: { source: manual }
+tests: []

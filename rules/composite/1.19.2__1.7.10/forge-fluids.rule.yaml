@@ -1,0 +1,179 @@
+# Forge fluids: FluidAction becomes the 1.7.10 boolean doFill/doDrain flag; FluidStack amount accessors
+# become the public amount field. Synthetic tests only.
+schemaVersion: 1
+id: r-1.19.2-1.7.10-fluidaction-execute
+description: "1.7.10 IFluidHandler/IFluidTank take boolean doFill/doDrain."
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "net.minecraftforge.fluids.capability.IFluidHandler$FluidAction#EXECUTE"
+replace: "true"
+confidence: 0.95
+provenance: { source: manual, ref: "manual: Forge 1.19.2 API (no Forge 1.19.2 jar locally; members as referenced by decompiled 1.19.2 mods); target checked against the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "import net.minecraftforge.fluids.capability.IFluidHandler"
+    before: "boolean b = IFluidHandler.FluidAction.EXECUTE == null;"
+    after: "boolean b = true == null;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-fluidaction-simulate
+description: "1.7.10 IFluidHandler/IFluidTank take boolean doFill/doDrain."
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "net.minecraftforge.fluids.capability.IFluidHandler$FluidAction#SIMULATE"
+replace: "false"
+confidence: 0.95
+provenance: { source: manual, ref: "manual: Forge 1.19.2 API (no Forge 1.19.2 jar locally; members as referenced by decompiled 1.19.2 mods); target checked against the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "import net.minecraftforge.fluids.capability.IFluidHandler"
+    before: "boolean b = IFluidHandler.FluidAction.SIMULATE == null;"
+    after: "boolean b = false == null;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-type-fluidstack
+description: "Same class name in both versions (API differences are handled member by member)."
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: "net.minecraftforge.fluids.FluidStack"
+replace: "net.minecraftforge.fluids.FluidStack"
+confidence: 0.9
+provenance: { source: manual, ref: "manual: Forge 1.19.2 API (no Forge 1.19.2 jar locally; members as referenced by decompiled 1.19.2 mods); target checked against the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "import net.minecraftforge.fluids.FluidStack;"
+    after: "import net.minecraftforge.fluids.FluidStack;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-fluidstack-getamount
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraftforge.fluids.FluidStack#getAmount()"
+  bind: { recv: "$s" }
+replace: "$s.amount"
+confidence: 0.9
+provenance: { source: manual, ref: "manual: Forge 1.19.2 API (no Forge 1.19.2 jar locally; members as referenced by decompiled 1.19.2 mods); target checked against the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "FluidStack s; FluidStack o; int n; CompoundTag t; import net.minecraft.nbt.CompoundTag"
+    before: "int a = s.getAmount();"
+    after: "int a = s.amount;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-fluidstack-setamount
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraftforge.fluids.FluidStack#setAmount(int)"
+  bind: { recv: "$s", args: ["$a0"] }
+replace: "$s.amount = $a0"
+preconditions: ["statement"]
+confidence: 0.9
+provenance: { source: manual, ref: "manual: Forge 1.19.2 API (no Forge 1.19.2 jar locally; members as referenced by decompiled 1.19.2 mods); target checked against the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "FluidStack s; FluidStack o; int n; CompoundTag t; import net.minecraft.nbt.CompoundTag"
+    before: "s.setAmount(n);"
+    after: "s.amount = n;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-fluidstack-grow
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraftforge.fluids.FluidStack#grow(int)"
+  bind: { recv: "$s", args: ["$a0"] }
+replace: "$s.amount += $a0"
+preconditions: ["statement"]
+confidence: 0.9
+provenance: { source: manual, ref: "manual: Forge 1.19.2 API (no Forge 1.19.2 jar locally; members as referenced by decompiled 1.19.2 mods); target checked against the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "FluidStack s; FluidStack o; int n; CompoundTag t; import net.minecraft.nbt.CompoundTag"
+    before: "s.grow(n);"
+    after: "s.amount += n;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-fluidstack-shrink
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraftforge.fluids.FluidStack#shrink(int)"
+  bind: { recv: "$s", args: ["$a0"] }
+replace: "$s.amount -= $a0"
+preconditions: ["statement"]
+confidence: 0.9
+provenance: { source: manual, ref: "manual: Forge 1.19.2 API (no Forge 1.19.2 jar locally; members as referenced by decompiled 1.19.2 mods); target checked against the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "FluidStack s; FluidStack o; int n; CompoundTag t; import net.minecraft.nbt.CompoundTag"
+    before: "s.shrink(n);"
+    after: "s.amount -= n;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-fluidstack-copy
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraftforge.fluids.FluidStack#copy()"
+  bind: { recv: "$s" }
+replace: "$s.copy()"
+confidence: 0.9
+provenance: { source: manual, ref: "manual: Forge 1.19.2 API (no Forge 1.19.2 jar locally; members as referenced by decompiled 1.19.2 mods); target checked against the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "FluidStack s; FluidStack o; int n; CompoundTag t; import net.minecraft.nbt.CompoundTag"
+    before: "Object c = s.copy();"
+    after: "Object c = s.copy();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-fluidstack-isfluidequal
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraftforge.fluids.FluidStack#isFluidEqual(net.minecraftforge.fluids.FluidStack)"
+  bind: { recv: "$s", args: ["$a0"] }
+replace: "$s.isFluidEqual($a0)"
+confidence: 0.9
+provenance: { source: manual, ref: "manual: Forge 1.19.2 API (no Forge 1.19.2 jar locally; members as referenced by decompiled 1.19.2 mods); target checked against the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "FluidStack s; FluidStack o; int n; CompoundTag t; import net.minecraft.nbt.CompoundTag"
+    before: "boolean e = s.isFluidEqual(o);"
+    after: "boolean e = s.isFluidEqual(o);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-fluidstack-writetonbt
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraftforge.fluids.FluidStack#writeToNBT(net.minecraft.nbt.CompoundTag)"
+  bind: { recv: "$s", args: ["$a0"] }
+replace: "$s.writeToNBT($a0)"
+confidence: 0.9
+provenance: { source: manual, ref: "manual: Forge 1.19.2 API (no Forge 1.19.2 jar locally; members as referenced by decompiled 1.19.2 mods); target checked against the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "FluidStack s; FluidStack o; int n; CompoundTag t; import net.minecraft.nbt.CompoundTag"
+    before: "Object c = s.writeToNBT(t);"
+    after: "Object c = s.writeToNBT(t);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-fluidstack-loadfluidstackfromnbt
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraftforge.fluids.FluidStack#loadFluidStackFromNBT(net.minecraft.nbt.CompoundTag)"
+  bind: { recv: "$s", args: ["$a0"] }
+replace: "$s.loadFluidStackFromNBT($a0)"
+confidence: 0.9
+provenance: { source: manual, ref: "manual: Forge 1.19.2 API (no Forge 1.19.2 jar locally; members as referenced by decompiled 1.19.2 mods); target checked against the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "FluidStack s; FluidStack o; int n; CompoundTag t; import net.minecraft.nbt.CompoundTag"
+    before: "Object c = FluidStack.loadFluidStackFromNBT(t);"
+    after: "Object c = FluidStack.loadFluidStackFromNBT(t);"

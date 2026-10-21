@@ -1,0 +1,133 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:porter:contract:rule",
+  "title": "porter rewrite rule",
+  "description": "One rewrite rule (YAML). A YAML file may hold several rules as separate YAML documents ('---'); each document is validated on its own. A rule without at least one before/after test is rejected. Every rule has a 'replace', except declaration rules (match.declaration), which have an 'edit' instead (RFC 006).",
+  "type": "object",
+  "required": ["schemaVersion", "id", "from", "to", "kind", "match", "confidence", "provenance", "tests"],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "id": {
+      "description": "Globally unique, stable. Convention: r-<from>-<to>-<slug>.",
+      "type": "string",
+      "pattern": "^r-[a-z0-9][a-z0-9._-]*$"
+    },
+    "description": { "type": "string" },
+    "from": { "$ref": "#/$defs/platformVersion" },
+    "to": { "$ref": "#/$defs/platformVersion" },
+    "kind": {
+      "description": "mechanical: pure rename/move derived from the symbol graph; adapter: argument/receiver reshaping; idiom: multi-statement or semantic rewrite.",
+      "enum": ["mechanical", "adapter", "idiom"]
+    },
+    "match": {
+      "description": "Exactly one selector. Member selectors use 'Owner#name(ParamType, ...)' with fully qualified owner and simple or qualified parameter types of the 'from' version.",
+      "type": "object",
+      "minProperties": 1,
+      "properties": {
+        "call": { "type": "string", "pattern": "^[A-Za-z_$][\\w$.]*#[\\w$<>]+\\(.*\\)$", "description": "Method invocation." },
+        "new": { "type": "string", "pattern": "^[A-Za-z_$][\\w$.]*\\(.*\\)$", "description": "Constructor call 'Owner(ParamType, ...)'." },
+        "field": { "type": "string", "pattern": "^[A-Za-z_$][\\w$.]*#[\\w$]+$", "description": "Field access." },
+        "type": { "type": "string", "pattern": "^[A-Za-z_$][\\w$.]*$", "description": "Type reference (declarations, casts, imports, generics)." },
+        "override": { "type": "string", "pattern": "^[A-Za-z_$][\\w$.]*#[\\w$]+\\(.*\\)$", "description": "Method declaration overriding Owner#name(...)." },
+        "pattern": { "type": "string", "minLength": 1, "description": "Java code template (RFC 006): one expression, or one or more statements (ending in ';' or '}'). Placeholders: $x = any expression, '$s;' alone = any statement, 'T $v = ...' = the name of a local declared in the pattern. Matched on the AST: type names by simple name, member names also through SRG aliases, casts the pattern does not write and parentheses are ignored." },
+        "declaration": { "type": "string", "pattern": "^[A-Za-z_$][\\w$.]*(#[\\w$<>]+(\\(.*\\))?)?$", "description": "A declaration in the rewritten sources (RFC 006): type 'a.b.C' ('a.b.C$D' nested), field 'a.b.C#f', method or constructor 'a.b.C#m(ParamType, ...)' ('<init>'). Changed by the rule's 'edit'." },
+        "bind": {
+          "description": "Names for matched parts, used as $placeholders in replace.",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "recv": { "$ref": "#/$defs/placeholder" },
+            "args": { "type": "array", "items": { "$ref": "#/$defs/placeholder" } },
+            "type": { "$ref": "#/$defs/placeholder" },
+            "result": { "$ref": "#/$defs/placeholder" }
+          }
+        }
+      },
+      "additionalProperties": false,
+      "oneOf": [
+        { "required": ["call"] },
+        { "required": ["new"] },
+        { "required": ["field"] },
+        { "required": ["type"] },
+        { "required": ["override"] },
+        { "required": ["pattern"] },
+        { "required": ["declaration"] }
+      ]
+    },
+    "replace": {
+      "description": "Replacement template in the 'to' version (expression, type name, member name or statements for idioms). May reference bound $placeholders and $target(a.b.C) (a 'to'-version name that --relocate never renames). Empty only for statement patterns (the matched statements are removed).",
+      "type": "string"
+    },
+    "edit": {
+      "description": "Declaration edits, only with match.declaration (RFC 006). Texts are inserted verbatim and may use $target(a.b.C).",
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": false,
+      "properties": {
+        "addSupertypes": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "description": "Type: appended to 'implements' (class) or 'extends' (interface); the clause is created when missing." },
+        "addMembers": { "type": "string", "minLength": 1, "description": "Type: text inserted right after the opening brace of the body." },
+        "appendMembers": { "type": "string", "minLength": 1, "description": "Type: text inserted right after the last member (after the opening brace when the body is empty)." },
+        "initializer": { "type": "string", "minLength": 1, "description": "Field: the new initializer expression (added when the field has none)." },
+        "body": { "type": "string", "description": "Method or constructor: the new text between the braces of its body." },
+        "remove": { "const": true, "description": "Member: the declaration is deleted (with its annotations and lines)." }
+      }
+    },
+    "imports": {
+      "description": "Imports to add when the rule fires.",
+      "type": "array",
+      "items": { "type": "string", "pattern": "^[A-Za-z_$][\\w$.]*(\\.\\*)?$" }
+    },
+    "preconditions": {
+      "description": "Conditions that must all hold. Vocabulary is owned and documented by the rewriter (rewrite/README.md); unknown conditions make the rule not apply (TODO marker), never apply silently.",
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "reversible": { "type": "boolean", "default": false },
+    "priority": { "type": "integer", "default": 0, "description": "Higher wins when several rules match the same node." },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "provenance": {
+      "type": "object",
+      "required": ["source"],
+      "additionalProperties": false,
+      "properties": {
+        "source": { "enum": ["graph", "manual", "agent", "mined"] },
+        "ref": { "type": "string", "description": "Graph edge, candidate ids, commit URL, etc." },
+        "chain": {
+          "description": "For composite rules: ids of the adjacent-pair rules this was composed from, in order.",
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "tests": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["before", "after"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string" },
+          "context": { "type": "string", "description": "Extra declarations/imports needed to type the snippet (e.g. 'Level level; BlockPos pos;')." },
+          "before": { "type": "string", "minLength": 1 },
+          "after": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": { "required": ["match"], "properties": { "match": { "required": ["declaration"] } } },
+      "then": { "required": ["edit"], "not": { "required": ["replace"] } },
+      "else": { "required": ["replace"], "not": { "required": ["edit"] } }
+    }
+  ],
+  "$defs": {
+    "platformVersion": {
+      "type": "string",
+      "pattern": "^(forge|neoforge|fabric|vanilla)-[0-9]+\\.[0-9]+(\\.[0-9]+)?$"
+    },
+    "placeholder": { "type": "string", "pattern": "^\\$[A-Za-z_][A-Za-z0-9_]*$" }
+  }
+}

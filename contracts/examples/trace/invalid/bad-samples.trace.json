@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "scenario": "furnace-smelt-iron",
+  "version": "1.19.2",
+  "status": "ok",
+  "samples": [
+    { "key": "nbt:[0,64,0]/CookTime", "value": 0 },
+    { "tick": -1, "key": "", "value": 1, "extra": true }
+  ]
+}

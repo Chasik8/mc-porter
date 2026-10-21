@@ -1,0 +1,18 @@
+schemaVersion: 1
+id: furnace-gui-visual
+description: >-
+  Visual GUI check of the vanilla furnace on real clients of both versions (RFC 005): capture the idle screen, put
+  fuel and ore in while the screen stays open, capture again; the regions that changed (flame, progress arrow) are
+  the dynamic indicators compared between versions, the rest is a masked image diff.
+world: flat-void
+side: client
+maxTicks: 400
+steps:
+  - place_block: { at: [0, 64, 0], block: "minecraft:furnace", facing: north }
+  # the recipe-book button exists only in 1.19.2: masked
+  - open_gui: { at: [0, 64, 0], menu: "minecraft:furnace", capture: furnace-idle, keepOpen: true, check: { mask: [[19, 25, 22, 22]] } }
+  - insert_item: { at: [0, 64, 0], item: "minecraft:coal", slot: 1 }
+  - insert_item: { at: [0, 64, 0], item: "minecraft:iron_ore", slot: 0 }
+  - tick: 60
+  - gui_input: { capture: furnace-burning, check: { dynamicFrom: furnace-idle, mask: [[19, 25, 22, 22]] } }
+  - close_gui: {}

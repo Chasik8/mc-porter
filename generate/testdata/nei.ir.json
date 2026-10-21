@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 2,
+  "source": { "version": "forge-1.19.2", "modId": "examplemod", "tool": "hand-written test data (RFC 003, NEI)" },
+  "nodes": [
+    {
+      "kind": "recipe",
+      "id": "examplemod:pressing/berry_juice",
+      "recipeType": "custom",
+      "customType": "examplemod:pressing",
+      "ingredients": [
+        { "item": "minecraft:wheat", "count": 4 },
+        { "anyOf": [{ "item": "minecraft:apple" }, { "tag": "forge:ingots/copper" }] }
+      ],
+      "fluidIngredients": [{ "fluid": "minecraft:water", "amount": 250 }],
+      "results": [{ "item": "examplemod:copper_plate" }, { "item": "minecraft:sugar", "chance": 0.25 }],
+      "fluidResults": [{ "fluid": "examplemod:berry_juice", "amount": 1000, "chance": 0.5 }],
+      "duration": 24000,
+      "machines": ["examplemod:copper_press"],
+      "notes": ["Press slowly", { "key": "examplemod.note.cold", "text": "Keep it cold" }],
+      "provenance": { "file": "manual", "line": 0, "version": "forge-1.19.2", "via": "manual" }
+    },
+    {
+      "kind": "recipe",
+      "id": "examplemod:cask/mead",
+      "recipeType": "custom",
+      "customType": "examplemod:cask_ageing",
+      "ingredients": [{ "item": "minecraft:honey_bottle", "count": 3 }],
+      "result": { "item": "examplemod:berry_juice" },
+      "duration": 48000,
+      "machines": ["examplemod:copper_press"],
+      "provenance": { "file": "manual", "line": 0, "version": "forge-1.19.2", "via": "manual" }
+    },
+    {
+      "kind": "item",
+      "id": "examplemod:debug_wand",
+      "hidden": true,
+      "provenance": { "file": "src/main/java/com/example/examplemod/ModItems.java", "line": 50, "version": "forge-1.19.2" }
+    }
+  ]
+}

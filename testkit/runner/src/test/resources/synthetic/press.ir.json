@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "source": { "version": "forge-1.19.2", "modId": "examplemod", "tool": "synthetic test input" },
+  "nodes": [
+    {
+      "kind": "multiblock",
+      "id": "examplemod:mini_press",
+      "size": [3, 2, 2],
+      "palette": {
+        "C": "examplemod:casing",
+        "P": { "block": "examplemod:press", "state": { "facing": "north" } },
+        "?": { "any": true }
+      },
+      "layers": [
+        ["CCC", "CCC"],
+        ["?P?", "C?C"]
+      ],
+      "controller": { "block": "examplemod:press", "pos": [1, 1, 0], "facing": "north" },
+      "rotatable": true,
+      "provenance": { "file": "synthetic", "line": 0, "version": "forge-1.19.2", "via": "manual" }
+    },
+    {
+      "kind": "menu",
+      "id": "examplemod:press",
+      "size": { "width": 176, "height": 166 },
+      "slots": [
+        { "index": 0, "x": 56, "y": 17, "role": "input" },
+        { "index": 1, "x": 116, "y": 35, "role": "output" }
+      ],
+      "playerInventory": { "x": 8, "y": 84, "hotbarY": 142 },
+      "provenance": { "file": "synthetic", "line": 0, "version": "forge-1.19.2", "via": "manual" }
+    }
+  ]
+}

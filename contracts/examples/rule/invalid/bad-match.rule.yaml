@@ -1,0 +1,13 @@
+# Invalid: two selectors in match, unknown kind, confidence > 1, missing provenance.
+schemaVersion: 1
+id: R_Bad
+from: forge-1.19.2
+to: "1.7.10"
+kind: magic
+match:
+  call: "net.minecraft.world.level.Level#getBlockEntity(BlockPos)"
+  type: net.minecraft.world.level.Level
+replace: "$w.getTileEntity($x, $y, $z)"
+confidence: 1.5
+tests:
+  - before: "a();"

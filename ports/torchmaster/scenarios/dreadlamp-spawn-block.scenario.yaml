@@ -1,0 +1,35 @@
+schemaVersion: 1
+id: dreadlamp-spawn-block
+description: >-
+  Dread Lamp at [0,64,0] (radius 64): natural spawns of passive creatures (creature/ambient/water categories) are denied inside the cube; villagers and golems (misc), hostile mobs and mobs outside stay default.
+world: flat-void
+maxTicks: 200
+tolerance:
+  "*": { abs: 0 }
+keyMap:
+  forge-1.7.10:
+    "spawn_check:[10,64,10]/Pig": "spawn_check:[10,64,10]/minecraft:pig"
+    "spawn_check:[-20,50,30]/Cow": "spawn_check:[-20,50,30]/minecraft:cow"
+    "spawn_check:[3,64,3]/Sheep": "spawn_check:[3,64,3]/minecraft:sheep"
+    "spawn_check:[3,64,3]/Squid": "spawn_check:[3,64,3]/minecraft:squid"
+    "spawn_check:[3,64,3]/Bat": "spawn_check:[3,64,3]/minecraft:bat"
+    "spawn_check:[3,64,3]/Wolf": "spawn_check:[3,64,3]/minecraft:wolf"
+    "spawn_check:[3,64,3]/Villager": "spawn_check:[3,64,3]/minecraft:villager"
+    "spawn_check:[3,64,3]/VillagerGolem": "spawn_check:[3,64,3]/minecraft:iron_golem"
+    "spawn_check:[3,64,3]/Zombie": "spawn_check:[3,64,3]/minecraft:zombie"
+    "spawn_check:[80,64,0]/Pig": "spawn_check:[80,64,0]/minecraft:pig"
+steps:
+  - sample: { what: ["spawn_check:[10,64,10]/minecraft:pig", "spawn_check:[-20,50,30]/minecraft:cow", "spawn_check:[3,64,3]/minecraft:sheep", "spawn_check:[3,64,3]/minecraft:squid", "spawn_check:[3,64,3]/minecraft:bat", "spawn_check:[3,64,3]/minecraft:wolf", "spawn_check:[3,64,3]/minecraft:villager", "spawn_check:[3,64,3]/minecraft:iron_golem", "spawn_check:[3,64,3]/minecraft:zombie", "spawn_check:[80,64,0]/minecraft:pig"] }
+  - place_block: { at: [0, 64, 0], block: "torchmaster:dreadlamp" }
+  - tick: 5
+  - sample: { what: ["spawn_check:[10,64,10]/minecraft:pig", "spawn_check:[-20,50,30]/minecraft:cow", "spawn_check:[3,64,3]/minecraft:sheep", "spawn_check:[3,64,3]/minecraft:squid", "spawn_check:[3,64,3]/minecraft:bat", "spawn_check:[3,64,3]/minecraft:wolf", "spawn_check:[3,64,3]/minecraft:villager", "spawn_check:[3,64,3]/minecraft:iron_golem", "spawn_check:[3,64,3]/minecraft:zombie", "spawn_check:[80,64,0]/minecraft:pig"] }
+  - assert: { expr: "spawn_check:[10,64,10]/minecraft:pig == 'deny'", message: "minecraft:pig at [10,64,10] -> deny" }
+  - assert: { expr: "spawn_check:[-20,50,30]/minecraft:cow == 'deny'", message: "minecraft:cow at [-20,50,30] -> deny" }
+  - assert: { expr: "spawn_check:[3,64,3]/minecraft:sheep == 'deny'", message: "minecraft:sheep at [3,64,3] -> deny" }
+  - assert: { expr: "spawn_check:[3,64,3]/minecraft:squid == 'deny'", message: "minecraft:squid at [3,64,3] -> deny" }
+  - assert: { expr: "spawn_check:[3,64,3]/minecraft:bat == 'deny'", message: "minecraft:bat at [3,64,3] -> deny" }
+  - assert: { expr: "spawn_check:[3,64,3]/minecraft:wolf == 'deny'", message: "minecraft:wolf at [3,64,3] -> deny" }
+  - assert: { expr: "spawn_check:[3,64,3]/minecraft:villager == 'default'", message: "minecraft:villager at [3,64,3] -> default" }
+  - assert: { expr: "spawn_check:[3,64,3]/minecraft:iron_golem == 'default'", message: "minecraft:iron_golem at [3,64,3] -> default" }
+  - assert: { expr: "spawn_check:[3,64,3]/minecraft:zombie == 'default'", message: "minecraft:zombie at [3,64,3] -> default" }
+  - assert: { expr: "spawn_check:[80,64,0]/minecraft:pig == 'default'", message: "minecraft:pig at [80,64,0] -> default" }

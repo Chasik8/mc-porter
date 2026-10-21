@@ -1,0 +1,6 @@
+{"schemaVersion":1,"type":"graph","versions":[{"id":"1.19.2","canonical":"mojmap","namespaces":["mojmap"]},{"id":"1.7.10","canonical":"mcp","namespaces":["mcp"]}],
+"edges":[
+{"from":{"version":"1.19.2","kind":"class","name":"net.minecraft.util.Mth"},"to":{"version":"1.7.10","kind":"class","name":"net.minecraft.util.MathHelper"},"status":"moved","confidence":0.9,"evidence":["synthetic"]},
+{"from":{"version":"1.19.2","kind":"method","owner":"net.minecraft.util.Mth","name":"clamp","desc":"(III)I"},"to":{"version":"1.7.10","kind":"method","owner":"net.minecraft.util.MathHelper","name":"clamp_int","desc":"(III)I"},"status":"renamed","confidence":0.8,"evidence":["synthetic"]},
+{"from":{"version":"1.19.2","kind":"class","name":"net.minecraft.world.level.block.Gone"},"status":"removed","confidence":0.7,"evidence":["synthetic"],"note":"no counterpart"}
+]}

@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "scenario": "furnace-smelt-iron",
+  "version": "forge-1.19.2",
+  "status": "passed",
+  "ticks": 220,
+  "samples": [
+    { "tick": 0, "key": "item:[0,64,0]#2", "value": null },
+    { "tick": 0, "key": "nbt:[0,64,0]/CookTime", "value": 0 },
+    { "tick": 20, "key": "item:[0,64,0]#2", "value": null },
+    { "tick": 20, "key": "nbt:[0,64,0]/CookTime", "value": 19 },
+    { "tick": 220, "key": "item:[0,64,0]#2", "value": { "item": "minecraft:iron_ingot", "count": 1 } },
+    { "tick": 220, "key": "nbt:[0,64,0]/CookTime", "value": 0 }
+  ],
+  "assertions": [
+    { "step": 5, "tick": 220, "expr": "item:[0,64,0]#2.count == 1", "passed": true }
+  ]
+}

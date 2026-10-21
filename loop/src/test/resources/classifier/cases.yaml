@@ -1,0 +1,321 @@
+# 30 typical javac errors of a version port (synthetic, public; invented packages under com.example and
+# stand-ins named like the target API). Each case is compiled in-process with javac; the classifier must
+# label the FIRST error with `expected`. ClassifierAccuracyTest requires >= 90 % accuracy.
+cases:
+  # ---------------------------------------------------------------- missing_class (6)
+  - id: mc-01-import-package-missing
+    expected: missing_class
+    symbol: net.minecraft.nbt.CompoundTag
+    files:
+      com/example/mod/A.java: |
+        package com.example.mod;
+        import net.minecraft.nbt.CompoundTag;
+        class A { }
+  - id: mc-02-type-not-imported
+    expected: missing_class
+    symbol: CompoundTag
+    files:
+      com/example/mod/A.java: |
+        package com.example.mod;
+        class A {
+            CompoundTag tag;
+        }
+  - id: mc-03-new-unknown-class
+    expected: missing_class
+    files:
+      com/example/mod/A.java: |
+        package com.example.mod;
+        class A {
+            Object o = new BlockPos(1, 2, 3);
+        }
+  - id: mc-04-static-qualifier-unknown
+    expected: missing_class
+    symbol: Blocks
+    files:
+      com/example/mod/A.java: |
+        package com.example.mod;
+        class A {
+            Object b = Blocks.STONE;
+        }
+  - id: mc-05-class-missing-in-existing-package
+    expected: missing_class
+    symbol: com.example.api.Missing
+    files:
+      com/example/api/Present.java: |
+        package com.example.api;
+        public class Present { }
+      com/example/mod/A.java: |
+        package com.example.mod;
+        import com.example.api.Missing;
+        class A { }
+  - id: mc-06-extends-unknown
+    expected: missing_class
+    files:
+      com/example/mod/A.java: |
+        package com.example.mod;
+        class A extends BlockEntity { }
+  # ---------------------------------------------------------------- missing_method (6)
+  - id: mm-01-renamed-method
+    expected: missing_method
+    symbol: com.example.mc.NBTTagCompound#putInt(String,int)
+    files:
+      com/example/mc/NBTTagCompound.java: |
+        package com.example.mc;
+        public class NBTTagCompound { public void setInteger(String k, int v) { } }
+      com/example/mod/A.java: |
+        package com.example.mod;
+        import com.example.mc.NBTTagCompound;
+        class A {
+            void save(NBTTagCompound tag) {
+                tag.putInt("energy", 1);
+            }
+        }
+  - id: mm-02-removed-method
+    expected: missing_method
+    files:
+      com/example/mc/BlockPos.java: |
+        package com.example.mc;
+        public class BlockPos { public int x, y, z; }
+      com/example/mod/A.java: |
+        package com.example.mod;
+        import com.example.mc.BlockPos;
+        class A {
+            BlockPos up(BlockPos pos) { return pos.above(); }
+        }
+  - id: mm-03-inherited-field-missing
+    expected: missing_method
+    files:
+      com/example/mc/TileEntity.java: |
+        package com.example.mc;
+        public class TileEntity { public int xCoord, yCoord, zCoord; }
+      com/example/mod/A.java: |
+        package com.example.mod;
+        class A extends com.example.mc.TileEntity {
+            Object p() { return worldPosition; }
+        }
+  - id: mm-04-static-method-renamed
+    expected: missing_method
+    files:
+      com/example/mc/MathHelper.java: |
+        package com.example.mc;
+        public class MathHelper { public static int clamp_int(int v, int lo, int hi) { return v; } }
+      com/example/mod/A.java: |
+        package com.example.mod;
+        import com.example.mc.MathHelper;
+        class A {
+            int c(int v) { return MathHelper.clamp(v, 0, 10); }
+        }
+  - id: mm-05-field-renamed
+    expected: missing_method
+    files:
+      com/example/mc/World.java: |
+        package com.example.mc;
+        public class World { public boolean isRemote; }
+      com/example/mod/A.java: |
+        package com.example.mod;
+        import com.example.mc.World;
+        class A {
+            boolean client(World level) { return level.isClientSide; }
+        }
+  - id: mm-06-super-call-missing
+    expected: missing_method
+    files:
+      com/example/mc/TileEntity.java: |
+        package com.example.mc;
+        public class TileEntity { public void validate() { } }
+      com/example/mod/A.java: |
+        package com.example.mod;
+        class A extends com.example.mc.TileEntity {
+            public void load() { super.onLoad(); }
+        }
+  # ---------------------------------------------------------------- signature_mismatch (5)
+  - id: sm-01-wrong-arity
+    expected: signature_mismatch
+    symbol: com.example.mc.World#getTileEntity(int,int,int)
+    files:
+      com/example/mc/World.java: |
+        package com.example.mc;
+        public class World { public Object getTileEntity(int x, int y, int z) { return null; } }
+      com/example/mod/A.java: |
+        package com.example.mod;
+        import com.example.mc.World;
+        class A {
+            Object be(World world, Object pos) { return world.getTileEntity(pos); }
+        }
+  - id: sm-02-no-suitable-overload
+    expected: signature_mismatch
+    files:
+      com/example/mc/FluidTank.java: |
+        package com.example.mc;
+        public class FluidTank {
+            public Object drain(int amount, boolean doDrain) { return null; }
+            public Object drain(Object stack, boolean doDrain) { return null; }
+        }
+      com/example/mod/A.java: |
+        package com.example.mod;
+        import com.example.mc.FluidTank;
+        class A {
+            enum Action { EXECUTE }
+            Object d(FluidTank tank) { return tank.drain(100, Action.EXECUTE); }
+        }
+  - id: sm-03-constructor-args
+    expected: signature_mismatch
+    files:
+      com/example/mc/FluidTank.java: |
+        package com.example.mc;
+        public class FluidTank { public FluidTank(int capacity) { } }
+      com/example/mod/A.java: |
+        package com.example.mod;
+        import com.example.mc.FluidTank;
+        class A {
+            FluidTank t = new FluidTank(16000, f -> true);
+        }
+  - id: sm-04-instance-method-called-static
+    expected: signature_mismatch
+    files:
+      com/example/mc/World.java: |
+        package com.example.mc;
+        public class World { public long getTotalWorldTime() { return 0; } }
+      com/example/mod/A.java: |
+        package com.example.mod;
+        import com.example.mc.World;
+        class A {
+            long t() { return World.getTotalWorldTime(); }
+        }
+  - id: sm-05-type-arguments
+    expected: signature_mismatch
+    files:
+      com/example/mod/A.java: |
+        package com.example.mod;
+        import java.util.function.Supplier;
+        class A {
+            Supplier<String, Integer> s;
+        }
+  # ---------------------------------------------------------------- incompatible_types (4)
+  - id: it-01-assignment
+    expected: incompatible_types
+    files:
+      com/example/mc/World.java: |
+        package com.example.mc;
+        public class World { public String getName() { return ""; } }
+      com/example/mod/A.java: |
+        package com.example.mod;
+        import com.example.mc.World;
+        class A {
+            int n(World world) { int x = world.getName(); return x; }
+        }
+  - id: it-02-bad-operands
+    expected: incompatible_types
+    files:
+      com/example/mod/A.java: |
+        package com.example.mod;
+        class A {
+            boolean b = 1.5 > "a";
+        }
+  - id: it-03-lossy-conversion
+    expected: incompatible_types
+    files:
+      com/example/mod/A.java: |
+        package com.example.mod;
+        class A {
+            int f(double d) { int i = d; return i; }
+        }
+  - id: it-04-primitive-dereference
+    expected: incompatible_types
+    files:
+      com/example/mod/A.java: |
+        package com.example.mod;
+        class A {
+            String s(int meta) { return meta.toString(); }
+        }
+  # ---------------------------------------------------------------- no_override (4)
+  - id: no-01-override-renamed
+    expected: no_override
+    files:
+      com/example/mc/TileEntity.java: |
+        package com.example.mc;
+        public class TileEntity { public void updateEntity() { } }
+      com/example/mod/A.java: |
+        package com.example.mod;
+        class A extends com.example.mc.TileEntity {
+            @Override
+            public void tick() { }
+        }
+  - id: no-02-abstract-not-implemented
+    expected: no_override
+    files:
+      com/example/mc/IFluidHandler.java: |
+        package com.example.mc;
+        public interface IFluidHandler { int fill(int side, Object resource, boolean doFill); }
+      com/example/mod/A.java: |
+        package com.example.mod;
+        class A implements com.example.mc.IFluidHandler {
+            public int fill(Object resource, boolean execute) { return 0; }
+        }
+  - id: no-03-weaker-access
+    expected: no_override
+    files:
+      com/example/mc/Block.java: |
+        package com.example.mc;
+        public class Block { public int tickRate() { return 10; } }
+      com/example/mod/A.java: |
+        package com.example.mod;
+        class A extends com.example.mc.Block {
+            @Override
+            protected int tickRate() { return 5; }
+        }
+  - id: no-04-return-type
+    expected: no_override
+    files:
+      com/example/mc/Container.java: |
+        package com.example.mc;
+        public class Container { public int getSize() { return 0; } }
+      com/example/mod/A.java: |
+        package com.example.mod;
+        class A extends com.example.mc.Container {
+            @Override
+            public long getSize() { return 0L; }
+        }
+  # ---------------------------------------------------------------- java_syntax (3)
+  - id: js-01-missing-semicolon
+    expected: java_syntax
+    files:
+      com/example/mod/A.java: |
+        package com.example.mod;
+        class A {
+            int x = 1
+        }
+  - id: js-02-illegal-start
+    expected: java_syntax
+    files:
+      com/example/mod/A.java: |
+        package com.example.mod;
+        class A {
+            void m() { int x = ; }
+        }
+  - id: js-03-stray-brace
+    expected: java_syntax
+    files:
+      com/example/mod/A.java: |
+        package com.example.mod;
+        class A {
+            void m() { }
+        }
+        }
+  # ---------------------------------------------------------------- other (2)
+  - id: ot-01-unreported-exception
+    expected: other
+    files:
+      com/example/mod/A.java: |
+        package com.example.mod;
+        class A {
+            void m() { throw new Exception("x"); }
+        }
+  - id: ot-02-uninitialized
+    expected: other
+    files:
+      com/example/mod/A.java: |
+        package com.example.mod;
+        class A {
+            int m() { int x; return x; }
+        }

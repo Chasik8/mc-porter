@@ -1,0 +1,14 @@
+# invalid: a declaration rule takes an 'edit', not a 'replace' (RFC 006)
+schemaVersion: 1
+id: r-1.19.2-1.7.10-example-bad-declaration
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "com.example.Thing#run()"
+replace: "x"
+confidence: 0.5
+provenance: { source: manual }
+tests:
+  - before: "class Thing { void run() {} }"
+    after: "class Thing { void run() {} }"

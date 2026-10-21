@@ -1,0 +1,29 @@
+# Two mechanical type moves in one file: each YAML document is one rule.
+schemaVersion: 1
+id: r-1.19.2-1.7.10-type-itemstack
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: net.minecraft.world.item.ItemStack
+replace: net.minecraft.item.ItemStack
+confidence: 0.99
+provenance: { source: graph, ref: "class net.minecraft.world.item.ItemStack 1.19.2 -> 1.7.10" }
+tests:
+  - before: "import net.minecraft.world.item.ItemStack;"
+    after: "import net.minecraft.item.ItemStack;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-type-compoundtag
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: net.minecraft.nbt.CompoundTag
+replace: net.minecraft.nbt.NBTTagCompound
+confidence: 0.99
+provenance: { source: graph, ref: "class net.minecraft.nbt.CompoundTag 1.19.2 -> 1.7.10" }
+tests:
+  - name: declaration
+    before: "CompoundTag tag = new CompoundTag();"
+    after: "NBTTagCompound tag = new NBTTagCompound();"

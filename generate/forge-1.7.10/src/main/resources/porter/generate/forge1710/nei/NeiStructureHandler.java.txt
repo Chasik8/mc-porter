@@ -1,0 +1,228 @@
+package ${package};
+
+import codechicken.lib.gui.GuiDraw;
+import codechicken.nei.PositionedStack;
+import codechicken.nei.recipe.TemplateRecipeHandler;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.item.ItemStack;
+import org.lwjgl.opengl.GL11;
+
+/**
+ * NEI "how to build" pages for the IR multiblocks ({@link NeiModel.Structure}): a bill of materials (controller =
+ * result, every block with its count) and, when the footprint fits the page, one page per layer (bottom to top, as
+ * seen from above: x to the right, z downwards). R on the controller shows its structure, U on any part lists the
+ * structures that use it. Client only (loaded by the {@code NEI*Config} of this package).
+ */
+public abstract class NeiStructureHandler extends TemplateRecipeHandler {
+    static final int SLOT = 18;
+    static final int MAX_COLUMNS = 9;
+    static final int MAX_ROWS = 6;
+    static final int WIDTH = 162;
+
+    protected final List<NeiModel.Structure> structures;
+
+    protected NeiStructureHandler(List<NeiModel.Structure> structures) {
+        this.structures = structures;
+    }
+
+    public abstract String handlerId();
+
+    @Override
+    public String getRecipeName() {
+        return NeiModel.resolver.text("porter.nei.structures", "Multiblock structures");
+    }
+
+    @Override
+    public String getGuiTexture() {
+        return "textures/gui/container/furnace.png";
+    }
+
+    @Override
+    public String getOverlayIdentifier() {
+        return handlerId();
+    }
+
+    @Override
+    public int recipiesPerPage() {
+        return 1;
+    }
+
+    // ---- lookups ------------------------------------------------------------------------------------------------
+
+    @Override
+    public void loadCraftingRecipes(String outputId, Object... results) {
+        if (handlerId().equals(outputId)) {
+            for (NeiModel.Structure s : structures) {
+                addPages(s);
+            }
+        } else {
+            super.loadCraftingRecipes(outputId, results);
+        }
+    }
+
+    @Override
+    public void loadCraftingRecipes(ItemStack result) {
+        for (NeiModel.Structure s : structures) {
+            PositionedStack controller = new Page(s, -1).controller;
+            if (controller != null && controller.contains(result)) {
+                addPages(s);
+            }
+        }
+    }
+
+    @Override
+    public void loadUsageRecipes(String inputId, Object... ingredients) {
+        if (handlerId().equals(inputId)) {
+            loadCraftingRecipes(inputId, ingredients);
+        } else {
+            super.loadUsageRecipes(inputId, ingredients);
+        }
+    }
+
+    @Override
+    public void loadUsageRecipes(ItemStack ingredient) {
+        for (NeiModel.Structure s : structures) {
+            Page bom = new Page(s, -1);
+            for (PositionedStack p : bom.blocks) {
+                if (p.contains(ingredient)) {
+                    addPages(s);
+                    break;
+                }
+            }
+        }
+    }
+
+    /** Bill of materials + one page per layer when the layer fits (else the bill of materials only). */
+    public void addPages(NeiModel.Structure s) {
+        arecipes.add(new Page(s, -1));
+        if (fits(s)) {
+            for (int y = 0; y < s.sizeY; y++) {
+                arecipes.add(new Page(s, y));
+            }
+        }
+    }
+
+    static boolean fits(NeiModel.Structure s) {
+        return s.sizeX <= MAX_COLUMNS && s.sizeZ <= MAX_ROWS;
+    }
+
+    // ---- drawing ------------------------------------------------------------------------------------------------
+
+    @Override
+    public void drawBackground(int recipe) {
+        Page p = (Page) arecipes.get(recipe);
+        GL11.glColor4f(1, 1, 1, 1);
+        for (PositionedStack s : p.blocks) {
+            NeiRecipeHandler.slot(s.relx, s.rely);
+        }
+        if (p.controller != null && p.layer < 0) {
+            NeiRecipeHandler.slot(p.controller.relx, p.controller.rely);
+        }
+    }
+
+    @Override
+    public void drawExtras(int recipe) {
+        Page p = (Page) arecipes.get(recipe);
+        FontRenderer font = Minecraft.getMinecraft().fontRenderer;
+        int y = 2;
+        GuiDraw.drawString(p.structure.title.get(), 2, y, 0x404040, false);
+        y += 10;
+        for (String line : p.lines()) {
+            for (Object part : font.listFormattedStringToWidth(line, p.layer < 0 ? WIDTH - 22 : WIDTH)) {
+                GuiDraw.drawString((String) part, 2, y, 0x404040, false);
+                y += 10;
+            }
+        }
+    }
+
+    // ---- one page -----------------------------------------------------------------------------------------------
+
+    /** layer = -1: bill of materials; else the blocks of one layer at their positions. */
+    public class Page extends CachedRecipe {
+        public final NeiModel.Structure structure;
+        public final int layer;
+        public final List<PositionedStack> blocks = new ArrayList<PositionedStack>();
+        final PositionedStack controller;
+        final int top;
+        int anyCount;
+
+        public Page(NeiModel.Structure s, int layer) {
+            this.structure = s;
+            this.layer = layer;
+            List<ItemStack> ctrl = s.controller == null ? new ArrayList<ItemStack>() : s.controller.stacks();
+            controller = ctrl.isEmpty() ? null : new PositionedStack(ctrl, 146, 2, false);
+            top = layer < 0 ? 46 : 24;
+            if (layer < 0) {
+                int k = 0;
+                for (Map.Entry<Character, Integer> e : s.counts().entrySet()) {
+                    NeiModel.Ing ing = s.palette.get(e.getKey());
+                    if (ing == null) {
+                        anyCount += e.getValue();
+                        continue;
+                    }
+                    List<ItemStack> st = ing.stacks();
+                    if (st.isEmpty() || e.getValue() == 0) {
+                        continue;
+                    }
+                    for (ItemStack i : st) {
+                        i.stackSize = e.getValue();
+                    }
+                    blocks.add(new PositionedStack(st, 2 + k % MAX_COLUMNS * SLOT, top + k / MAX_COLUMNS * SLOT, false));
+                    k++;
+                }
+            } else {
+                int x0 = 2 + (MAX_COLUMNS - s.sizeX) * SLOT / 2;
+                for (int z = 0; z < s.sizeZ; z++) {
+                    for (int x = 0; x < s.sizeX; x++) {
+                        char c = s.at(x, layer, z);
+                        if (!s.palette.containsKey(c)) {
+                            continue;
+                        }
+                        NeiModel.Ing ing = s.palette.get(c);
+                        if (ing == null) {
+                            anyCount++;
+                            continue;
+                        }
+                        List<ItemStack> st = ing.stacks();
+                        if (!st.isEmpty()) {
+                            blocks.add(new PositionedStack(st, x0 + x * SLOT, top + z * SLOT, false));
+                        }
+                    }
+                }
+            }
+        }
+
+        List<String> lines() {
+            List<String> l = new ArrayList<String>();
+            if (layer < 0) {
+                l.add(NeiModel.resolver.text("porter.nei.structure.size", "Size") + ": " + structure.sizeX + " x "
+                        + structure.sizeY + " x " + structure.sizeZ);
+                if (anyCount > 0) {
+                    l.add(anyCount + " " + NeiModel.resolver.text("porter.nei.structure.any", "positions: any block"));
+                }
+                if (!fits(structure)) {
+                    l.add(NeiModel.resolver.text("porter.nei.structure.large", "Too large for the layer view"));
+                }
+            } else {
+                l.add(NeiModel.resolver.text("porter.nei.structure.layer", "Layer") + " " + (layer + 1) + "/" + structure.sizeY
+                        + (anyCount > 0 ? ", " + anyCount + " " + NeiModel.resolver.text("porter.nei.structure.any",
+                                "positions: any block") : ""));
+            }
+            return l;
+        }
+
+        @Override
+        public PositionedStack getResult() {
+            return layer < 0 ? controller : null;
+        }
+
+        @Override
+        public List<PositionedStack> getIngredients() {
+            return blocks;
+        }
+    }
+}

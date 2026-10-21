@@ -1,0 +1,2017 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:porter:contract:ir",
+  "title": "porter IR document",
+  "description": "Declarative part of a mod as version-neutral data. Logic is never serialized here: nodes reference logic classes (logicClass, handlerClass) that go through the rewriter. See contracts/README.md.",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "source",
+    "nodes"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "enum": [
+        1,
+        2
+      ],
+      "description": "2 since RFC 003 (recipe IO for viewers, hidden objects); documents without the RFC 003 fields may stay at 1 (semantic check: RFC 003 fields need 2)."
+    },
+    "source": {
+      "description": "Where this IR came from.",
+      "type": "object",
+      "required": [
+        "version"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "$ref": "#/$defs/platformVersion"
+        },
+        "modId": {
+          "$ref": "#/$defs/modId"
+        },
+        "tool": {
+          "type": "string",
+          "description": "Producer, e.g. 'porter-extract 0.1.0'."
+        }
+      }
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/node"
+      }
+    }
+  },
+  "$defs": {
+    "platformVersion": {
+      "description": "Loader + Minecraft version, e.g. forge-1.19.2, forge-1.7.10.",
+      "type": "string",
+      "pattern": "^(forge|neoforge|fabric|vanilla)-[0-9]+\\.[0-9]+(\\.[0-9]+)?$"
+    },
+    "modId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]{1,63}$"
+    },
+    "resourceId": {
+      "description": "Namespaced resource location 'namespace:path'. The namespace is always explicit (minecraft:air, not air).",
+      "type": "string",
+      "pattern": "^[a-z0-9_.-]+:[a-z0-9_./-]+$"
+    },
+    "tagRef": {
+      "description": "Tag reference '#namespace:path'.",
+      "type": "string",
+      "pattern": "^#[a-z0-9_.-]+:[a-z0-9_./-]+$"
+    },
+    "className": {
+      "description": "Fully qualified Java class name in the source version, binary form for nested classes (a.b.Outer$Inner).",
+      "type": "string",
+      "pattern": "^[A-Za-z_$][A-Za-z0-9_$]*(\\.[A-Za-z_$][A-Za-z0-9_$]*)+$"
+    },
+    "langKey": {
+      "type": "string",
+      "minLength": 1
+    },
+    "texturePath": {
+      "description": "Texture resource 'namespace:path' relative to textures/, without extension (examplemod:block/press_front).",
+      "$ref": "#/$defs/resourceId"
+    },
+    "color": {
+      "type": "string",
+      "pattern": "^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$"
+    },
+    "pos3": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      },
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "provenance": {
+      "type": "object",
+      "required": [
+        "file",
+        "version"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "file": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Path relative to the mod source root, or 'runtime:<what>' for runtime exports."
+        },
+        "line": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "1-based line; 0 = unknown/not applicable."
+        },
+        "version": {
+          "$ref": "#/$defs/platformVersion"
+        },
+        "via": {
+          "description": "How the fact was obtained. Default: source.",
+          "enum": [
+            "source",
+            "bytecode",
+            "resource",
+            "runtime-export",
+            "manual"
+          ]
+        },
+        "extractor": {
+          "type": "string",
+          "description": "Extractor that produced the node, e.g. 'block/deferred-register'."
+        }
+      }
+    },
+    "base": {
+      "description": "Common fields of every concept node.",
+      "type": "object",
+      "required": [
+        "kind",
+        "id",
+        "provenance"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string",
+          "description": "Concept id. A namespaced resourceId for every kind except mod (bare mod id)."
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 1.0
+        },
+        "extensions": {
+          "description": "Free-form, namespaced data that no concept field covers yet (key = '<owner>:<name>'). Consumers must ignore unknown keys.",
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^[a-z0-9_.-]+:[A-Za-z0-9_./-]+$"
+          }
+        }
+      }
+    },
+    "node": {
+      "type": "object",
+      "required": [
+        "kind"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "mod",
+            "block",
+            "item",
+            "blockEntity",
+            "fluid",
+            "recipe",
+            "menu",
+            "packet",
+            "lang",
+            "sound",
+            "effect",
+            "multiblock",
+            "tag",
+            "unknown"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "mod"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/mod"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "block"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/block"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "item"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/item"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "blockEntity"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/blockEntity"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "fluid"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/fluid"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "recipe"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/recipe"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "menu"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/menu"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "packet"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/packet"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "lang"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/lang"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "sound"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/sound"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "effect"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/effect"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "multiblock"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/multiblock"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "tag"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/tag"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "unknown"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/unknown"
+          }
+        }
+      ]
+    },
+    "mod": {
+      "$ref": "#/$defs/base",
+      "description": "Mod metadata. id is the bare mod id (examplemod).",
+      "required": [
+        "name",
+        "version"
+      ],
+      "properties": {
+        "kind": {
+          "const": "mod"
+        },
+        "id": {
+          "$ref": "#/$defs/modId"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string"
+        },
+        "authors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "license": {
+          "type": "string"
+        },
+        "mainClass": {
+          "$ref": "#/$defs/className"
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "modId"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "modId": {
+                "$ref": "#/$defs/modId"
+              },
+              "versionRange": {
+                "type": "string"
+              },
+              "required": {
+                "type": "boolean",
+                "default": true
+              },
+              "ordering": {
+                "enum": [
+                  "none",
+                  "before",
+                  "after"
+                ],
+                "default": "none"
+              }
+            }
+          }
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "block": {
+      "$ref": "#/$defs/base",
+      "properties": {
+        "kind": {
+          "const": "block"
+        },
+        "id": {
+          "$ref": "#/$defs/resourceId"
+        },
+        "translationKey": {
+          "$ref": "#/$defs/langKey"
+        },
+        "logicClass": {
+          "$ref": "#/$defs/className",
+          "description": "Custom Block subclass with logic; absent for plain blocks."
+        },
+        "material": {
+          "type": "string",
+          "description": "Source-version material/map-color name, informative (e.g. 'metal')."
+        },
+        "hardness": {
+          "type": "number",
+          "minimum": -1
+        },
+        "resistance": {
+          "type": "number",
+          "minimum": 0
+        },
+        "lightLevel": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 15
+        },
+        "soundType": {
+          "type": "string",
+          "description": "Vanilla sound type name, e.g. 'metal', 'stone', 'wood'."
+        },
+        "requiresTool": {
+          "type": "boolean"
+        },
+        "harvest": {
+          "type": "object",
+          "required": [
+            "tool"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "tool": {
+              "enum": [
+                "pickaxe",
+                "axe",
+                "shovel",
+                "hoe",
+                "sword",
+                "shears"
+              ]
+            },
+            "level": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "0 wood/gold, 1 stone, 2 iron, 3 diamond, 4 netherite."
+            }
+          }
+        },
+        "creativeTab": {
+          "type": "string"
+        },
+        "stateProperties": {
+          "description": "Block state properties. Generators for meta-based versions lay these out into metadata (or a TileEntity field if > 16 states).",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "name",
+              "type",
+              "values"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string",
+                "pattern": "^[a-z0-9_]+$"
+              },
+              "type": {
+                "enum": [
+                  "boolean",
+                  "integer",
+                  "enum",
+                  "direction"
+                ]
+              },
+              "values": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "minItems": 1,
+                "uniqueItems": true
+              },
+              "default": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "textures": {
+          "description": "Resolved textures per face (from the block model). 'all' is shorthand for every face.",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "all": {
+              "$ref": "#/$defs/texturePath"
+            },
+            "down": {
+              "$ref": "#/$defs/texturePath"
+            },
+            "up": {
+              "$ref": "#/$defs/texturePath"
+            },
+            "north": {
+              "$ref": "#/$defs/texturePath"
+            },
+            "south": {
+              "$ref": "#/$defs/texturePath"
+            },
+            "west": {
+              "$ref": "#/$defs/texturePath"
+            },
+            "east": {
+              "$ref": "#/$defs/texturePath"
+            },
+            "particle": {
+              "$ref": "#/$defs/texturePath"
+            }
+          }
+        },
+        "model": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "ref": {
+              "$ref": "#/$defs/resourceId",
+              "description": "Source model resource, e.g. examplemod:block/press."
+            },
+            "shape": {
+              "enum": [
+                "cube",
+                "cube_all",
+                "cube_column",
+                "orientable",
+                "custom"
+              ]
+            },
+            "renderType": {
+              "enum": [
+                "solid",
+                "cutout",
+                "cutout_mipped",
+                "translucent"
+              ]
+            }
+          }
+        },
+        "blockEntity": {
+          "$ref": "#/$defs/resourceId",
+          "description": "Id of the blockEntity node attached to this block."
+        },
+        "item": {
+          "$ref": "#/$defs/resourceId",
+          "description": "Id of the item node that places this block, if any."
+        },
+        "lootTable": {
+          "$ref": "#/$defs/resourceId"
+        },
+        "hidden": {
+          "type": "boolean",
+          "description": "RFC 003: internal/technical object players never handle (e.g. a multiblock part placed by code, a debug item); recipe viewers and creative search hide it. Default false."
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "item": {
+      "$ref": "#/$defs/base",
+      "properties": {
+        "kind": {
+          "const": "item"
+        },
+        "id": {
+          "$ref": "#/$defs/resourceId"
+        },
+        "translationKey": {
+          "$ref": "#/$defs/langKey"
+        },
+        "logicClass": {
+          "$ref": "#/$defs/className"
+        },
+        "maxStackSize": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 64
+        },
+        "maxDamage": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "rarity": {
+          "enum": [
+            "common",
+            "uncommon",
+            "rare",
+            "epic"
+          ]
+        },
+        "creativeTab": {
+          "type": "string"
+        },
+        "placesBlock": {
+          "$ref": "#/$defs/resourceId",
+          "description": "Set for block items."
+        },
+        "containerItem": {
+          "$ref": "#/$defs/resourceId",
+          "description": "Item left after crafting use (bucket, glass bottle...)."
+        },
+        "textures": {
+          "type": "object",
+          "description": "Item model layers: layer0, layer1...",
+          "propertyNames": {
+            "pattern": "^layer[0-9]+$"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/texturePath"
+          }
+        },
+        "food": {
+          "type": "object",
+          "required": [
+            "nutrition",
+            "saturation"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "nutrition": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "saturation": {
+              "type": "number",
+              "minimum": 0
+            },
+            "alwaysEdible": {
+              "type": "boolean"
+            },
+            "drink": {
+              "type": "boolean",
+              "description": "Drink animation instead of eat."
+            },
+            "effects": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "effect",
+                  "duration"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "effect": {
+                    "$ref": "#/$defs/resourceId"
+                  },
+                  "duration": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "Ticks."
+                  },
+                  "amplifier": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "default": 0
+                  },
+                  "probability": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1,
+                    "default": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "hidden": {
+          "type": "boolean",
+          "description": "RFC 003: internal/technical object players never handle (e.g. a multiblock part placed by code, a debug item); recipe viewers and creative search hide it. Default false."
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "blockEntity": {
+      "$ref": "#/$defs/base",
+      "required": [
+        "blocks",
+        "logicClass"
+      ],
+      "properties": {
+        "kind": {
+          "const": "blockEntity"
+        },
+        "id": {
+          "$ref": "#/$defs/resourceId"
+        },
+        "blocks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/resourceId"
+          },
+          "minItems": 1
+        },
+        "logicClass": {
+          "$ref": "#/$defs/className",
+          "description": "BlockEntity class with the logic; goes through the rewriter."
+        },
+        "ticking": {
+          "enum": [
+            "none",
+            "server",
+            "client",
+            "both"
+          ],
+          "default": "none"
+        },
+        "menu": {
+          "$ref": "#/$defs/resourceId",
+          "description": "Menu opened by this block entity, if any."
+        },
+        "inventorySize": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "nbt": {
+          "description": "Persisted NBT keys (for scenario sampling and key mapping between versions).",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "key",
+              "type"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "key": {
+                "type": "string",
+                "minLength": 1
+              },
+              "type": {
+                "enum": [
+                  "byte",
+                  "short",
+                  "int",
+                  "long",
+                  "float",
+                  "double",
+                  "string",
+                  "boolean",
+                  "compound",
+                  "list",
+                  "intArray",
+                  "byteArray",
+                  "longArray",
+                  "itemStacks",
+                  "fluidStack"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "fluid": {
+      "$ref": "#/$defs/base",
+      "properties": {
+        "kind": {
+          "const": "fluid"
+        },
+        "id": {
+          "$ref": "#/$defs/resourceId"
+        },
+        "translationKey": {
+          "$ref": "#/$defs/langKey"
+        },
+        "logicClass": {
+          "$ref": "#/$defs/className"
+        },
+        "stillTexture": {
+          "$ref": "#/$defs/texturePath"
+        },
+        "flowingTexture": {
+          "$ref": "#/$defs/texturePath"
+        },
+        "color": {
+          "$ref": "#/$defs/color"
+        },
+        "density": {
+          "type": "integer"
+        },
+        "viscosity": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "temperature": {
+          "type": "integer",
+          "description": "Kelvin."
+        },
+        "luminosity": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 15
+        },
+        "gaseous": {
+          "type": "boolean"
+        },
+        "block": {
+          "$ref": "#/$defs/resourceId",
+          "description": "In-world fluid block, if placeable."
+        },
+        "bucket": {
+          "$ref": "#/$defs/resourceId"
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "itemStack": {
+      "type": "object",
+      "required": [
+        "item"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "item": {
+          "$ref": "#/$defs/resourceId"
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 1
+        },
+        "nbt": {
+          "type": "object",
+          "description": "NBT as JSON (SNBT semantics)."
+        },
+        "chance": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1,
+          "description": "RFC 003: probability of this output (custom recipes), default 1."
+        }
+      }
+    },
+    "fluidStack": {
+      "type": "object",
+      "required": [
+        "fluid",
+        "amount"
+      ],
+      "additionalProperties": false,
+      "description": "RFC 003: an amount of a fluid, in mB.",
+      "properties": {
+        "fluid": {
+          "$ref": "#/$defs/resourceId"
+        },
+        "amount": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "mB."
+        },
+        "chance": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1,
+          "description": "Probability (outputs only), default 1."
+        }
+      }
+    },
+    "ingredient": {
+      "description": "One of: an item, a tag (mapped to OreDictionary on 1.7.10 via the tag node), or alternatives.",
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "item"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "item": {
+              "$ref": "#/$defs/resourceId"
+            },
+            "count": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "tag"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "tag": {
+              "$ref": "#/$defs/resourceId"
+            },
+            "count": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "anyOf"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "anyOf": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/ingredient"
+              },
+              "minItems": 2
+            }
+          }
+        }
+      ]
+    },
+    "recipeNote": {
+      "description": "RFC 003: a line shown with the recipe in recipe viewers: plain text, or a translation key with its English text.",
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "object",
+          "required": [
+            "text"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "key": {
+              "$ref": "#/$defs/langKey"
+            },
+            "text": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      ]
+    },
+    "recipe": {
+      "$ref": "#/$defs/base",
+      "required": [
+        "recipeType"
+      ],
+      "properties": {
+        "kind": {
+          "const": "recipe"
+        },
+        "id": {
+          "$ref": "#/$defs/resourceId"
+        },
+        "recipeType": {
+          "enum": [
+            "shaped",
+            "shapeless",
+            "smelting",
+            "blasting",
+            "smoking",
+            "campfire",
+            "stonecutting",
+            "smithing",
+            "custom"
+          ]
+        },
+        "customType": {
+          "$ref": "#/$defs/resourceId",
+          "description": "Machine/custom recipe type id; required when recipeType = custom."
+        },
+        "pattern": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 3
+          },
+          "minItems": 1,
+          "maxItems": 3
+        },
+        "key": {
+          "type": "object",
+          "propertyNames": {
+            "minLength": 1,
+            "maxLength": 1,
+            "not": {
+              "const": " "
+            }
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/ingredient"
+          }
+        },
+        "ingredients": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ingredient"
+          },
+          "minItems": 1
+        },
+        "result": {
+          "$ref": "#/$defs/itemStack"
+        },
+        "results": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/itemStack"
+          },
+          "minItems": 1,
+          "description": "For custom recipes with several outputs."
+        },
+        "fluidIngredients": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/fluidStack"
+          },
+          "minItems": 1,
+          "description": "RFC 003: fluids consumed (custom recipes)."
+        },
+        "fluidResults": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/fluidStack"
+          },
+          "minItems": 1,
+          "description": "RFC 003: fluids produced (custom recipes)."
+        },
+        "experience": {
+          "type": "number",
+          "minimum": 0
+        },
+        "cookingTime": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Ticks."
+        },
+        "duration": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "RFC 003: processing time of a custom recipe in ticks at base speed (machine time, ageing time...)."
+        },
+        "machines": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/resourceId"
+          },
+          "minItems": 1,
+          "uniqueItems": true,
+          "description": "RFC 003: blocks/items that perform the recipe (recipe-viewer catalysts and tab icon), first = main machine."
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/recipeNote"
+          },
+          "minItems": 1,
+          "description": "RFC 003: conditions and explanations shown with the recipe (ranges, ageing, quality rules...)."
+        },
+        "data": {
+          "type": "object",
+          "description": "Extra parameters of custom recipe types (energy, time, chances...)."
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "recipeType": {
+                "const": "shaped"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "pattern",
+              "key",
+              "result"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "recipeType": {
+                "const": "shapeless"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "ingredients",
+              "result"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "recipeType": {
+                "enum": [
+                  "smelting",
+                  "blasting",
+                  "smoking",
+                  "campfire",
+                  "stonecutting"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "ingredients",
+              "result"
+            ],
+            "properties": {
+              "ingredients": {
+                "maxItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "recipeType": {
+                "const": "smithing"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "ingredients",
+              "result"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "recipeType": {
+                "const": "custom"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "customType"
+            ]
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "rect": {
+      "type": "object",
+      "required": [
+        "x",
+        "y",
+        "width",
+        "height"
+      ],
+      "properties": {
+        "x": {
+          "type": "integer"
+        },
+        "y": {
+          "type": "integer"
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "menu": {
+      "$ref": "#/$defs/base",
+      "description": "GUI: container slots + screen layout. Coordinates are pixels relative to the GUI background's top-left corner.",
+      "required": [
+        "size",
+        "slots"
+      ],
+      "properties": {
+        "kind": {
+          "const": "menu"
+        },
+        "id": {
+          "$ref": "#/$defs/resourceId"
+        },
+        "title": {
+          "$ref": "#/$defs/langKey",
+          "description": "Lang key of the title."
+        },
+        "logicClass": {
+          "$ref": "#/$defs/className",
+          "description": "Menu/Container class, if it has logic beyond the slot layout."
+        },
+        "screenClass": {
+          "$ref": "#/$defs/className"
+        },
+        "blockEntity": {
+          "$ref": "#/$defs/resourceId"
+        },
+        "size": {
+          "type": "object",
+          "required": [
+            "width",
+            "height"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "width": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "height": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        },
+        "texture": {
+          "type": "object",
+          "required": [
+            "path"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "path": {
+              "$ref": "#/$defs/resourceId",
+              "description": "Full texture path, e.g. examplemod:textures/gui/press.png."
+            },
+            "textureWidth": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 256
+            },
+            "textureHeight": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 256
+            },
+            "u": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            },
+            "v": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            }
+          }
+        },
+        "slots": {
+          "description": "Machine slots (container indices 0..n-1). Player inventory is given by playerInventory, not listed here.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "index",
+              "x",
+              "y"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "index": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "x": {
+                "type": "integer"
+              },
+              "y": {
+                "type": "integer"
+              },
+              "role": {
+                "enum": [
+                  "input",
+                  "output",
+                  "fuel",
+                  "upgrade",
+                  "battery",
+                  "other"
+                ],
+                "default": "other"
+              },
+              "filter": {
+                "description": "Accepted items, informative.",
+                "oneOf": [
+                  {
+                    "$ref": "#/$defs/resourceId"
+                  },
+                  {
+                    "$ref": "#/$defs/tagRef"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "playerInventory": {
+          "description": "Top-left of the standard 9x3 player inventory; hotbar assumed 58 px below unless hotbarY is given.",
+          "type": "object",
+          "required": [
+            "x",
+            "y"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "x": {
+              "type": "integer"
+            },
+            "y": {
+              "type": "integer"
+            },
+            "hotbarY": {
+              "type": "integer"
+            }
+          }
+        },
+        "dataSlots": {
+          "description": "Synced integer values (ContainerData / sendProgressBarUpdate).",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "name",
+              "index"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9_]+$"
+              },
+              "index": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          }
+        },
+        "bars": {
+          "description": "Progress bars/gauges (шкалы): target rect on screen, sprite (u,v) in the texture, fill direction, value source.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/rect",
+            "required": [
+              "id",
+              "direction",
+              "u",
+              "v",
+              "value"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z0-9_]+$"
+              },
+              "direction": {
+                "enum": [
+                  "up",
+                  "down",
+                  "left",
+                  "right"
+                ]
+              },
+              "u": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "v": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "value": {
+                "type": "string",
+                "description": "dataSlots name holding the current value."
+              },
+              "max": {
+                "description": "Max value: an integer or a dataSlots name.",
+                "oneOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            },
+            "unevaluatedProperties": false
+          }
+        },
+        "buttons": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/rect",
+            "required": [
+              "id"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z0-9_]+$"
+              },
+              "label": {
+                "$ref": "#/$defs/langKey"
+              },
+              "packet": {
+                "$ref": "#/$defs/resourceId",
+                "description": "Packet sent on click, if any."
+              }
+            },
+            "unevaluatedProperties": false
+          }
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "packetFieldType": {
+      "enum": [
+        "boolean",
+        "byte",
+        "short",
+        "int",
+        "varInt",
+        "long",
+        "varLong",
+        "float",
+        "double",
+        "string",
+        "uuid",
+        "resourceId",
+        "blockPos",
+        "direction",
+        "itemStack",
+        "fluidStack",
+        "nbt",
+        "bytes",
+        "enum",
+        "list"
+      ]
+    },
+    "packet": {
+      "$ref": "#/$defs/base",
+      "required": [
+        "direction",
+        "fields"
+      ],
+      "properties": {
+        "kind": {
+          "const": "packet"
+        },
+        "id": {
+          "$ref": "#/$defs/resourceId"
+        },
+        "channel": {
+          "$ref": "#/$defs/resourceId"
+        },
+        "discriminator": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "direction": {
+          "enum": [
+            "toServer",
+            "toClient",
+            "both"
+          ]
+        },
+        "logicClass": {
+          "$ref": "#/$defs/className",
+          "description": "Packet/message class."
+        },
+        "handlerClass": {
+          "$ref": "#/$defs/className",
+          "description": "Handler logic; goes through the rewriter."
+        },
+        "fields": {
+          "description": "Wire fields in encode order.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "name",
+              "type"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string",
+                "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
+              },
+              "type": {
+                "$ref": "#/$defs/packetFieldType"
+              },
+              "elementType": {
+                "$ref": "#/$defs/packetFieldType",
+                "description": "Required when type = list."
+              },
+              "enumClass": {
+                "$ref": "#/$defs/className",
+                "description": "Required when type = enum."
+              },
+              "maxLength": {
+                "type": "integer",
+                "minimum": 1
+              }
+            },
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "type": {
+                      "const": "list"
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "elementType"
+                  ]
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "type": {
+                      "const": "enum"
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "enumClass"
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "lang": {
+      "$ref": "#/$defs/base",
+      "description": "One locale of one namespace. id = '<namespace>:<locale>'.",
+      "required": [
+        "locale",
+        "entries"
+      ],
+      "properties": {
+        "kind": {
+          "const": "lang"
+        },
+        "id": {
+          "$ref": "#/$defs/resourceId"
+        },
+        "locale": {
+          "type": "string",
+          "pattern": "^[a-z]{2,3}_[a-z]{2,3}$"
+        },
+        "entries": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "sound": {
+      "$ref": "#/$defs/base",
+      "description": "Sound event. id = sound event id.",
+      "required": [
+        "sounds"
+      ],
+      "properties": {
+        "kind": {
+          "const": "sound"
+        },
+        "id": {
+          "$ref": "#/$defs/resourceId"
+        },
+        "category": {
+          "enum": [
+            "master",
+            "music",
+            "record",
+            "weather",
+            "block",
+            "hostile",
+            "neutral",
+            "player",
+            "ambient",
+            "voice"
+          ]
+        },
+        "subtitle": {
+          "$ref": "#/$defs/langKey"
+        },
+        "replace": {
+          "type": "boolean"
+        },
+        "sounds": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "name"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "$ref": "#/$defs/resourceId",
+                "description": "Sound file relative to sounds/, no extension."
+              },
+              "volume": {
+                "type": "number",
+                "minimum": 0,
+                "default": 1
+              },
+              "pitch": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "default": 1
+              },
+              "weight": {
+                "type": "integer",
+                "minimum": 1,
+                "default": 1
+              },
+              "stream": {
+                "type": "boolean",
+                "default": false
+              }
+            }
+          }
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "effect": {
+      "$ref": "#/$defs/base",
+      "description": "Mob effect (potion effect).",
+      "required": [
+        "category"
+      ],
+      "properties": {
+        "kind": {
+          "const": "effect"
+        },
+        "id": {
+          "$ref": "#/$defs/resourceId"
+        },
+        "translationKey": {
+          "$ref": "#/$defs/langKey"
+        },
+        "logicClass": {
+          "$ref": "#/$defs/className",
+          "description": "Effect class with per-tick logic, if any."
+        },
+        "category": {
+          "enum": [
+            "beneficial",
+            "harmful",
+            "neutral"
+          ]
+        },
+        "color": {
+          "$ref": "#/$defs/color"
+        },
+        "instant": {
+          "type": "boolean"
+        },
+        "icon": {
+          "$ref": "#/$defs/texturePath"
+        },
+        "attributeModifiers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "attribute",
+              "amount",
+              "operation"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "attribute": {
+                "$ref": "#/$defs/resourceId"
+              },
+              "uuid": {
+                "type": "string",
+                "pattern": "^[0-9a-fA-F-]{36}$"
+              },
+              "amount": {
+                "type": "number"
+              },
+              "operation": {
+                "enum": [
+                  "addition",
+                  "multiply_base",
+                  "multiply_total"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "blockRef": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/resourceId"
+        },
+        {
+          "type": "object",
+          "required": [
+            "block"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "block": {
+              "$ref": "#/$defs/resourceId"
+            },
+            "state": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "any"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "any": {
+              "const": true
+            }
+          },
+          "description": "Wildcard: any block is accepted at this position."
+        }
+      ]
+    },
+    "multiblock": {
+      "$ref": "#/$defs/base",
+      "description": "Structure as data. size = [x, y, z]. layers are bottom-to-top (y), each layer is z rows, each row a string of x palette chars. Positions are relative to the structure's min corner. Dimension consistency is a semantic check (see README).",
+      "required": [
+        "size",
+        "palette",
+        "layers"
+      ],
+      "properties": {
+        "kind": {
+          "const": "multiblock"
+        },
+        "id": {
+          "$ref": "#/$defs/resourceId"
+        },
+        "size": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "palette": {
+          "type": "object",
+          "minProperties": 1,
+          "propertyNames": {
+            "minLength": 1,
+            "maxLength": 1
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/blockRef"
+          }
+        },
+        "layers": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "controller": {
+          "type": "object",
+          "required": [
+            "block",
+            "pos"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "block": {
+              "$ref": "#/$defs/resourceId"
+            },
+            "pos": {
+              "$ref": "#/$defs/pos3"
+            },
+            "facing": {
+              "enum": [
+                "north",
+                "south",
+                "west",
+                "east",
+                "up",
+                "down"
+              ],
+              "description": "Facing of the controller in the canonical orientation."
+            }
+          }
+        },
+        "rotatable": {
+          "type": "boolean",
+          "default": true
+        },
+        "mirrorable": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "tag": {
+      "$ref": "#/$defs/base",
+      "description": "Tag (id = tag id without '#'), with mapping to OreDictionary names for 1.7.10.",
+      "required": [
+        "registry",
+        "values"
+      ],
+      "properties": {
+        "kind": {
+          "const": "tag"
+        },
+        "id": {
+          "$ref": "#/$defs/resourceId"
+        },
+        "registry": {
+          "enum": [
+            "block",
+            "item",
+            "fluid",
+            "entity_type"
+          ]
+        },
+        "replace": {
+          "type": "boolean",
+          "default": false
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/resourceId"
+              },
+              {
+                "$ref": "#/$defs/tagRef"
+              },
+              {
+                "type": "object",
+                "required": [
+                  "id"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/$defs/resourceId"
+                      },
+                      {
+                        "$ref": "#/$defs/tagRef"
+                      }
+                    ]
+                  },
+                  "required": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "oreDict": {
+          "description": "OreDictionary names this tag maps to (e.g. ingotCopper). Empty = no mapping.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-zA-Z][a-zA-Z0-9_]*$"
+          },
+          "uniqueItems": true
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "unknown": {
+      "description": "Anything an extractor recognised as declarative but could not classify with certainty. Never guess: emit this instead.",
+      "type": "object",
+      "required": [
+        "kind",
+        "reason",
+        "provenance"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "unknown"
+        },
+        "id": {
+          "$ref": "#/$defs/resourceId",
+          "description": "Best-known id, if any."
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "snippet": {
+          "type": "string"
+        },
+        "conceptHint": {
+          "description": "Concept the extractor suspects, if any.",
+          "enum": [
+            "mod",
+            "block",
+            "item",
+            "blockEntity",
+            "fluid",
+            "recipe",
+            "menu",
+            "packet",
+            "lang",
+            "sound",
+            "effect",
+            "multiblock",
+            "tag"
+          ]
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        },
+        "extensions": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}

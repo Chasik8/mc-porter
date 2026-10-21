@@ -1,0 +1,226 @@
+{
+ "schemaVersion": 1,
+ "type": "graph",
+ "versions": [
+  {
+   "id": "1.19.2",
+   "canonical": "mojmap"
+  },
+  {
+   "id": "1.12.2",
+   "canonical": "mcp"
+  },
+  {
+   "id": "1.7.10",
+   "canonical": "mcp"
+  }
+ ],
+ "symbols": [
+  {
+   "ref": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.util.Mth",
+    "name": "floor",
+    "desc": "(D)I"
+   },
+   "names": {
+    "mojmap": "floor",
+    "srg": "m_14107_"
+   },
+   "access": 9
+  }
+ ],
+ "edges": [
+  {
+   "from": {
+    "version": "1.19.2",
+    "kind": "class",
+    "name": "net.minecraft.world.entity.Entity"
+   },
+   "to": {
+    "version": "1.12.2",
+    "kind": "class",
+    "name": "net.minecraft.entity.Entity"
+   },
+   "status": "moved",
+   "confidence": 0.98,
+   "evidence": [
+    "mapping-name-match"
+   ]
+  },
+  {
+   "from": {
+    "version": "1.12.2",
+    "kind": "class",
+    "name": "net.minecraft.entity.Entity"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "class",
+    "name": "net.minecraft.entity.Entity"
+   },
+   "status": "same",
+   "confidence": 1.0,
+   "evidence": [
+    "mapping-name-match"
+   ]
+  },
+  {
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.entity.Entity",
+    "name": "getId",
+    "desc": "()I"
+   },
+   "to": {
+    "version": "1.12.2",
+    "kind": "method",
+    "owner": "net.minecraft.entity.Entity",
+    "name": "getEntityId",
+    "desc": "()I"
+   },
+   "status": "renamed",
+   "confidence": 0.97,
+   "evidence": [
+    "bytecode-similarity"
+   ]
+  },
+  {
+   "from": {
+    "version": "1.12.2",
+    "kind": "method",
+    "owner": "net.minecraft.entity.Entity",
+    "name": "getEntityId",
+    "desc": "()I"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.entity.Entity",
+    "name": "getEntityId",
+    "desc": "()I"
+   },
+   "status": "same",
+   "confidence": 0.99,
+   "evidence": [
+    "mapping-name-match"
+   ]
+  },
+  {
+   "from": {
+    "version": "1.19.2",
+    "kind": "field",
+    "owner": "net.minecraft.world.entity.Entity",
+    "name": "tickCount",
+    "desc": "I"
+   },
+   "to": {
+    "version": "1.12.2",
+    "kind": "field",
+    "owner": "net.minecraft.entity.Entity",
+    "name": "ticksExisted",
+    "desc": "I"
+   },
+   "status": "renamed",
+   "confidence": 0.95,
+   "evidence": [
+    "bytecode-similarity"
+   ]
+  },
+  {
+   "from": {
+    "version": "1.12.2",
+    "kind": "field",
+    "owner": "net.minecraft.entity.Entity",
+    "name": "ticksExisted",
+    "desc": "I"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "field",
+    "owner": "net.minecraft.entity.Entity",
+    "name": "ticksExisted",
+    "desc": "I"
+   },
+   "status": "same",
+   "confidence": 0.99,
+   "evidence": [
+    "mapping-name-match"
+   ]
+  },
+  {
+   "from": {
+    "version": "1.19.2",
+    "kind": "class",
+    "name": "net.minecraft.world.level.block.state.BlockState"
+   },
+   "to": {
+    "version": "1.12.2",
+    "kind": "class",
+    "name": "net.minecraft.block.state.IBlockState"
+   },
+   "status": "moved",
+   "confidence": 0.9,
+   "evidence": [
+    "manual"
+   ]
+  },
+  {
+   "from": {
+    "version": "1.12.2",
+    "kind": "class",
+    "name": "net.minecraft.block.state.IBlockState"
+   },
+   "status": "removed",
+   "confidence": 0.95,
+   "evidence": [
+    "manual"
+   ],
+   "note": "1.7.10 uses Block + metadata."
+  },
+  {
+   "from": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.util.MathHelper",
+    "name": "floor_double",
+    "desc": "(D)I"
+   },
+   "to": {
+    "version": "1.12.2",
+    "kind": "method",
+    "owner": "net.minecraft.util.math.MathHelper",
+    "name": "floor",
+    "desc": "(D)I"
+   },
+   "status": "moved",
+   "confidence": 0.96,
+   "evidence": [
+    "bytecode-similarity"
+   ]
+  },
+  {
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.util.Mth",
+    "name": "floor",
+    "desc": "(D)I"
+   },
+   "to": {
+    "version": "1.12.2",
+    "kind": "method",
+    "owner": "net.minecraft.util.math.MathHelper",
+    "name": "floor",
+    "desc": "(D)I"
+   },
+   "status": "moved",
+   "confidence": 0.97,
+   "evidence": [
+    "bytecode-similarity"
+   ]
+  }
+ ]
+}

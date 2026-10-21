@@ -1,0 +1,18 @@
+# RFC 006: a declaration rule. An addon's copy of its host's interface also implements the host's own interface,
+# which has the same name on the target version ($target: never relocated).
+schemaVersion: 1
+id: r-1.19.2-1.7.10-example-host-bridge
+description: "ported com.example.host.api.Energy also is the target host's com.example.host.api.Energy"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "com.example.host.api.Energy"
+edit:
+  addSupertypes: ["$target(com.example.host.api.Energy)"]
+  appendMembers: "\n\n    default int stored() {\n        return this.getEnergy();\n    }"
+confidence: 0.8
+provenance: { source: manual, ref: "RFC 006 example" }
+tests:
+  - before: "public interface Energy {\n    int getEnergy();\n}"
+    after: "public interface Energy extends com.example.host.api.Energy {\n    int getEnergy();\n\n    default int stored() {\n        return this.getEnergy();\n    }\n}"

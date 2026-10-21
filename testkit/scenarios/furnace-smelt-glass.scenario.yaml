@@ -1,0 +1,21 @@
+schemaVersion: 1
+id: furnace-smelt-glass
+description: Vanilla furnace smelts one sand into glass with one coal (logic, dedicated server, both versions).
+world: flat-void
+maxTicks: 400
+tolerance:
+  "*": { abs: 0, tickShift: 1 }
+  # 1.19.2 shows the lit state as a block-state property, 1.7.10 swaps the block (lit_furnace)
+  "block:[0,64,0]": { ignore: true }
+  # (the testkit now ticks once after loading the chunks, so both versions start together; the allowance stays)
+  # measured before that: 1.19.2 starts burning/cooking one tick later than 1.7.10 (CookTime 19 vs 20 at tick 20,
+  # ingot at tick 201 vs 200) -> every key may shift by one tick; sampled every tick so the shift can be matched
+steps:
+  - place_block: { at: [0, 64, 0], block: "minecraft:furnace", facing: north }
+  - insert_item: { at: [0, 64, 0], slot: 0, item: "minecraft:sand", count: 1 }
+  - insert_item: { at: [0, 64, 0], slot: 1, item: "minecraft:coal", count: 1 }
+  - sample: { every: 1, what: ["nbt:[0,64,0]/CookTime", "nbt:[0,64,0]/BurnTime", "item:[0,64,0]#0", "item:[0,64,0]#1", "item:[0,64,0]#2", "block:[0,64,0]"] }
+  - tick: 220
+  - assert: { expr: "item:[0,64,0]#2.item == 'minecraft:glass' && item:[0,64,0]#2.count == 1", message: "one glass in the output slot" }
+  - assert: { expr: "item:[0,64,0]#0 == null && item:[0,64,0]#1 == null", message: "sand and coal consumed" }
+  - assert: { expr: "nbt:[0,64,0]/BurnTime > 0", message: "still burning" }

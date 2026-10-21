@@ -1,0 +1,25 @@
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockpos-above
+description: pos.above() has no 1.7.10 equivalent; expand to coordinates via the thin BlockPos shim.
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  call: "net.minecraft.core.BlockPos#above()"
+  bind: { recv: "$p" }
+replace: "$p.offset(0, 1, 0)"
+imports: ["dev.porter.shim.BlockPos"]
+preconditions: ["shim:blockpos"]
+reversible: true
+priority: 10
+confidence: 0.9
+provenance:
+  source: agent
+  ref: "candidates c-0001, c-0007, c-0012"
+  chain: ["r-1.19.2-1.18.2-blockpos-above", "r-1.12.2-1.7.10-blockpos-shim"]
+tests:
+  - before: "BlockPos up = pos.above();"
+    after: "BlockPos up = pos.offset(0, 1, 0);"
+  - name: chained
+    before: "level.getBlockState(pos.above());"
+    after: "level.getBlockState(pos.offset(0, 1, 0));"

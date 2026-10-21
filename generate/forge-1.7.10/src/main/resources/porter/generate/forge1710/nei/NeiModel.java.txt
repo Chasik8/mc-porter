@@ -1,0 +1,403 @@
+package ${package};
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
+
+/**
+ * Recipe-viewer data generated from the IR (recipes with machines/fluids/notes, multiblocks, hidden objects), kept
+ * free of NEI types: it loads everywhere (dedicated server included) and can be checked without a client. The NEI
+ * handlers in this package only turn it into pages. References are resolved at runtime through {@link #resolver};
+ * anything that does not exist on 1.7.10 is left out, never guessed.
+ */
+public final class NeiModel {
+    private NeiModel() {
+    }
+
+    /** Turns IR references into stacks. Replaceable (tests, other viewers). */
+    public interface Resolver {
+        /** The item (or block item) modId:name with this meta and count, or null if it does not exist. */
+        ItemStack item(String modId, String name, int meta, int count);
+
+        /** Every OreDictionary entry of this name with the count set (empty if none). */
+        List<ItemStack> ore(String ore, int count);
+
+        /** The fluid of this FluidRegistry name, or null if it is not registered. */
+        FluidStack fluid(String name, int amount);
+
+        /** Translation if the key exists, else the fallback text. */
+        String text(String key, String fallback);
+    }
+
+    /** Default: GameRegistry, OreDictionary, FluidRegistry, StatCollector. */
+    public static final Resolver GAME = new Resolver() {
+        @Override
+        public ItemStack item(String modId, String name, int meta, int count) {
+            Item item = GameRegistry.findItem(modId, name);
+            if (item == null) {
+                Block block = GameRegistry.findBlock(modId, name);
+                item = block == null ? null : Item.getItemFromBlock(block);
+            }
+            return item == null ? null : new ItemStack(item, count, meta);
+        }
+
+        @Override
+        public List<ItemStack> ore(String ore, int count) {
+            List<ItemStack> out = new ArrayList<ItemStack>();
+            for (ItemStack s : OreDictionary.getOres(ore)) {
+                ItemStack c = s.copy();
+                c.stackSize = count;
+                out.add(c);
+            }
+            return out;
+        }
+
+        @Override
+        public FluidStack fluid(String name, int amount) {
+            return FluidRegistry.isFluidRegistered(name) ? new FluidStack(FluidRegistry.getFluid(name), amount) : null;
+        }
+
+        @Override
+        public String text(String key, String fallback) {
+            return key != null && StatCollector.canTranslate(key) ? StatCollector.translateToLocal(key) : fallback;
+        }
+    };
+
+    public static Resolver resolver = GAME;
+
+    // ---- references ---------------------------------------------------------------------------------------------
+
+    /** An ingredient or output: one item, an OreDictionary name, or alternatives; with a count. */
+    public static final class Ing {
+        public final String modId;
+        public final String name;
+        public final int meta;
+        public final String ore;
+        public final List<Ing> anyOf;
+        public final int count;
+
+        Ing(String modId, String name, int meta, String ore, List<Ing> anyOf, int count) {
+            this.modId = modId;
+            this.name = name;
+            this.meta = meta;
+            this.ore = ore;
+            this.anyOf = anyOf;
+            this.count = count;
+        }
+
+        /** Every stack this reference can be on 1.7.10 (empty = does not exist here). */
+        public List<ItemStack> stacks() {
+            List<ItemStack> out = new ArrayList<ItemStack>();
+            if (anyOf != null) {
+                for (Ing a : anyOf) {
+                    for (ItemStack s : a.stacks()) {
+                        s.stackSize = count;
+                        out.add(s);
+                    }
+                }
+            } else if (ore != null) {
+                out.addAll(resolver.ore(ore, count));
+            } else {
+                ItemStack s = resolver.item(modId, name, meta, count);
+                if (s != null) {
+                    out.add(s);
+                }
+            }
+            return out;
+        }
+
+        @Override
+        public String toString() {
+            return anyOf != null ? "anyOf" + anyOf : ore != null ? "ore:" + ore : modId + ":" + name + "@" + meta;
+        }
+    }
+
+    public static Ing item(String modId, String name, int meta, int count) {
+        return new Ing(modId, name, meta, null, null, count);
+    }
+
+    public static Ing ore(String ore, int count) {
+        return new Ing(null, null, 0, ore, null, count);
+    }
+
+    public static Ing any(int count, Ing... alternatives) {
+        List<Ing> l = new ArrayList<Ing>();
+        Collections.addAll(l, alternatives);
+        return new Ing(null, null, 0, null, l, count);
+    }
+
+    /** An amount of fluid: IR id, FluidRegistry name, mB, chance (outputs). */
+    public static final class Fl {
+        public final String id;
+        public final String name;
+        public final int amount;
+        public final double chance;
+
+        Fl(String id, String name, int amount, double chance) {
+            this.id = id;
+            this.name = name;
+            this.amount = amount;
+            this.chance = chance;
+        }
+
+        /** The 1.7.10 fluid stack, or null if the fluid is not registered. */
+        public FluidStack stack() {
+            return resolver.fluid(name, amount);
+        }
+
+        @Override
+        public String toString() {
+            return amount + " mB " + id;
+        }
+    }
+
+    /** A translatable line: lang key (may be null) and its English text. */
+    public static final class Text {
+        public final String key;
+        public final String text;
+
+        Text(String key, String text) {
+            this.key = key;
+            this.text = text;
+        }
+
+        public String get() {
+            return resolver.text(key, text);
+        }
+
+        @Override
+        public String toString() {
+            return text;
+        }
+    }
+
+    public static Text text(String key, String text) {
+        return new Text(key, text);
+    }
+
+    // ---- recipes ------------------------------------------------------------------------------------------------
+
+    /** One IR recipe as a viewer page: inputs, fluids, outputs (with chances), machines, time, notes. */
+    public static final class Recipe {
+        public final String id;
+        public final List<Ing> inputs = new ArrayList<Ing>();
+        public final List<Fl> fluidInputs = new ArrayList<Fl>();
+        public final List<Ing> outputs = new ArrayList<Ing>();
+        public final List<Double> chances = new ArrayList<Double>();
+        public final List<Fl> fluidOutputs = new ArrayList<Fl>();
+        public final List<Ing> machines = new ArrayList<Ing>();
+        public final List<Text> notes = new ArrayList<Text>();
+        /** Ticks at base speed, -1 = not given. */
+        public int duration = -1;
+
+        Recipe(String id) {
+            this.id = id;
+        }
+
+        public Recipe in(Ing i) {
+            inputs.add(i);
+            return this;
+        }
+
+        public Recipe fluidIn(String id, String name, int amount) {
+            fluidInputs.add(new Fl(id, name, amount, 1));
+            return this;
+        }
+
+        public Recipe out(Ing i, double chance) {
+            outputs.add(i);
+            chances.add(chance);
+            return this;
+        }
+
+        public Recipe fluidOut(String id, String name, int amount, double chance) {
+            fluidOutputs.add(new Fl(id, name, amount, chance));
+            return this;
+        }
+
+        public Recipe machine(Ing i) {
+            machines.add(i);
+            return this;
+        }
+
+        public Recipe time(int ticks) {
+            duration = ticks;
+            return this;
+        }
+
+        public Recipe note(String key, String text) {
+            notes.add(new Text(key, text));
+            return this;
+        }
+
+        /** Every item reference resolves and every fluid is registered (else the recipe does not exist here). */
+        public boolean available() {
+            for (Ing i : inputs) {
+                if (i.stacks().isEmpty()) {
+                    return false;
+                }
+            }
+            for (Ing i : outputs) {
+                if (i.stacks().isEmpty()) {
+                    return false;
+                }
+            }
+            for (Fl f : fluidInputs) {
+                if (f.stack() == null) {
+                    return false;
+                }
+            }
+            for (Fl f : fluidOutputs) {
+                if (f.stack() == null) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        @Override
+        public String toString() {
+            return id + ": " + inputs + " + " + fluidInputs + " -> " + outputs + " + " + fluidOutputs;
+        }
+    }
+
+    /** A recipe type (IR customType) = one viewer tab. */
+    public static final class Category {
+        public final String id;
+        public final Text title;
+        public final List<Recipe> recipes = new ArrayList<Recipe>();
+
+        public Category(String id, String titleKey, String title) {
+            this.id = id;
+            this.title = new Text(titleKey, title);
+        }
+
+        public Recipe recipe(String id) {
+            Recipe r = new Recipe(id);
+            recipes.add(r);
+            return r;
+        }
+
+        /** Distinct machines of all recipes (first seen first). */
+        public List<Ing> machines() {
+            Map<String, Ing> m = new LinkedHashMap<String, Ing>();
+            for (Recipe r : recipes) {
+                for (Ing i : r.machines) {
+                    if (!m.containsKey(i.toString())) {
+                        m.put(i.toString(), i);
+                    }
+                }
+            }
+            return new ArrayList<Ing>(m.values());
+        }
+
+        /** Recipes whose references all exist on 1.7.10. */
+        public List<Recipe> available() {
+            List<Recipe> out = new ArrayList<Recipe>();
+            for (Recipe r : recipes) {
+                if (r.available()) {
+                    out.add(r);
+                }
+            }
+            return out;
+        }
+    }
+
+    /**
+     * What NEI will show with the current {@link #resolver}: per recipe type "available/total" and the recipe ids that
+     * do not exist here, per structure the blocks that do not resolve. For logs and checks (no NEI needed).
+     */
+    public static String report(List<Category> categories, List<Structure> structures) {
+        StringBuilder b = new StringBuilder();
+        for (Category c : categories) {
+            List<String> missing = new ArrayList<String>();
+            for (Recipe r : c.recipes) {
+                if (!r.available()) {
+                    missing.add(r.id);
+                }
+            }
+            b.append(c.id).append(": ").append(c.recipes.size() - missing.size()).append('/').append(c.recipes.size())
+                    .append(" recipes").append(missing.isEmpty() ? "" : ", not on 1.7.10: " + missing).append('\n');
+        }
+        for (Structure s : structures) {
+            List<String> missing = new ArrayList<String>();
+            if (s.controller != null && s.controller.stacks().isEmpty()) {
+                missing.add("controller " + s.controller);
+            }
+            for (Map.Entry<Character, Ing> e : s.palette.entrySet()) {
+                if (e.getValue() != null && e.getValue().stacks().isEmpty()) {
+                    missing.add(e.getKey() + "=" + e.getValue());
+                }
+            }
+            b.append("structure ").append(s.id).append(": ").append(s.sizeX).append('x').append(s.sizeY).append('x')
+                    .append(s.sizeZ).append(missing.isEmpty() ? ", all blocks resolve" : ", missing " + missing).append('\n');
+        }
+        return b.toString();
+    }
+
+    // ---- structures ---------------------------------------------------------------------------------------------
+
+    /**
+     * A multiblock as data: layers bottom to top, each layer {@code sizeZ} rows of {@code sizeX} palette chars (IR
+     * orientation, min corner first). A palette entry of null = any block.
+     */
+    public static final class Structure {
+        public final String id;
+        public final Text title;
+        public final Ing controller;
+        public final int sizeX;
+        public final int sizeY;
+        public final int sizeZ;
+        public final Map<Character, Ing> palette = new LinkedHashMap<Character, Ing>();
+        public final String[][] layers;
+
+        public Structure(String id, String titleKey, String title, Ing controller, int sizeX, int sizeY, int sizeZ,
+                String[][] layers) {
+            this.id = id;
+            this.title = new Text(titleKey, title);
+            this.controller = controller;
+            this.sizeX = sizeX;
+            this.sizeY = sizeY;
+            this.sizeZ = sizeZ;
+            this.layers = layers;
+        }
+
+        public Structure block(char c, Ing block) {
+            palette.put(c, block);
+            return this;
+        }
+
+        public char at(int x, int y, int z) {
+            return layers[y][z].charAt(x);
+        }
+
+        /** Palette char → number of positions, in palette order (any-block entries included). */
+        public Map<Character, Integer> counts() {
+            Map<Character, Integer> m = new LinkedHashMap<Character, Integer>();
+            for (Character c : palette.keySet()) {
+                m.put(c, 0);
+            }
+            for (String[] layer : layers) {
+                for (String row : layer) {
+                    for (int i = 0; i < row.length(); i++) {
+                        Character c = row.charAt(i);
+                        if (m.containsKey(c)) {
+                            m.put(c, m.get(c) + 1);
+                        }
+                    }
+                }
+            }
+            return m;
+        }
+    }
+}

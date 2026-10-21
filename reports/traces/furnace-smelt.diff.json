@@ -1,0 +1,36 @@
+{
+  "scenario" : "furnace-smelt",
+  "a" : "forge-1.19.2",
+  "b" : "forge-1.7.10",
+  "statusA" : "passed",
+  "statusB" : "passed",
+  "keys" : [ {
+    "key" : "block:[0,64,0]",
+    "ignored" : true
+  }, {
+    "key" : "item:[0,64,0]#0",
+    "samples" : 221,
+    "matched" : 221
+  }, {
+    "key" : "item:[0,64,0]#1",
+    "samples" : 221,
+    "matched" : 221
+  }, {
+    "key" : "item:[0,64,0]#2",
+    "samples" : 221,
+    "matched" : 221
+  }, {
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "samples" : 221,
+    "matched" : 221
+  }, {
+    "key" : "nbt:[0,64,0]/CookTime",
+    "samples" : 221,
+    "matched" : 221
+  } ],
+  "assertionDiffs" : [ ],
+  "samples" : 1105,
+  "matched" : 1105,
+  "ignoredKeys" : 1,
+  "equal" : true
+}

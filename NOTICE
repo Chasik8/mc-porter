@@ -1,0 +1,8 @@
+mc-porter (porter)
+Copyright 2026 The mc-porter contributors
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+porter contains no Minecraft, Forge or mod code and no Mojang/MCP mappings. Symbol graphs, mapping-derived indexes
+and decompiled sources are produced locally by each user from official sources and are never redistributed.
+Minecraft is a trademark of Mojang Studios; porter is not affiliated with Mojang or Microsoft.

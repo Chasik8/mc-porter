@@ -1,0 +1,19 @@
+# porter rules, 1.19.2 -> 1.7.10: chat styles. A 1.19.2 Style has a TextColor (serialised to a ChatFormatting name);
+# a 1.7.10 ChatStyle's colour is the EnumChatFormatting itself.
+schemaVersion: 1
+id: r-1.19.2-1.7.10-chatformatting-of-style-color
+description: "ChatFormatting.getByName(style.getColor().serialize()) -> style.getColor() (RFC 006 expression pattern)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  pattern: "ChatFormatting.getByName($s.getColor().serialize())"
+replace: "$s.getColor()"
+preconditions: ["type:$s:net.minecraft.network.chat.Style"]
+priority: 10
+confidence: 0.8
+provenance: { source: agent, ref: "RFC 006; private reference port (counted edit re-expressed as a rule); Style#getColor, TextColor#serialize, ChatFormatting#getByName from the Mojang 1.19.2 mappings; ChatStyle#getColor() returns EnumChatFormatting in MCP 1.7.10" }
+tests:
+  - context: "import net.minecraft.ChatFormatting; import net.minecraft.network.chat.Style; Style style"
+    before: "ChatFormatting f = ChatFormatting.getByName((String) style.getColor().serialize());"
+    after: "ChatFormatting f = style.getColor();"

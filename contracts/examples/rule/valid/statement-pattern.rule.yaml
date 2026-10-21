@@ -1,0 +1,33 @@
+# RFC 006 example (copy of rules/composite/1.19.2__1.7.10/loot.rule.yaml). Loot tables and global loot modifiers do not exist on 1.7.10 (drops are computed in
+# code). Statement patterns (RFC 006): the loot-table branch of a getDrops override and the Forge loot-modifier call
+# are removed; the code after them (the hand-written drop list) stays.
+schemaVersion: 1
+id: r-1.19.2-1.7.10-example-loot-table-branch
+description: "LootTable t = ...; if (t != LootTable.EMPTY) ... -> removed (no loot tables on 1.7.10)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  pattern: |
+    LootTable $t = $e;
+    if ($t != LootTable.EMPTY) $s;
+replace: ""
+confidence: 0.7
+provenance: { source: agent, ref: "RFC 006; private reference port (counted edit re-expressed as a rule); LootTable/EMPTY checked against the Mojang 1.19.2 mappings" }
+tests:
+  - context: "import net.minecraft.world.level.storage.loot.LootTable; Object server; Object id"
+    before: |
+      LootTable table = server.getLootTables().get(id);
+      if (table != LootTable.EMPTY) {
+          return;
+      }
+      int fallback = 1;
+    after: "int fallback = 1;"
+  - name: "the local is used elsewhere: no match"
+    context: "import net.minecraft.world.level.storage.loot.LootTable; Object server; Object id"
+    before: |
+      LootTable table = server.getLootTables().get(id);
+      use(table);
+    after: |
+      LootTable table = server.getLootTables().get(id);
+      use(table);

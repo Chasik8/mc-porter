@@ -1,0 +1,542 @@
+# Hand-written rules Forge 1.19.2 -> Forge 1.7.10 (10.13.4.1614, MCP stable_12). Every source member was
+# checked against the Mojang 1.19.2 mappings, every target member against the MCP 1.7.10 jar (javap).
+# Synthetic tests only. Generated from a compact spec; edit freely, keep one test per rule at least.
+# Level/BlockEntity -> World/TileEntity. Position arguments expand to x, y, z when the position expression is
+# side-effect free (pure:$p); otherwise the dev.porter.shim.Worlds helper is used (shim:world).
+schemaVersion: 1
+id: r-1.19.2-1.7.10-type-level
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: "net.minecraft.world.level.Level"
+replace: "net.minecraft.world.World"
+confidence: 0.95
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "import net.minecraft.world.level.Level;"
+    after: "import net.minecraft.world.World;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-type-blockentity
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: "net.minecraft.world.level.block.entity.BlockEntity"
+replace: "net.minecraft.tileentity.TileEntity"
+confidence: 0.95
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "import net.minecraft.world.level.block.entity.BlockEntity;"
+    after: "import net.minecraft.tileentity.TileEntity;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-level-isclientside-field
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.level.Level#isClientSide"
+  bind: { recv: "$w" }
+replace: "$w.isRemote"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Level w"
+    before: "boolean c = w.isClientSide;"
+    after: "boolean c = w.isRemote;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-level-isclientside
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.level.Level#isClientSide()"
+  bind: { recv: "$w" }
+replace: "$w.isRemote"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Level w"
+    before: "boolean c = w.isClientSide();"
+    after: "boolean c = w.isRemote;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-level-getgametime
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.world.level.Level#getGameTime()"
+  bind: { recv: "$w" }
+replace: "$w.getTotalWorldTime()"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Level w"
+    before: "Object c = w.getGameTime();"
+    after: "Object c = w.getTotalWorldTime();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-level-getdaytime
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.world.level.Level#getDayTime()"
+  bind: { recv: "$w" }
+replace: "$w.getWorldTime()"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Level w"
+    before: "Object c = w.getDayTime();"
+    after: "Object c = w.getWorldTime();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-level-isday
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.world.level.Level#isDay()"
+  bind: { recv: "$w" }
+replace: "$w.isDaytime()"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Level w"
+    before: "Object c = w.isDay();"
+    after: "Object c = w.isDaytime();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-level-getblockentity
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.level.Level#getBlockEntity(net.minecraft.core.BlockPos)"
+  bind: { recv: "$w", args: ["$p"] }
+replace: "$w.getTileEntity($p.getX(), $p.getY(), $p.getZ())"
+preconditions: ["pure:$p"]
+priority: 10
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Level w; BlockPos p; Direction d; import net.minecraft.world.level.Level; import net.minecraft.core.Direction"
+    before: "Object c = w.getBlockEntity(p);"
+    after: "Object c = w.getTileEntity(p.getX(), p.getY(), p.getZ());"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-level-getblockentity-helper
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.level.Level#getBlockEntity(net.minecraft.core.BlockPos)"
+  bind: { recv: "$w", args: ["$p"] }
+replace: "Worlds.getTileEntity($w, $p)"
+imports: ["dev.porter.shim.Worlds"]
+preconditions: ["shim:world"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Level w; BlockPos p; Direction d; import net.minecraft.world.level.Level; import net.minecraft.core.Direction"
+    before: "Object c = w.getBlockEntity(p.relative(d));"
+    after: "Object c = Worlds.getTileEntity(w, p.relative(d));"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-level-hasneighborsignal
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.level.Level#hasNeighborSignal(net.minecraft.core.BlockPos)"
+  bind: { recv: "$w", args: ["$p"] }
+replace: "$w.isBlockIndirectlyGettingPowered($p.getX(), $p.getY(), $p.getZ())"
+preconditions: ["pure:$p"]
+priority: 10
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Level w; BlockPos p; Direction d; import net.minecraft.world.level.Level; import net.minecraft.core.Direction"
+    before: "Object c = w.hasNeighborSignal(p);"
+    after: "Object c = w.isBlockIndirectlyGettingPowered(p.getX(), p.getY(), p.getZ());"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-level-hasneighborsignal-helper
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.level.Level#hasNeighborSignal(net.minecraft.core.BlockPos)"
+  bind: { recv: "$w", args: ["$p"] }
+replace: "Worlds.isBlockIndirectlyGettingPowered($w, $p)"
+imports: ["dev.porter.shim.Worlds"]
+preconditions: ["shim:world"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Level w; BlockPos p; Direction d; import net.minecraft.world.level.Level; import net.minecraft.core.Direction"
+    before: "Object c = w.hasNeighborSignal(p.relative(d));"
+    after: "Object c = Worlds.isBlockIndirectlyGettingPowered(w, p.relative(d));"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-level-getbestneighborsignal
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.level.Level#getBestNeighborSignal(net.minecraft.core.BlockPos)"
+  bind: { recv: "$w", args: ["$p"] }
+replace: "$w.getStrongestIndirectPower($p.getX(), $p.getY(), $p.getZ())"
+preconditions: ["pure:$p"]
+priority: 10
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Level w; BlockPos p; Direction d; import net.minecraft.world.level.Level; import net.minecraft.core.Direction"
+    before: "Object c = w.getBestNeighborSignal(p);"
+    after: "Object c = w.getStrongestIndirectPower(p.getX(), p.getY(), p.getZ());"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-level-getbestneighborsignal-helper
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.level.Level#getBestNeighborSignal(net.minecraft.core.BlockPos)"
+  bind: { recv: "$w", args: ["$p"] }
+replace: "Worlds.getStrongestIndirectPower($w, $p)"
+imports: ["dev.porter.shim.Worlds"]
+preconditions: ["shim:world"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Level w; BlockPos p; Direction d; import net.minecraft.world.level.Level; import net.minecraft.core.Direction"
+    before: "Object c = w.getBestNeighborSignal(p.relative(d));"
+    after: "Object c = Worlds.getStrongestIndirectPower(w, p.relative(d));"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-level-isemptyblock
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.level.LevelReader#isEmptyBlock(net.minecraft.core.BlockPos)"
+  bind: { recv: "$w", args: ["$p"] }
+replace: "$w.isAirBlock($p.getX(), $p.getY(), $p.getZ())"
+preconditions: ["pure:$p"]
+priority: 10
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Level w; BlockPos p; Direction d; import net.minecraft.world.level.Level; import net.minecraft.core.Direction"
+    before: "Object c = w.isEmptyBlock(p);"
+    after: "Object c = w.isAirBlock(p.getX(), p.getY(), p.getZ());"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-level-isemptyblock-helper
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.level.LevelReader#isEmptyBlock(net.minecraft.core.BlockPos)"
+  bind: { recv: "$w", args: ["$p"] }
+replace: "Worlds.isAirBlock($w, $p)"
+imports: ["dev.porter.shim.Worlds"]
+preconditions: ["shim:world"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Level w; BlockPos p; Direction d; import net.minecraft.world.level.Level; import net.minecraft.core.Direction"
+    before: "Object c = w.isEmptyBlock(p.relative(d));"
+    after: "Object c = Worlds.isAirBlock(w, p.relative(d));"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-level-isloaded
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.level.Level#isLoaded(net.minecraft.core.BlockPos)"
+  bind: { recv: "$w", args: ["$p"] }
+replace: "$w.blockExists($p.getX(), $p.getY(), $p.getZ())"
+preconditions: ["pure:$p"]
+priority: 10
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Level w; BlockPos p; Direction d; import net.minecraft.world.level.Level; import net.minecraft.core.Direction"
+    before: "Object c = w.isLoaded(p);"
+    after: "Object c = w.blockExists(p.getX(), p.getY(), p.getZ());"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-level-isloaded-helper
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.level.Level#isLoaded(net.minecraft.core.BlockPos)"
+  bind: { recv: "$w", args: ["$p"] }
+replace: "Worlds.blockExists($w, $p)"
+imports: ["dev.porter.shim.Worlds"]
+preconditions: ["shim:world"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Level w; BlockPos p; Direction d; import net.minecraft.world.level.Level; import net.minecraft.core.Direction"
+    before: "Object c = w.isLoaded(p.relative(d));"
+    after: "Object c = Worlds.blockExists(w, p.relative(d));"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-level-removeblockentity
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.level.Level#removeBlockEntity(net.minecraft.core.BlockPos)"
+  bind: { recv: "$w", args: ["$p"] }
+replace: "$w.removeTileEntity($p.getX(), $p.getY(), $p.getZ())"
+preconditions: ["pure:$p"]
+priority: 10
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Level w; BlockPos p; Direction d; import net.minecraft.world.level.Level; import net.minecraft.core.Direction"
+    before: "Object c = w.removeBlockEntity(p);"
+    after: "Object c = w.removeTileEntity(p.getX(), p.getY(), p.getZ());"
+  - name: "impure position"
+    context: "Level w; BlockPos p; Direction d; import net.minecraft.world.level.Level; import net.minecraft.core.Direction"
+    before: "w.removeBlockEntity(p.relative(d));"
+    after: "// TODO(porter:precondition) r-1.19.2-1.7.10-level-removeblockentity: pure:$p not met w.removeBlockEntity(p.relative(d));"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockentity-getlevel
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.world.level.block.entity.BlockEntity#getLevel()"
+  bind: { recv: "$b" }
+replace: "$b.getWorldObj()"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "BlockEntity b"
+    before: "Object w = b.getLevel();"
+    after: "Object w = b.getWorldObj();"
+  - name: "implicit this"
+    context: "extends net.minecraft.world.level.block.entity.BlockEntity"
+    before: "Object w = getLevel();"
+    after: "Object w = getWorldObj();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockentity-level-field
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.level.block.entity.BlockEntity#level"
+  bind: { recv: "$b" }
+replace: "$b.worldObj"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "extends net.minecraft.world.level.block.entity.BlockEntity"
+    before: "Object w = this.level;"
+    after: "Object w = this.worldObj;"
+  - name: "implicit this"
+    context: "extends net.minecraft.world.level.block.entity.BlockEntity"
+    before: "Object w = level;"
+    after: "Object w = worldObj;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockentity-setchanged
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.world.level.block.entity.BlockEntity#setChanged()"
+  bind: { recv: "$b" }
+replace: "$b.markDirty()"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "BlockEntity b"
+    before: "b.setChanged();"
+    after: "b.markDirty();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockentity-isremoved
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.world.level.block.entity.BlockEntity#isRemoved()"
+  bind: { recv: "$b" }
+replace: "$b.isInvalid()"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "BlockEntity b"
+    before: "b.isRemoved();"
+    after: "b.isInvalid();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockentity-setremoved
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.world.level.block.entity.BlockEntity#setRemoved()"
+  bind: { recv: "$b" }
+replace: "$b.invalidate()"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "BlockEntity b"
+    before: "b.setRemoved();"
+    after: "b.invalidate();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockentity-clearremoved
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.world.level.block.entity.BlockEntity#clearRemoved()"
+  bind: { recv: "$b" }
+replace: "$b.validate()"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "BlockEntity b"
+    before: "b.clearRemoved();"
+    after: "b.validate();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockentity-haslevel
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.world.level.block.entity.BlockEntity#hasLevel()"
+  bind: { recv: "$b" }
+replace: "$b.hasWorldObj()"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "BlockEntity b"
+    before: "b.hasLevel();"
+    after: "b.hasWorldObj();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockentity-getblockpos
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.level.block.entity.BlockEntity#getBlockPos()"
+  bind: { recv: "$b" }
+replace: "new BlockPos($b.xCoord, $b.yCoord, $b.zCoord)"
+imports: ["dev.porter.shim.BlockPos"]
+preconditions: ["shim:blockpos", "pure:$b"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "BlockEntity b"
+    before: "Object p = b.getBlockPos();"
+    after: "Object p = new BlockPos(b.xCoord, b.yCoord, b.zCoord);"
+  - name: "implicit this"
+    context: "extends net.minecraft.world.level.block.entity.BlockEntity"
+    before: "Object p = getBlockPos();"
+    after: "Object p = new BlockPos(this.xCoord, this.yCoord, this.zCoord);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockentity-worldposition
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "net.minecraft.world.level.block.entity.BlockEntity#worldPosition"
+  bind: { recv: "$b" }
+replace: "new BlockPos($b.xCoord, $b.yCoord, $b.zCoord)"
+imports: ["dev.porter.shim.BlockPos"]
+preconditions: ["shim:blockpos", "pure:$b"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "extends net.minecraft.world.level.block.entity.BlockEntity"
+    before: "Object p = this.worldPosition;"
+    after: "Object p = new BlockPos(this.xCoord, this.yCoord, this.zCoord);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockentity-override-saveadditional
+description: "1.7.10 declares it public; protected overrides would not compile."
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  override: "net.minecraft.world.level.block.entity.BlockEntity#saveAdditional(net.minecraft.nbt.CompoundTag)"
+replace: "public writeToNBT"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "import net.minecraft.nbt.CompoundTag"
+    before: "@Override protected void saveAdditional(CompoundTag tag) { }"
+    after: "@Override public void writeToNBT(CompoundTag tag) { }"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockentity-call-saveadditional
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.world.level.block.entity.BlockEntity#saveAdditional(net.minecraft.nbt.CompoundTag)"
+  bind: { recv: "$b", args: ["$t"] }
+replace: "$b.writeToNBT($t)"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "extends net.minecraft.world.level.block.entity.BlockEntity; CompoundTag tag; import net.minecraft.nbt.CompoundTag"
+    before: "super.saveAdditional(tag);"
+    after: "super.writeToNBT(tag);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockentity-override-load
+description: "1.7.10 declares it public; protected overrides would not compile."
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  override: "net.minecraft.world.level.block.entity.BlockEntity#load(net.minecraft.nbt.CompoundTag)"
+replace: "public readFromNBT"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "import net.minecraft.nbt.CompoundTag"
+    before: "@Override protected void load(CompoundTag tag) { }"
+    after: "@Override public void readFromNBT(CompoundTag tag) { }"
+  - name: "already public"
+    context: "import net.minecraft.nbt.CompoundTag"
+    before: "public void load(CompoundTag tag) { }"
+    after: "public void readFromNBT(CompoundTag tag) { }"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-blockentity-call-load
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.world.level.block.entity.BlockEntity#load(net.minecraft.nbt.CompoundTag)"
+  bind: { recv: "$b", args: ["$t"] }
+replace: "$b.readFromNBT($t)"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "extends net.minecraft.world.level.block.entity.BlockEntity; CompoundTag tag; import net.minecraft.nbt.CompoundTag"
+    before: "super.load(tag);"
+    after: "super.readFromNBT(tag);"

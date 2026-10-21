@@ -1,0 +1,14 @@
+schemaVersion: 1
+id: torchmaster-registry
+description: >-
+  Registered content: blocks (megatorch, dreadlamp, feral flare lantern, invisible light) and items (the three block
+  items + frozen pearl) under the torchmaster namespace.
+world: flat-void
+maxTicks: 50
+tolerance:
+  "*": { abs: 0 }
+steps:
+  - tick: 1
+  - sample: { what: ["registry:blocks/torchmaster:", "registry:items/torchmaster:"] }
+  - assert: { expr: "len(registry:blocks/torchmaster:) == 4", message: "4 blocks" }
+  - assert: { expr: "len(registry:items/torchmaster:) == 4", message: "4 items" }

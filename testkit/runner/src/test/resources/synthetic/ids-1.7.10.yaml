@@ -1,0 +1,7 @@
+version: forge-1.7.10
+blocks:
+  "examplemod:casing": "examplemod:machine@1"
+  "examplemod:press": "examplemod:machine@2"
+items:
+  "examplemod:ore": { id: "examplemod:ore" }
+  "examplemod:dust": "examplemod:items@7"

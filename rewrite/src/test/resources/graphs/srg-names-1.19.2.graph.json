@@ -1,0 +1,144 @@
+{
+ "schemaVersion": 1,
+ "type": "graph",
+ "versions": [
+  {
+   "id": "1.19.2",
+   "canonical": "mojmap",
+   "namespaces": [
+    "mojmap",
+    "obf",
+    "srg"
+   ]
+  }
+ ],
+ "symbols": [
+  {
+   "ref": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.core.Vec3i",
+    "name": "getX",
+    "desc": "()I"
+   },
+   "names": {
+    "mojmap": "getX",
+    "obf": "u",
+    "srg": "m_123341_"
+   }
+  },
+  {
+   "ref": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.nbt.CompoundTag",
+    "name": "getInt",
+    "desc": "(Ljava/lang/String;)I"
+   },
+   "names": {
+    "mojmap": "getInt",
+    "obf": "h",
+    "srg": "m_128451_"
+   }
+  },
+  {
+   "ref": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.level.BlockGetter",
+    "name": "getBlockEntity",
+    "desc": "(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/entity/BlockEntity;"
+   },
+   "names": {
+    "mojmap": "getBlockEntity",
+    "obf": "c_",
+    "srg": "m_7702_"
+   }
+  },
+  {
+   "ref": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.level.Level",
+    "name": "getBlockEntity",
+    "desc": "(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/entity/BlockEntity;"
+   },
+   "names": {
+    "mojmap": "getBlockEntity",
+    "obf": "c_",
+    "srg": "m_7702_"
+   }
+  },
+  {
+   "ref": {
+    "version": "1.19.2",
+    "kind": "field",
+    "owner": "net.minecraft.world.level.block.entity.BlockEntity",
+    "name": "level",
+    "desc": "Lnet/minecraft/world/level/Level;"
+   },
+   "names": {
+    "mojmap": "level",
+    "obf": "n",
+    "srg": "f_58857_"
+   }
+  },
+  {
+   "ref": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.level.block.entity.BlockEntity",
+    "name": "getLevel",
+    "desc": "()Lnet/minecraft/world/level/Level;"
+   },
+   "names": {
+    "mojmap": "getLevel",
+    "obf": "k",
+    "srg": "m_58904_"
+   }
+  },
+  {
+   "ref": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.level.block.entity.BlockEntity",
+    "name": "saveAdditional",
+    "desc": "(Lnet/minecraft/nbt/CompoundTag;)V"
+   },
+   "names": {
+    "mojmap": "saveAdditional",
+    "obf": "b",
+    "srg": "m_183515_"
+   }
+  },
+  {
+   "ref": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.entity.Entity",
+    "name": "getId",
+    "desc": "()I"
+   },
+   "names": {
+    "mojmap": "getId",
+    "obf": "ae",
+    "srg": "m_19879_"
+   }
+  },
+  {
+   "ref": {
+    "version": "1.19.2",
+    "kind": "field",
+    "owner": "net.minecraft.world.entity.Entity",
+    "name": "tickCount",
+    "desc": "I"
+   },
+   "names": {
+    "mojmap": "tickCount",
+    "obf": "S",
+    "srg": "f_19797_"
+   }
+  }
+ ],
+ "edges": []
+}

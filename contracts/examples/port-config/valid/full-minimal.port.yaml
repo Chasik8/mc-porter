@@ -1,0 +1,19 @@
+# Smallest full port: a mod that does not exist on 1.7.10 is ported whole (closure + rewrite + install + compile).
+schemaVersion: 1
+name: examplemod-full
+mode: full
+from: forge-1.19.2
+to: forge-1.7.10
+project: ../examplemod-1.7.10
+closure:
+  source: ../examplemod-1.19.2-src/java
+  prefixes: [com.example.examplemod.]
+  seeds: [com.example.examplemod.block.GrinderBlockEntity]
+  cut: [com.example.examplemod.registry.]
+rewrite:
+  rules: [../porter/rules/composite, ../porter/rules/packs/adapters]
+  shimPackage: com.example.examplemod.shim
+install:
+  adapters: bundled
+compile:
+  options: [--release, "8"]

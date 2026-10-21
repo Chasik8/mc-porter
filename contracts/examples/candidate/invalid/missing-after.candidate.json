@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "error": "cannot find symbol: method relative(Direction)",
+  "errorClass": "unknown_error",
+  "file": "src/main/java/A.java",
+  "before": "x.relative(d);",
+  "author": "someone",
+  "count": 0
+}

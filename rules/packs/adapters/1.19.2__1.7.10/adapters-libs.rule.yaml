@@ -1,0 +1,113 @@
+# porter rules, 1.19.2 -> 1.7.10: libraries a 1.19.2 mod gets from the platform that a 1.7.10 mod shades itself
+# (identity rules: the API is the same, the jar must be shaded).
+schemaVersion: 1
+id: r-closure-mc-type-objectlist
+description: "type it.unimi.dsi.fastutil.objects.ObjectList -> it.unimi.dsi.fastutil.objects.ObjectList"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: "it.unimi.dsi.fastutil.objects.ObjectList"
+replace: "it.unimi.dsi.fastutil.objects.ObjectList"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import it.unimi.dsi.fastutil.objects.ObjectList;"
+    after: "import it.unimi.dsi.fastutil.objects.ObjectList;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-objectarraylist
+description: "type it.unimi.dsi.fastutil.objects.ObjectArrayList -> it.unimi.dsi.fastutil.objects.ObjectArrayList"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: "it.unimi.dsi.fastutil.objects.ObjectArrayList"
+replace: "it.unimi.dsi.fastutil.objects.ObjectArrayList"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import it.unimi.dsi.fastutil.objects.ObjectArrayList;"
+    after: "import it.unimi.dsi.fastutil.objects.ObjectArrayList;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-objectset
+description: "type it.unimi.dsi.fastutil.objects.ObjectSet -> it.unimi.dsi.fastutil.objects.ObjectSet"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: "it.unimi.dsi.fastutil.objects.ObjectSet"
+replace: "it.unimi.dsi.fastutil.objects.ObjectSet"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import it.unimi.dsi.fastutil.objects.ObjectSet;"
+    after: "import it.unimi.dsi.fastutil.objects.ObjectSet;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-objectlinkedopenhashset
+description: "type it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet -> it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: "it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet"
+replace: "it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;"
+    after: "import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-object2objectmap
+description: "type it.unimi.dsi.fastutil.objects.Object2ObjectMap -> it.unimi.dsi.fastutil.objects.Object2ObjectMap"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: "it.unimi.dsi.fastutil.objects.Object2ObjectMap"
+replace: "it.unimi.dsi.fastutil.objects.Object2ObjectMap"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import it.unimi.dsi.fastutil.objects.Object2ObjectMap;"
+    after: "import it.unimi.dsi.fastutil.objects.Object2ObjectMap;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-object2objectlinkedopenhashmap
+description: "type it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap -> it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: "it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap"
+replace: "it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;"
+    after: "import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-object2objectopenhashmap
+description: "type it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap -> it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: "it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap"
+replace: "it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;"
+    after: "import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;"

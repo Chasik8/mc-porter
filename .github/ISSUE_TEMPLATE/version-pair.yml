@@ -1,0 +1,27 @@
+name: New version pair
+description: Propose or claim work on a new source/target version (extractor, generator, graph inputs, rule pack).
+title: "Version pair: <from> -> <to>"
+labels: [version-pair]
+body:
+  - type: input
+    id: pair
+    attributes: { label: Version pair, placeholder: "forge-1.16.5 -> forge-1.12.2" }
+    validations: { required: true }
+  - type: checkboxes
+    id: parts
+    attributes:
+      label: Parts needed
+      options:
+        - label: symbol graph inputs (client jar + mappings with published checksums)
+        - label: extractor for the source version (which IR concepts first)
+        - label: generator for the target version
+        - label: rule pack rules/composite/<from>__<to>/ and adapters
+        - label: testkit server/client for a version
+  - type: textarea
+    id: sources
+    attributes:
+      label: Official sources and checksums
+      description: Where the jars and mappings come from (never attach them).
+  - type: textarea
+    id: plan
+    attributes: { label: Plan / who works on what }

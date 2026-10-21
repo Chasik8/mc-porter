@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:porter:contract:port-catalog",
+  "title": "porter port catalog",
+  "description": "Community catalog of ports (ports/catalog.yaml): which mods have a public port profile, for which version pair, how far they got, and whether the result may be distributed. A profile is a port config + scenarios + generic rules; the ported output of an all-rights-reserved mod is never listed as distributable. Added by RFC 004 (additive).",
+  "type": "object",
+  "required": ["schemaVersion", "ports"],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "ports": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "mod", "from", "to", "mode", "status", "licence", "distributable"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$" },
+          "mod": {
+            "type": "object",
+            "required": ["name", "version"],
+            "additionalProperties": false,
+            "properties": {
+              "name": { "type": "string" },
+              "version": { "type": "string" },
+              "url": { "type": "string" }
+            }
+          },
+          "from": { "$ref": "#/$defs/platformVersion" },
+          "to": { "$ref": "#/$defs/platformVersion" },
+          "mode": { "enum": ["delta", "full"] },
+          "status": {
+            "description": "planned: profile wanted; closure: closure measured; compiles: 0 javac errors; builds: the target build passes; scenarios: scenario diff tests pass; playable: tested in a real game.",
+            "enum": ["planned", "closure", "compiles", "builds", "scenarios", "playable"]
+          },
+          "scenarioPassRate": {
+            "description": "Passed scenario diff tests / scenario diff tests run, 0..1 (absent when none ran).",
+            "type": "number", "minimum": 0, "maximum": 1
+          },
+          "licence": { "type": "string", "description": "SPDX id of the original mod's licence, or 'ARR' (all rights reserved)." },
+          "distributable": {
+            "type": "boolean",
+            "description": "Whether a ported jar may be published: only true for open-licence mods or with the author's written permission (permission must then be set)."
+          },
+          "permission": { "type": "string", "description": "Link to the author's permission when distributable is true for a non-open licence." },
+          "profile": { "type": "string", "description": "Repository path of the public profile (port.yaml, scenarios, generic rules)." },
+          "maintainers": { "type": "array", "items": { "type": "string" } },
+          "notes": { "type": "string" }
+        },
+        "allOf": [
+          {
+            "if": { "properties": { "licence": { "const": "ARR" }, "distributable": { "const": true } }, "required": ["licence", "distributable"] },
+            "then": { "required": ["permission"] }
+          }
+        ]
+      }
+    }
+  },
+  "$defs": {
+    "platformVersion": { "type": "string", "pattern": "^[a-z][a-z0-9]*-[0-9]+(\\.[0-9]+){1,2}$" }
+  }
+}

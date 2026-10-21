@@ -1,0 +1,31 @@
+# RFC 005: GUI checks. A port profile lists the GUIs to check as client scenarios: every capture is compared with
+# the capture of the same name in the other version (mode diff), checked alone (structural) or must not open (absent).
+schemaVersion: 1
+id: press-gui-check
+description: Copper press GUI (block), its gauge after filling, and the mod's guide book (item GUI, port only).
+world: flat-void
+side: client
+maxTicks: 600
+steps:
+  - place_block: { at: [0, 64, 0], block: "examplemod:copper_press", facing: north }
+  - open_gui:
+      at: [0, 64, 0]
+      menu: "examplemod:copper_press"
+      capture: press-empty
+      keepOpen: true
+      check: { mode: diff, mask: [[150, 4, 20, 10]], texts: ["container.examplemod.copper_press"], maxDiff: 0.15 }
+  - fill_fluid: { at: [0, 64, 0], fluid: "minecraft:water", amount: 4000 }
+  - tick: 20
+  - gui_input: { capture: press-filled, check: { dynamicFrom: press-empty } }
+  - close_gui: {}
+  - place_block: { at: [2, 64, 0], block: "examplemod:press_frame" }
+  - open_gui: { at: [2, 64, 0], capture: frame-no-gui, check: { mode: absent } }
+  - open_gui:
+      item: "examplemod:manual"
+      capture: manual-home
+      keepOpen: true
+      check: { mode: structural, size: [256, 192], textBoxes: [[9, 10, 114, 160], [131, 10, 114, 160], [0, 170, 256, 22]] }
+  - gui_input: { key: RIGHT, capture: manual-contents }
+  - gui_input: { call: { method: openEntry, args: ["copper_press"] }, capture: manual-article }
+  - gui_input: { click: [243, 179], capture: manual-page-2 }
+  - close_gui: {}

@@ -1,0 +1,20 @@
+schemaVersion: 1
+id: feral-flare-void
+description: >-
+  Feral Flare Lantern at [0,64,0] in a void world. Every 5 ticks it picks a random spot within 16 blocks, lifts it to
+  4 above the column's surface and places an invisible light there if the block light is below 10. In a void world
+  every spot lands in a section that holds only air, where 1.19.2 does not store an air-like block: no light is ever
+  placed (the port reproduces this), the lantern keeps ticking.
+world: flat-void
+maxTicks: 1000
+tolerance:
+  "*": { abs: 0 }
+  "nbt:[0,64,0]/ticks": { ignore: true }
+steps:
+  - place_block: { at: [0, 64, 0], block: "torchmaster:feral_flare_lantern" }
+  - tick: 2
+  - sample: { what: ["block:[0,64,0]", "nbt:[0,64,0]/useLoS", "nbt:[0,64,0]/lights"] }
+  - tick: 600
+  - sample: { what: ["block:[0,64,0]", "nbt:[0,64,0]/useLoS", "nbt:[0,64,0]/lights", "nbt:[0,64,0]/ticks"] }
+  - assert: { expr: "len(nbt:[0,64,0]/lights) == 0", message: "no light in air-only sections" }
+  - assert: { expr: "nbt:[0,64,0]/ticks >= 0 && nbt:[0,64,0]/ticks < 5", message: "tick counter wraps at the tick rate" }

@@ -1,0 +1,74 @@
+# TorchMaster 19.2.93 (Forge 1.19.2, MIT, xalcon) -> Forge 1.7.10, full mode: the whole mod is ported.
+# Machine-specific paths come from the environment (see README.md): TM_SRC, TM_PROJECT, TM_ORIGINAL_JAR, PORTER_CACHE,
+# GRADLE_USER_HOME, BUILD_JAVA_HOME (a JDK 21+ for the RFG build); the testkit needs PORTER_TESTKIT_ENV.
+schemaVersion: 1
+name: torchmaster
+description: Unofficial 1.7.10 port of Torchmaster (Mega Torch, Dread Lamp, Feral Flare Lantern, Frozen Pearl).
+mode: full
+from: forge-1.19.2
+to: forge-1.7.10
+project: ${TM_PROJECT}
+jvmArgs: [-Xmx2g]
+classpath:
+  file: build/porter-cp.txt
+  exclude: [jabel]
+generate:
+  units:
+    # declarative content from the IR (porter extract + porter assets, README step 2): recipes, lookup, lang,
+    # textures. Blocks, items and the block entity are registered by the ported code itself (DeferredRegister
+    # adapter), so the generated registration, bases and stubs are not installed.
+    - name: content
+      args: [--version, "1.7.10", --ir, "${TM_PROJECT}/build/porter-ir", --assets, "${TM_PROJECT}/build/porter-assets",
+             --modid, torchmaster, --mod-name, "Torchmaster (unofficial 1.7.10 port)", --mod-version, 19.2.93-port.1,
+             --package, net.xalcon.torchmaster.gen, --legacy-names, NS_CAMEL, --no-nei, --no-stubs]
+      exclude:
+        - src/main/java/net/xalcon/torchmaster/gen/TorchmasterContent.java
+        - src/main/java/net/xalcon/torchmaster/gen/TorchmasterMod.java
+        - src/main/java/net/xalcon/torchmaster/gen/TorchmasterGuiHandler.java
+        - src/main/java/net/xalcon/torchmaster/gen/client/TorchmasterClientEvents.java
+        - src/main/java/net/xalcon/torchmaster/gen/block/DreadlampBlockBase.java
+        - src/main/java/net/xalcon/torchmaster/gen/block/FeralFlareLanternBlockBase.java
+        - src/main/java/net/xalcon/torchmaster/gen/block/InvisibleLightBlockBase.java
+        - src/main/java/net/xalcon/torchmaster/gen/block/MegatorchBlockBase.java
+        - src/main/java/net/xalcon/torchmaster/gen/item/FrozenPearlItemBase.java
+        - src/main/java/net/xalcon/torchmaster/gen/tile/FeralFlareLanternTileBase.java
+        - src/main/resources/assets/torchmaster/textures/blocks/feral_flare_lantern.psd
+        - src/main/resources/assets/torchmaster/textures/blocks/mega_torch.psd
+        - src/main/resources/assets/torchmaster/textures/blocks/mega_torch_top.psd
+        - src/main/resources/mcmod.info
+closure:
+  source: ${TM_SRC}/src/main/java
+  prefixes: [net.xalcon.torchmaster.]
+  # the mod class and the event subscriber (found by annotation, referenced by no class) reach all 28 classes
+  seeds: [net.xalcon.torchmaster.Torchmaster, net.xalcon.torchmaster.common.logic.entityblocking.EntityBlockingEventHandler]
+rewrite:
+  rules: [../../rules/composite, ../../rules/packs/adapters]
+  graph: ["${PORTER_CACHE}/graph/out"]
+  shimPackage: net.xalcon.torchmaster.shim
+  classpath:
+    - "${PORTER_CACHE}/forge-1.19.2-compile/mc-forge-1.19.2-client-mojmap.jar"
+    - "${PORTER_CACHE}/forge-1.19.2-server/libraries/**/*.jar"
+  jvmArgs: [-Xmx3g, -Xss16m]
+  # full 1.19.2 supertype table (rewrite/scripts/typefacts_from_jars.py, README step 1)
+  args: [--type-facts, "${PORTER_CACHE}/typefacts-1.19.2/forge-1.19.2-43.5.2.tsv"]
+install:
+  passes: [java8, tector, imports]
+  adapters: bundled
+  # the 1.7.10 @Mod entry point (wiring): runs the ported 1.19.2 mod constructor inside the FML lifecycle
+  overlays: [overlay]
+compile:
+  options: [--release, "8", -Xplugin:jabel]
+  processorpath: ["${GRADLE_USER_HOME}/caches/modules-2/files-2.1/com.github.GTNewHorizons/jabel-javac-plugin/**/*.jar",
+                  "${GRADLE_USER_HOME}/caches/modules-2/files-2.1/net.bytebuddy/**/*1.14.9.jar"]
+  jvmArgs: [-Xmx1500m]
+build:
+  command: [./gradlew, --no-daemon, build]
+  env: { JAVA_HOME: "${BUILD_JAVA_HOME}" }
+  jar: build/libs/torchmaster-0.1.0.jar
+  obfcheckPrefix: net/xalcon/
+test:
+  runs:
+    # all six scenarios in ONE call: porter runs the server scenarios of a version in one Minecraft launch
+    # (two launches in total: 1.19.2 original, 1.7.10 port); one run per scenario would be 12 launches
+    - name: scenarios
+      args: [test, diff, --scenario, scenarios, --a, "${TM_ORIGINAL_JAR}", --b, "${TM_PROJECT}/build/libs/torchmaster-0.1.0.jar", --ir, "${TM_PROJECT}/build/porter-ir"]

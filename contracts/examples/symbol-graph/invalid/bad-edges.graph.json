@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "type": "graph",
+  "versions": [{ "id": "1.19.2", "canonical": "mojmap" }],
+  "edges": [
+    {
+      "from": { "version": "1.19.2", "kind": "method", "owner": "net.minecraft.world.level.Level", "name": "getBlockEntity" },
+      "to": { "version": "1.18.2", "kind": "method", "name": "getBlockEntity" },
+      "status": "probably_same",
+      "confidence": 1.7
+    },
+    {
+      "from": { "version": "1.19.2", "kind": "class", "name": "net.minecraft.world.level.Level" },
+      "status": "renamed",
+      "confidence": 0.5
+    }
+  ]
+}

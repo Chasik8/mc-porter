@@ -1,0 +1,205 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:porter:contract:scenario",
+  "title": "porter test scenario",
+  "description": "Version-independent scenario (YAML). References ids from the IR, never version-specific classes. Each step is an object with exactly one key (the step type).",
+  "type": "object",
+  "required": ["schemaVersion", "id", "world", "steps"],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$" },
+    "description": { "type": "string" },
+    "world": {
+      "description": "World preset. Well-known: flat-void (void world, all blocks placed by steps), flat (superflat).",
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_-]*$"
+    },
+    "side": { "enum": ["server", "client"], "default": "server", "description": "client = needs a rendering client (GUI checks)." },
+    "maxTicks": { "type": "integer", "minimum": 1, "description": "Hard timeout in game ticks; runner fails the scenario with status timeout beyond it." },
+    "tolerance": {
+      "description": "Comparison tolerances for traces, by sample key or key prefix ('*' = default). Numeric values match if |a-b| <= abs or |a-b| <= rel*max(|a|,|b|); tickShift allows samples to be matched within ±N ticks.",
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "abs": { "type": "number", "minimum": 0 },
+          "rel": { "type": "number", "minimum": 0 },
+          "tickShift": { "type": "integer", "minimum": 0 },
+          "ignore": { "type": "boolean" }
+        }
+      }
+    },
+    "keyMap": {
+      "description": "Per platform version: sample key in that version -> canonical key used for comparison (e.g. NBT keys renamed between versions).",
+      "type": "object",
+      "propertyNames": { "pattern": "^(forge|neoforge|fabric|vanilla)-[0-9]+\\.[0-9]+(\\.[0-9]+)?$" },
+      "additionalProperties": { "type": "object", "additionalProperties": { "type": "string" } }
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/step" }
+    }
+  },
+  "$defs": {
+    "resourceId": { "type": "string", "pattern": "^[a-z0-9_.-]+:[a-z0-9_./-]+$" },
+    "pos": { "type": "array", "items": { "type": "integer" }, "minItems": 3, "maxItems": 3 },
+    "facing": { "enum": ["north", "south", "west", "east", "up", "down"] },
+    "captureName": {
+      "description": "Name of a GUI capture (RFC 005); captures with the same name are compared across versions.",
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_-]*$"
+    },
+    "rect": {
+      "description": "[x, y, width, height] in GUI pixels relative to the GUI's top-left corner.",
+      "type": "array", "items": { "type": "integer" }, "minItems": 4, "maxItems": 4
+    },
+    "guiCheck": {
+      "description": "RFC 005: how a GUI capture is checked. Coordinates are GUI pixels relative to the GUI's top-left corner.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "enum": ["diff", "structural", "absent"],
+          "default": "diff",
+          "description": "diff = structural diff + image diff against the other version's capture of the same name; structural = this version alone (renders without errors, non-empty, texts fit, expected texts present); absent = no screen may open."
+        },
+        "size": { "type": "array", "items": { "type": "integer", "minimum": 1 }, "minItems": 2, "maxItems": 2, "description": "[width, height] of the GUI area of screens without a container rectangle (centred on the screen)." },
+        "mask": { "type": "array", "items": { "$ref": "#/$defs/rect" }, "description": "Regions excluded from the image diff (besides the automatic text and slot masks)." },
+        "textBoxes": { "type": "array", "items": { "$ref": "#/$defs/rect" }, "description": "Every drawn text must lie inside one of these regions (default: the GUI area)." },
+        "texts": { "type": "array", "items": { "type": "string", "minLength": 1 }, "description": "Lang keys whose translated text must be drawn (format arguments match anything)." },
+        "dynamicFrom": { "$ref": "#/$defs/captureName", "description": "Earlier capture of the same screen: the regions that changed since then are the GUI's dynamic indicators (bars, gauges, progress) and are compared between versions." },
+        "pixelThreshold": { "type": "number", "minimum": 0, "maximum": 1, "description": "Per-pixel colour difference (0..1) above which a pixel differs (default 0.1)." },
+        "maxDiff": { "type": "number", "minimum": 0, "maximum": 1, "description": "Largest share of differing unmasked pixels that is still an acceptable diff (default 0.1)." }
+      }
+    },
+    "sampleKey": {
+      "description": "Probe expression '<probe>[:<target>][/<path>]', e.g. nbt:[1,65,0]/BurnTime, energy_out:[1,65,4], item:[0,64,0]#2, block:[0,64,0]. Probe vocabulary is owned by testkit (testkit/README.md).",
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*(:\\S+)?$"
+    },
+    "step": {
+      "type": "object",
+      "minProperties": 1,
+      "maxProperties": 1,
+      "additionalProperties": false,
+      "properties": {
+        "place_block": {
+          "type": "object",
+          "required": ["at", "block"],
+          "additionalProperties": false,
+          "properties": {
+            "at": { "$ref": "#/$defs/pos" },
+            "block": { "$ref": "#/$defs/resourceId" },
+            "state": { "type": "object", "additionalProperties": { "type": "string" } },
+            "facing": { "$ref": "#/$defs/facing" }
+          }
+        },
+        "build_multiblock": {
+          "type": "object",
+          "required": ["id", "at"],
+          "additionalProperties": false,
+          "properties": {
+            "id": { "$ref": "#/$defs/resourceId", "description": "multiblock node id from the IR." },
+            "at": { "$ref": "#/$defs/pos", "description": "World position of the structure's min corner." },
+            "facing": { "$ref": "#/$defs/facing" }
+          }
+        },
+        "fill_fluid": {
+          "type": "object",
+          "required": ["at", "fluid", "amount"],
+          "additionalProperties": false,
+          "properties": {
+            "at": { "$ref": "#/$defs/pos" },
+            "fluid": { "$ref": "#/$defs/resourceId" },
+            "amount": { "type": "integer", "minimum": 1, "description": "Millibuckets." },
+            "side": { "$ref": "#/$defs/facing" }
+          }
+        },
+        "insert_item": {
+          "type": "object",
+          "required": ["at", "item"],
+          "additionalProperties": false,
+          "properties": {
+            "at": { "$ref": "#/$defs/pos" },
+            "item": { "$ref": "#/$defs/resourceId" },
+            "count": { "type": "integer", "minimum": 1, "default": 1 },
+            "slot": { "type": "integer", "minimum": 0 },
+            "side": { "$ref": "#/$defs/facing" }
+          }
+        },
+        "interact": {
+          "description": "Fake player right-clicks a block, optionally holding an item.",
+          "type": "object",
+          "required": ["at"],
+          "additionalProperties": false,
+          "properties": {
+            "at": { "$ref": "#/$defs/pos" },
+            "side": { "$ref": "#/$defs/facing" },
+            "holding": { "$ref": "#/$defs/resourceId" },
+            "sneaking": { "type": "boolean" }
+          }
+        },
+        "open_gui": {
+          "description": "Open the GUI of the block at a position (real right-click by the client player) or of an item (held and used), capture it (framebuffer + structure: slots, texts) and dump its structure into the trace. Requires side = client.",
+          "type": "object",
+          "anyOf": [{ "required": ["at"] }, { "required": ["item"] }],
+          "additionalProperties": false,
+          "properties": {
+            "at": { "$ref": "#/$defs/pos" },
+            "item": { "$ref": "#/$defs/resourceId", "description": "Item to hold and use (item GUIs such as books) instead of clicking a block (RFC 005)." },
+            "menu": { "$ref": "#/$defs/resourceId", "description": "Expected menu node id from the IR." },
+            "screenshot": { "type": "boolean", "default": false },
+            "capture": { "$ref": "#/$defs/captureName" },
+            "keepOpen": { "type": "boolean", "default": false, "description": "Leave the screen open for gui_input steps and for steps that change the block's state (RFC 005)." },
+            "check": { "$ref": "#/$defs/guiCheck" }
+          }
+        },
+        "gui_input": {
+          "description": "RFC 005: input on the open screen (click, key or call), then an optional capture. Without input it only captures, e.g. after steps that changed the block's state.",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "click": { "type": "array", "items": { "type": "integer" }, "minItems": 2, "maxItems": 2, "description": "[x, y] relative to the GUI's top-left corner." },
+            "button": { "type": "integer", "minimum": 0, "maximum": 2, "default": 0 },
+            "key": { "type": "string", "minLength": 1, "description": "Key name of the platform's input library (RIGHT, HOME, ESCAPE, ...)." },
+            "call": {
+              "description": "Test hook: invoke a public method of the screen object with string/integer/boolean arguments.",
+              "type": "object",
+              "required": ["method"],
+              "additionalProperties": false,
+              "properties": {
+                "method": { "type": "string", "pattern": "^[A-Za-z_$][A-Za-z0-9_$]*$" },
+                "args": { "type": "array", "items": { "type": ["string", "integer", "boolean", "null"] } }
+              }
+            },
+            "capture": { "$ref": "#/$defs/captureName" },
+            "check": { "$ref": "#/$defs/guiCheck" }
+          }
+        },
+        "close_gui": { "description": "RFC 005: close the open screen.", "type": "object", "additionalProperties": false, "properties": {} },
+        "tick": { "type": "integer", "minimum": 1, "description": "Advance N game ticks." },
+        "sample": {
+          "type": "object",
+          "required": ["what"],
+          "additionalProperties": false,
+          "properties": {
+            "every": { "type": "integer", "minimum": 1, "description": "Sample every N ticks during the following tick steps; omitted = sample once now." },
+            "what": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/sampleKey" } }
+          }
+        },
+        "assert": {
+          "type": "object",
+          "required": ["expr"],
+          "additionalProperties": false,
+          "properties": {
+            "expr": { "type": "string", "minLength": 1, "description": "Boolean expression over the latest sampled values, e.g. 'energy_out > 0'." },
+            "message": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}

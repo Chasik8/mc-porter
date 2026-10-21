@@ -1,0 +1,1913 @@
+{
+ "description": "Hand-picked 1.19.2 (mojmap) -> 1.7.10 (MCP stable_12) correspondences, checked against the real mapping files by graph/tools/golden.py. to=null: no counterpart (expected status removed). chain: srg-chain/class-chain = MCP's own cross-version ids agree; manual = SRG id changed or no counterpart.",
+ "entries": [
+  {
+   "id": "g001",
+   "category": "world",
+   "from": {
+    "version": "1.19.2",
+    "kind": "class",
+    "name": "net.minecraft.world.level.Level"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "class",
+    "name": "net.minecraft.world.World"
+   },
+   "chain": "class-chain"
+  },
+  {
+   "id": "g002",
+   "category": "world",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.level.Level",
+    "name": "getBlockEntity",
+    "desc": "(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/entity/BlockEntity;"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.world.World",
+    "name": "getTileEntity",
+    "desc": "(III)Lnet/minecraft/tileentity/TileEntity;"
+   },
+   "srg1710": "func_147438_o",
+   "srg1165": "func_175625_s",
+   "chain": "manual"
+  },
+  {
+   "id": "g003",
+   "category": "world",
+   "from": {
+    "version": "1.19.2",
+    "kind": "field",
+    "owner": "net.minecraft.world.level.Level",
+    "name": "isClientSide"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "field",
+    "owner": "net.minecraft.world.World",
+    "name": "isRemote"
+   },
+   "srg1710": "field_72995_K",
+   "srg1165": "field_72995_K",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g004",
+   "category": "world",
+   "from": {
+    "version": "1.19.2",
+    "kind": "field",
+    "owner": "net.minecraft.world.level.Level",
+    "name": "random"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "field",
+    "owner": "net.minecraft.world.World",
+    "name": "rand"
+   },
+   "srg1710": "field_73012_v",
+   "srg1165": "field_73012_v",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g005",
+   "category": "world",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.level.Level",
+    "name": "getGameTime",
+    "desc": "()J"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.world.World",
+    "name": "getTotalWorldTime",
+    "desc": "()J"
+   },
+   "srg1710": "func_82737_E",
+   "srg1165": "func_82737_E",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g006",
+   "category": "world",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.level.Level",
+    "name": "isDay",
+    "desc": "()Z"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.world.World",
+    "name": "isDaytime",
+    "desc": "()Z"
+   },
+   "srg1710": "func_72935_r",
+   "srg1165": "func_72935_r",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g007",
+   "category": "world",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.level.Level",
+    "name": "isRaining",
+    "desc": "()Z"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.world.World",
+    "name": "isRaining",
+    "desc": "()Z"
+   },
+   "srg1710": "func_72896_J",
+   "srg1165": "func_72896_J",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g008",
+   "category": "world",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.level.Level",
+    "name": "removeBlockEntity",
+    "desc": "(Lnet/minecraft/core/BlockPos;)V"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.world.World",
+    "name": "removeTileEntity",
+    "desc": "(III)V"
+   },
+   "srg1710": "func_147475_p",
+   "srg1165": "func_175713_t",
+   "chain": "manual"
+  },
+  {
+   "id": "g009",
+   "category": "world",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.level.Level",
+    "name": "setBlockEntity",
+    "desc": "(Lnet/minecraft/world/level/block/entity/BlockEntity;)V"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.world.World",
+    "name": "setTileEntity",
+    "desc": "(IIILnet/minecraft/tileentity/TileEntity;)V"
+   },
+   "srg1710": "func_147455_a",
+   "chain": "manual"
+  },
+  {
+   "id": "g010",
+   "category": "world",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.level.LevelWriter",
+    "name": "addFreshEntity",
+    "desc": "(Lnet/minecraft/world/entity/Entity;)Z"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.world.World",
+    "name": "spawnEntityInWorld",
+    "desc": "(Lnet/minecraft/entity/Entity;)Z"
+   },
+   "srg1710": "func_72838_d",
+   "srg1165": "func_217376_c",
+   "chain": "manual"
+  },
+  {
+   "id": "g011",
+   "category": "world",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.level.Level",
+    "name": "hasNeighborSignal",
+    "desc": "(Lnet/minecraft/core/BlockPos;)Z"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.world.World",
+    "name": "isBlockIndirectlyGettingPowered",
+    "desc": "(III)Z"
+   },
+   "srg1710": "func_72864_z",
+   "srg1165": "func_175640_z",
+   "chain": "manual"
+  },
+  {
+   "id": "g012",
+   "category": "world",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.level.LevelReader",
+    "name": "isEmptyBlock",
+    "desc": "(Lnet/minecraft/core/BlockPos;)Z"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.world.World",
+    "name": "isAirBlock",
+    "desc": "(III)Z"
+   },
+   "srg1710": "func_147437_c",
+   "srg1165": "func_175623_d",
+   "chain": "manual"
+  },
+  {
+   "id": "g013",
+   "category": "world",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.level.Level",
+    "name": "updateNeighborsAt",
+    "desc": "(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/Block;)V"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.world.World",
+    "name": "notifyBlocksOfNeighborChange",
+    "desc": "(IIILnet/minecraft/block/Block;)V"
+   },
+   "srg1710": "func_147459_d",
+   "srg1165": "func_195593_d",
+   "chain": "manual"
+  },
+  {
+   "id": "g014",
+   "category": "world",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.level.Level",
+    "name": "sendBlockUpdated",
+    "desc": "(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/state/BlockState;I)V"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.world.World",
+    "name": "markBlockForUpdate",
+    "desc": "(III)V"
+   },
+   "srg1710": "func_147471_g",
+   "srg1165": "func_184138_a",
+   "chain": "manual"
+  },
+  {
+   "id": "g015",
+   "category": "world",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.level.LevelWriter",
+    "name": "destroyBlock",
+    "desc": "(Lnet/minecraft/core/BlockPos;Z)Z"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.world.World",
+    "name": "breakBlock",
+    "desc": "(IIIZ)Z"
+   },
+   "srg1710": "func_147480_a",
+   "srg1165": "func_175655_b",
+   "chain": "manual"
+  },
+  {
+   "id": "g016",
+   "category": "world",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.level.CommonLevelAccessor",
+    "name": "registryAccess",
+    "desc": "()Lnet/minecraft/core/RegistryAccess;"
+   },
+   "to": null,
+   "chain": "manual"
+  },
+  {
+   "id": "g017",
+   "category": "block",
+   "from": {
+    "version": "1.19.2",
+    "kind": "class",
+    "name": "net.minecraft.world.level.block.Block"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "class",
+    "name": "net.minecraft.block.Block"
+   },
+   "chain": "class-chain"
+  },
+  {
+   "id": "g018",
+   "category": "block",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.level.block.Block",
+    "name": "getDescriptionId",
+    "desc": "()Ljava/lang/String;"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.block.Block",
+    "name": "getUnlocalizedName",
+    "desc": "()Ljava/lang/String;"
+   },
+   "srg1710": "func_149739_a",
+   "srg1165": "func_149739_a",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g019",
+   "category": "block",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.level.block.Block",
+    "name": "setPlacedBy",
+    "desc": "(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/item/ItemStack;)V"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.block.Block",
+    "name": "onBlockPlacedBy",
+    "desc": "(Lnet/minecraft/world/World;IIILnet/minecraft/entity/EntityLivingBase;Lnet/minecraft/item/ItemStack;)V"
+   },
+   "srg1710": "func_149689_a",
+   "srg1165": "func_180633_a",
+   "chain": "manual"
+  },
+  {
+   "id": "g020",
+   "category": "block",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.level.block.Block",
+    "name": "playerWillDestroy",
+    "desc": "(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/entity/player/Player;)V"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.block.Block",
+    "name": "onBlockHarvested",
+    "desc": "(Lnet/minecraft/world/World;IIIILnet/minecraft/entity/player/EntityPlayer;)V"
+   },
+   "srg1710": "func_149681_a",
+   "srg1165": "func_176208_a",
+   "chain": "manual"
+  },
+  {
+   "id": "g021",
+   "category": "block",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.level.block.Block",
+    "name": "animateTick",
+    "desc": "(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/util/RandomSource;)V"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.block.Block",
+    "name": "randomDisplayTick",
+    "desc": "(Lnet/minecraft/world/World;IIILjava/util/Random;)V"
+   },
+   "srg1710": "func_149734_b",
+   "srg1165": "func_180655_c",
+   "chain": "manual"
+  },
+  {
+   "id": "g022",
+   "category": "block",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.level.block.state.BlockBehaviour",
+    "name": "use",
+    "desc": "(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/InteractionHand;Lnet/minecraft/world/phys/BlockHitResult;)Lnet/minecraft/world/InteractionResult;"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.block.Block",
+    "name": "onBlockActivated",
+    "desc": "(Lnet/minecraft/world/World;IIILnet/minecraft/entity/player/EntityPlayer;IFFF)Z"
+   },
+   "srg1710": "func_149727_a",
+   "srg1165": "func_225533_a_",
+   "chain": "manual"
+  },
+  {
+   "id": "g023",
+   "category": "block",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.level.block.state.BlockBehaviour",
+    "name": "onRemove",
+    "desc": "(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Z)V"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.block.Block",
+    "name": "breakBlock",
+    "desc": "(Lnet/minecraft/world/World;IIILnet/minecraft/block/Block;I)V"
+   },
+   "srg1710": "func_149749_a",
+   "srg1165": "func_196243_a",
+   "chain": "manual"
+  },
+  {
+   "id": "g024",
+   "category": "block",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.level.block.state.BlockBehaviour",
+    "name": "neighborChanged",
+    "desc": "(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/Block;Lnet/minecraft/core/BlockPos;Z)V"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.block.Block",
+    "name": "onNeighborBlockChange",
+    "desc": "(Lnet/minecraft/world/World;IIILnet/minecraft/block/Block;)V"
+   },
+   "srg1710": "func_149695_a",
+   "srg1165": "func_220069_a",
+   "chain": "manual"
+  },
+  {
+   "id": "g025",
+   "category": "block",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.level.block.state.BlockBehaviour",
+    "name": "tick",
+    "desc": "(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/BlockPos;Lnet/minecraft/util/RandomSource;)V"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.block.Block",
+    "name": "updateTick",
+    "desc": "(Lnet/minecraft/world/World;IIILjava/util/Random;)V"
+   },
+   "srg1710": "func_149674_a",
+   "srg1165": "func_225534_a_",
+   "chain": "manual"
+  },
+  {
+   "id": "g026",
+   "category": "block",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.level.block.state.BlockBehaviour",
+    "name": "isSignalSource",
+    "desc": "(Lnet/minecraft/world/level/block/state/BlockState;)Z"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.block.Block",
+    "name": "canProvidePower",
+    "desc": "()Z"
+   },
+   "srg1710": "func_149744_f",
+   "srg1165": "func_149744_f",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g027",
+   "category": "block",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.level.block.state.BlockBehaviour",
+    "name": "getDestroyProgress",
+    "desc": "(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)F"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.block.Block",
+    "name": "getPlayerRelativeBlockHardness",
+    "desc": "(Lnet/minecraft/entity/player/EntityPlayer;Lnet/minecraft/world/World;III)F"
+   },
+   "srg1710": "func_149737_a",
+   "srg1165": "func_180647_a",
+   "chain": "manual"
+  },
+  {
+   "id": "g028",
+   "category": "block",
+   "from": {
+    "version": "1.19.2",
+    "kind": "class",
+    "name": "net.minecraft.world.level.block.EntityBlock"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "class",
+    "name": "net.minecraft.block.ITileEntityProvider"
+   },
+   "chain": "class-chain"
+  },
+  {
+   "id": "g029",
+   "category": "block",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.level.block.EntityBlock",
+    "name": "newBlockEntity",
+    "desc": "(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)Lnet/minecraft/world/level/block/entity/BlockEntity;"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.block.ITileEntityProvider",
+    "name": "createNewTileEntity",
+    "desc": "(Lnet/minecraft/world/World;I)Lnet/minecraft/tileentity/TileEntity;"
+   },
+   "srg1710": "func_149915_a",
+   "srg1165": "func_196283_a_",
+   "chain": "manual"
+  },
+  {
+   "id": "g030",
+   "category": "block",
+   "from": {
+    "version": "1.19.2",
+    "kind": "class",
+    "name": "net.minecraft.world.level.block.Blocks"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "class",
+    "name": "net.minecraft.init.Blocks"
+   },
+   "chain": "manual"
+  },
+  {
+   "id": "g031",
+   "category": "block",
+   "from": {
+    "version": "1.19.2",
+    "kind": "field",
+    "owner": "net.minecraft.world.level.block.Blocks",
+    "name": "STONE"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "field",
+    "owner": "net.minecraft.init.Blocks",
+    "name": "stone"
+   },
+   "srg1710": "field_150348_b",
+   "srg1165": "field_150348_b",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g032",
+   "category": "block",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.level.block.Block",
+    "name": "defaultBlockState",
+    "desc": "()Lnet/minecraft/world/level/block/state/BlockState;"
+   },
+   "to": null,
+   "chain": "manual"
+  },
+  {
+   "id": "g033",
+   "category": "blockentity",
+   "from": {
+    "version": "1.19.2",
+    "kind": "class",
+    "name": "net.minecraft.world.level.block.entity.BlockEntity"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "class",
+    "name": "net.minecraft.tileentity.TileEntity"
+   },
+   "chain": "class-chain"
+  },
+  {
+   "id": "g034",
+   "category": "blockentity",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.level.block.entity.BlockEntity",
+    "name": "getLevel",
+    "desc": "()Lnet/minecraft/world/level/Level;"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.tileentity.TileEntity",
+    "name": "getWorld",
+    "desc": "()Lnet/minecraft/world/World;"
+   },
+   "srg1710": "func_145831_w",
+   "srg1165": "func_145831_w",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g035",
+   "category": "blockentity",
+   "from": {
+    "version": "1.19.2",
+    "kind": "field",
+    "owner": "net.minecraft.world.level.block.entity.BlockEntity",
+    "name": "level"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "field",
+    "owner": "net.minecraft.tileentity.TileEntity",
+    "name": "worldObj"
+   },
+   "srg1710": "field_145850_b",
+   "srg1165": "field_145850_b",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g036",
+   "category": "blockentity",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.level.block.entity.BlockEntity",
+    "name": "setChanged",
+    "desc": "()V"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.tileentity.TileEntity",
+    "name": "markDirty",
+    "desc": "()V"
+   },
+   "srg1710": "func_70296_d",
+   "srg1165": "func_70296_d",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g037",
+   "category": "blockentity",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.level.block.entity.BlockEntity",
+    "name": "load",
+    "desc": "(Lnet/minecraft/nbt/CompoundTag;)V"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.tileentity.TileEntity",
+    "name": "readFromNBT",
+    "desc": "(Lnet/minecraft/nbt/NBTTagCompound;)V"
+   },
+   "srg1710": "func_145839_a",
+   "srg1165": "func_230337_a_",
+   "chain": "manual"
+  },
+  {
+   "id": "g038",
+   "category": "blockentity",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.level.block.entity.BlockEntity",
+    "name": "saveAdditional",
+    "desc": "(Lnet/minecraft/nbt/CompoundTag;)V"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.tileentity.TileEntity",
+    "name": "writeToNBT",
+    "desc": "(Lnet/minecraft/nbt/NBTTagCompound;)V"
+   },
+   "srg1710": "func_145841_b",
+   "chain": "manual"
+  },
+  {
+   "id": "g039",
+   "category": "blockentity",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.level.block.entity.BlockEntity",
+    "name": "setRemoved",
+    "desc": "()V"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.tileentity.TileEntity",
+    "name": "invalidate",
+    "desc": "()V"
+   },
+   "srg1710": "func_145843_s",
+   "srg1165": "func_145843_s",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g040",
+   "category": "blockentity",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.level.block.entity.BlockEntity",
+    "name": "isRemoved",
+    "desc": "()Z"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.tileentity.TileEntity",
+    "name": "isInvalid",
+    "desc": "()Z"
+   },
+   "srg1710": "func_145837_r",
+   "srg1165": "func_145837_r",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g041",
+   "category": "blockentity",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.level.block.entity.BlockEntity",
+    "name": "clearRemoved",
+    "desc": "()V"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.tileentity.TileEntity",
+    "name": "validate",
+    "desc": "()V"
+   },
+   "srg1710": "func_145829_t",
+   "srg1165": "func_145829_t",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g042",
+   "category": "blockentity",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.level.block.entity.BlockEntity",
+    "name": "getUpdatePacket",
+    "desc": "()Lnet/minecraft/network/protocol/Packet;"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.tileentity.TileEntity",
+    "name": "getDescriptionPacket",
+    "desc": "()Lnet/minecraft/network/Packet;"
+   },
+   "srg1710": "func_145844_m",
+   "srg1165": "func_189518_D_",
+   "chain": "manual"
+  },
+  {
+   "id": "g043",
+   "category": "blockentity",
+   "from": {
+    "version": "1.19.2",
+    "kind": "class",
+    "name": "net.minecraft.world.level.block.entity.ChestBlockEntity"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "class",
+    "name": "net.minecraft.tileentity.TileEntityChest"
+   },
+   "chain": "manual"
+  },
+  {
+   "id": "g044",
+   "category": "blockentity",
+   "from": {
+    "version": "1.19.2",
+    "kind": "class",
+    "name": "net.minecraft.world.level.block.entity.HopperBlockEntity"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "class",
+    "name": "net.minecraft.tileentity.TileEntityHopper"
+   },
+   "chain": "manual"
+  },
+  {
+   "id": "g045",
+   "category": "blockentity",
+   "from": {
+    "version": "1.19.2",
+    "kind": "class",
+    "name": "net.minecraft.world.level.block.entity.BlockEntityType"
+   },
+   "to": null,
+   "chain": "manual"
+  },
+  {
+   "id": "g046",
+   "category": "itemstack",
+   "from": {
+    "version": "1.19.2",
+    "kind": "class",
+    "name": "net.minecraft.world.item.ItemStack"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "class",
+    "name": "net.minecraft.item.ItemStack"
+   },
+   "chain": "class-chain"
+  },
+  {
+   "id": "g047",
+   "category": "itemstack",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.item.ItemStack",
+    "name": "getItem",
+    "desc": "()Lnet/minecraft/world/item/Item;"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.item.ItemStack",
+    "name": "getItem",
+    "desc": "()Lnet/minecraft/item/Item;"
+   },
+   "srg1710": "func_77973_b",
+   "srg1165": "func_77973_b",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g048",
+   "category": "itemstack",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.item.ItemStack",
+    "name": "getTag",
+    "desc": "()Lnet/minecraft/nbt/CompoundTag;"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.item.ItemStack",
+    "name": "getTagCompound",
+    "desc": "()Lnet/minecraft/nbt/NBTTagCompound;"
+   },
+   "srg1710": "func_77978_p",
+   "srg1165": "func_77978_p",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g049",
+   "category": "itemstack",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.item.ItemStack",
+    "name": "setTag",
+    "desc": "(Lnet/minecraft/nbt/CompoundTag;)V"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.item.ItemStack",
+    "name": "setTagCompound",
+    "desc": "(Lnet/minecraft/nbt/NBTTagCompound;)V"
+   },
+   "srg1710": "func_77982_d",
+   "srg1165": "func_77982_d",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g050",
+   "category": "itemstack",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.item.ItemStack",
+    "name": "copy",
+    "desc": "()Lnet/minecraft/world/item/ItemStack;"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.item.ItemStack",
+    "name": "copy",
+    "desc": "()Lnet/minecraft/item/ItemStack;"
+   },
+   "srg1710": "func_77946_l",
+   "srg1165": "func_77946_l",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g051",
+   "category": "itemstack",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.item.ItemStack",
+    "name": "getMaxStackSize",
+    "desc": "()I"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.item.ItemStack",
+    "name": "getMaxStackSize",
+    "desc": "()I"
+   },
+   "srg1710": "func_77976_d",
+   "srg1165": "func_77976_d",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g052",
+   "category": "itemstack",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.item.ItemStack",
+    "name": "getDamageValue",
+    "desc": "()I"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.item.ItemStack",
+    "name": "getCurrentDurability",
+    "desc": "()I"
+   },
+   "srg1710": "func_77952_i",
+   "srg1165": "func_77952_i",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g053",
+   "category": "itemstack",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.item.ItemStack",
+    "name": "save",
+    "desc": "(Lnet/minecraft/nbt/CompoundTag;)Lnet/minecraft/nbt/CompoundTag;"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.item.ItemStack",
+    "name": "writeToNBT",
+    "desc": "(Lnet/minecraft/nbt/NBTTagCompound;)Lnet/minecraft/nbt/NBTTagCompound;"
+   },
+   "srg1710": "func_77955_b",
+   "srg1165": "func_77955_b",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g054",
+   "category": "itemstack",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.item.ItemStack",
+    "name": "of",
+    "desc": "(Lnet/minecraft/nbt/CompoundTag;)Lnet/minecraft/world/item/ItemStack;"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.item.ItemStack",
+    "name": "loadItemStackFromNBT",
+    "desc": "(Lnet/minecraft/nbt/NBTTagCompound;)Lnet/minecraft/item/ItemStack;"
+   },
+   "srg1710": "func_77949_a",
+   "srg1165": "func_199557_a",
+   "chain": "manual"
+  },
+  {
+   "id": "g055",
+   "category": "itemstack",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.item.ItemStack",
+    "name": "getHoverName",
+    "desc": "()Lnet/minecraft/network/chat/Component;"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.item.ItemStack",
+    "name": "getDisplayName",
+    "desc": "()Ljava/lang/String;"
+   },
+   "srg1710": "func_82833_r",
+   "srg1165": "func_200301_q",
+   "chain": "manual"
+  },
+  {
+   "id": "g056",
+   "category": "itemstack",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.item.ItemStack",
+    "name": "isEmpty",
+    "desc": "()Z"
+   },
+   "to": null,
+   "chain": "manual"
+  },
+  {
+   "id": "g057",
+   "category": "itemstack",
+   "from": {
+    "version": "1.19.2",
+    "kind": "class",
+    "name": "net.minecraft.world.item.Item"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "class",
+    "name": "net.minecraft.item.Item"
+   },
+   "chain": "class-chain"
+  },
+  {
+   "id": "g058",
+   "category": "itemstack",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.item.Item",
+    "name": "getDescriptionId",
+    "desc": "()Ljava/lang/String;"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.item.Item",
+    "name": "getUnlocalizedName",
+    "desc": "()Ljava/lang/String;"
+   },
+   "srg1710": "func_77658_a",
+   "srg1165": "func_77658_a",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g059",
+   "category": "nbt",
+   "from": {
+    "version": "1.19.2",
+    "kind": "class",
+    "name": "net.minecraft.nbt.CompoundTag"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "class",
+    "name": "net.minecraft.nbt.NBTTagCompound"
+   },
+   "chain": "manual"
+  },
+  {
+   "id": "g060",
+   "category": "nbt",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.nbt.CompoundTag",
+    "name": "putInt",
+    "desc": "(Ljava/lang/String;I)V"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.nbt.NBTTagCompound",
+    "name": "setInteger",
+    "desc": "(Ljava/lang/String;I)V"
+   },
+   "srg1710": "func_74768_a",
+   "srg1165": "func_74768_a",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g061",
+   "category": "nbt",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.nbt.CompoundTag",
+    "name": "getInt",
+    "desc": "(Ljava/lang/String;)I"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.nbt.NBTTagCompound",
+    "name": "getInteger",
+    "desc": "(Ljava/lang/String;)I"
+   },
+   "srg1710": "func_74762_e",
+   "srg1165": "func_74762_e",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g062",
+   "category": "nbt",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.nbt.CompoundTag",
+    "name": "putString",
+    "desc": "(Ljava/lang/String;Ljava/lang/String;)V"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.nbt.NBTTagCompound",
+    "name": "setString",
+    "desc": "(Ljava/lang/String;Ljava/lang/String;)V"
+   },
+   "srg1710": "func_74778_a",
+   "srg1165": "func_74778_a",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g063",
+   "category": "nbt",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.nbt.CompoundTag",
+    "name": "getString",
+    "desc": "(Ljava/lang/String;)Ljava/lang/String;"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.nbt.NBTTagCompound",
+    "name": "getString",
+    "desc": "(Ljava/lang/String;)Ljava/lang/String;"
+   },
+   "srg1710": "func_74779_i",
+   "srg1165": "func_74779_i",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g064",
+   "category": "nbt",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.nbt.CompoundTag",
+    "name": "put",
+    "desc": "(Ljava/lang/String;Lnet/minecraft/nbt/Tag;)Lnet/minecraft/nbt/Tag;"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.nbt.NBTTagCompound",
+    "name": "setTag",
+    "desc": "(Ljava/lang/String;Lnet/minecraft/nbt/NBTBase;)V"
+   },
+   "srg1710": "func_74782_a",
+   "srg1165": "func_218657_a",
+   "chain": "manual"
+  },
+  {
+   "id": "g065",
+   "category": "nbt",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.nbt.CompoundTag",
+    "name": "getCompound",
+    "desc": "(Ljava/lang/String;)Lnet/minecraft/nbt/CompoundTag;"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.nbt.NBTTagCompound",
+    "name": "getCompoundTag",
+    "desc": "(Ljava/lang/String;)Lnet/minecraft/nbt/NBTTagCompound;"
+   },
+   "srg1710": "func_74775_l",
+   "srg1165": "func_74775_l",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g066",
+   "category": "nbt",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.nbt.CompoundTag",
+    "name": "contains",
+    "desc": "(Ljava/lang/String;)Z"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.nbt.NBTTagCompound",
+    "name": "hasKey",
+    "desc": "(Ljava/lang/String;)Z"
+   },
+   "srg1710": "func_74764_b",
+   "srg1165": "func_74764_b",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g067",
+   "category": "nbt",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.nbt.CompoundTag",
+    "name": "getList",
+    "desc": "(Ljava/lang/String;I)Lnet/minecraft/nbt/ListTag;"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.nbt.NBTTagCompound",
+    "name": "getTagList",
+    "desc": "(Ljava/lang/String;I)Lnet/minecraft/nbt/NBTTagList;"
+   },
+   "srg1710": "func_150295_c",
+   "srg1165": "func_150295_c",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g068",
+   "category": "nbt",
+   "from": {
+    "version": "1.19.2",
+    "kind": "class",
+    "name": "net.minecraft.nbt.ListTag"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "class",
+    "name": "net.minecraft.nbt.NBTTagList"
+   },
+   "chain": "manual"
+  },
+  {
+   "id": "g069",
+   "category": "nbt",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.nbt.ListTag",
+    "name": "getCompound",
+    "desc": "(I)Lnet/minecraft/nbt/CompoundTag;"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.nbt.NBTTagList",
+    "name": "getCompoundTagAt",
+    "desc": "(I)Lnet/minecraft/nbt/NBTTagCompound;"
+   },
+   "srg1710": "func_150305_b",
+   "srg1165": "func_150305_b",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g070",
+   "category": "nbt",
+   "from": {
+    "version": "1.19.2",
+    "kind": "class",
+    "name": "net.minecraft.nbt.Tag"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "class",
+    "name": "net.minecraft.nbt.NBTBase"
+   },
+   "chain": "manual"
+  },
+  {
+   "id": "g071",
+   "category": "menu",
+   "from": {
+    "version": "1.19.2",
+    "kind": "class",
+    "name": "net.minecraft.world.inventory.AbstractContainerMenu"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "class",
+    "name": "net.minecraft.inventory.Container"
+   },
+   "chain": "manual"
+  },
+  {
+   "id": "g072",
+   "category": "menu",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.inventory.AbstractContainerMenu",
+    "name": "addSlot",
+    "desc": "(Lnet/minecraft/world/inventory/Slot;)Lnet/minecraft/world/inventory/Slot;"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.inventory.Container",
+    "name": "addSlotToContainer",
+    "desc": "(Lnet/minecraft/inventory/Slot;)Lnet/minecraft/inventory/Slot;"
+   },
+   "srg1710": "func_75146_a",
+   "srg1165": "func_75146_a",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g073",
+   "category": "menu",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.inventory.AbstractContainerMenu",
+    "name": "quickMoveStack",
+    "desc": "(Lnet/minecraft/world/entity/player/Player;I)Lnet/minecraft/world/item/ItemStack;"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.inventory.Container",
+    "name": "transferStackInSlot",
+    "desc": "(Lnet/minecraft/entity/player/EntityPlayer;I)Lnet/minecraft/item/ItemStack;"
+   },
+   "srg1710": "func_82846_b",
+   "srg1165": "func_82846_b",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g074",
+   "category": "menu",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.inventory.AbstractContainerMenu",
+    "name": "stillValid",
+    "desc": "(Lnet/minecraft/world/entity/player/Player;)Z"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.inventory.Container",
+    "name": "canInteractWith",
+    "desc": "(Lnet/minecraft/entity/player/EntityPlayer;)Z"
+   },
+   "srg1710": "func_75145_c",
+   "srg1165": "func_75145_c",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g075",
+   "category": "menu",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.inventory.AbstractContainerMenu",
+    "name": "broadcastChanges",
+    "desc": "()V"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.inventory.Container",
+    "name": "detectAndSendChanges",
+    "desc": "()V"
+   },
+   "srg1710": "func_75142_b",
+   "srg1165": "func_75142_b",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g076",
+   "category": "menu",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.inventory.AbstractContainerMenu",
+    "name": "moveItemStackTo",
+    "desc": "(Lnet/minecraft/world/item/ItemStack;IIZ)Z"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.inventory.Container",
+    "name": "mergeItemStack",
+    "desc": "(Lnet/minecraft/item/ItemStack;IIZ)Z"
+   },
+   "srg1710": "func_75135_a",
+   "srg1165": "func_75135_a",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g077",
+   "category": "menu",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.inventory.AbstractContainerMenu",
+    "name": "removed",
+    "desc": "(Lnet/minecraft/world/entity/player/Player;)V"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.inventory.Container",
+    "name": "onContainerClosed",
+    "desc": "(Lnet/minecraft/entity/player/EntityPlayer;)V"
+   },
+   "srg1710": "func_75134_a",
+   "srg1165": "func_75134_a",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g078",
+   "category": "menu",
+   "from": {
+    "version": "1.19.2",
+    "kind": "class",
+    "name": "net.minecraft.world.inventory.Slot"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "class",
+    "name": "net.minecraft.inventory.Slot"
+   },
+   "chain": "manual"
+  },
+  {
+   "id": "g079",
+   "category": "menu",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.inventory.Slot",
+    "name": "mayPlace",
+    "desc": "(Lnet/minecraft/world/item/ItemStack;)Z"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.inventory.Slot",
+    "name": "isItemValid",
+    "desc": "(Lnet/minecraft/item/ItemStack;)Z"
+   },
+   "srg1710": "func_75214_a",
+   "srg1165": "func_75214_a",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g080",
+   "category": "menu",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.inventory.Slot",
+    "name": "getItem",
+    "desc": "()Lnet/minecraft/world/item/ItemStack;"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.inventory.Slot",
+    "name": "getStack",
+    "desc": "()Lnet/minecraft/item/ItemStack;"
+   },
+   "srg1710": "func_75211_c",
+   "srg1165": "func_75211_c",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g081",
+   "category": "menu",
+   "from": {
+    "version": "1.19.2",
+    "kind": "class",
+    "name": "net.minecraft.world.Container"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "class",
+    "name": "net.minecraft.inventory.IInventory"
+   },
+   "chain": "class-chain"
+  },
+  {
+   "id": "g082",
+   "category": "menu",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.world.Container",
+    "name": "getContainerSize",
+    "desc": "()I"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.inventory.IInventory",
+    "name": "getSizeInventory",
+    "desc": "()I"
+   },
+   "srg1710": "func_70302_i_",
+   "srg1165": "func_70302_i_",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g083",
+   "category": "menu",
+   "from": {
+    "version": "1.19.2",
+    "kind": "class",
+    "name": "net.minecraft.world.inventory.MenuType"
+   },
+   "to": null,
+   "chain": "manual"
+  },
+  {
+   "id": "g084",
+   "category": "gui",
+   "from": {
+    "version": "1.19.2",
+    "kind": "class",
+    "name": "net.minecraft.client.gui.screens.inventory.AbstractContainerScreen"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "class",
+    "name": "net.minecraft.client.gui.inventory.GuiContainer"
+   },
+   "chain": "manual"
+  },
+  {
+   "id": "g085",
+   "category": "gui",
+   "from": {
+    "version": "1.19.2",
+    "kind": "field",
+    "owner": "net.minecraft.client.gui.screens.inventory.AbstractContainerScreen",
+    "name": "leftPos"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "field",
+    "owner": "net.minecraft.client.gui.inventory.GuiContainer",
+    "name": "guiLeft"
+   },
+   "srg1710": "field_147003_i",
+   "srg1165": "field_147003_i",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g086",
+   "category": "gui",
+   "from": {
+    "version": "1.19.2",
+    "kind": "field",
+    "owner": "net.minecraft.client.gui.screens.inventory.AbstractContainerScreen",
+    "name": "imageWidth"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "field",
+    "owner": "net.minecraft.client.gui.inventory.GuiContainer",
+    "name": "xSize"
+   },
+   "srg1710": "field_146999_f",
+   "srg1165": "field_146999_f",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g087",
+   "category": "gui",
+   "from": {
+    "version": "1.19.2",
+    "kind": "class",
+    "name": "net.minecraft.client.gui.screens.Screen"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "class",
+    "name": "net.minecraft.client.gui.GuiScreen"
+   },
+   "chain": "manual"
+  },
+  {
+   "id": "g088",
+   "category": "gui",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.client.gui.screens.Screen",
+    "name": "isPauseScreen",
+    "desc": "()Z"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.client.gui.GuiScreen",
+    "name": "doesGuiPauseGame",
+    "desc": "()Z"
+   },
+   "srg1710": "func_73868_f",
+   "srg1165": "func_231177_au__",
+   "chain": "manual"
+  },
+  {
+   "id": "g089",
+   "category": "gui",
+   "from": {
+    "version": "1.19.2",
+    "kind": "class",
+    "name": "net.minecraft.client.gui.Font"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "class",
+    "name": "net.minecraft.client.gui.FontRenderer"
+   },
+   "chain": "class-chain"
+  },
+  {
+   "id": "g090",
+   "category": "gui",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.client.Minecraft",
+    "name": "getInstance",
+    "desc": "()Lnet/minecraft/client/Minecraft;"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.client.Minecraft",
+    "name": "getMinecraft",
+    "desc": "()Lnet/minecraft/client/Minecraft;"
+   },
+   "srg1710": "func_71410_x",
+   "srg1165": "func_71410_x",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g091",
+   "category": "network",
+   "from": {
+    "version": "1.19.2",
+    "kind": "class",
+    "name": "net.minecraft.network.FriendlyByteBuf"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "class",
+    "name": "net.minecraft.network.PacketBuffer"
+   },
+   "chain": "class-chain"
+  },
+  {
+   "id": "g092",
+   "category": "network",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.network.FriendlyByteBuf",
+    "name": "writeVarInt",
+    "desc": "(I)Lnet/minecraft/network/FriendlyByteBuf;"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.network.PacketBuffer",
+    "name": "writeVarIntToBuffer",
+    "desc": "(I)V"
+   },
+   "srg1710": "func_150787_b",
+   "srg1165": "func_150787_b",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g093",
+   "category": "network",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.network.FriendlyByteBuf",
+    "name": "readVarInt",
+    "desc": "()I"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.network.PacketBuffer",
+    "name": "readVarIntFromBuffer",
+    "desc": "()I"
+   },
+   "srg1710": "func_150792_a",
+   "srg1165": "func_150792_a",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g094",
+   "category": "network",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.network.FriendlyByteBuf",
+    "name": "writeNbt",
+    "desc": "(Lnet/minecraft/nbt/CompoundTag;)Lnet/minecraft/network/FriendlyByteBuf;"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.network.PacketBuffer",
+    "name": "writeNBTTagCompoundToBuffer",
+    "desc": "(Lnet/minecraft/nbt/NBTTagCompound;)V"
+   },
+   "srg1710": "func_150786_a",
+   "srg1165": "func_150786_a",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g095",
+   "category": "network",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.network.FriendlyByteBuf",
+    "name": "readNbt",
+    "desc": "()Lnet/minecraft/nbt/CompoundTag;"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.network.PacketBuffer",
+    "name": "readNBTTagCompoundFromBuffer",
+    "desc": "()Lnet/minecraft/nbt/NBTTagCompound;"
+   },
+   "srg1710": "func_150793_b",
+   "srg1165": "func_150793_b",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g096",
+   "category": "network",
+   "from": {
+    "version": "1.19.2",
+    "kind": "method",
+    "owner": "net.minecraft.network.FriendlyByteBuf",
+    "name": "writeItem",
+    "desc": "(Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/network/FriendlyByteBuf;"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "method",
+    "owner": "net.minecraft.network.PacketBuffer",
+    "name": "writeItemStackToBuffer",
+    "desc": "(Lnet/minecraft/item/ItemStack;)V"
+   },
+   "srg1710": "func_150788_a",
+   "srg1165": "func_150788_a",
+   "chain": "srg-chain"
+  },
+  {
+   "id": "g097",
+   "category": "network",
+   "from": {
+    "version": "1.19.2",
+    "kind": "class",
+    "name": "net.minecraft.network.Connection"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "class",
+    "name": "net.minecraft.network.NetworkManager"
+   },
+   "chain": "class-chain"
+  },
+  {
+   "id": "g098",
+   "category": "network",
+   "from": {
+    "version": "1.19.2",
+    "kind": "class",
+    "name": "net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "class",
+    "name": "net.minecraft.network.play.server.S35PacketUpdateTileEntity"
+   },
+   "chain": "manual"
+  },
+  {
+   "id": "g099",
+   "category": "network",
+   "from": {
+    "version": "1.19.2",
+    "kind": "class",
+    "name": "net.minecraft.server.network.ServerGamePacketListenerImpl"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "class",
+    "name": "net.minecraft.network.NetHandlerPlayServer"
+   },
+   "chain": "manual"
+  },
+  {
+   "id": "g100",
+   "category": "network",
+   "from": {
+    "version": "1.19.2",
+    "kind": "field",
+    "owner": "net.minecraft.server.level.ServerPlayer",
+    "name": "connection"
+   },
+   "to": {
+    "version": "1.7.10",
+    "kind": "field",
+    "owner": "net.minecraft.entity.player.EntityPlayerMP",
+    "name": "playerNetServerHandler"
+   },
+   "srg1710": "field_71135_a",
+   "srg1165": "field_71135_a",
+   "chain": "srg-chain"
+  }
+ ]
+}

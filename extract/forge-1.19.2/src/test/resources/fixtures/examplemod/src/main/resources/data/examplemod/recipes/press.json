@@ -1,0 +1,6 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["III", "I I", "SSS"],
+  "key": {"I": {"tag": "forge:ingots/tin"}, "S": {"item": "minecraft:stick"}},
+  "result": {"item": "examplemod:press"}
+}

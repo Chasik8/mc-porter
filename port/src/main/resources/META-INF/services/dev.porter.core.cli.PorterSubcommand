@@ -1,0 +1,9 @@
+dev.porter.port.PortCommand
+dev.porter.port.ToolCommands$ClosureCmd
+dev.porter.port.ToolCommands$StubsCmd
+dev.porter.port.ToolCommands$PassesCmd
+dev.porter.port.ToolCommands$CastFixCmd
+dev.porter.port.ToolCommands$SymbolsCmd
+dev.porter.port.ToolCommands$ObfCheckCmd
+dev.porter.port.ToolCommands$CoverageCmd
+dev.porter.port.ToolCommands$DraftsCmd

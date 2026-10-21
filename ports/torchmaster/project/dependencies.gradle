@@ -1,0 +1,11 @@
+// No external dependencies: standalone port.
+dependencies {
+}
+
+// porter: the compile classpath for `porter port` (classpath.file: build/porter-cp.txt); run once: ./gradlew porterClasspath
+tasks.register('porterClasspath') {
+    def cp = sourceSets.main.compileClasspath
+    def out = layout.buildDirectory.file('porter-cp.txt')
+    inputs.files(cp) // builds the classpath's own outputs first (RFG's patched Minecraft classes)
+    doLast { out.get().asFile.text = cp.files.join('\n') }
+}

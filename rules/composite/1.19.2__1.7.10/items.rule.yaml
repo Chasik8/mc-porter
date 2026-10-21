@@ -1,0 +1,270 @@
+# Hand-written rules Forge 1.19.2 -> Forge 1.7.10 (10.13.4.1614, MCP stable_12). Every source member was
+# checked against the Mojang 1.19.2 mappings, every target member against the MCP 1.7.10 jar (javap).
+# Synthetic tests only. Generated from a compact spec; edit freely, keep one test per rule at least.
+# ItemStack: count accessors become the public stackSize field, tag accessors are renamed.
+schemaVersion: 1
+id: r-1.19.2-1.7.10-type-itemstack
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: "net.minecraft.world.item.ItemStack"
+replace: "net.minecraft.item.ItemStack"
+confidence: 0.99
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "import net.minecraft.world.item.ItemStack;"
+    after: "import net.minecraft.item.ItemStack;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-type-item
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: "net.minecraft.world.item.Item"
+replace: "net.minecraft.item.Item"
+confidence: 0.99
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "import net.minecraft.world.item.Item;"
+    after: "import net.minecraft.item.Item;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-itemstack-getcount
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.item.ItemStack#getCount()"
+  bind: { recv: "$s" }
+replace: "$s.stackSize"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "ItemStack s; int n; CompoundTag t; import net.minecraft.nbt.CompoundTag"
+    before: "int c = s.getCount();"
+    after: "int c = s.stackSize;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-itemstack-setcount
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.item.ItemStack#setCount(int)"
+  bind: { recv: "$s", args: ["$a0"] }
+replace: "$s.stackSize = $a0"
+preconditions: ["statement"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "ItemStack s; int n; CompoundTag t; import net.minecraft.nbt.CompoundTag"
+    before: "s.setCount(n);"
+    after: "s.stackSize = n;"
+  - name: "only as a statement"
+    context: "ItemStack s; int n; CompoundTag t; import net.minecraft.nbt.CompoundTag"
+    before: "int r = s.setCount(n) == null ? 0 : 1;"
+    after: "// TODO(porter:precondition) r-1.19.2-1.7.10-itemstack-setcount: statement int r = s.setCount(n) == null ? 0 : 1;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-itemstack-grow
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.item.ItemStack#grow(int)"
+  bind: { recv: "$s", args: ["$a0"] }
+replace: "$s.stackSize += $a0"
+preconditions: ["statement"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "ItemStack s; int n; CompoundTag t; import net.minecraft.nbt.CompoundTag"
+    before: "s.grow(n);"
+    after: "s.stackSize += n;"
+  - name: "only as a statement"
+    context: "ItemStack s; int n; CompoundTag t; import net.minecraft.nbt.CompoundTag"
+    before: "int r = s.grow(n) == null ? 0 : 1;"
+    after: "// TODO(porter:precondition) r-1.19.2-1.7.10-itemstack-grow: statement int r = s.grow(n) == null ? 0 : 1;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-itemstack-shrink
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.item.ItemStack#shrink(int)"
+  bind: { recv: "$s", args: ["$a0"] }
+replace: "$s.stackSize -= $a0"
+preconditions: ["statement"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "ItemStack s; int n; CompoundTag t; import net.minecraft.nbt.CompoundTag"
+    before: "s.shrink(n);"
+    after: "s.stackSize -= n;"
+  - name: "only as a statement"
+    context: "ItemStack s; int n; CompoundTag t; import net.minecraft.nbt.CompoundTag"
+    before: "int r = s.shrink(n) == null ? 0 : 1;"
+    after: "// TODO(porter:precondition) r-1.19.2-1.7.10-itemstack-shrink: statement int r = s.shrink(n) == null ? 0 : 1;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-itemstack-gettag
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.world.item.ItemStack#getTag()"
+  bind: { recv: "$s" }
+replace: "$s.getTagCompound()"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "ItemStack s; int n; CompoundTag t; import net.minecraft.nbt.CompoundTag"
+    before: "Object c = s.getTag();"
+    after: "Object c = s.getTagCompound();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-itemstack-settag
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.world.item.ItemStack#setTag(net.minecraft.nbt.CompoundTag)"
+  bind: { recv: "$s", args: ["$a0"] }
+replace: "$s.setTagCompound($a0)"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "ItemStack s; int n; CompoundTag t; import net.minecraft.nbt.CompoundTag"
+    before: "s.setTag(t);"
+    after: "s.setTagCompound(t);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-itemstack-hastag
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.world.item.ItemStack#hasTag()"
+  bind: { recv: "$s" }
+replace: "$s.hasTagCompound()"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "ItemStack s; int n; CompoundTag t; import net.minecraft.nbt.CompoundTag"
+    before: "boolean c = s.hasTag();"
+    after: "boolean c = s.hasTagCompound();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-itemstack-save
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.world.item.ItemStack#save(net.minecraft.nbt.CompoundTag)"
+  bind: { recv: "$s", args: ["$a0"] }
+replace: "$s.writeToNBT($a0)"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "ItemStack s; int n; CompoundTag t; import net.minecraft.nbt.CompoundTag"
+    before: "Object c = s.save(t);"
+    after: "Object c = s.writeToNBT(t);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-itemstack-getitem
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.world.item.ItemStack#getItem()"
+  bind: { recv: "$s" }
+replace: "$s.getItem()"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "ItemStack s; int n; CompoundTag t; import net.minecraft.nbt.CompoundTag"
+    before: "Object c = s.getItem();"
+    after: "Object c = s.getItem();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-itemstack-copy
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.world.item.ItemStack#copy()"
+  bind: { recv: "$s" }
+replace: "$s.copy()"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "ItemStack s; int n; CompoundTag t; import net.minecraft.nbt.CompoundTag"
+    before: "Object c = s.copy();"
+    after: "Object c = s.copy();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-itemstack-getdamagevalue
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.world.item.ItemStack#getDamageValue()"
+  bind: { recv: "$s" }
+replace: "$s.getItemDamage()"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "ItemStack s; int n; CompoundTag t; import net.minecraft.nbt.CompoundTag"
+    before: "int c = s.getDamageValue();"
+    after: "int c = s.getItemDamage();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-itemstack-setdamagevalue
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.world.item.ItemStack#setDamageValue(int)"
+  bind: { recv: "$s", args: ["$a0"] }
+replace: "$s.setItemDamage($a0)"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "ItemStack s; int n; CompoundTag t; import net.minecraft.nbt.CompoundTag"
+    before: "s.setDamageValue(n);"
+    after: "s.setItemDamage(n);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-itemstack-getmaxstacksize
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.world.item.ItemStack#getMaxStackSize()"
+  bind: { recv: "$s" }
+replace: "$s.getMaxStackSize()"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "ItemStack s; int n; CompoundTag t; import net.minecraft.nbt.CompoundTag"
+    before: "int c = s.getMaxStackSize();"
+    after: "int c = s.getMaxStackSize();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-itemstack-of
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.world.item.ItemStack#of(net.minecraft.nbt.CompoundTag)"
+  bind: { recv: "$s", args: ["$a0"] }
+replace: "$s.loadItemStackFromNBT($a0)"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "CompoundTag t; import net.minecraft.nbt.CompoundTag"
+    before: "Object o = ItemStack.of(t);"
+    after: "Object o = ItemStack.loadItemStackFromNBT(t);"

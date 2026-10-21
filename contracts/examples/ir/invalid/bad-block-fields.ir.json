@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "source": { "version": "forge-1.19.2" },
+  "nodes": [
+    {
+      "kind": "block",
+      "id": "copper_press",
+      "hardness": "hard",
+      "lightLevel": 20,
+      "colour": "red"
+    },
+    {
+      "kind": "unknown",
+      "provenance": { "file": "src/Foo.java", "line": 3, "version": "forge-1.19.2" }
+    },
+    {
+      "kind": "gizmo",
+      "id": "examplemod:gizmo",
+      "provenance": { "file": "src/Foo.java", "version": "forge-1.19.2" }
+    }
+  ]
+}

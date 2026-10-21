@@ -1,0 +1,8 @@
+[{
+  "modid": "portertestkit",
+  "name": "porter testkit",
+  "description": "Scenario executor for porter differential tests. Inert unless -Dporter.plan is set.",
+  "version": "0.1.0",
+  "mcversion": "1.7.10",
+  "authorList": ["porter"]
+}]

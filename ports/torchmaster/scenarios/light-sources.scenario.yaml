@@ -1,0 +1,55 @@
+schemaVersion: 1
+id: light-sources
+description: >-
+  Light levels around an invisible light (air-like light source, placed in a section that holds a block) and around
+  a Mega Torch: block light 15 at the source, minus one per block of distance (Manhattan) in open air.
+  The plan touches the 5x5 chunks around the origin first (air at y=200): the testkit force-loads touched chunks, and
+  both light engines only light a block when its neighbour chunks are loaded.
+world: flat-void
+maxTicks: 100
+tolerance:
+  "*": { abs: 0 }
+steps:
+  - place_block: { at: [-24, 200, -24], block: "minecraft:air" }
+  - place_block: { at: [-24, 200, -8], block: "minecraft:air" }
+  - place_block: { at: [-24, 200, 8], block: "minecraft:air" }
+  - place_block: { at: [-24, 200, 24], block: "minecraft:air" }
+  - place_block: { at: [-24, 200, 40], block: "minecraft:air" }
+  - place_block: { at: [-8, 200, -24], block: "minecraft:air" }
+  - place_block: { at: [-8, 200, -8], block: "minecraft:air" }
+  - place_block: { at: [-8, 200, 8], block: "minecraft:air" }
+  - place_block: { at: [-8, 200, 24], block: "minecraft:air" }
+  - place_block: { at: [-8, 200, 40], block: "minecraft:air" }
+  - place_block: { at: [8, 200, -24], block: "minecraft:air" }
+  - place_block: { at: [8, 200, -8], block: "minecraft:air" }
+  - place_block: { at: [8, 200, 8], block: "minecraft:air" }
+  - place_block: { at: [8, 200, 24], block: "minecraft:air" }
+  - place_block: { at: [8, 200, 40], block: "minecraft:air" }
+  - place_block: { at: [24, 200, -24], block: "minecraft:air" }
+  - place_block: { at: [24, 200, -8], block: "minecraft:air" }
+  - place_block: { at: [24, 200, 8], block: "minecraft:air" }
+  - place_block: { at: [24, 200, 24], block: "minecraft:air" }
+  - place_block: { at: [24, 200, 40], block: "minecraft:air" }
+  - place_block: { at: [40, 200, -24], block: "minecraft:air" }
+  - place_block: { at: [40, 200, -8], block: "minecraft:air" }
+  - place_block: { at: [40, 200, 8], block: "minecraft:air" }
+  - place_block: { at: [40, 200, 24], block: "minecraft:air" }
+  - place_block: { at: [40, 200, 40], block: "minecraft:air" }
+  - place_block: { at: [0, 70, 0], block: "minecraft:stone" }
+  - place_block: { at: [0, 64, 0], block: "torchmaster:invisible_light" }
+  - place_block: { at: [10, 64, 0], block: "torchmaster:megatorch" }
+  - tick: 10
+  - sample: { what: ["light:[0,64,0]", "light:[1,64,0]", "light:[3,64,0]", "light:[0,64,5]", "light:[6,64,0]", "light:[0,67,-4]", "light:[2,62,2]", "light:[10,64,0]", "light:[11,64,0]", "light:[14,64,0]", "light:[10,64,7]", "light:[10,70,0]"] }
+  - assert: { expr: "block:[0,64,0] == 'torchmaster:invisible_light'", message: "light placed (section not air-only)" }
+  - assert: { expr: "light:[0,64,0] == 15", message: "invisible light, distance 0" }
+  - assert: { expr: "light:[1,64,0] == 14", message: "invisible light, distance 1" }
+  - assert: { expr: "light:[3,64,0] == 12", message: "invisible light, distance 3" }
+  - assert: { expr: "light:[0,64,5] == 10", message: "invisible light, distance 5" }
+  - assert: { expr: "light:[6,64,0] == 11", message: "invisible light at distance 6, mega torch at 4: the brighter wins" }
+  - assert: { expr: "light:[0,67,-4] == 8", message: "invisible light, distance 7" }
+  - assert: { expr: "light:[2,62,2] == 9", message: "invisible light, distance 6" }
+  - assert: { expr: "light:[10,64,0] == 15", message: "mega torch, distance 0" }
+  - assert: { expr: "light:[11,64,0] == 14", message: "mega torch, distance 1" }
+  - assert: { expr: "light:[14,64,0] == 11", message: "mega torch, distance 4" }
+  - assert: { expr: "light:[10,64,7] == 8", message: "mega torch, distance 7" }
+  - assert: { expr: "light:[10,70,0] == 9", message: "mega torch, distance 6" }

@@ -1,0 +1,1 @@
+{ "replace": false, "values": ["examplemod:tin_ingot", {"id": "#forge:ingots/other_tin", "required": false}] }

@@ -1,0 +1,9 @@
+schemaVersion: 1
+id: furnace-gui
+description: Open the vanilla furnace GUI on a real client, dump slot coordinates, compare with the IR menu node, screenshot.
+world: flat-void
+side: client
+maxTicks: 100
+steps:
+  - place_block: { at: [0, 64, 0], block: "minecraft:furnace", facing: north }
+  - open_gui: { at: [0, 64, 0], menu: "minecraft:furnace", screenshot: true }

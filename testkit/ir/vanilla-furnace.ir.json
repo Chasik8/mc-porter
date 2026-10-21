@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "source": { "version": "forge-1.7.10", "modId": "minecraft", "tool": "testkit (hand-written from the vanilla containers)" },
+  "nodes": [
+    {
+      "kind": "menu",
+      "id": "minecraft:furnace",
+      "title": "container.furnace",
+      "size": { "width": 176, "height": 166 },
+      "texture": { "path": "minecraft:textures/gui/container/furnace.png" },
+      "slots": [
+        { "index": 0, "x": 56, "y": 17, "role": "input" },
+        { "index": 1, "x": 56, "y": 53, "role": "fuel" },
+        { "index": 2, "x": 116, "y": 35, "role": "output" }
+      ],
+      "playerInventory": { "x": 8, "y": 84, "hotbarY": 142 },
+      "provenance": { "file": "manual", "line": 0, "version": "forge-1.7.10", "via": "manual" }
+    }
+  ]
+}

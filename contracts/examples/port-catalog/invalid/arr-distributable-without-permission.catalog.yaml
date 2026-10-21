@@ -1,0 +1,11 @@
+# invalid: an all-rights-reserved mod may only be marked distributable with the author's permission
+schemaVersion: 1
+ports:
+  - id: closedmod
+    mod: { name: Closed Mod, version: "1.0" }
+    from: forge-1.19.2
+    to: forge-1.7.10
+    mode: full
+    status: builds
+    licence: ARR
+    distributable: true

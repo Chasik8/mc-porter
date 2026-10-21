@@ -1,0 +1,255 @@
+# Hand-written rules Forge 1.19.2 -> Forge 1.7.10 (10.13.4.1614, MCP stable_12). Every source member was
+# checked against the Mojang 1.19.2 mappings, every target member against the MCP 1.7.10 jar (javap).
+# Synthetic tests only. Generated from a compact spec; edit freely, keep one test per rule at least.
+# Mth -> MathHelper static helpers.
+schemaVersion: 1
+id: r-1.19.2-1.7.10-type-mth
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: "net.minecraft.util.Mth"
+replace: "net.minecraft.util.MathHelper"
+confidence: 0.99
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "import net.minecraft.util.Mth;"
+    after: "import net.minecraft.util.MathHelper;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-mth-clamp-float
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.util.Mth#clamp(float, float, float)"
+  bind: { args: ["$a0", "$a1", "$a2"] }
+replace: "MathHelper.clamp_float($a0, $a1, $a2)"
+imports: ["net.minecraft.util.MathHelper"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "float f; int i; double d"
+    before: "Object o = Mth.clamp(f, 0f, 1f);"
+    after: "Object o = MathHelper.clamp_float(f, 0f, 1f);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-mth-clamp-int
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.util.Mth#clamp(int, int, int)"
+  bind: { args: ["$a0", "$a1", "$a2"] }
+replace: "MathHelper.clamp_int($a0, $a1, $a2)"
+imports: ["net.minecraft.util.MathHelper"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "float f; int i; double d"
+    before: "Object o = Mth.clamp(i, 0, 9);"
+    after: "Object o = MathHelper.clamp_int(i, 0, 9);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-mth-clamp-double
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.util.Mth#clamp(double, double, double)"
+  bind: { args: ["$a0", "$a1", "$a2"] }
+replace: "MathHelper.clamp_double($a0, $a1, $a2)"
+imports: ["net.minecraft.util.MathHelper"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "float f; int i; double d"
+    before: "Object o = Mth.clamp(d, 0.0, 1.0);"
+    after: "Object o = MathHelper.clamp_double(d, 0.0, 1.0);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-mth-floor-double
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.util.Mth#floor(double)"
+  bind: { args: ["$a0"] }
+replace: "MathHelper.floor_double($a0)"
+imports: ["net.minecraft.util.MathHelper"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "float f; int i; double d"
+    before: "Object o = Mth.floor(d);"
+    after: "Object o = MathHelper.floor_double(d);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-mth-floor-float
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.util.Mth#floor(float)"
+  bind: { args: ["$a0"] }
+replace: "MathHelper.floor_float($a0)"
+imports: ["net.minecraft.util.MathHelper"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "float f; int i; double d"
+    before: "Object o = Mth.floor(f);"
+    after: "Object o = MathHelper.floor_float(f);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-mth-ceil-double
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.util.Mth#ceil(double)"
+  bind: { args: ["$a0"] }
+replace: "MathHelper.ceiling_double_int($a0)"
+imports: ["net.minecraft.util.MathHelper"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "float f; int i; double d"
+    before: "Object o = Mth.ceil(d);"
+    after: "Object o = MathHelper.ceiling_double_int(d);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-mth-ceil-float
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.util.Mth#ceil(float)"
+  bind: { args: ["$a0"] }
+replace: "MathHelper.ceiling_float_int($a0)"
+imports: ["net.minecraft.util.MathHelper"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "float f; int i; double d"
+    before: "Object o = Mth.ceil(f);"
+    after: "Object o = MathHelper.ceiling_float_int(f);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-mth-sqrt-float
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.util.Mth#sqrt(float)"
+  bind: { args: ["$a0"] }
+replace: "MathHelper.sqrt_float($a0)"
+imports: ["net.minecraft.util.MathHelper"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "float f; int i; double d"
+    before: "Object o = Mth.sqrt(f);"
+    after: "Object o = MathHelper.sqrt_float(f);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-mth-abs-float
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.util.Mth#abs(float)"
+  bind: { args: ["$a0"] }
+replace: "MathHelper.abs($a0)"
+imports: ["net.minecraft.util.MathHelper"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "float f; int i; double d"
+    before: "Object o = Mth.abs(f);"
+    after: "Object o = MathHelper.abs(f);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-mth-abs-int
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.util.Mth#abs(int)"
+  bind: { args: ["$a0"] }
+replace: "MathHelper.abs_int($a0)"
+imports: ["net.minecraft.util.MathHelper"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "float f; int i; double d"
+    before: "Object o = Mth.abs(i);"
+    after: "Object o = MathHelper.abs_int(i);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-mth-sin-float
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.util.Mth#sin(float)"
+  bind: { args: ["$a0"] }
+replace: "MathHelper.sin($a0)"
+imports: ["net.minecraft.util.MathHelper"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "float f; int i; double d"
+    before: "Object o = Mth.sin(f);"
+    after: "Object o = MathHelper.sin(f);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-mth-cos-float
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.util.Mth#cos(float)"
+  bind: { args: ["$a0"] }
+replace: "MathHelper.cos($a0)"
+imports: ["net.minecraft.util.MathHelper"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "float f; int i; double d"
+    before: "Object o = Mth.cos(f);"
+    after: "Object o = MathHelper.cos(f);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-mth-wrapdegrees-float
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.util.Mth#wrapDegrees(float)"
+  bind: { args: ["$a0"] }
+replace: "MathHelper.wrapAngleTo180_float($a0)"
+imports: ["net.minecraft.util.MathHelper"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "float f; int i; double d"
+    before: "Object o = Mth.wrapDegrees(f);"
+    after: "Object o = MathHelper.wrapAngleTo180_float(f);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-mth-wrapdegrees-double
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.util.Mth#wrapDegrees(double)"
+  bind: { args: ["$a0"] }
+replace: "MathHelper.wrapAngleTo180_double($a0)"
+imports: ["net.minecraft.util.MathHelper"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "float f; int i; double d"
+    before: "Object o = Mth.wrapDegrees(d);"
+    after: "Object o = MathHelper.wrapAngleTo180_double(d);"

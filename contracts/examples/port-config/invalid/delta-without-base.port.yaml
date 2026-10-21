@@ -1,0 +1,11 @@
+# invalid: delta mode needs closure.known (the base on the target side)
+schemaVersion: 1
+name: broken-delta
+mode: delta
+from: forge-1.19.2
+to: forge-1.7.10
+project: ../addon
+closure:
+  source: ../src
+  prefixes: [host.]
+  seeds: [host.A]

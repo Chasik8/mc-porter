@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 2,
+  "source": { "version": "forge-1.19.2", "modId": "examplemod", "tool": "hand-written example (RFC 003)" },
+  "nodes": [
+    {
+      "kind": "recipe",
+      "id": "examplemod:pressing/copper_plate",
+      "recipeType": "custom",
+      "customType": "examplemod:pressing",
+      "ingredients": [{ "tag": "forge:ingots/copper", "count": 2 }],
+      "fluidIngredients": [{ "fluid": "minecraft:water", "amount": 250 }],
+      "results": [{ "item": "examplemod:copper_plate" }, { "item": "examplemod:copper_dust", "chance": 0.25 }],
+      "fluidResults": [{ "fluid": "examplemod:steam", "amount": 100, "chance": 0.5 }],
+      "duration": 200,
+      "machines": ["examplemod:copper_press"],
+      "notes": [
+        "Needs 20 EU/t",
+        { "key": "examplemod.recipe.pressing.hint", "text": "Faster with a heated press" }
+      ],
+      "data": { "energyPerTick": 20 },
+      "provenance": { "file": "src/main/java/com/example/PressRecipes.java", "line": 12, "version": "forge-1.19.2", "via": "source" }
+    },
+    {
+      "kind": "recipe",
+      "id": "examplemod:cask/cider",
+      "recipeType": "custom",
+      "customType": "examplemod:cask_ageing",
+      "ingredients": [{ "item": "minecraft:apple", "count": 8 }],
+      "fluidIngredients": [{ "fluid": "minecraft:water", "amount": 1000 }],
+      "result": { "item": "examplemod:cider_bottle" },
+      "duration": 24000,
+      "machines": ["examplemod:cask"],
+      "notes": ["Quality rises with every in-game day the cask stays closed"],
+      "provenance": { "file": "manual", "line": 0, "version": "forge-1.19.2", "via": "manual" }
+    },
+    {
+      "kind": "item",
+      "id": "examplemod:debug_wand",
+      "hidden": true,
+      "provenance": { "file": "src/main/java/com/example/Items.java", "line": 40, "version": "forge-1.19.2" }
+    },
+    {
+      "kind": "block",
+      "id": "examplemod:press_ghost",
+      "hidden": true,
+      "provenance": { "file": "src/main/java/com/example/Blocks.java", "line": 18, "version": "forge-1.19.2" }
+    }
+  ]
+}

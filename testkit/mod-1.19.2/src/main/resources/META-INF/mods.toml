@@ -1,0 +1,16 @@
+modLoader="javafml"
+loaderVersion="[43,)"
+license="MIT"
+
+[[mods]]
+modId="portertestkit"
+version="0.1.0"
+displayName="porter testkit"
+description='''Scenario executor for porter differential tests. Inert unless -Dporter.plan is set.'''
+
+[[dependencies.portertestkit]]
+    modId="forge"
+    mandatory=true
+    versionRange="[43,)"
+    ordering="NONE"
+    side="BOTH"

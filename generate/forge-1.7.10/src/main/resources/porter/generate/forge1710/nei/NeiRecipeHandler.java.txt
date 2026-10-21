@@ -1,0 +1,397 @@
+package ${package};
+
+import codechicken.lib.gui.GuiDraw;
+import codechicken.nei.NEIServerUtils;
+import codechicken.nei.PositionedStack;
+import codechicken.nei.recipe.GuiRecipe;
+import codechicken.nei.recipe.TemplateRecipeHandler;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.List;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import org.lwjgl.opengl.GL11;
+
+/**
+ * NEI page for one recipe type of the IR (see {@link NeiModel.Category}): item and fluid inputs, arrow, outputs with
+ * chances, the machine, time and notes. One subclass per type (NEI registers handlers by class). Client only: NEI
+ * loads it through the {@code NEI*Config} class of this package, nothing else references it.
+ */
+public abstract class NeiRecipeHandler extends TemplateRecipeHandler {
+    static final int SLOT = 18;
+    static final int IN_X = 2;
+    static final int ARROW_X = 61;
+    static final int OUT_X = 90;
+    static final int MACHINE_X = 148;
+    static final int TOP = 2;
+    static final int WIDTH = 162;
+
+    protected final NeiModel.Category category;
+
+    protected NeiRecipeHandler(NeiModel.Category category) {
+        this.category = category;
+        // TemplateRecipeHandler's constructor calls loadTransferRects() before this field is set: add the rect here
+        transferRects.add(new RecipeTransferRect(new Rectangle(ARROW_X, TOP, 24, 2 * SLOT), handlerId()));
+    }
+
+    /** NEI handler/overlay id; also the transfer-rect id that lists every recipe of the type. */
+    public String handlerId() {
+        return "porter." + category.id;
+    }
+
+    @Override
+    public String getRecipeName() {
+        return category.title.get();
+    }
+
+    @Override
+    public String getGuiTexture() {
+        return "textures/gui/container/furnace.png";
+    }
+
+    @Override
+    public String getOverlayIdentifier() {
+        return handlerId();
+    }
+
+    @Override
+    public int recipiesPerPage() {
+        for (NeiModel.Recipe r : category.recipes) {
+            if (!r.notes.isEmpty() || rows(r.inputs.size() + r.fluidInputs.size()) > 2
+                    || rows(r.outputs.size() + r.fluidOutputs.size()) > 2) {
+                return 1;
+            }
+        }
+        return 2;
+    }
+
+    // ---- lookups ------------------------------------------------------------------------------------------------
+
+    @Override
+    public void loadCraftingRecipes(String outputId, Object... results) {
+        if (handlerId().equals(outputId)) {
+            for (NeiModel.Recipe r : category.available()) {
+                arecipes.add(new Cached(r));
+            }
+        } else {
+            super.loadCraftingRecipes(outputId, results);
+        }
+    }
+
+    @Override
+    public void loadCraftingRecipes(ItemStack result) {
+        FluidStack fluid = fluidIn(result);
+        for (NeiModel.Recipe r : category.available()) {
+            Cached c = new Cached(r);
+            if (c.produces(result) || fluid != null && c.hasFluid(c.fluidOut, fluid)) {
+                arecipes.add(c);
+            }
+        }
+    }
+
+    @Override
+    public void loadUsageRecipes(String inputId, Object... ingredients) {
+        if (handlerId().equals(inputId)) {
+            loadCraftingRecipes(inputId, ingredients);
+        } else {
+            super.loadUsageRecipes(inputId, ingredients);
+        }
+    }
+
+    @Override
+    public void loadUsageRecipes(ItemStack ingredient) {
+        FluidStack fluid = fluidIn(ingredient);
+        for (NeiModel.Recipe r : category.available()) {
+            Cached c = new Cached(r);
+            if (c.uses(ingredient) || c.madeIn(ingredient) || fluid != null && c.hasFluid(c.fluidIn, fluid)) {
+                arecipes.add(c);
+            }
+        }
+    }
+
+    /** The fluid a filled container holds (bucket, cell...), or null. */
+    static FluidStack fluidIn(ItemStack stack) {
+        return stack == null ? null : FluidContainerRegistry.getFluidForFilledItem(stack);
+    }
+
+    static int rows(int n) {
+        return n == 0 ? 0 : (n + 2) / 3;
+    }
+
+    // ---- drawing ------------------------------------------------------------------------------------------------
+
+    @Override
+    public void drawBackground(int recipe) {
+        Cached c = (Cached) arecipes.get(recipe);
+        GL11.glColor4f(1, 1, 1, 1);
+        for (PositionedStack s : c.inputs) {
+            slot(s.relx, s.rely);
+        }
+        for (PositionedStack s : c.outputs) {
+            slot(s.relx, s.rely);
+        }
+        for (FluidSlot f : c.fluidIn) {
+            slot(f.x, f.y);
+        }
+        for (FluidSlot f : c.fluidOut) {
+            slot(f.x, f.y);
+        }
+        if (c.machine != null) {
+            slot(c.machine.relx, c.machine.rely);
+        }
+        GL11.glColor4f(1, 1, 1, 1);
+        GuiDraw.changeTexture(getGuiTexture());
+        GuiDraw.drawTexturedModalRect(ARROW_X, c.arrowY, 79, 34, 24, 17);
+        for (FluidSlot f : c.fluidIn) {
+            fluid(f);
+        }
+        for (FluidSlot f : c.fluidOut) {
+            fluid(f);
+        }
+    }
+
+    @Override
+    public void drawExtras(int recipe) {
+        Cached c = (Cached) arecipes.get(recipe);
+        GL11.glColor4f(1, 1, 1, 1);
+        drawProgressBar(ARROW_X, c.arrowY, 176, 14, 24, 17, 40, 0);
+        FontRenderer font = Minecraft.getMinecraft().fontRenderer;
+        for (int i = 0; i < c.outputs.size(); i++) {
+            double chance = c.chances.get(i);
+            if (chance < 1) {
+                PositionedStack s = c.outputs.get(i);
+                small(font, percent(chance), s.relx, s.rely + 17);
+            }
+        }
+        for (FluidSlot f : c.fluidOut) {
+            if (f.chance < 1) {
+                small(font, percent(f.chance), f.x, f.y + 17);
+            }
+        }
+        int y = c.textY;
+        for (String line : c.lines()) {
+            for (Object part : font.listFormattedStringToWidth(line, WIDTH)) {
+                GuiDraw.drawString((String) part, IN_X, y, 0x404040, false);
+                y += 10;
+            }
+        }
+    }
+
+    static void slot(int x, int y) {
+        GuiDraw.drawRect(x - 1, y - 1, 18, 18, 0xFF373737);
+        GuiDraw.drawRect(x, y, 17, 17, 0xFFFFFFFF);
+        GuiDraw.drawRect(x, y, 16, 16, 0xFF8B8B8B);
+    }
+
+    static void fluid(FluidSlot f) {
+        if (f.stack == null) {
+            return;
+        }
+        IIcon icon = f.stack.getFluid().getIcon(f.stack);
+        if (icon == null) {
+            return;
+        }
+        int color = f.stack.getFluid().getColor(f.stack);
+        GuiDraw.changeTexture(TextureMap.locationBlocksTexture);
+        GL11.glColor4f((color >> 16 & 255) / 255f, (color >> 8 & 255) / 255f, (color & 255) / 255f, 1);
+        GuiDraw.gui.drawTexturedModelRectFromIcon(f.x, f.y, icon, 16, 16);
+        GL11.glColor4f(1, 1, 1, 1);
+    }
+
+    static void small(FontRenderer font, String s, int x, int y) {
+        GL11.glPushMatrix();
+        GL11.glTranslatef(x, y, 0);
+        GL11.glScalef(0.5f, 0.5f, 1);
+        font.drawString(s, 0, 0, 0x404040);
+        GL11.glPopMatrix();
+    }
+
+    static String percent(double chance) {
+        double p = chance * 100;
+        return (p == Math.floor(p) ? String.valueOf((int) p) : String.format("%.1f", p)) + "%";
+    }
+
+    /** Ticks as text: seconds, minutes, hours; in-game days from 24000 ticks. */
+    static String time(int ticks) {
+        double s = ticks / 20.0;
+        String t = s < 60 ? fmt(s) + " s" : s < 3600 ? fmt(s / 60) + " min" : fmt(s / 3600) + " h";
+        return ticks >= 24000 ? t + " (" + fmt(ticks / 24000.0) + " in-game days)" : t;
+    }
+
+    static String fmt(double v) {
+        return v == Math.floor(v) ? String.valueOf((long) v) : String.format("%.1f", v);
+    }
+
+    // ---- tooltips -----------------------------------------------------------------------------------------------
+
+    @Override
+    public List<String> handleTooltip(GuiRecipe gui, List<String> tip, int recipe) {
+        tip = super.handleTooltip(gui, tip, recipe);
+        Point mouse = GuiDraw.getMousePosition();
+        Point offset = gui.getRecipePosition(recipe);
+        int mx = mouse.x - (gui.width - 176) / 2 - offset.x;
+        int my = mouse.y - (gui.height - 166) / 2 - offset.y;
+        Cached c = (Cached) arecipes.get(recipe);
+        List<FluidSlot> all = new ArrayList<FluidSlot>(c.fluidIn);
+        all.addAll(c.fluidOut);
+        for (FluidSlot f : all) {
+            if (mx >= f.x && mx < f.x + 16 && my >= f.y && my < f.y + 16) {
+                tip.add(f.stack == null ? f.fl.id : f.stack.getLocalizedName());
+                tip.add("§7" + f.fl.amount + " mB" + (f.chance < 1 ? " (" + percent(f.chance) + ")" : ""));
+            }
+        }
+        return tip;
+    }
+
+    @Override
+    public List<String> handleItemTooltip(GuiRecipe gui, ItemStack stack, List<String> tip, int recipe) {
+        Cached c = (Cached) arecipes.get(recipe);
+        if (stack != null && c.machine != null && c.machine.contains(stack) && !c.uses(stack) && !c.produces(stack)) {
+            tip.add("§7" + NeiModel.resolver.text("porter.nei.machine", "Machine"));
+        }
+        return tip;
+    }
+
+    // ---- one page -----------------------------------------------------------------------------------------------
+
+    /** A fluid on the page. */
+    static final class FluidSlot {
+        final NeiModel.Fl fl;
+        final FluidStack stack;
+        final int x;
+        final int y;
+        final double chance;
+
+        FluidSlot(NeiModel.Fl fl, int x, int y) {
+            this.fl = fl;
+            this.stack = fl.stack();
+            this.x = x;
+            this.y = y;
+            this.chance = fl.chance;
+        }
+    }
+
+    public class Cached extends CachedRecipe {
+        public final NeiModel.Recipe recipe;
+        final List<PositionedStack> inputs = new ArrayList<PositionedStack>();
+        final List<PositionedStack> outputs = new ArrayList<PositionedStack>();
+        final List<Double> chances = new ArrayList<Double>();
+        final List<FluidSlot> fluidIn = new ArrayList<FluidSlot>();
+        final List<FluidSlot> fluidOut = new ArrayList<FluidSlot>();
+        final PositionedStack machine;
+        final int arrowY;
+        final int textY;
+
+        public Cached(NeiModel.Recipe r) {
+            this.recipe = r;
+            int nIn = r.inputs.size() + r.fluidInputs.size();
+            int nOut = r.outputs.size() + r.fluidOutputs.size();
+            int rows = Math.max(1, Math.max(rows(nIn), rows(nOut)));
+            int inTop = TOP + (rows - rows(nIn)) * SLOT / 2;
+            int outTop = TOP + (rows - rows(nOut)) * SLOT / 2;
+            int k = 0;
+            for (NeiModel.Ing i : r.inputs) {
+                inputs.add(new PositionedStack(i.stacks(), IN_X + k % 3 * SLOT, inTop + k / 3 * SLOT));
+                k++;
+            }
+            for (NeiModel.Fl f : r.fluidInputs) {
+                fluidIn.add(new FluidSlot(f, IN_X + k % 3 * SLOT, inTop + k / 3 * SLOT));
+                k++;
+            }
+            k = 0;
+            for (int j = 0; j < r.outputs.size(); j++) {
+                outputs.add(new PositionedStack(r.outputs.get(j).stacks(), OUT_X + k % 3 * SLOT, outTop + k / 3 * SLOT));
+                chances.add(r.chances.get(j));
+                k++;
+            }
+            for (NeiModel.Fl f : r.fluidOutputs) {
+                fluidOut.add(new FluidSlot(f, OUT_X + k % 3 * SLOT, outTop + k / 3 * SLOT));
+                k++;
+            }
+            List<ItemStack> machines = new ArrayList<ItemStack>();
+            for (NeiModel.Ing m : r.machines) {
+                machines.addAll(m.stacks());
+            }
+            machine = machines.isEmpty() ? null : new PositionedStack(machines, MACHINE_X, TOP);
+            arrowY = TOP + rows * SLOT / 2 - 9;
+            textY = TOP + rows * SLOT + 4;
+        }
+
+        /** Time and notes, translated. */
+        List<String> lines() {
+            List<String> l = new ArrayList<String>();
+            if (recipe.duration >= 0) {
+                l.add(NeiModel.resolver.text("porter.nei.time", "Time") + ": " + time(recipe.duration));
+            }
+            for (NeiModel.Text t : recipe.notes) {
+                l.add(t.get());
+            }
+            return l;
+        }
+
+        boolean produces(ItemStack s) {
+            for (PositionedStack p : outputs) {
+                if (p.contains(s)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        boolean uses(ItemStack s) {
+            for (PositionedStack p : inputs) {
+                if (p.contains(s)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        boolean madeIn(ItemStack s) {
+            return machine != null && machine.contains(s);
+        }
+
+        boolean hasFluid(List<FluidSlot> slots, FluidStack f) {
+            for (FluidSlot s : slots) {
+                if (s.stack != null && s.stack.getFluid() == f.getFluid()) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public PositionedStack getResult() {
+            return outputs.isEmpty() ? null : outputs.get(0);
+        }
+
+        @Override
+        public List<PositionedStack> getIngredients() {
+            return getCycledIngredients(cycleticks / 20, inputs);
+        }
+
+        @Override
+        public List<PositionedStack> getOtherStacks() {
+            List<PositionedStack> l = new ArrayList<PositionedStack>();
+            for (int i = 1; i < outputs.size(); i++) {
+                l.add(outputs.get(i));
+            }
+            if (machine != null) {
+                machine.setPermutationToRender(cycleticks / 40 % machine.items.length);
+                l.add(machine);
+            }
+            return l;
+        }
+    }
+
+    /** Matching helper for subclasses and tests (same rule NEI uses for crafting lookups). */
+    public static boolean same(ItemStack a, ItemStack b) {
+        return NEIServerUtils.areStacksSameTypeCrafting(a, b);
+    }
+}

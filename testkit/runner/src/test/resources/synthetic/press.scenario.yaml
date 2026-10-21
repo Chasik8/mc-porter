@@ -1,0 +1,20 @@
+schemaVersion: 1
+id: mini-press
+world: flat-void
+maxTicks: 100
+tolerance:
+  "*": { abs: 0 }
+  "nbt:[1,65,0]/Progress": { abs: 2, tickShift: 1 }
+  "field:": { rel: 0.1 }
+  "nbt:[1,65,0]/Debug": { ignore: true }
+keyMap:
+  forge-1.7.10:
+    "nbt:[1,65,0]/progress": "nbt:[1,65,0]/Progress"
+steps:
+  - build_multiblock: { id: "examplemod:mini_press", at: [0, 64, 0], facing: east }
+  - insert_item: { at: [1, 65, 0], item: "examplemod:ore", count: 4, slot: 0 }
+  - fill_fluid: { at: [1, 65, 0], fluid: "minecraft:water", amount: 1000 }
+  - sample: { every: 10, what: ["nbt:[1,65,0]/Progress", "field:[1,65,0]/energy"] }
+  - tick: 20
+  - assert: { expr: "item:[1,65,0]#1.count == 2 && item:[1,65,0]#1.item == 'examplemod:dust'", message: "two dusts" }
+  - open_gui: { at: [1, 65, 0], menu: "examplemod:press" }

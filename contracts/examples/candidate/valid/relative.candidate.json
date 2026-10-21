@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "c-0001",
+  "from": "forge-1.19.2",
+  "to": "forge-1.7.10",
+  "error": "cannot find symbol: method relative(Direction)",
+  "errorClass": "missing_method",
+  "file": "src/main/java/com/example/examplemod/blockentity/CopperPressBlockEntity.java",
+  "line": 88,
+  "before": "BlockPos out = worldPosition.relative(Direction.UP);",
+  "after": "BlockPos out = new BlockPos(xCoord, yCoord + 1, zCoord);",
+  "symbol": "net.minecraft.core.BlockPos#relative(net.minecraft.core.Direction)",
+  "normalized": "$p.relative(Direction.UP) -> new BlockPos(xCoord, yCoord + 1, zCoord)",
+  "author": "agent:rewriter",
+  "count": 1
+}

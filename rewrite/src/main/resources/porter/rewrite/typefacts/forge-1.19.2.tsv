@@ -1,0 +1,71 @@
+# Supertypes of core Minecraft 1.19.2 classes (mojmap names), derived from the vanilla client jar
+# + Mojang mappings by rewrite/scripts/mojmap_srg_graph.py. Curated subset (closure of ~40 core classes).
+# class	super	interfaces	access
+net.minecraft.client.multiplayer.ClientLevel	net.minecraft.world.level.Level		33
+net.minecraft.commands.CommandSource	java.lang.Object		1537
+net.minecraft.core.BlockPos	net.minecraft.core.Vec3i		33
+net.minecraft.core.BlockPos$MutableBlockPos	net.minecraft.core.BlockPos		33
+net.minecraft.core.Direction	java.lang.Enum	net.minecraft.util.StringRepresentable	16433
+net.minecraft.core.Direction$Axis	java.lang.Enum	java.util.function.Predicate,net.minecraft.util.StringRepresentable	17441
+net.minecraft.core.Direction$AxisDirection	java.lang.Enum		16433
+net.minecraft.core.Direction$Plane	java.lang.Enum	java.lang.Iterable,java.util.function.Predicate	16433
+net.minecraft.core.Vec3i	java.lang.Object	java.lang.Comparable	33
+net.minecraft.nbt.ByteTag	net.minecraft.nbt.NumericTag		33
+net.minecraft.nbt.CollectionTag	java.util.AbstractList	net.minecraft.nbt.Tag	1057
+net.minecraft.nbt.CompoundTag	java.lang.Object	net.minecraft.nbt.Tag	33
+net.minecraft.nbt.DoubleTag	net.minecraft.nbt.NumericTag		33
+net.minecraft.nbt.FloatTag	net.minecraft.nbt.NumericTag		33
+net.minecraft.nbt.IntTag	net.minecraft.nbt.NumericTag		33
+net.minecraft.nbt.ListTag	net.minecraft.nbt.CollectionTag		33
+net.minecraft.nbt.LongTag	net.minecraft.nbt.NumericTag		33
+net.minecraft.nbt.NumericTag	java.lang.Object	net.minecraft.nbt.Tag	1057
+net.minecraft.nbt.ShortTag	net.minecraft.nbt.NumericTag		33
+net.minecraft.nbt.StringTag	java.lang.Object	net.minecraft.nbt.Tag	33
+net.minecraft.nbt.Tag	java.lang.Object		1537
+net.minecraft.network.chat.Component	java.lang.Object	com.mojang.brigadier.Message,net.minecraft.network.chat.FormattedText	1537
+net.minecraft.network.chat.FormattedText	java.lang.Object		1537
+net.minecraft.network.chat.MutableComponent	java.lang.Object	net.minecraft.network.chat.Component	33
+net.minecraft.resources.ResourceLocation	java.lang.Object	java.lang.Comparable	33
+net.minecraft.server.level.ServerLevel	net.minecraft.world.level.Level	net.minecraft.world.level.WorldGenLevel	33
+net.minecraft.server.level.ServerPlayer	net.minecraft.world.entity.player.Player		33
+net.minecraft.util.Mth	java.lang.Object		33
+net.minecraft.util.StringRepresentable	java.lang.Object		1537
+net.minecraft.world.Clearable	java.lang.Object		1537
+net.minecraft.world.Container	java.lang.Object	net.minecraft.world.Clearable	1537
+net.minecraft.world.InteractionHand	java.lang.Enum		16433
+net.minecraft.world.InteractionResult	java.lang.Enum		16433
+net.minecraft.world.Nameable	java.lang.Object		1537
+net.minecraft.world.effect.MobEffect	java.lang.Object		33
+net.minecraft.world.effect.MobEffectInstance	java.lang.Object	java.lang.Comparable	33
+net.minecraft.world.entity.Entity	java.lang.Object	net.minecraft.commands.CommandSource,net.minecraft.world.Nameable,net.minecraft.world.level.entity.EntityAccess	1057
+net.minecraft.world.entity.LivingEntity	net.minecraft.world.entity.Entity		1057
+net.minecraft.world.entity.player.Player	net.minecraft.world.entity.LivingEntity		1057
+net.minecraft.world.item.BlockItem	net.minecraft.world.item.Item		33
+net.minecraft.world.item.Item	java.lang.Object	net.minecraft.world.level.ItemLike	33
+net.minecraft.world.item.ItemStack	java.lang.Object		49
+net.minecraft.world.level.BlockAndTintGetter	java.lang.Object	net.minecraft.world.level.BlockGetter	1537
+net.minecraft.world.level.BlockGetter	java.lang.Object	net.minecraft.world.level.LevelHeightAccessor	1537
+net.minecraft.world.level.CollisionGetter	java.lang.Object	net.minecraft.world.level.BlockGetter	1537
+net.minecraft.world.level.CommonLevelAccessor	java.lang.Object	net.minecraft.world.level.EntityGetter,net.minecraft.world.level.LevelReader,net.minecraft.world.level.LevelSimulatedRW	1537
+net.minecraft.world.level.EntityGetter	java.lang.Object		1537
+net.minecraft.world.level.ItemLike	java.lang.Object		1537
+net.minecraft.world.level.Level	java.lang.Object	java.lang.AutoCloseable,net.minecraft.world.level.LevelAccessor	1057
+net.minecraft.world.level.LevelAccessor	java.lang.Object	net.minecraft.world.level.CommonLevelAccessor,net.minecraft.world.level.LevelTimeAccess	1537
+net.minecraft.world.level.LevelHeightAccessor	java.lang.Object		1537
+net.minecraft.world.level.LevelReader	java.lang.Object	net.minecraft.world.level.BlockAndTintGetter,net.minecraft.world.level.CollisionGetter,net.minecraft.world.level.biome.BiomeManager$NoiseBiomeSource	1537
+net.minecraft.world.level.LevelSimulatedRW	java.lang.Object	net.minecraft.world.level.LevelSimulatedReader,net.minecraft.world.level.LevelWriter	1537
+net.minecraft.world.level.LevelSimulatedReader	java.lang.Object		1537
+net.minecraft.world.level.LevelTimeAccess	java.lang.Object	net.minecraft.world.level.LevelReader	1537
+net.minecraft.world.level.LevelWriter	java.lang.Object		1537
+net.minecraft.world.level.ServerLevelAccessor	java.lang.Object	net.minecraft.world.level.LevelAccessor	1537
+net.minecraft.world.level.WorldGenLevel	java.lang.Object	net.minecraft.world.level.ServerLevelAccessor	1537
+net.minecraft.world.level.biome.BiomeManager$NoiseBiomeSource	java.lang.Object		1537
+net.minecraft.world.level.block.Block	net.minecraft.world.level.block.state.BlockBehaviour	net.minecraft.world.level.ItemLike	33
+net.minecraft.world.level.block.entity.BlockEntity	java.lang.Object		1057
+net.minecraft.world.level.block.state.BlockBehaviour	java.lang.Object		1057
+net.minecraft.world.level.block.state.BlockBehaviour$BlockStateBase	net.minecraft.world.level.block.state.StateHolder		1057
+net.minecraft.world.level.block.state.BlockState	net.minecraft.world.level.block.state.BlockBehaviour$BlockStateBase		33
+net.minecraft.world.level.block.state.StateHolder	java.lang.Object		1057
+net.minecraft.world.level.entity.EntityAccess	java.lang.Object		1537
+net.minecraft.world.level.material.Fluid	java.lang.Object		1057
+net.minecraft.world.level.material.Fluids	java.lang.Object		33

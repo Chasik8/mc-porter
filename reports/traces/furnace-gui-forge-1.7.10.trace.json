@@ -1,0 +1,216 @@
+{
+  "schemaVersion" : 1,
+  "scenario" : "furnace-gui",
+  "version" : "forge-1.7.10",
+  "status" : "passed",
+  "ticks" : 0,
+  "samples" : [ ],
+  "assertions" : [ {
+    "step" : 1,
+    "tick" : 0,
+    "expr" : "gui == ir:minecraft:furnace",
+    "passed" : true
+  } ],
+  "gui" : [ {
+    "step" : 1,
+    "menu" : "minecraft:furnace",
+    "size" : {
+      "width" : 176,
+      "height" : 166
+    },
+    "slots" : [ {
+      "index" : 0,
+      "x" : 56,
+      "y" : 17
+    }, {
+      "index" : 1,
+      "x" : 56,
+      "y" : 53
+    }, {
+      "index" : 2,
+      "x" : 116,
+      "y" : 35
+    }, {
+      "index" : 3,
+      "x" : 8,
+      "y" : 84,
+      "player" : true
+    }, {
+      "index" : 4,
+      "x" : 26,
+      "y" : 84,
+      "player" : true
+    }, {
+      "index" : 5,
+      "x" : 44,
+      "y" : 84,
+      "player" : true
+    }, {
+      "index" : 6,
+      "x" : 62,
+      "y" : 84,
+      "player" : true
+    }, {
+      "index" : 7,
+      "x" : 80,
+      "y" : 84,
+      "player" : true
+    }, {
+      "index" : 8,
+      "x" : 98,
+      "y" : 84,
+      "player" : true
+    }, {
+      "index" : 9,
+      "x" : 116,
+      "y" : 84,
+      "player" : true
+    }, {
+      "index" : 10,
+      "x" : 134,
+      "y" : 84,
+      "player" : true
+    }, {
+      "index" : 11,
+      "x" : 152,
+      "y" : 84,
+      "player" : true
+    }, {
+      "index" : 12,
+      "x" : 8,
+      "y" : 102,
+      "player" : true
+    }, {
+      "index" : 13,
+      "x" : 26,
+      "y" : 102,
+      "player" : true
+    }, {
+      "index" : 14,
+      "x" : 44,
+      "y" : 102,
+      "player" : true
+    }, {
+      "index" : 15,
+      "x" : 62,
+      "y" : 102,
+      "player" : true
+    }, {
+      "index" : 16,
+      "x" : 80,
+      "y" : 102,
+      "player" : true
+    }, {
+      "index" : 17,
+      "x" : 98,
+      "y" : 102,
+      "player" : true
+    }, {
+      "index" : 18,
+      "x" : 116,
+      "y" : 102,
+      "player" : true
+    }, {
+      "index" : 19,
+      "x" : 134,
+      "y" : 102,
+      "player" : true
+    }, {
+      "index" : 20,
+      "x" : 152,
+      "y" : 102,
+      "player" : true
+    }, {
+      "index" : 21,
+      "x" : 8,
+      "y" : 120,
+      "player" : true
+    }, {
+      "index" : 22,
+      "x" : 26,
+      "y" : 120,
+      "player" : true
+    }, {
+      "index" : 23,
+      "x" : 44,
+      "y" : 120,
+      "player" : true
+    }, {
+      "index" : 24,
+      "x" : 62,
+      "y" : 120,
+      "player" : true
+    }, {
+      "index" : 25,
+      "x" : 80,
+      "y" : 120,
+      "player" : true
+    }, {
+      "index" : 26,
+      "x" : 98,
+      "y" : 120,
+      "player" : true
+    }, {
+      "index" : 27,
+      "x" : 116,
+      "y" : 120,
+      "player" : true
+    }, {
+      "index" : 28,
+      "x" : 134,
+      "y" : 120,
+      "player" : true
+    }, {
+      "index" : 29,
+      "x" : 152,
+      "y" : 120,
+      "player" : true
+    }, {
+      "index" : 30,
+      "x" : 8,
+      "y" : 142,
+      "player" : true
+    }, {
+      "index" : 31,
+      "x" : 26,
+      "y" : 142,
+      "player" : true
+    }, {
+      "index" : 32,
+      "x" : 44,
+      "y" : 142,
+      "player" : true
+    }, {
+      "index" : 33,
+      "x" : 62,
+      "y" : 142,
+      "player" : true
+    }, {
+      "index" : 34,
+      "x" : 80,
+      "y" : 142,
+      "player" : true
+    }, {
+      "index" : 35,
+      "x" : 98,
+      "y" : 142,
+      "player" : true
+    }, {
+      "index" : 36,
+      "x" : 116,
+      "y" : 142,
+      "player" : true
+    }, {
+      "index" : 37,
+      "x" : 134,
+      "y" : 142,
+      "player" : true
+    }, {
+      "index" : 38,
+      "x" : 152,
+      "y" : 142,
+      "player" : true
+    } ],
+    "screenshot" : "reports/screens/furnace-gui-forge-1.7.10-step1.png"
+  } ]
+}

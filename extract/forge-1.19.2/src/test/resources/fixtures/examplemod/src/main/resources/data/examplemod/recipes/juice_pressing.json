@@ -1,0 +1,6 @@
+{
+  "type": "examplemod:pressing",
+  "ingredient": {"item": "minecraft:apple"},
+  "result": {"item": "examplemod:juice", "count": 2},
+  "energy": 400
+}

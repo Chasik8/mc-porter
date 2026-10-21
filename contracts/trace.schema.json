@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:porter:contract:trace",
+  "title": "porter scenario trace",
+  "description": "Result of running one scenario on one platform version: samples {tick, key, value}, assertion results and optional GUI structure dumps. Samples are sorted by (tick, key) so traces are diffable.",
+  "type": "object",
+  "required": ["schemaVersion", "scenario", "version", "status", "samples"],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "scenario": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$", "description": "Scenario id." },
+    "version": { "type": "string", "pattern": "^(forge|neoforge|fabric|vanilla)-[0-9]+\\.[0-9]+(\\.[0-9]+)?$" },
+    "subject": {
+      "description": "What was tested (mod jar, its sha256).",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "modId": { "type": "string" },
+        "jar": { "type": "string" },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      }
+    },
+    "status": { "enum": ["passed", "failed", "error", "timeout"] },
+    "message": { "type": "string", "description": "Failure/error details." },
+    "ticks": { "type": "integer", "minimum": 0, "description": "Total ticks run." },
+    "samples": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["tick", "key", "value"],
+        "additionalProperties": false,
+        "properties": {
+          "tick": { "type": "integer", "minimum": 0, "description": "Ticks since scenario start." },
+          "key": { "type": "string", "minLength": 1, "description": "Sample key as written in the scenario (before keyMap)." },
+          "value": { "description": "Any JSON value (number, string, boolean, object for NBT/inventories, null = absent)." }
+        }
+      }
+    },
+    "assertions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["step", "expr", "passed"],
+        "additionalProperties": false,
+        "properties": {
+          "step": { "type": "integer", "minimum": 0, "description": "Index into scenario.steps." },
+          "tick": { "type": "integer", "minimum": 0 },
+          "expr": { "type": "string" },
+          "passed": { "type": "boolean" },
+          "message": { "type": "string" }
+        }
+      }
+    },
+    "gui": {
+      "description": "Actual GUI structure dumped by open_gui steps, compared against the IR menu node.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["step", "size", "slots"],
+        "additionalProperties": false,
+        "properties": {
+          "step": { "type": "integer", "minimum": 0 },
+          "menu": { "type": "string", "pattern": "^[a-z0-9_.-]+:[a-z0-9_./-]+$" },
+          "size": {
+            "type": "object",
+            "required": ["width", "height"],
+            "additionalProperties": false,
+            "properties": { "width": { "type": "integer" }, "height": { "type": "integer" } }
+          },
+          "slots": {
+            "description": "All container slots in container order, including player inventory.",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["index", "x", "y"],
+              "additionalProperties": false,
+              "properties": {
+                "index": { "type": "integer", "minimum": 0 },
+                "x": { "type": "integer" },
+                "y": { "type": "integer" },
+                "player": { "type": "boolean", "description": "Slot belongs to the player inventory." }
+              }
+            }
+          },
+          "bars": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["id", "x", "y", "width", "height"],
+              "additionalProperties": false,
+              "properties": {
+                "id": { "type": "string" },
+                "x": { "type": "integer" },
+                "y": { "type": "integer" },
+                "width": { "type": "integer" },
+                "height": { "type": "integer" }
+              }
+            }
+          },
+          "screenshot": { "type": "string", "description": "Path relative to the repo, e.g. reports/screens/<scenario>-<version>.png." }
+        }
+      }
+    }
+  }
+}

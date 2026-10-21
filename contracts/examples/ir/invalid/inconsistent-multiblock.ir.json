@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "source": { "version": "forge-1.19.2" },
+  "nodes": [
+    {
+      "kind": "multiblock",
+      "id": "examplemod:big_press",
+      "size": [3, 2, 3],
+      "palette": { "C": "examplemod:press_casing" },
+      "layers": [
+        ["CCC", "CCC", "CCC"],
+        ["CXC", "CC", "CCC"],
+        ["CCC", "CCC", "CCC"]
+      ],
+      "controller": { "block": "examplemod:copper_press", "pos": [1, 5, 0] },
+      "provenance": { "file": "runtime:structure-scan", "version": "forge-1.19.2", "via": "runtime-export" }
+    },
+    {
+      "kind": "recipe",
+      "id": "examplemod:press",
+      "recipeType": "shaped",
+      "pattern": ["CCC", "CZC"],
+      "key": { "C": { "item": "minecraft:copper_ingot" } },
+      "result": { "item": "examplemod:copper_press" },
+      "provenance": { "file": "data/examplemod/recipes/press.json", "version": "forge-1.19.2", "via": "resource" }
+    },
+    {
+      "kind": "recipe",
+      "id": "examplemod:press",
+      "recipeType": "shapeless",
+      "ingredients": [{ "item": "minecraft:copper_ingot" }],
+      "result": { "item": "examplemod:copper_press" },
+      "provenance": { "file": "data/examplemod/recipes/press2.json", "version": "forge-1.19.2", "via": "resource" }
+    }
+  ]
+}

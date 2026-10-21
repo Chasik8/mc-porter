@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "source": { "version": "forge-1.19.2", "modId": "examplemod" },
+  "nodes": [
+    {
+      "kind": "recipe",
+      "id": "examplemod:pressing/copper_plate",
+      "recipeType": "custom",
+      "customType": "examplemod:pressing",
+      "ingredients": [{ "item": "minecraft:copper_ingot" }],
+      "results": [{ "item": "examplemod:copper_plate" }],
+      "machines": ["examplemod:copper_press"],
+      "provenance": { "file": "src/main/java/com/example/PressRecipes.java", "line": 12, "version": "forge-1.19.2" }
+    }
+  ]
+}

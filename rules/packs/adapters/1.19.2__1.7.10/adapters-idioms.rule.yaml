@@ -1,0 +1,68 @@
+# porter adapter rules, 1.19.2 -> 1.7.10 (opt-in pack, used with the adapter classes): rules that need the RFC 006
+# language (type position preconditions, statement patterns).
+#
+# A mod's root block / block-entity class (the one that extends the vanilla class directly) extends the adapter that
+# emulates the 1.19.2 API (block states, BlockPos/Level access); every other reference to Block / BlockEntity keeps
+# the plain 1.7.10 class.
+schemaVersion: 1
+id: r-closure-mc-extends-block-stateblock
+description: "extends net.minecraft.world.level.block.Block -> extends dev.porter.shim.mc.StateBlock (root block class)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.world.level.block.Block"
+replace: "dev.porter.shim.mc.StateBlock"
+preconditions: ["position:extends"]
+priority: 10
+confidence: 0.9
+provenance: { source: agent, ref: "RFC 006; private reference port (counted edit re-expressed as a rule); adapter dev.porter.shim.mc.StateBlock" }
+tests:
+  - context: "import net.minecraft.world.level.block.Block"
+    before: "class MyBlock extends Block { }"
+    after: "class MyBlock extends StateBlock { }"
+  - name: "a type-parameter bound is not an extends clause"
+    context: "import net.minecraft.world.level.block.Block"
+    before: "class Holder<T extends Block> { }"
+    after: |
+      // TODO(porter:precondition) r-closure-mc-extends-block-stateblock: position:extends
+      class Holder<T extends Block> { }
+---
+schemaVersion: 1
+id: r-closure-mc-extends-blockentity-moderntileentity
+description: "extends net.minecraft.world.level.block.entity.BlockEntity -> extends dev.porter.shim.mc.ModernTileEntity (root block entity class)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.world.level.block.entity.BlockEntity"
+replace: "dev.porter.shim.mc.ModernTileEntity"
+preconditions: ["position:extends"]
+priority: 10
+confidence: 0.9
+provenance: { source: agent, ref: "RFC 006; private reference port (counted edit re-expressed as a rule); adapter dev.porter.shim.mc.ModernTileEntity" }
+tests:
+  - context: "import net.minecraft.world.level.block.entity.BlockEntity"
+    before: "abstract class MyMachine extends BlockEntity { }"
+    after: "abstract class MyMachine extends ModernTileEntity { }"
+---
+# The 1.7.10 Slot takes its index in the constructor (final slotIndex); a 1.19.2 slot subclass that assigns the
+# private 'slot' field itself (access transformer) has nothing left to assign.
+schemaVersion: 1
+id: r-closure-mc-slot-assign-slot-removed
+description: "this.slot = index; in a Slot subclass -> removed (the 1.7.10 Slot constructor sets the index)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  pattern: "this.slot = $i;"
+replace: ""
+preconditions: ["in-subtype-of:net.minecraft.world.inventory.Slot"]
+confidence: 0.8
+provenance: { source: agent, ref: "RFC 006; private reference port (counted edit re-expressed as a rule); Slot#slot (f_40217_) from the Mojang 1.19.2 mappings" }
+tests:
+  - context: "import net.minecraft.world.inventory.Slot; extends Slot"
+    before: |
+      this.slot = index;
+      int checked = 0;
+    after: "int checked = 0;"

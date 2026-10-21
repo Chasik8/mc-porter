@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 2,
+  "source": { "version": "forge-1.19.2", "modId": "examplemod" },
+  "nodes": [
+    {
+      "kind": "recipe",
+      "id": "examplemod:pressing/bad",
+      "recipeType": "custom",
+      "customType": "examplemod:pressing",
+      "fluidIngredients": [{ "fluid": "minecraft:water", "amount": 0 }],
+      "results": [{ "item": "examplemod:copper_plate", "chance": 1.5 }],
+      "notes": [""],
+      "provenance": { "file": "src/main/java/com/example/PressRecipes.java", "line": 12, "version": "forge-1.19.2" }
+    }
+  ]
+}

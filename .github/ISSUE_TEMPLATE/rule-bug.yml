@@ -1,0 +1,29 @@
+name: Rule bug
+description: A rewrite rule fires where it shouldn't, produces wrong code, or misses a case.
+title: "Rule bug: <rule id>"
+labels: [rules, bug]
+body:
+  - type: input
+    id: rule
+    attributes: { label: Rule id, placeholder: "r-1.19.2-1.7.10-level-getblockentity" }
+    validations: { required: true }
+  - type: textarea
+    id: before
+    attributes:
+      label: Minimal synthetic input (before)
+      description: Rewrite it with made-up names; never paste a mod's code.
+      render: java
+    validations: { required: true }
+  - type: textarea
+    id: actual
+    attributes: { label: What porter produced, render: java }
+    validations: { required: true }
+  - type: textarea
+    id: expected
+    attributes:
+      label: What it should produce, and how you verified the target API
+      description: "javap / porter graph query output, mapping names"
+    validations: { required: true }
+  - type: input
+    id: version
+    attributes: { label: porter version, placeholder: "porter --version" }

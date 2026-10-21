@@ -1,0 +1,35 @@
+schemaVersion: 1
+id: megatorch-spawn-block
+description: >-
+  Mega Torch at [0,64,0] (default radius 64, cube: -64..+65): Forge natural-spawn checks of hostile mobs inside the cube are denied, outside or passive mobs are untouched. Before placing, every check is default.
+world: flat-void
+maxTicks: 200
+tolerance:
+  "*": { abs: 0 }
+keyMap:
+  forge-1.7.10:
+    "spawn_check:[10,64,10]/Zombie": "spawn_check:[10,64,10]/minecraft:zombie"
+    "spawn_check:[-30,40,20]/Skeleton": "spawn_check:[-30,40,20]/minecraft:skeleton"
+    "spawn_check:[64,64,64]/Creeper": "spawn_check:[64,64,64]/minecraft:creeper"
+    "spawn_check:[-64,0,-64]/Spider": "spawn_check:[-64,0,-64]/minecraft:spider"
+    "spawn_check:[66,64,0]/Zombie": "spawn_check:[66,64,0]/minecraft:zombie"
+    "spawn_check:[0,64,-70]/Enderman": "spawn_check:[0,64,-70]/minecraft:enderman"
+    "spawn_check:[5,64,5]/Pig": "spawn_check:[5,64,5]/minecraft:pig"
+    "spawn_check:[5,64,5]/Squid": "spawn_check:[5,64,5]/minecraft:squid"
+    "spawn_check:[5,64,5]/Witch": "spawn_check:[5,64,5]/minecraft:witch"
+    "spawn_check:[5,64,5]/Slime": "spawn_check:[5,64,5]/minecraft:slime"
+steps:
+  - sample: { what: ["spawn_check:[10,64,10]/minecraft:zombie", "spawn_check:[-30,40,20]/minecraft:skeleton", "spawn_check:[64,64,64]/minecraft:creeper", "spawn_check:[-64,0,-64]/minecraft:spider", "spawn_check:[66,64,0]/minecraft:zombie", "spawn_check:[0,64,-70]/minecraft:enderman", "spawn_check:[5,64,5]/minecraft:pig", "spawn_check:[5,64,5]/minecraft:squid", "spawn_check:[5,64,5]/minecraft:witch", "spawn_check:[5,64,5]/minecraft:slime"] }
+  - place_block: { at: [0, 64, 0], block: "torchmaster:megatorch" }
+  - tick: 5
+  - sample: { what: ["spawn_check:[10,64,10]/minecraft:zombie", "spawn_check:[-30,40,20]/minecraft:skeleton", "spawn_check:[64,64,64]/minecraft:creeper", "spawn_check:[-64,0,-64]/minecraft:spider", "spawn_check:[66,64,0]/minecraft:zombie", "spawn_check:[0,64,-70]/minecraft:enderman", "spawn_check:[5,64,5]/minecraft:pig", "spawn_check:[5,64,5]/minecraft:squid", "spawn_check:[5,64,5]/minecraft:witch", "spawn_check:[5,64,5]/minecraft:slime"] }
+  - assert: { expr: "spawn_check:[10,64,10]/minecraft:zombie == 'deny'", message: "minecraft:zombie at [10,64,10] -> deny" }
+  - assert: { expr: "spawn_check:[-30,40,20]/minecraft:skeleton == 'deny'", message: "minecraft:skeleton at [-30,40,20] -> deny" }
+  - assert: { expr: "spawn_check:[64,64,64]/minecraft:creeper == 'deny'", message: "minecraft:creeper at [64,64,64] -> deny" }
+  - assert: { expr: "spawn_check:[-64,0,-64]/minecraft:spider == 'deny'", message: "minecraft:spider at [-64,0,-64] -> deny" }
+  - assert: { expr: "spawn_check:[66,64,0]/minecraft:zombie == 'default'", message: "minecraft:zombie at [66,64,0] -> default" }
+  - assert: { expr: "spawn_check:[0,64,-70]/minecraft:enderman == 'default'", message: "minecraft:enderman at [0,64,-70] -> default" }
+  - assert: { expr: "spawn_check:[5,64,5]/minecraft:pig == 'default'", message: "minecraft:pig at [5,64,5] -> default" }
+  - assert: { expr: "spawn_check:[5,64,5]/minecraft:squid == 'default'", message: "minecraft:squid at [5,64,5] -> default" }
+  - assert: { expr: "spawn_check:[5,64,5]/minecraft:witch == 'deny'", message: "minecraft:witch at [5,64,5] -> deny" }
+  - assert: { expr: "spawn_check:[5,64,5]/minecraft:slime == 'deny'", message: "minecraft:slime at [5,64,5] -> deny" }

@@ -1,0 +1,29 @@
+# Catalog of port profiles (schema: contracts/port-catalog.schema.json, validated by scripts/check.sh).
+# One entry per mod + version pair; a profile lives in ports/<id>/ (port config, scenarios). The ported output of a
+# mod that is not open-licence is never published: everyone runs the profile against their own copy of the original.
+# distributable: true only for open-licence mods or with the author's permission (permission: <link>).
+#
+# Example entry (see contracts/examples/port-catalog/valid/entries.catalog.yaml):
+#   - id: examplemod-1.19.2-1.7.10
+#     mod: { name: Example Mod, version: 1.2.0, url: https://example.org/examplemod }
+#     from: forge-1.19.2
+#     to: forge-1.7.10
+#     mode: full
+#     status: scenarios
+#     scenarioPassRate: 1.0
+#     licence: MIT
+#     distributable: true
+#     profile: ports/examplemod
+schemaVersion: 1
+ports:
+  - id: torchmaster-1.19.2-1.7.10
+    mod: { name: Torchmaster, version: 19.2.93, url: https://github.com/Xalcon/TorchMaster }
+    from: forge-1.19.2
+    to: forge-1.7.10
+    mode: full
+    status: scenarios
+    scenarioPassRate: 1.0
+    licence: MIT
+    distributable: true
+    profile: ports/torchmaster
+    notes: "porter demo: 28 classes, 0 counted edits, 6 differential scenarios; not tested in a real game yet"

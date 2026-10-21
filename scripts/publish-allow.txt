@@ -1,0 +1,11 @@
+# Path globs exempt from the text heuristics of scripts/publish-check.sh (never from the private/ and mapping-file
+# checks' intent: add a line only with a reason).
+# synthetic SRG-named test inputs of the rewriter and graph tests (made-up classes, no mod code)
+rewrite/src/test/*
+graph/src/test/*
+loop/src/test/*
+extract/*/src/test/*
+# the rule packs quote SRG ids in before/after tests by design
+rules/*
+# the standard Gradle wrapper (checksum-pinned in gradle-wrapper.properties)
+gradle/wrapper/gradle-wrapper.jar

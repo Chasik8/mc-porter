@@ -1,0 +1,851 @@
+# porter adapter rules, 1.19.2 -> 1.7.10: client API (screens, rendering, input) -> 1.7.10 or dev.porter.shim.mc.client.
+schemaVersion: 1
+id: r-closure-mc-type-clientlevel
+description: "type net.minecraft.client.multiplayer.ClientLevel -> net.minecraft.client.multiplayer.WorldClient"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: "net.minecraft.client.multiplayer.ClientLevel"
+replace: "net.minecraft.client.multiplayer.WorldClient"
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import net.minecraft.client.multiplayer.ClientLevel;"
+    after: "import net.minecraft.client.multiplayer.WorldClient;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-abstractcontainerscreen
+description: "type net.minecraft.client.gui.screens.inventory.AbstractContainerScreen -> dev.porter.shim.mc.client.ModernContainerScreen"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.client.gui.screens.inventory.AbstractContainerScreen"
+replace: "dev.porter.shim.mc.client.ModernContainerScreen"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;"
+    after: "import dev.porter.shim.mc.client.ModernContainerScreen;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-guicomponent
+description: "type net.minecraft.client.gui.GuiComponent -> dev.porter.shim.mc.client.GuiComponent"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.client.gui.GuiComponent"
+replace: "dev.porter.shim.mc.client.GuiComponent"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import net.minecraft.client.gui.GuiComponent;"
+    after: "import dev.porter.shim.mc.client.GuiComponent;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-abstractwidget
+description: "type net.minecraft.client.gui.components.AbstractWidget -> dev.porter.shim.mc.client.AbstractWidget"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.client.gui.components.AbstractWidget"
+replace: "dev.porter.shim.mc.client.AbstractWidget"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import net.minecraft.client.gui.components.AbstractWidget;"
+    after: "import dev.porter.shim.mc.client.AbstractWidget;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-button
+description: "type net.minecraft.client.gui.components.Button -> dev.porter.shim.mc.client.Button"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.client.gui.components.Button"
+replace: "dev.porter.shim.mc.client.Button"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import net.minecraft.client.gui.components.Button;"
+    after: "import dev.porter.shim.mc.client.Button;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-widget
+description: "type net.minecraft.client.gui.components.Widget -> dev.porter.shim.mc.client.Widget"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.client.gui.components.Widget"
+replace: "dev.porter.shim.mc.client.Widget"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import net.minecraft.client.gui.components.Widget;"
+    after: "import dev.porter.shim.mc.client.Widget;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-renderable
+description: "type net.minecraft.client.gui.components.Renderable -> dev.porter.shim.mc.client.Widget"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.client.gui.components.Renderable"
+replace: "dev.porter.shim.mc.client.Widget"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import net.minecraft.client.gui.components.Renderable;"
+    after: "import dev.porter.shim.mc.client.Widget;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-guieventlistener
+description: "type net.minecraft.client.gui.components.events.GuiEventListener -> dev.porter.shim.mc.client.GuiEventListener"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.client.gui.components.events.GuiEventListener"
+replace: "dev.porter.shim.mc.client.GuiEventListener"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import net.minecraft.client.gui.components.events.GuiEventListener;"
+    after: "import dev.porter.shim.mc.client.GuiEventListener;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-font
+description: "type net.minecraft.client.gui.Font -> dev.porter.shim.mc.client.Font"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.client.gui.Font"
+replace: "dev.porter.shim.mc.client.Font"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import net.minecraft.client.gui.Font;"
+    after: "import dev.porter.shim.mc.client.Font;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-formattedcharsequence
+description: "type net.minecraft.util.FormattedCharSequence -> dev.porter.shim.mc.client.Font.FormattedCharSequence"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.util.FormattedCharSequence"
+replace: "dev.porter.shim.mc.client.Font.FormattedCharSequence"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import net.minecraft.util.FormattedCharSequence;"
+    after: "import dev.porter.shim.mc.client.Font.FormattedCharSequence;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-itemrenderer
+description: "type net.minecraft.client.renderer.entity.ItemRenderer -> dev.porter.shim.mc.client.ModernContainerScreen.ItemRenderer"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.client.renderer.entity.ItemRenderer"
+replace: "dev.porter.shim.mc.client.ModernContainerScreen.ItemRenderer"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import net.minecraft.client.renderer.entity.ItemRenderer;"
+    after: "import dev.porter.shim.mc.client.ModernContainerScreen.ItemRenderer;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-gamerenderer
+description: "type net.minecraft.client.renderer.GameRenderer -> dev.porter.shim.mc.client.Tesselator.GameRenderer"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.client.renderer.GameRenderer"
+replace: "dev.porter.shim.mc.client.Tesselator.GameRenderer"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import net.minecraft.client.renderer.GameRenderer;"
+    after: "import dev.porter.shim.mc.client.Tesselator.GameRenderer;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-button-onpress
+description: "type net.minecraft.client.gui.components.Button$OnPress -> dev.porter.shim.mc.client.Button.OnPress"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.client.gui.components.Button$OnPress"
+replace: "dev.porter.shim.mc.client.Button.OnPress"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import net.minecraft.client.gui.components.Button.OnPress;"
+    after: "import dev.porter.shim.mc.client.Button.OnPress;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-extendedbutton
+description: "type net.minecraftforge.client.gui.widget.ExtendedButton -> dev.porter.shim.mc.client.Button.ExtendedButton"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraftforge.client.gui.widget.ExtendedButton"
+replace: "dev.porter.shim.mc.client.Button.ExtendedButton"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import net.minecraftforge.client.gui.widget.ExtendedButton;"
+    after: "import dev.porter.shim.mc.client.Button.ExtendedButton;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-posestack
+description: "type com.mojang.blaze3d.vertex.PoseStack -> dev.porter.shim.mc.client.PoseStack"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "com.mojang.blaze3d.vertex.PoseStack"
+replace: "dev.porter.shim.mc.client.PoseStack"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import com.mojang.blaze3d.vertex.PoseStack;"
+    after: "import dev.porter.shim.mc.client.PoseStack;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-tesselator
+description: "type com.mojang.blaze3d.vertex.Tesselator -> dev.porter.shim.mc.client.Tesselator"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "com.mojang.blaze3d.vertex.Tesselator"
+replace: "dev.porter.shim.mc.client.Tesselator"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import com.mojang.blaze3d.vertex.Tesselator;"
+    after: "import dev.porter.shim.mc.client.Tesselator;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-bufferbuilder
+description: "type com.mojang.blaze3d.vertex.BufferBuilder -> dev.porter.shim.mc.client.Tesselator.BufferBuilder"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "com.mojang.blaze3d.vertex.BufferBuilder"
+replace: "dev.porter.shim.mc.client.Tesselator.BufferBuilder"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import com.mojang.blaze3d.vertex.BufferBuilder;"
+    after: "import dev.porter.shim.mc.client.Tesselator.BufferBuilder;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-vertexformat
+description: "type com.mojang.blaze3d.vertex.VertexFormat -> dev.porter.shim.mc.client.Tesselator.VertexFormat"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "com.mojang.blaze3d.vertex.VertexFormat"
+replace: "dev.porter.shim.mc.client.Tesselator.VertexFormat"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import com.mojang.blaze3d.vertex.VertexFormat;"
+    after: "import dev.porter.shim.mc.client.Tesselator.VertexFormat;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-defaultvertexformat
+description: "type com.mojang.blaze3d.vertex.DefaultVertexFormat -> dev.porter.shim.mc.client.Tesselator.DefaultVertexFormat"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "com.mojang.blaze3d.vertex.DefaultVertexFormat"
+replace: "dev.porter.shim.mc.client.Tesselator.DefaultVertexFormat"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import com.mojang.blaze3d.vertex.DefaultVertexFormat;"
+    after: "import dev.porter.shim.mc.client.Tesselator.DefaultVertexFormat;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-rendersystem
+description: "type com.mojang.blaze3d.systems.RenderSystem -> dev.porter.shim.mc.client.RenderSystem"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "com.mojang.blaze3d.systems.RenderSystem"
+replace: "dev.porter.shim.mc.client.RenderSystem"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import com.mojang.blaze3d.systems.RenderSystem;"
+    after: "import dev.porter.shim.mc.client.RenderSystem;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-lighting
+description: "type com.mojang.blaze3d.platform.Lighting -> dev.porter.shim.mc.client.Tesselator.Lighting"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "com.mojang.blaze3d.platform.Lighting"
+replace: "dev.porter.shim.mc.client.Tesselator.Lighting"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import com.mojang.blaze3d.platform.Lighting;"
+    after: "import dev.porter.shim.mc.client.Tesselator.Lighting;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-window
+description: "type com.mojang.blaze3d.platform.Window -> dev.porter.shim.mc.client.Window"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "com.mojang.blaze3d.platform.Window"
+replace: "dev.porter.shim.mc.client.Window"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import com.mojang.blaze3d.platform.Window;"
+    after: "import dev.porter.shim.mc.client.Window;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-vertexformat-mode
+description: "type com.mojang.blaze3d.vertex.VertexFormat$Mode -> dev.porter.shim.mc.client.Tesselator.VertexFormat.Mode"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "com.mojang.blaze3d.vertex.VertexFormat$Mode"
+replace: "dev.porter.shim.mc.client.Tesselator.VertexFormat.Mode"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import com.mojang.blaze3d.vertex.VertexFormat.Mode;"
+    after: "import dev.porter.shim.mc.client.Tesselator.VertexFormat.Mode;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-posestack-pose
+description: "type com.mojang.blaze3d.vertex.PoseStack$Pose -> dev.porter.shim.mc.client.PoseStack.Pose"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "com.mojang.blaze3d.vertex.PoseStack$Pose"
+replace: "dev.porter.shim.mc.client.PoseStack.Pose"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import com.mojang.blaze3d.vertex.PoseStack.Pose;"
+    after: "import dev.porter.shim.mc.client.PoseStack.Pose;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-matrix4f
+description: "type com.mojang.math.Matrix4f -> dev.porter.shim.mc.client.Matrix4f"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "com.mojang.math.Matrix4f"
+replace: "dev.porter.shim.mc.client.Matrix4f"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import com.mojang.math.Matrix4f;"
+    after: "import dev.porter.shim.mc.client.Matrix4f;"
+---
+schemaVersion: 1
+id: r-closure-mc-call-component-getvisualordertext
+description: "call net.minecraft.network.chat.Component#getVisualOrderText() -> Font.FormattedCharSequence.of($c)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.network.chat.Component#getVisualOrderText()"
+  bind: { recv: "$c" }
+replace: "Font.FormattedCharSequence.of($c)"
+imports: ["dev.porter.shim.mc.client.Font"]
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - context: "Component c; import net.minecraft.network.chat.Component"
+    before: "Object x = c.getVisualOrderText();"
+    after: "Object x = Font.FormattedCharSequence.of(c);"
+---
+schemaVersion: 1
+id: r-closure-mc-call-minecraft-getwindow
+description: "call net.minecraft.client.Minecraft#getWindow() -> Window.get($m)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.client.Minecraft#getWindow()"
+  bind: { recv: "$m" }
+replace: "Window.get($m)"
+imports: ["dev.porter.shim.mc.client.Window"]
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - context: "Minecraft m; import net.minecraft.client.Minecraft"
+    before: "Object w = m.getWindow();"
+    after: "Object w = Window.get(m);"
+---
+schemaVersion: 1
+id: r-closure-mc-field-minecraft-font
+description: "field net.minecraft.client.Minecraft#font -> Font.get()"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "net.minecraft.client.Minecraft#font"
+  bind: { recv: "$m" }
+replace: "Font.get()"
+imports: ["dev.porter.shim.mc.client.Font"]
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - context: "Minecraft m; import net.minecraft.client.Minecraft"
+    before: "Object f = m.font;"
+    after: "Object f = Font.get();"
+---
+schemaVersion: 1
+id: r-closure-mc-field-minecraft-player
+description: "field net.minecraft.client.Minecraft#player -> $m.thePlayer"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.client.Minecraft#player"
+  bind: { recv: "$m" }
+replace: "$m.thePlayer"
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - context: "Minecraft m; import net.minecraft.client.Minecraft"
+    before: "Object p = m.player;"
+    after: "Object p = m.thePlayer;"
+---
+schemaVersion: 1
+id: r-closure-mc-call-minecraft-getitemrenderer
+description: "call net.minecraft.client.Minecraft#getItemRenderer() -> new ModernContainerScreen.ItemRenderer()"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.client.Minecraft#getItemRenderer()"
+  bind: { recv: "$m" }
+replace: "new ModernContainerScreen.ItemRenderer()"
+imports: ["dev.porter.shim.mc.client.ModernContainerScreen"]
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - context: "Minecraft m; import net.minecraft.client.Minecraft"
+    before: "Object r = m.getItemRenderer();"
+    after: "Object r = new ModernContainerScreen.ItemRenderer();"
+---
+schemaVersion: 1
+id: r-closure-mc-field-inventorymenu-block-atlas
+description: "field net.minecraft.world.inventory.InventoryMenu#BLOCK_ATLAS -> TextureMap.locationBlocksTexture"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.inventory.InventoryMenu#BLOCK_ATLAS"
+replace: "TextureMap.locationBlocksTexture"
+imports: ["net.minecraft.client.renderer.texture.TextureMap"]
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "Object a = InventoryMenu.BLOCK_ATLAS;"
+    after: "Object a = TextureMap.locationBlocksTexture;"
+---
+schemaVersion: 1
+id: r-closure-mc-field-textureatlas-location-blocks
+description: "field net.minecraft.client.renderer.texture.TextureAtlas#LOCATION_BLOCKS -> TextureMap.locationBlocksTexture"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.client.renderer.texture.TextureAtlas#LOCATION_BLOCKS"
+replace: "TextureMap.locationBlocksTexture"
+imports: ["net.minecraft.client.renderer.texture.TextureMap"]
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "Object a = TextureAtlas.LOCATION_BLOCKS;"
+    after: "Object a = TextureMap.locationBlocksTexture;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-screen
+description: "type net.minecraft.client.gui.screens.Screen -> net.minecraft.client.gui.GuiScreen"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: "net.minecraft.client.gui.screens.Screen"
+replace: "net.minecraft.client.gui.GuiScreen"
+priority: 6
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import net.minecraft.client.gui.screens.Screen;"
+    after: "import net.minecraft.client.gui.GuiScreen;"
+---
+schemaVersion: 1
+id: r-closure-mc-call-screen-hasshiftdown
+description: "call net.minecraft.client.gui.screens.Screen#hasShiftDown() -> GuiScreen.isShiftKeyDown()"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.client.gui.screens.Screen#hasShiftDown()"
+replace: "GuiScreen.isShiftKeyDown()"
+imports: ["net.minecraft.client.gui.GuiScreen", "dev.porter.shim.mc.client.ModernContainerScreen"]
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - context: "import net.minecraft.client.gui.screens.Screen"
+    before: "boolean b = Screen.hasShiftDown();"
+    after: "boolean b = GuiScreen.isShiftKeyDown();"
+---
+schemaVersion: 1
+id: r-closure-mc-call-screen-hascontroldown
+description: "call net.minecraft.client.gui.screens.Screen#hasControlDown() -> GuiScreen.isCtrlKeyDown()"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.client.gui.screens.Screen#hasControlDown()"
+replace: "GuiScreen.isCtrlKeyDown()"
+imports: ["net.minecraft.client.gui.GuiScreen", "dev.porter.shim.mc.client.ModernContainerScreen"]
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - context: "import net.minecraft.client.gui.screens.Screen"
+    before: "boolean b = Screen.hasControlDown();"
+    after: "boolean b = GuiScreen.isCtrlKeyDown();"
+---
+schemaVersion: 1
+id: r-closure-mc-call-screen-hasaltdown
+description: "call net.minecraft.client.gui.screens.Screen#hasAltDown() -> ModernContainerScreen.hasAltDown()"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.client.gui.screens.Screen#hasAltDown()"
+replace: "ModernContainerScreen.hasAltDown()"
+imports: ["net.minecraft.client.gui.GuiScreen", "dev.porter.shim.mc.client.ModernContainerScreen"]
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - context: "import net.minecraft.client.gui.screens.Screen"
+    before: "boolean b = Screen.hasAltDown();"
+    after: "boolean b = ModernContainerScreen.hasAltDown();"
+---
+schemaVersion: 1
+id: r-closure-mc-type-rendertype
+description: "type net.minecraft.client.renderer.RenderType -> dev.porter.shim.mc.client.RenderType"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.client.renderer.RenderType"
+replace: "dev.porter.shim.mc.client.RenderType"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import net.minecraft.client.renderer.RenderType;"
+    after: "import dev.porter.shim.mc.client.RenderType;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-modeldata
+description: "type net.minecraftforge.client.model.data.ModelData -> dev.porter.shim.mc.client.ModelData"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraftforge.client.model.data.ModelData"
+replace: "dev.porter.shim.mc.client.ModelData"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import net.minecraftforge.client.model.data.ModelData;"
+    after: "import dev.porter.shim.mc.client.ModelData;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-modelproperty
+description: "type net.minecraftforge.client.model.data.ModelProperty -> dev.porter.shim.mc.client.ModelData.ModelProperty"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraftforge.client.model.data.ModelProperty"
+replace: "dev.porter.shim.mc.client.ModelData.ModelProperty"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import net.minecraftforge.client.model.data.ModelProperty;"
+    after: "import dev.porter.shim.mc.client.ModelData.ModelProperty;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-keymapping
+description: "type net.minecraft.client.KeyMapping -> net.minecraft.client.settings.KeyBinding"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: "net.minecraft.client.KeyMapping"
+replace: "net.minecraft.client.settings.KeyBinding"
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import net.minecraft.client.KeyMapping;"
+    after: "import net.minecraft.client.settings.KeyBinding;"
+---
+schemaVersion: 1
+id: r-closure-mc-field-minecraft-screen
+description: "field net.minecraft.client.Minecraft#screen -> $m.currentScreen"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.client.Minecraft#screen"
+  bind: { recv: "$m" }
+replace: "$m.currentScreen"
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - context: "Minecraft m; import net.minecraft.client.Minecraft"
+    before: "Object s = m.screen;"
+    after: "Object s = m.currentScreen;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-iclientfluidtypeextensions
+description: "type net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions -> dev.porter.shim.mc.client.ClientFluids"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions"
+replace: "dev.porter.shim.mc.client.ClientFluids"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;"
+    after: "import dev.porter.shim.mc.client.ClientFluids;"
+---
+schemaVersion: 1
+id: r-closure-mc-call-minecraft-gettextureatlas
+description: "call net.minecraft.client.Minecraft#getTextureAtlas(net.minecraft.resources.ResourceLocation) -> ClientFluids.atlas($m, $a)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.client.Minecraft#getTextureAtlas(net.minecraft.resources.ResourceLocation)"
+  bind: { recv: "$m", args: ["$a"] }
+replace: "ClientFluids.atlas($m, $a)"
+imports: ["dev.porter.shim.mc.client.ClientFluids"]
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - context: "Minecraft m; ResourceLocation a; import net.minecraft.client.Minecraft; import net.minecraft.resources.ResourceLocation"
+    before: "Object f = m.getTextureAtlas(a);"
+    after: "Object f = ClientFluids.atlas(m, a);"
+---
+schemaVersion: 1
+id: r-closure-mc-call-missingtextureatlassprite-getlocation
+description: "call net.minecraft.client.renderer.texture.MissingTextureAtlasSprite#getLocation() -> ClientFluids.missingLocation()"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.client.renderer.texture.MissingTextureAtlasSprite#getLocation()"
+replace: "ClientFluids.missingLocation()"
+imports: ["dev.porter.shim.mc.client.ClientFluids"]
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - context: "import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite"
+    before: "Object l = MissingTextureAtlasSprite.getLocation();"
+    after: "Object l = ClientFluids.missingLocation();"
+---
+schemaVersion: 1
+id: r-closure-mc-type-missingtextureatlassprite
+description: "type net.minecraft.client.renderer.texture.MissingTextureAtlasSprite -> dev.porter.shim.mc.client.ClientFluids"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.client.renderer.texture.MissingTextureAtlasSprite"
+replace: "dev.porter.shim.mc.client.ClientFluids"
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;"
+    after: "import dev.porter.shim.mc.client.ClientFluids;"
+---
+schemaVersion: 1
+id: r-closure-mc-call-minecraft-resizedisplay
+description: "call net.minecraft.client.Minecraft#resizeDisplay() -> Window.get($m)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.client.Minecraft#resizeDisplay()"
+  bind: { recv: "$m" }
+replace: "Window.get($m)"
+imports: ["dev.porter.shim.mc.client.Window"]
+preconditions: ["statement"]
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - context: "Minecraft m; import net.minecraft.client.Minecraft"
+    before: "m.resizeDisplay();"
+    after: "Window.get(m);"
+---
+schemaVersion: 1
+id: r-closure-mc-call-keyboardhandler-setsendrepeatstogui
+description: "call net.minecraft.client.KeyboardHandler#setSendRepeatsToGui(boolean) -> org.lwjgl.input.Keyboard.enableRepeatEvents($v)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.client.KeyboardHandler#setSendRepeatsToGui(boolean)"
+  bind: { recv: "$k", args: ["$v"] }
+replace: "org.lwjgl.input.Keyboard.enableRepeatEvents($v)"
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - context: "KeyboardHandler k; import net.minecraft.client.KeyboardHandler"
+    before: "k.setSendRepeatsToGui(true);"
+    after: "org.lwjgl.input.Keyboard.enableRepeatEvents(true);"
+---
+schemaVersion: 1
+id: r-closure-mc-type-abstracttexture
+description: "type net.minecraft.client.renderer.texture.AbstractTexture -> net.minecraft.client.renderer.texture.ITextureObject"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: "net.minecraft.client.renderer.texture.AbstractTexture"
+replace: "net.minecraft.client.renderer.texture.ITextureObject"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import net.minecraft.client.renderer.texture.AbstractTexture;"
+    after: "import net.minecraft.client.renderer.texture.ITextureObject;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-screenutils
+description: "type net.minecraftforge.client.gui.ScreenUtils -> dev.porter.shim.mc.client.ScreenUtils"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraftforge.client.gui.ScreenUtils"
+replace: "dev.porter.shim.mc.client.ScreenUtils"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import net.minecraftforge.client.gui.ScreenUtils;"
+    after: "import dev.porter.shim.mc.client.ScreenUtils;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-editbox
+description: "type net.minecraft.client.gui.components.EditBox -> dev.porter.shim.mc.client.EditBox"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.client.gui.components.EditBox"
+replace: "dev.porter.shim.mc.client.EditBox"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import net.minecraft.client.gui.components.EditBox;"
+    after: "import dev.porter.shim.mc.client.EditBox;"
+---
+schemaVersion: 1
+id: r-closure-mc-call-keymapping-getkey
+description: "call net.minecraft.client.KeyMapping#getKey() -> Keys.key($k)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.client.KeyMapping#getKey()"
+  bind: { recv: "$k" }
+replace: "Keys.key($k)"
+imports: ["dev.porter.shim.mc.client.Keys"]
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - context: "KeyMapping k; import net.minecraft.client.KeyMapping"
+    before: "Object x = k.getKey();"
+    after: "Object x = Keys.key(k);"
+---
+schemaVersion: 1
+id: r-closure-mc-type-inputconstants-key
+description: "type com.mojang.blaze3d.platform.InputConstants$Key -> dev.porter.shim.mc.client.Keys"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "com.mojang.blaze3d.platform.InputConstants$Key"
+replace: "dev.porter.shim.mc.client.Keys"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import com.mojang.blaze3d.platform.InputConstants.Key;"
+    after: "import dev.porter.shim.mc.client.Keys;"

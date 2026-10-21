@@ -1,0 +1,425 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:porter:contract:symbol-graph",
+  "title": "porter symbol graph",
+  "description": "Either a graph (type = graph: symbols of each version + edges between adjacent versions) or the result of a chain query (type = queryResult).",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "type"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "type": {
+      "enum": [
+        "graph",
+        "queryResult"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "graph"
+          }
+        }
+      },
+      "then": {
+        "$ref": "#/$defs/graph"
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "queryResult"
+          }
+        }
+      },
+      "then": {
+        "$ref": "#/$defs/queryResult"
+      }
+    }
+  ],
+  "$defs": {
+    "mcVersion": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$"
+    },
+    "namespace": {
+      "description": "Naming set. Well-known: obf, srg, mcp, mojmap, intermediary, yarn. 'parchment' only provides parameter names.",
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_-]*$"
+    },
+    "symbolKind": {
+      "enum": [
+        "class",
+        "method",
+        "field"
+      ]
+    },
+    "symbolRef": {
+      "description": "A symbol in one version, named in that version's canonical namespace (see graph.versions[].canonical). Classes: name = FQN, no owner. Methods/fields: owner = FQN of declaring class. desc = JVM descriptor in the canonical namespace (required for methods, optional for fields).",
+      "type": "object",
+      "required": [
+        "version",
+        "kind",
+        "name"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "$ref": "#/$defs/mcVersion"
+        },
+        "kind": {
+          "$ref": "#/$defs/symbolKind"
+        },
+        "owner": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "desc": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "method"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "owner",
+              "desc"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "field"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "owner"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "class"
+              }
+            }
+          },
+          "then": {
+            "not": {
+              "required": [
+                "owner"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "status": {
+      "description": "Ordered from best to worst: same < renamed < moved < signature_changed < split|merged < removed.",
+      "enum": [
+        "same",
+        "renamed",
+        "moved",
+        "signature_changed",
+        "split",
+        "merged",
+        "removed"
+      ]
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "evidence": {
+      "description": "Why the edge exists. Well-known: mapping-name-match, bytecode-similarity, call-graph, constants, hierarchy, manual, matcher.",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9-]+$"
+      },
+      "uniqueItems": true
+    },
+    "edge": {
+      "description": "Edge between adjacent versions. 'to' is omitted only for status = removed. split = several edges with the same 'from'; merged = several edges with the same 'to'.",
+      "type": "object",
+      "required": [
+        "from",
+        "status",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "from": {
+          "$ref": "#/$defs/symbolRef"
+        },
+        "to": {
+          "$ref": "#/$defs/symbolRef"
+        },
+        "status": {
+          "$ref": "#/$defs/status"
+        },
+        "confidence": {
+          "$ref": "#/$defs/confidence"
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidence"
+        },
+        "note": {
+          "type": "string"
+        }
+      },
+      "if": {
+        "properties": {
+          "status": {
+            "const": "removed"
+          }
+        }
+      },
+      "then": {
+        "not": {
+          "required": [
+            "to"
+          ]
+        }
+      },
+      "else": {
+        "required": [
+          "to"
+        ]
+      }
+    },
+    "symbol": {
+      "description": "Symbol node: the symbolRef plus its names in all available namespaces.",
+      "type": "object",
+      "required": [
+        "ref",
+        "names"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "ref": {
+          "$ref": "#/$defs/symbolRef"
+        },
+        "names": {
+          "description": "namespace -> name in that namespace (simple member name, or FQN for classes).",
+          "type": "object",
+          "propertyNames": {
+            "$ref": "#/$defs/namespace"
+          },
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "params": {
+          "description": "Method parameter names (e.g. from Parchment), by JVM local index.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "index",
+              "name"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "index": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source": {
+                "$ref": "#/$defs/namespace"
+              }
+            }
+          }
+        },
+        "access": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "JVM access flags."
+        }
+      }
+    },
+    "graph": {
+      "type": "object",
+      "required": [
+        "type",
+        "versions",
+        "edges"
+      ],
+      "properties": {
+        "schemaVersion": true,
+        "type": {
+          "const": "graph"
+        },
+        "versions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "canonical"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "$ref": "#/$defs/mcVersion"
+              },
+              "canonical": {
+                "$ref": "#/$defs/namespace",
+                "description": "Namespace used by symbolRef for this version (e.g. mojmap for 1.19.2, mcp for 1.7.10)."
+              },
+              "namespaces": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/namespace"
+                }
+              },
+              "sources": {
+                "description": "Provenance of jars/mappings (name, version, URL, sha256).",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "name"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "version": {
+                      "type": "string"
+                    },
+                    "url": {
+                      "type": "string"
+                    },
+                    "sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "symbols": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/symbol"
+          }
+        },
+        "edges": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/edge"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "queryResult": {
+      "type": "object",
+      "required": [
+        "type",
+        "query",
+        "path",
+        "status",
+        "confidence"
+      ],
+      "properties": {
+        "schemaVersion": true,
+        "type": {
+          "const": "queryResult"
+        },
+        "query": {
+          "type": "object",
+          "required": [
+            "symbol",
+            "to"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "symbol": {
+              "$ref": "#/$defs/symbolRef"
+            },
+            "to": {
+              "$ref": "#/$defs/mcVersion"
+            }
+          }
+        },
+        "path": {
+          "description": "Edges from the query version to the target version, in order. For split, the path follows each branch; see results.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/edge"
+          }
+        },
+        "status": {
+          "$ref": "#/$defs/status",
+          "description": "Worst status along the path."
+        },
+        "confidence": {
+          "$ref": "#/$defs/confidence",
+          "description": "Minimum confidence along the path."
+        },
+        "results": {
+          "description": "Resulting symbol(s) in the target version; empty when removed or no path.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/symbolRef"
+          }
+        },
+        "missing": {
+          "description": "Set when no path exists: the version where the chain broke and why.",
+          "type": "object",
+          "required": [
+            "at",
+            "reason"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "at": {
+              "$ref": "#/$defs/mcVersion"
+            },
+            "reason": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

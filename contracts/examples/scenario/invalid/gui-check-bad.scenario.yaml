@@ -1,0 +1,11 @@
+# Invalid (RFC 005): open_gui without at or item, unknown check mode, a mask rectangle with three numbers,
+# a capture name with upper-case letters, close_gui with a value.
+schemaVersion: 1
+id: bad-gui-check
+world: flat-void
+side: client
+steps:
+  - open_gui: { capture: no-target }
+  - open_gui: { at: [0, 64, 0], check: { mode: pixel-perfect, mask: [[1, 2, 3]] } }
+  - gui_input: { key: RIGHT, capture: Book-Page }
+  - close_gui: { force: true }

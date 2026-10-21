@@ -1,0 +1,12 @@
+schemaVersion: 1
+id: big-press-basic
+world: flat-void
+side: client
+steps:
+  - build_multiblock: { id: "examplemod:big_press", at: [0, 64, 0] }
+  - fill_fluid: { at: [1, 65, 2], fluid: "examplemod:berry_juice", amount: 1000 }
+  - insert_item: { at: [1, 65, 0], item: "minecraft:copper_ingot", count: 4 }
+  - tick: 200
+  - sample: { what: ["nbt:[1,65,0]/Progress", "item:[1,65,0]#1"] }
+  - assert: { expr: "nbt:[1,65,0]/Progress >= 0" }
+  - open_gui: { at: [1, 65, 0], menu: "examplemod:copper_press", screenshot: true }

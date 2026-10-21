@@ -1,0 +1,84 @@
+{
+  "comment": "Inputs of `porter graph build`. Every URL and sha1 was checked on 2026-10-18 (graph/README.md, section Sources). sha1 = the checksum published next to the artifact (Mojang version json / maven .sha1). `local` = byte-identical copies already on disk that are used instead of downloading when their sha1 matches.",
+  "versions": [
+    {
+      "id": "1.19.2",
+      "canonical": "mojmap",
+      "jar": { "name": "minecraft-client", "version": "1.19.2", "dir": "mc-1.19.2-client",
+        "url": "https://piston-data.mojang.com/v1/objects/055b30d860ead928cba3849ba920c88b6950b654/client.jar",
+        "sha1": "055b30d860ead928cba3849ba920c88b6950b654" },
+      "mappings": [
+        { "type": "proguard", "name": "mojmap", "version": "1.19.2", "dir": "mc-1.19.2-client-mappings",
+          "url": "https://piston-data.mojang.com/v1/objects/8e8c9be5dc27802caba47053d4fdea328f7f89bd/client.txt",
+          "sha1": "8e8c9be5dc27802caba47053d4fdea328f7f89bd" },
+        { "type": "tsrg", "name": "mcp_config", "version": "1.19.2-20220805.130853", "dir": "mcp_config-1.19.2",
+          "url": "https://maven.minecraftforge.net/de/oceanlabs/mcp/mcp_config/1.19.2-20220805.130853/mcp_config-1.19.2-20220805.130853.zip",
+          "sha1": "f825e1ca07c31b1b3046fc459ba8823eed535818", "entry": "config/joined.tsrg" },
+        { "type": "parchment", "name": "parchment", "version": "1.19.2-2022.11.27", "dir": "parchment-1.19.2-2022.11.27",
+          "url": "https://maven.parchmentmc.org/org/parchmentmc/data/parchment-1.19.2/2022.11.27/parchment-1.19.2-2022.11.27.zip",
+          "sha1": "df6e33532eda7e5482c734c9241a15ff46d8d211", "entry": "parchment.json" }
+      ]
+    },
+    {
+      "id": "1.18.2",
+      "canonical": "mojmap",
+      "jar": { "name": "minecraft-client", "version": "1.18.2", "dir": "mc-1.18.2-client",
+        "url": "https://piston-data.mojang.com/v1/objects/2e9a3e3107cca00d6bc9c97bf7d149cae163ef21/client.jar",
+        "sha1": "2e9a3e3107cca00d6bc9c97bf7d149cae163ef21" },
+      "mappings": [
+        { "type": "proguard", "name": "mojmap", "version": "1.18.2", "dir": "mc-1.18.2-client-mappings",
+          "url": "https://piston-data.mojang.com/v1/objects/a661c6a55a0600bd391bdbbd6827654c05b2109c/client.txt",
+          "sha1": "a661c6a55a0600bd391bdbbd6827654c05b2109c" }
+      ]
+    },
+    {
+      "id": "1.16.5",
+      "canonical": "mojmap",
+      "jar": { "name": "minecraft-client", "version": "1.16.5", "dir": "mc-1.16.5-client",
+        "url": "https://piston-data.mojang.com/v1/objects/37fd3c903861eeff3bc24b71eed48f828b5269c8/client.jar",
+        "sha1": "37fd3c903861eeff3bc24b71eed48f828b5269c8" },
+      "mappings": [
+        { "type": "proguard", "name": "mojmap", "version": "1.16.5", "dir": "mc-1.16.5-client-mappings",
+          "url": "https://piston-data.mojang.com/v1/objects/374c6b789574afbdc901371207155661e0509e17/client.txt",
+          "sha1": "374c6b789574afbdc901371207155661e0509e17" },
+        { "type": "tsrg", "name": "mcp_config", "version": "1.16.5-20210115.111550", "dir": "mcp_config-1.16.5",
+          "url": "https://maven.minecraftforge.net/de/oceanlabs/mcp/mcp_config/1.16.5-20210115.111550/mcp_config-1.16.5-20210115.111550.zip",
+          "sha1": "a81464c686be42933aacac7898f8c0d50edccf51", "entry": "config/joined.tsrg" },
+        { "type": "mcp-csv", "name": "mcp_snapshot", "version": "20210309-1.16.5", "dir": "mcp_snapshot-20210309-1.16.5",
+          "url": "https://maven.minecraftforge.net/de/oceanlabs/mcp/mcp_snapshot/20210309-1.16.5/mcp_snapshot-20210309-1.16.5.zip",
+          "sha1": "f6273df8817a92d41cf417a1a5935c08e09035ec" }
+      ]
+    },
+    {
+      "id": "1.12.2",
+      "canonical": "mcp",
+      "jar": { "name": "minecraft-client", "version": "1.12.2", "dir": "mc-1.12.2-client",
+        "url": "https://piston-data.mojang.com/v1/objects/0f275bc1547d01fa5f56ba34bdc87d981ee12daf/client.jar",
+        "sha1": "0f275bc1547d01fa5f56ba34bdc87d981ee12daf" },
+      "mappings": [
+        { "type": "srg", "name": "mcp_srg", "version": "1.12.2", "dir": "mcp-1.12.2-srg",
+          "url": "https://maven.minecraftforge.net/de/oceanlabs/mcp/mcp/1.12.2/mcp-1.12.2-srg.zip",
+          "sha1": "9a583f5bceeb1c1771c8a3a899eee5d7fa2b2e68", "entry": "joined.srg" },
+        { "type": "mcp-csv", "name": "mcp_stable", "version": "39-1.12", "dir": "mcp_stable-39-1.12",
+          "url": "https://maven.minecraftforge.net/de/oceanlabs/mcp/mcp_stable/39-1.12/mcp_stable-39-1.12.zip",
+          "sha1": "eead02d7aea31dcd0e2080cac702720a0b979a6e" }
+      ]
+    },
+    {
+      "id": "1.7.10",
+      "canonical": "mcp",
+      "jar": { "name": "minecraft-client", "version": "1.7.10", "dir": "mc-1.7.10-client",
+        "url": "https://launcher.mojang.com/v1/objects/e80d9b3bf5085002218d4be59e668bac718abbc6/client.jar",
+        "sha1": "e80d9b3bf5085002218d4be59e668bac718abbc6",
+        "local": ["${GRADLE_USER_HOME}/caches/retro_futura_gradle/mc-vanilla/1.7.10/client.jar"] },
+      "mappings": [
+        { "type": "srg", "name": "mcp_srg", "version": "1.7.10", "dir": "mcp-1.7.10-srg",
+          "url": "https://maven.minecraftforge.net/de/oceanlabs/mcp/mcp/1.7.10/mcp-1.7.10-srg.zip",
+          "sha1": "10b95bb342f55d681025bf2d698c893d9c4b4201", "entry": "joined.srg" },
+        { "type": "mcp-csv", "name": "mcp_stable", "version": "12-1.7.10", "dir": "mcp_stable-12-1.7.10",
+          "url": "https://maven.minecraftforge.net/de/oceanlabs/mcp/mcp_stable/12-1.7.10/mcp_stable-12-1.7.10.zip",
+          "sha1": "690fe46a9208004f0336c0378b223ffd5f9b2cae" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+# Default owner of everything. Add area owners below (later lines win) as people take over modules or
+# version-pair packs, e.g.:
+#   /rules/composite/1.19.2__1.7.10/   @someone
+#   /graph/                            @someone-else
+*   @Chasik8

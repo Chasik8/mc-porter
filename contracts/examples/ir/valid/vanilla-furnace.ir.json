@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "source": { "version": "forge-1.7.10", "tool": "hand-written example" },
+  "nodes": [
+    {
+      "kind": "menu",
+      "id": "minecraft:furnace",
+      "title": "container.furnace",
+      "size": { "width": 176, "height": 166 },
+      "texture": { "path": "minecraft:textures/gui/container/furnace.png" },
+      "slots": [
+        { "index": 0, "x": 56, "y": 17, "role": "input" },
+        { "index": 1, "x": 56, "y": 53, "role": "fuel" },
+        { "index": 2, "x": 116, "y": 35, "role": "output" }
+      ],
+      "playerInventory": { "x": 8, "y": 84 },
+      "dataSlots": [
+        { "name": "cookTime", "index": 0 },
+        { "name": "burnTime", "index": 1 },
+        { "name": "currentItemBurnTime", "index": 2 }
+      ],
+      "bars": [
+        { "id": "cook", "x": 79, "y": 34, "width": 24, "height": 17, "direction": "right", "u": 176, "v": 14, "value": "cookTime", "max": 200 },
+        { "id": "flame", "x": 56, "y": 36, "width": 14, "height": 14, "direction": "up", "u": 176, "v": 0, "value": "burnTime", "max": "currentItemBurnTime" }
+      ],
+      "provenance": { "file": "runtime:gui-dump", "line": 0, "version": "forge-1.7.10", "via": "runtime-export" }
+    },
+    {
+      "kind": "tag",
+      "id": "forge:ingots/iron",
+      "registry": "item",
+      "values": ["minecraft:iron_ingot"],
+      "oreDict": ["ingotIron"],
+      "provenance": { "file": "manual", "line": 0, "version": "forge-1.7.10", "via": "manual" }
+    }
+  ]
+}

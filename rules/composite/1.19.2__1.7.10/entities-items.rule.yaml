@@ -1,0 +1,536 @@
+# Entities, effects, food, randomness, item-stack idioms. Mined from the hand-port log (recurring cases),
+# both sides verified. Synthetic tests only.
+schemaVersion: 1
+id: r-1.19.2-1.7.10-type-entity
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: "net.minecraft.world.entity.Entity"
+replace: "net.minecraft.entity.Entity"
+confidence: 0.95
+provenance: { source: manual, ref: "mined: hand-port porting-log api.jsonl (recurring 1.19.2 -> 1.7.10 translations); verified against the Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "import net.minecraft.world.entity.Entity;"
+    after: "import net.minecraft.entity.Entity;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-type-livingentity
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: "net.minecraft.world.entity.LivingEntity"
+replace: "net.minecraft.entity.EntityLivingBase"
+confidence: 0.95
+provenance: { source: manual, ref: "mined: hand-port porting-log api.jsonl (recurring 1.19.2 -> 1.7.10 translations); verified against the Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "import net.minecraft.world.entity.LivingEntity;"
+    after: "import net.minecraft.entity.EntityLivingBase;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-type-player
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: "net.minecraft.world.entity.player.Player"
+replace: "net.minecraft.entity.player.EntityPlayer"
+confidence: 0.95
+provenance: { source: manual, ref: "mined: hand-port porting-log api.jsonl (recurring 1.19.2 -> 1.7.10 translations); verified against the Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "import net.minecraft.world.entity.player.Player;"
+    after: "import net.minecraft.entity.player.EntityPlayer;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-type-mobeffect
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: "net.minecraft.world.effect.MobEffect"
+replace: "net.minecraft.potion.Potion"
+confidence: 0.95
+provenance: { source: manual, ref: "mined: hand-port porting-log api.jsonl (recurring 1.19.2 -> 1.7.10 translations); verified against the Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "import net.minecraft.world.effect.MobEffect;"
+    after: "import net.minecraft.potion.Potion;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-type-mobeffectinstance
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: "net.minecraft.world.effect.MobEffectInstance"
+replace: "net.minecraft.potion.PotionEffect"
+confidence: 0.95
+provenance: { source: manual, ref: "mined: hand-port porting-log api.jsonl (recurring 1.19.2 -> 1.7.10 translations); verified against the Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "import net.minecraft.world.effect.MobEffectInstance;"
+    after: "import net.minecraft.potion.PotionEffect;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-type-fooddata
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: "net.minecraft.world.food.FoodData"
+replace: "net.minecraft.util.FoodStats"
+confidence: 0.95
+provenance: { source: manual, ref: "mined: hand-port porting-log api.jsonl (recurring 1.19.2 -> 1.7.10 translations); verified against the Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "import net.minecraft.world.food.FoodData;"
+    after: "import net.minecraft.util.FoodStats;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-type-randomsource
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: "net.minecraft.util.RandomSource"
+replace: "java.util.Random"
+confidence: 0.95
+provenance: { source: manual, ref: "mined: hand-port porting-log api.jsonl (recurring 1.19.2 -> 1.7.10 translations); verified against the Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "import net.minecraft.util.RandomSource;"
+    after: "import java.util.Random;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-entity-isshiftkeydown
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.world.entity.Entity#isShiftKeyDown()"
+  bind: { recv: "$e" }
+replace: "$e.isSneaking()"
+confidence: 1.0
+provenance: { source: manual, ref: "mined: hand-port porting-log api.jsonl (recurring 1.19.2 -> 1.7.10 translations); verified against the Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Player p; LivingEntity e; MobEffect m; MobEffectInstance i; float f; import net.minecraft.world.entity.player.Player; import net.minecraft.world.entity.LivingEntity; import net.minecraft.world.effect.MobEffect; import net.minecraft.world.effect.MobEffectInstance"
+    before: "boolean b = p.isShiftKeyDown();"
+    after: "boolean b = p.isSneaking();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-player-iscreative
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.entity.player.Player#isCreative()"
+  bind: { recv: "$e" }
+replace: "$e.capabilities.isCreativeMode"
+confidence: 1.0
+provenance: { source: manual, ref: "mined: hand-port porting-log api.jsonl (recurring 1.19.2 -> 1.7.10 translations); verified against the Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Player p; LivingEntity e; MobEffect m; MobEffectInstance i; float f; import net.minecraft.world.entity.player.Player; import net.minecraft.world.entity.LivingEntity; import net.minecraft.world.effect.MobEffect; import net.minecraft.world.effect.MobEffectInstance"
+    before: "boolean b = p.isCreative();"
+    after: "boolean b = p.capabilities.isCreativeMode;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-livingentity-getmainhanditem
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.world.entity.LivingEntity#getMainHandItem()"
+  bind: { recv: "$e" }
+replace: "$e.getCurrentEquippedItem()"
+preconditions: ["recv-subtype:net.minecraft.world.entity.player.Player"]
+confidence: 1.0
+provenance: { source: manual, ref: "mined: hand-port porting-log api.jsonl (recurring 1.19.2 -> 1.7.10 translations); verified against the Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Player p; LivingEntity e; MobEffect m; MobEffectInstance i; float f; import net.minecraft.world.entity.player.Player; import net.minecraft.world.entity.LivingEntity; import net.minecraft.world.effect.MobEffect; import net.minecraft.world.effect.MobEffectInstance"
+    before: "Object s = p.getMainHandItem();"
+    after: "Object s = p.getCurrentEquippedItem();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-livingentity-geteffect
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.world.entity.LivingEntity#getEffect(net.minecraft.world.effect.MobEffect)"
+  bind: { recv: "$e", args: ["$a0"] }
+replace: "$e.getActivePotionEffect($a0)"
+confidence: 1.0
+provenance: { source: manual, ref: "mined: hand-port porting-log api.jsonl (recurring 1.19.2 -> 1.7.10 translations); verified against the Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Player p; LivingEntity e; MobEffect m; MobEffectInstance i; float f; import net.minecraft.world.entity.player.Player; import net.minecraft.world.entity.LivingEntity; import net.minecraft.world.effect.MobEffect; import net.minecraft.world.effect.MobEffectInstance"
+    before: "Object x = e.getEffect(m);"
+    after: "Object x = e.getActivePotionEffect(m);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-livingentity-haseffect
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.world.entity.LivingEntity#hasEffect(net.minecraft.world.effect.MobEffect)"
+  bind: { recv: "$e", args: ["$a0"] }
+replace: "$e.isPotionActive($a0)"
+confidence: 1.0
+provenance: { source: manual, ref: "mined: hand-port porting-log api.jsonl (recurring 1.19.2 -> 1.7.10 translations); verified against the Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Player p; LivingEntity e; MobEffect m; MobEffectInstance i; float f; import net.minecraft.world.entity.player.Player; import net.minecraft.world.entity.LivingEntity; import net.minecraft.world.effect.MobEffect; import net.minecraft.world.effect.MobEffectInstance"
+    before: "boolean b = e.hasEffect(m);"
+    after: "boolean b = e.isPotionActive(m);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-livingentity-addeffect
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.entity.LivingEntity#addEffect(net.minecraft.world.effect.MobEffectInstance)"
+  bind: { recv: "$e", args: ["$a0"] }
+replace: "$e.addPotionEffect($a0)"
+preconditions: ["statement"]
+confidence: 1.0
+provenance: { source: manual, ref: "mined: hand-port porting-log api.jsonl (recurring 1.19.2 -> 1.7.10 translations); verified against the Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Player p; LivingEntity e; MobEffect m; MobEffectInstance i; float f; import net.minecraft.world.entity.player.Player; import net.minecraft.world.entity.LivingEntity; import net.minecraft.world.effect.MobEffect; import net.minecraft.world.effect.MobEffectInstance"
+    before: "e.addEffect(i);"
+    after: "e.addPotionEffect(i);"
+  - name: "boolean result used: 1.7.10 returns void"
+    context: "Player p; LivingEntity e; MobEffect m; MobEffectInstance i; float f; import net.minecraft.world.entity.player.Player; import net.minecraft.world.entity.LivingEntity; import net.minecraft.world.effect.MobEffect; import net.minecraft.world.effect.MobEffectInstance"
+    before: "boolean r = e.addEffect(i);"
+    after: "// TODO(porter:precondition) r-1.19.2-1.7.10-livingentity-addeffect: statement boolean r = e.addEffect(i);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-livingentity-removeeffect
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.entity.LivingEntity#removeEffect(net.minecraft.world.effect.MobEffect)"
+  bind: { recv: "$e", args: ["$a0"] }
+replace: "$e.removePotionEffect($a0.id)"
+preconditions: ["statement"]
+confidence: 1.0
+provenance: { source: manual, ref: "mined: hand-port porting-log api.jsonl (recurring 1.19.2 -> 1.7.10 translations); verified against the Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Player p; LivingEntity e; MobEffect m; MobEffectInstance i; float f; import net.minecraft.world.entity.player.Player; import net.minecraft.world.entity.LivingEntity; import net.minecraft.world.effect.MobEffect; import net.minecraft.world.effect.MobEffectInstance"
+    before: "e.removeEffect(m);"
+    after: "e.removePotionEffect(m.id);"
+  - name: "boolean result used: 1.7.10 returns void"
+    context: "Player p; LivingEntity e; MobEffect m; MobEffectInstance i; float f; import net.minecraft.world.entity.player.Player; import net.minecraft.world.entity.LivingEntity; import net.minecraft.world.effect.MobEffect; import net.minecraft.world.effect.MobEffectInstance"
+    before: "boolean r = e.removeEffect(m);"
+    after: "// TODO(porter:precondition) r-1.19.2-1.7.10-livingentity-removeeffect: statement boolean r = e.removeEffect(m);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-livingentity-removealleffects
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.entity.LivingEntity#removeAllEffects()"
+  bind: { recv: "$e" }
+replace: "$e.clearActivePotions()"
+preconditions: ["statement"]
+confidence: 1.0
+provenance: { source: manual, ref: "mined: hand-port porting-log api.jsonl (recurring 1.19.2 -> 1.7.10 translations); verified against the Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Player p; LivingEntity e; MobEffect m; MobEffectInstance i; float f; import net.minecraft.world.entity.player.Player; import net.minecraft.world.entity.LivingEntity; import net.minecraft.world.effect.MobEffect; import net.minecraft.world.effect.MobEffectInstance"
+    before: "e.removeAllEffects();"
+    after: "e.clearActivePotions();"
+  - name: "boolean result used: 1.7.10 returns void"
+    context: "Player p; LivingEntity e; MobEffect m; MobEffectInstance i; float f; import net.minecraft.world.entity.player.Player; import net.minecraft.world.entity.LivingEntity; import net.minecraft.world.effect.MobEffect; import net.minecraft.world.effect.MobEffectInstance"
+    before: "boolean r = e.removeAllEffects();"
+    after: "// TODO(porter:precondition) r-1.19.2-1.7.10-livingentity-removealleffects: statement boolean r = e.removeAllEffects();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-livingentity-heal
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.world.entity.LivingEntity#heal(float)"
+  bind: { recv: "$e", args: ["$a0"] }
+replace: "$e.heal($a0)"
+confidence: 1.0
+provenance: { source: manual, ref: "mined: hand-port porting-log api.jsonl (recurring 1.19.2 -> 1.7.10 translations); verified against the Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Player p; LivingEntity e; MobEffect m; MobEffectInstance i; float f; import net.minecraft.world.entity.player.Player; import net.minecraft.world.entity.LivingEntity; import net.minecraft.world.effect.MobEffect; import net.minecraft.world.effect.MobEffectInstance"
+    before: "e.heal(f);"
+    after: "e.heal(f);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-player-getfooddata
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.world.entity.player.Player#getFoodData()"
+  bind: { recv: "$e" }
+replace: "$e.getFoodStats()"
+confidence: 1.0
+provenance: { source: manual, ref: "mined: hand-port porting-log api.jsonl (recurring 1.19.2 -> 1.7.10 translations); verified against the Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Player p; LivingEntity e; MobEffect m; MobEffectInstance i; float f; import net.minecraft.world.entity.player.Player; import net.minecraft.world.entity.LivingEntity; import net.minecraft.world.effect.MobEffect; import net.minecraft.world.effect.MobEffectInstance"
+    before: "Object d = p.getFoodData();"
+    after: "Object d = p.getFoodStats();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-fooddata-eat
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.world.food.FoodData#eat(int, float)"
+  bind: { recv: "$e", args: ["$a0", "$a1"] }
+replace: "$e.addStats($a0, $a1)"
+confidence: 1.0
+provenance: { source: manual, ref: "mined: hand-port porting-log api.jsonl (recurring 1.19.2 -> 1.7.10 translations); verified against the Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Player p; LivingEntity e; MobEffect m; MobEffectInstance i; float f; import net.minecraft.world.entity.player.Player; import net.minecraft.world.entity.LivingEntity; import net.minecraft.world.effect.MobEffect; import net.minecraft.world.effect.MobEffectInstance; FoodData d; import net.minecraft.world.food.FoodData"
+    before: "d.eat(2, f);"
+    after: "d.addStats(2, f);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-mobeffectinstance-getduration
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.world.effect.MobEffectInstance#getDuration()"
+  bind: { recv: "$e" }
+replace: "$e.getDuration()"
+confidence: 1.0
+provenance: { source: manual, ref: "mined: hand-port porting-log api.jsonl (recurring 1.19.2 -> 1.7.10 translations); verified against the Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Player p; LivingEntity e; MobEffect m; MobEffectInstance i; float f; import net.minecraft.world.entity.player.Player; import net.minecraft.world.entity.LivingEntity; import net.minecraft.world.effect.MobEffect; import net.minecraft.world.effect.MobEffectInstance"
+    before: "int n = i.getDuration();"
+    after: "int n = i.getDuration();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-mobeffectinstance-getamplifier
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.world.effect.MobEffectInstance#getAmplifier()"
+  bind: { recv: "$e" }
+replace: "$e.getAmplifier()"
+confidence: 1.0
+provenance: { source: manual, ref: "mined: hand-port porting-log api.jsonl (recurring 1.19.2 -> 1.7.10 translations); verified against the Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Player p; LivingEntity e; MobEffect m; MobEffectInstance i; float f; import net.minecraft.world.entity.player.Player; import net.minecraft.world.entity.LivingEntity; import net.minecraft.world.effect.MobEffect; import net.minecraft.world.effect.MobEffectInstance"
+    before: "int n = i.getAmplifier();"
+    after: "int n = i.getAmplifier();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-new-mobeffectinstance-3
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  new: "net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffect, int, int)"
+  bind: { args: ["$m", "$d", "$a"] }
+replace: "new PotionEffect($m.id, $d, $a)"
+imports: ["net.minecraft.potion.PotionEffect"]
+preconditions: ["pure:$m"]
+confidence: 1.0
+provenance: { source: manual, ref: "mined: hand-port porting-log api.jsonl (recurring 1.19.2 -> 1.7.10 translations); verified against the Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "MobEffect m; import net.minecraft.world.effect.MobEffect"
+    before: "Object x = new MobEffectInstance(m, 200, 1);"
+    after: "Object x = new PotionEffect(m.id, 200, 1);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-new-mobeffectinstance-2
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  new: "net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffect, int)"
+  bind: { args: ["$m", "$d"] }
+replace: "new PotionEffect($m.id, $d)"
+imports: ["net.minecraft.potion.PotionEffect"]
+preconditions: ["pure:$m"]
+confidence: 1.0
+provenance: { source: manual, ref: "mined: hand-port porting-log api.jsonl (recurring 1.19.2 -> 1.7.10 translations); verified against the Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "MobEffect m; import net.minecraft.world.effect.MobEffect"
+    before: "Object x = new MobEffectInstance(m, 200);"
+    after: "Object x = new PotionEffect(m.id, 200);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-level-random
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.level.Level#random"
+  bind: { recv: "$w" }
+replace: "$w.rand"
+confidence: 1.0
+provenance: { source: manual, ref: "mined: hand-port porting-log api.jsonl (recurring 1.19.2 -> 1.7.10 translations); verified against the Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Level w; import net.minecraft.world.level.Level"
+    before: "Object x = w.random;"
+    after: "Object x = w.rand;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-randomsource-nextboolean-0
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.util.RandomSource#nextBoolean()"
+  bind: { recv: "$r" }
+replace: "$r.nextBoolean()"
+confidence: 1.0
+provenance: { source: manual, ref: "mined: hand-port porting-log api.jsonl (recurring 1.19.2 -> 1.7.10 translations); verified against the Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "RandomSource g"
+    before: "Object x = g.nextBoolean();"
+    after: "Object x = g.nextBoolean();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-randomsource-nextint-0
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.util.RandomSource#nextInt()"
+  bind: { recv: "$r" }
+replace: "$r.nextInt()"
+confidence: 1.0
+provenance: { source: manual, ref: "mined: hand-port porting-log api.jsonl (recurring 1.19.2 -> 1.7.10 translations); verified against the Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "RandomSource g"
+    before: "Object x = g.nextInt();"
+    after: "Object x = g.nextInt();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-randomsource-nextint-1
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.util.RandomSource#nextInt(int)"
+  bind: { recv: "$r", args: ["$a0"] }
+replace: "$r.nextInt($a0)"
+confidence: 1.0
+provenance: { source: manual, ref: "mined: hand-port porting-log api.jsonl (recurring 1.19.2 -> 1.7.10 translations); verified against the Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "RandomSource g"
+    before: "Object x = g.nextInt(3);"
+    after: "Object x = g.nextInt(3);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-randomsource-nextfloat-0
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.util.RandomSource#nextFloat()"
+  bind: { recv: "$r" }
+replace: "$r.nextFloat()"
+confidence: 1.0
+provenance: { source: manual, ref: "mined: hand-port porting-log api.jsonl (recurring 1.19.2 -> 1.7.10 translations); verified against the Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "RandomSource g"
+    before: "Object x = g.nextFloat();"
+    after: "Object x = g.nextFloat();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-randomsource-nextdouble-0
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.util.RandomSource#nextDouble()"
+  bind: { recv: "$r" }
+replace: "$r.nextDouble()"
+confidence: 1.0
+provenance: { source: manual, ref: "mined: hand-port porting-log api.jsonl (recurring 1.19.2 -> 1.7.10 translations); verified against the Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "RandomSource g"
+    before: "Object x = g.nextDouble();"
+    after: "Object x = g.nextDouble();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-itemstack-isempty
+description: "1.7.10 has no empty stack object: null or a non-positive size."
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.item.ItemStack#isEmpty()"
+  bind: { recv: "$s" }
+replace: "($s == null || $s.stackSize <= 0)"
+preconditions: ["pure:$s"]
+confidence: 1.0
+provenance: { source: manual, ref: "mined: hand-port porting-log api.jsonl (recurring 1.19.2 -> 1.7.10 translations); verified against the Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "ItemStack s"
+    before: "boolean b = s.isEmpty();"
+    after: "boolean b = (s == null || s.stackSize <= 0);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-itemstack-empty
+description: "ItemStack.EMPTY becomes null (1.7.10 inventories use null for empty slots)."
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "net.minecraft.world.item.ItemStack#EMPTY"
+replace: "null"
+confidence: 0.9
+provenance: { source: manual, ref: "mined: hand-port porting-log api.jsonl (recurring 1.19.2 -> 1.7.10 translations); verified against the Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "Object s = ItemStack.EMPTY;"
+    after: "Object s = null;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-itemstack-is-item
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.item.ItemStack#is(net.minecraft.world.item.Item)"
+  bind: { recv: "$s", args: ["$i"] }
+replace: "($s.getItem() == $i)"
+confidence: 1.0
+provenance: { source: manual, ref: "mined: hand-port porting-log api.jsonl (recurring 1.19.2 -> 1.7.10 translations); verified against the Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "ItemStack s; Item i; import net.minecraft.world.item.Item"
+    before: "boolean b = s.is(i);"
+    after: "boolean b = (s.getItem() == i);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-fluids-water
+description: "Vanilla fluids are Forge registry fluids in 1.7.10 (FluidStack, tanks)."
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "net.minecraft.world.level.material.Fluids#WATER"
+replace: "FluidRegistry.WATER"
+imports: ["net.minecraftforge.fluids.FluidRegistry"]
+confidence: 0.9
+provenance: { source: manual, ref: "mined: hand-port porting-log api.jsonl (recurring 1.19.2 -> 1.7.10 translations); verified against the Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "Object f = Fluids.WATER;"
+    after: "Object f = FluidRegistry.WATER;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-fluids-lava
+description: "Vanilla fluids are Forge registry fluids in 1.7.10 (FluidStack, tanks)."
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "net.minecraft.world.level.material.Fluids#LAVA"
+replace: "FluidRegistry.LAVA"
+imports: ["net.minecraftforge.fluids.FluidRegistry"]
+confidence: 0.9
+provenance: { source: manual, ref: "mined: hand-port porting-log api.jsonl (recurring 1.19.2 -> 1.7.10 translations); verified against the Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "Object f = Fluids.LAVA;"
+    after: "Object f = FluidRegistry.LAVA;"

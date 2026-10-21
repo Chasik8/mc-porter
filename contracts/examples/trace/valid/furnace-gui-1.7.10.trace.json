@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "scenario": "furnace-gui",
+  "version": "forge-1.7.10",
+  "subject": { "modId": "portertest" },
+  "status": "failed",
+  "message": "slot 1 expected at (56,53), found (56,54)",
+  "ticks": 1,
+  "samples": [],
+  "gui": [
+    {
+      "step": 1,
+      "menu": "minecraft:furnace",
+      "size": { "width": 176, "height": 166 },
+      "slots": [
+        { "index": 0, "x": 56, "y": 17 },
+        { "index": 1, "x": 56, "y": 54 },
+        { "index": 2, "x": 116, "y": 35 },
+        { "index": 3, "x": 8, "y": 84, "player": true }
+      ],
+      "bars": [{ "id": "cook", "x": 79, "y": 34, "width": 24, "height": 17 }],
+      "screenshot": "reports/screens/furnace-gui-forge-1.7.10.png"
+    }
+  ]
+}

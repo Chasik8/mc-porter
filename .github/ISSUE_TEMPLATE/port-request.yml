@@ -1,0 +1,42 @@
+name: Port request
+description: Ask for a mod profile (port config + scenarios) for a mod and version pair.
+title: "Port request: <mod> <from> -> <to>"
+labels: [port-request]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A profile lets everyone who owns the mod run the port locally. Porter never ships a mod, and a ported jar is
+        only published for open-licence mods or with the author's permission (see CONTRIBUTING.md, "Legal model").
+        Do not paste decompiled code or attach jars.
+  - type: input
+    id: mod
+    attributes: { label: Mod (name, version, link), placeholder: "Example Mod 1.2.0, https://..." }
+    validations: { required: true }
+  - type: input
+    id: pair
+    attributes: { label: Version pair, placeholder: "forge-1.19.2 -> forge-1.7.10" }
+    validations: { required: true }
+  - type: dropdown
+    id: mode
+    attributes:
+      label: Mode
+      options:
+        - "full (the mod does not exist on the target version)"
+        - "delta (an addon over an existing older version of the mod)"
+    validations: { required: true }
+  - type: input
+    id: licence
+    attributes: { label: Licence of the mod (SPDX id, or ARR), placeholder: "MIT" }
+    validations: { required: true }
+  - type: textarea
+    id: scope
+    attributes:
+      label: What should be ported
+      description: Blocks, machines, items or subsystems (class names are fine; no code).
+  - type: textarea
+    id: coverage
+    attributes:
+      label: porter coverage output (optional)
+      description: "`porter coverage --src <mod-src> --rules rules` on your own copy"
+      render: text

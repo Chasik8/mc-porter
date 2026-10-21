@@ -1,0 +1,10 @@
+# local-only material (decompiles and ported output of mods that are not open-licence) — never commit
+/private/
+build/
+.gradle/
+*.class
+/reports/screens/
+/run/
+/reports/runs/
+/scripts/publish-denylist.local.txt
+*.local.md

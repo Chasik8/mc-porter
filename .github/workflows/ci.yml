@@ -1,0 +1,40 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # publish-check diffs a PR against its base
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+      - name: check.sh (build + unit tests + every rule's before/after tests + contract examples + catalog + dist zip)
+        run: scripts/check.sh
+      - name: Publish safety (no private/, mappings, decompiled code, binaries, local paths, e-mails)
+        env:
+          BASE_REF: ${{ github.event_name == 'pull_request' && format('origin/{0}', github.base_ref) || '' }}
+        run: |
+          if [ -n "$BASE_REF" ]; then scripts/publish-check.sh; else scripts/publish-check.sh --all; fi
+      - name: Upload the distribution
+        uses: actions/upload-artifact@v4
+        with:
+          name: porter-dist
+          path: cli/build/distributions/*.zip
+      - name: Upload test reports
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: '**/build/reports/tests/'

@@ -1,0 +1,32 @@
+/*
+ * Headless check of the NEI integration that `porter generate` emits for 1.7.10 (see NeiCheck.java next to this file).
+ * Apply it in a RetroFuturaGradle/GTNH project that compiles the generated sources, with the NEI API as compileOnly:
+ *
+ *   ext.neiCheckPackages = ['com.example.mymod.gen.nei']          // generated NEI package(s)
+ *   apply from: '<porter>/generate/scripts/nei/nei-check.gradle'
+ *
+ * then `gradlew neiCheck`. Runs on Java 8 with the mod's dev classes, MC 1.7.10 and the deobfuscated NEI jars.
+ */
+def neiCheckDir = buildscript.sourceFile.parentFile
+
+sourceSets {
+    neiCheck {
+        java { srcDir neiCheckDir; include 'NeiCheck.java' }
+        compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath
+        runtimeClasspath += sourceSets.main.output + sourceSets.main.compileClasspath + sourceSets.main.runtimeClasspath
+    }
+}
+
+// projects that compile with Jabel (GTNH convention) pass -Xplugin:jabel to every JavaCompile: same processor path
+configurations.neiCheckAnnotationProcessor.extendsFrom configurations.annotationProcessor
+
+tasks.register('neiCheck', JavaExec) {
+    group = 'verification'
+    description = 'Loads the generated NEI handlers headless and checks their recipe lists and lookups.'
+    dependsOn tasks.named('neiCheckClasses')
+    classpath = sourceSets.neiCheck.runtimeClasspath
+    mainClass = 'NeiCheck'
+    args = project.ext.neiCheckPackages
+    javaLauncher = javaToolchains.launcherFor { languageVersion = JavaLanguageVersion.of(8) }
+    jvmArgs '-Xmx768m', '-Djava.awt.headless=true'
+}

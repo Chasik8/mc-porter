@@ -1,0 +1,5 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [{"type": "forge:nbt", "item": "minecraft:potion"}],
+  "result": {"item": "examplemod:juice"}
+}

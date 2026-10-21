@@ -1,0 +1,22 @@
+schemaVersion: 1
+ports:
+  - id: examplemod-1.19.2-1.7.10
+    mod: { name: Example Mod, version: 1.2.0, url: https://example.org/examplemod }
+    from: forge-1.19.2
+    to: forge-1.7.10
+    mode: full
+    status: scenarios
+    scenarioPassRate: 1.0
+    licence: MIT
+    distributable: true
+    profile: ports/examplemod
+    maintainers: ["@someone"]
+  - id: hostaddon-steam
+    mod: { name: Host Mod, version: 2.1.0 }
+    from: forge-1.19.2
+    to: forge-1.7.10
+    mode: delta
+    status: compiles
+    licence: ARR
+    distributable: false
+    notes: Profile only; everyone runs the port locally against their own copy of the original jar.

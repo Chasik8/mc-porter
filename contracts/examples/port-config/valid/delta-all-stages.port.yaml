@@ -1,0 +1,68 @@
+# Delta port: an addon over a base that already exists on the target version (every stage configured).
+schemaVersion: 1
+name: hostaddon-steam
+description: Steam machines of a host mod's 1.19.2 version, as an addon to its 1.7.10 version.
+mode: delta
+from: forge-1.19.2
+to: forge-1.7.10
+vars:
+  CACHE: /home/me/porter-cache
+project: ../hostaddon
+work: build/port-steam
+queue: [bash, /home/me/bin/one-job-at-a-time.sh, porter]
+jvmArgs: [-Xmx2g]
+classpath:
+  file: build/porter-cp.txt
+  exclude: [jabel]
+  entries: ["${CACHE}/libs/fastutil-8.5.6.jar"]
+generate:
+  units:
+    - name: steam
+      args: [--version, "1.7.10", --ir, steam/ir, --modid, hostaddon, --package, hostaddon.gen]
+      exclude: [src/main/resources/assets/hostaddon/textures/unused.png]
+  preserve: [src/main/java/hostaddon/gen/HostaddonGuiHandler.java]
+closure:
+  source: ../host-1.19.2-src/java
+  prefixes: [host.]
+  seeds: [host.machines.SteamBoilerBlockEntity, host.machines.SteamBoilerMenu]
+  include: [host.recipes.FuelStrategy]
+  cut: [host.registries., host.network.PacketHandler]
+  drop: [host.compat.]
+  stubExtra: [host.api.IHeatSource]
+  known: [../host-1.7.10-src/java]
+rewrite:
+  rules: [../porter/rules/composite, ../porter/rules/packs/adapters, private-rules]
+  graph: ["${CACHE}/graph/out"]
+  platform: [host.]
+  relocate: [host.=hostaddon.ported.]
+  shimPackage: hostaddon.ported.shim
+  jvmArgs: [-Xmx2g, -Xss16m]
+install:
+  stubs:
+    overrides: hubs
+  srgMappings: "${CACHE}/graph/out/mappings/1.19.2.tiny"
+  passes: [srgmoj, java8, tector, edits, imports]
+  edits: edits.yaml
+  adapters: bundled
+  overlays: [manual, compat]
+loop:
+  useClasspath: true
+  args: [--runner, javac, --max-iter, "10", --shim, --rules, ../porter/rules/composite, --rules, ../porter/rules/packs/adapters]
+compile:
+  javaHome: /opt/jdk21
+  jvmArgs: [-Xmx1500m]
+  options: [--release, "8", -Xplugin:jabel]
+  processorpath: ["${CACHE}/libs/jabel-javac-plugin-1.0.2.jar", "${CACHE}/libs/**/byte-buddy*.jar"]
+  generatedSources:
+    - path: hostaddon/Tags.java
+      content: "package hostaddon;\npublic class Tags { public static final String VERSION = \"dev\"; }\n"
+  castfixRounds: 3
+build:
+  command: [./gradlew, --no-daemon, build]
+  env: { JAVA_HOME: /opt/jdk17 }
+  jar: build/libs/hostaddon-1.0.jar
+  obfcheckPrefix: hostaddon/
+test:
+  runs:
+    - name: boiler-heatup
+      args: [test, diff, --scenario, scenarios/boiler-heatup.scenario.yaml]

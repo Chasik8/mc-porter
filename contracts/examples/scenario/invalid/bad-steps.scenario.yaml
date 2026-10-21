@@ -1,0 +1,8 @@
+# Invalid: no world, a step with two keys, an unknown step type, a negative tick.
+schemaVersion: 1
+id: Bad Scenario
+steps:
+  - place_block: { at: [0, 64, 0], block: "minecraft:furnace" }
+    tick: 20
+  - teleport: { to: [0, 0, 0] }
+  - tick: -5

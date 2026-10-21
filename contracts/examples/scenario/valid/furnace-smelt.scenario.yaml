@@ -1,0 +1,20 @@
+schemaVersion: 1
+id: furnace-smelt-iron
+description: Vanilla furnace smelts one iron ore with coal; works in every version.
+world: flat-void
+maxTicks: 600
+tolerance:
+  "*": { abs: 0 }
+  "nbt:[0,64,0]/CookTime": { abs: 1, tickShift: 1 }
+keyMap:
+  forge-1.19.2:
+    "nbt:[0,64,0]/CookTime": "nbt:[0,64,0]/CookTime"
+  forge-1.7.10:
+    "nbt:[0,64,0]/CookTime": "nbt:[0,64,0]/CookTime"
+steps:
+  - place_block: { at: [0, 64, 0], block: "minecraft:furnace", facing: north }
+  - insert_item: { at: [0, 64, 0], slot: 0, item: "minecraft:iron_ore", count: 1 }
+  - insert_item: { at: [0, 64, 0], slot: 1, item: "minecraft:coal", count: 1 }
+  - sample: { every: 20, what: ["nbt:[0,64,0]/CookTime", "item:[0,64,0]#2"] }
+  - tick: 220
+  - assert: { expr: "item:[0,64,0]#2.count == 1", message: "one iron ingot in the output slot" }

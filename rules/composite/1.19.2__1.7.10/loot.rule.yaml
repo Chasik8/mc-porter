@@ -1,0 +1,54 @@
+# porter rules, 1.19.2 -> 1.7.10: loot tables and global loot modifiers do not exist on 1.7.10 (drops are computed in
+# code). Statement patterns (RFC 006): the loot-table branch of a getDrops override and the Forge loot-modifier call
+# are removed; the code after them (the hand-written drop list) stays.
+schemaVersion: 1
+id: r-1.19.2-1.7.10-loot-table-branch
+description: "LootTable t = ...; if (t != LootTable.EMPTY) ... -> removed (no loot tables on 1.7.10)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  pattern: |
+    LootTable $t = $e;
+    if ($t != LootTable.EMPTY) $s;
+replace: ""
+confidence: 0.7
+provenance: { source: agent, ref: "RFC 006; private reference port (counted edit re-expressed as a rule); LootTable/EMPTY checked against the Mojang 1.19.2 mappings" }
+tests:
+  - context: "import net.minecraft.world.level.storage.loot.LootTable; Object server; Object id"
+    before: |
+      LootTable table = server.getLootTables().get(id);
+      if (table != LootTable.EMPTY) {
+          return;
+      }
+      int fallback = 1;
+    after: "int fallback = 1;"
+  - name: "the local is used elsewhere: no match"
+    context: "import net.minecraft.world.level.storage.loot.LootTable; Object server; Object id"
+    before: |
+      LootTable table = server.getLootTables().get(id);
+      use(table);
+    after: |
+      LootTable table = server.getLootTables().get(id);
+      use(table);
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-loot-modify-global
+description: "LootContext c = ...; ForgeHooks.modifyLoot(id, drops, c); -> removed (no global loot modifiers on 1.7.10)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  pattern: |
+    LootContext $c = $e;
+    ForgeHooks.modifyLoot($id, $drops, $c);
+replace: ""
+confidence: 0.7
+provenance: { source: agent, ref: "RFC 006; private reference port (counted edit re-expressed as a rule); ForgeHooks#modifyLoot(ResourceLocation, ObjectArrayList, LootContext) is Forge 1.19.2 API" }
+tests:
+  - context: "import net.minecraft.world.level.storage.loot.LootContext; import net.minecraftforge.common.ForgeHooks; Object builder; Object id; java.util.List drops"
+    before: |
+      LootContext context = builder.create(null);
+      ForgeHooks.modifyLoot(id, drops, (LootContext) context);
+      int size = drops.size();
+    after: "int size = drops.size();"

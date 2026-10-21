@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "type": "queryResult",
+  "query": {
+    "symbol": { "version": "1.12.2", "kind": "class", "name": "net.minecraft.util.math.BlockPos" },
+    "to": "1.7.10"
+  },
+  "path": [
+    {
+      "from": { "version": "1.12.2", "kind": "class", "name": "net.minecraft.util.math.BlockPos" },
+      "status": "removed",
+      "confidence": 0.95,
+      "evidence": ["mapping-name-match", "manual"],
+      "note": "1.7.10 passes x, y, z ints instead of a position object."
+    }
+  ],
+  "status": "removed",
+  "confidence": 0.95,
+  "results": []
+}

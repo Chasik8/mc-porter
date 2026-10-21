@@ -1,0 +1,935 @@
+# Hand-written rules Forge 1.19.2 -> Forge 1.7.10 (10.13.4.1614, MCP stable_12). Every source member was
+# checked against the Mojang 1.19.2 mappings, every target member against the MCP 1.7.10 jar (javap).
+# Synthetic tests only. Generated from a compact spec; edit freely, keep one test per rule at least.
+# NBT: CompoundTag/ListTag/Tag -> NBTTagCompound/NBTTagList/NBTBase (put*/get* renames, tag type constants).
+schemaVersion: 1
+id: r-1.19.2-1.7.10-type-compoundtag
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: "net.minecraft.nbt.CompoundTag"
+replace: "net.minecraft.nbt.NBTTagCompound"
+confidence: 0.99
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "import net.minecraft.nbt.CompoundTag;"
+    after: "import net.minecraft.nbt.NBTTagCompound;"
+  - name: "declaration"
+    context: "import net.minecraft.nbt.CompoundTag"
+    before: "CompoundTag t = null;"
+    after: "NBTTagCompound t = null;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-type-listtag
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: "net.minecraft.nbt.ListTag"
+replace: "net.minecraft.nbt.NBTTagList"
+confidence: 0.99
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "import net.minecraft.nbt.ListTag;"
+    after: "import net.minecraft.nbt.NBTTagList;"
+  - name: "declaration"
+    context: "import net.minecraft.nbt.ListTag"
+    before: "ListTag t = null;"
+    after: "NBTTagList t = null;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-type-tag
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: "net.minecraft.nbt.Tag"
+replace: "net.minecraft.nbt.NBTBase"
+confidence: 0.99
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "import net.minecraft.nbt.Tag;"
+    after: "import net.minecraft.nbt.NBTBase;"
+  - name: "declaration"
+    context: "import net.minecraft.nbt.Tag"
+    before: "Tag t = null;"
+    after: "NBTBase t = null;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-type-stringtag
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: "net.minecraft.nbt.StringTag"
+replace: "net.minecraft.nbt.NBTTagString"
+confidence: 0.99
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "import net.minecraft.nbt.StringTag;"
+    after: "import net.minecraft.nbt.NBTTagString;"
+  - name: "declaration"
+    context: "import net.minecraft.nbt.StringTag"
+    before: "StringTag t = null;"
+    after: "NBTTagString t = null;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-type-inttag
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: "net.minecraft.nbt.IntTag"
+replace: "net.minecraft.nbt.NBTTagInt"
+confidence: 0.99
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "import net.minecraft.nbt.IntTag;"
+    after: "import net.minecraft.nbt.NBTTagInt;"
+  - name: "declaration"
+    context: "import net.minecraft.nbt.IntTag"
+    before: "IntTag t = null;"
+    after: "NBTTagInt t = null;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-new-compoundtag
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  new: "net.minecraft.nbt.CompoundTag()"
+replace: "new NBTTagCompound()"
+imports: ["net.minecraft.nbt.NBTTagCompound"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "Object t = new CompoundTag();"
+    after: "Object t = new NBTTagCompound();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-new-listtag
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  new: "net.minecraft.nbt.ListTag()"
+replace: "new NBTTagList()"
+imports: ["net.minecraft.nbt.NBTTagList"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "Object t = new ListTag();"
+    after: "Object t = new NBTTagList();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-compoundtag-putint
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.nbt.CompoundTag#putInt(java.lang.String, int)"
+  bind: { recv: "$t", args: ["$a0", "$a1"] }
+replace: "$t.setInteger($a0, $a1)"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "CompoundTag t; byte b; short sh; byte[] ba; int[] ia; CompoundTag other"
+    before: "t.putInt(\"k\", 1);"
+    after: "t.setInteger(\"k\", 1);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-compoundtag-getint
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.nbt.CompoundTag#getInt(java.lang.String)"
+  bind: { recv: "$t", args: ["$a0"] }
+replace: "$t.getInteger($a0)"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "CompoundTag t; byte b; short sh; byte[] ba; int[] ia; CompoundTag other"
+    before: "t.getInt(\"k\");"
+    after: "t.getInteger(\"k\");"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-compoundtag-putbyte
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.nbt.CompoundTag#putByte(java.lang.String, byte)"
+  bind: { recv: "$t", args: ["$a0", "$a1"] }
+replace: "$t.setByte($a0, $a1)"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "CompoundTag t; byte b; short sh; byte[] ba; int[] ia; CompoundTag other"
+    before: "t.putByte(\"k\", b);"
+    after: "t.setByte(\"k\", b);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-compoundtag-getbyte
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.nbt.CompoundTag#getByte(java.lang.String)"
+  bind: { recv: "$t", args: ["$a0"] }
+replace: "$t.getByte($a0)"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "CompoundTag t; byte b; short sh; byte[] ba; int[] ia; CompoundTag other"
+    before: "t.getByte(\"k\");"
+    after: "t.getByte(\"k\");"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-compoundtag-putshort
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.nbt.CompoundTag#putShort(java.lang.String, short)"
+  bind: { recv: "$t", args: ["$a0", "$a1"] }
+replace: "$t.setShort($a0, $a1)"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "CompoundTag t; byte b; short sh; byte[] ba; int[] ia; CompoundTag other"
+    before: "t.putShort(\"k\", sh);"
+    after: "t.setShort(\"k\", sh);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-compoundtag-getshort
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.nbt.CompoundTag#getShort(java.lang.String)"
+  bind: { recv: "$t", args: ["$a0"] }
+replace: "$t.getShort($a0)"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "CompoundTag t; byte b; short sh; byte[] ba; int[] ia; CompoundTag other"
+    before: "t.getShort(\"k\");"
+    after: "t.getShort(\"k\");"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-compoundtag-putlong
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.nbt.CompoundTag#putLong(java.lang.String, long)"
+  bind: { recv: "$t", args: ["$a0", "$a1"] }
+replace: "$t.setLong($a0, $a1)"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "CompoundTag t; byte b; short sh; byte[] ba; int[] ia; CompoundTag other"
+    before: "t.putLong(\"k\", 2L);"
+    after: "t.setLong(\"k\", 2L);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-compoundtag-getlong
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.nbt.CompoundTag#getLong(java.lang.String)"
+  bind: { recv: "$t", args: ["$a0"] }
+replace: "$t.getLong($a0)"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "CompoundTag t; byte b; short sh; byte[] ba; int[] ia; CompoundTag other"
+    before: "t.getLong(\"k\");"
+    after: "t.getLong(\"k\");"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-compoundtag-putfloat
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.nbt.CompoundTag#putFloat(java.lang.String, float)"
+  bind: { recv: "$t", args: ["$a0", "$a1"] }
+replace: "$t.setFloat($a0, $a1)"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "CompoundTag t; byte b; short sh; byte[] ba; int[] ia; CompoundTag other"
+    before: "t.putFloat(\"k\", 1f);"
+    after: "t.setFloat(\"k\", 1f);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-compoundtag-getfloat
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.nbt.CompoundTag#getFloat(java.lang.String)"
+  bind: { recv: "$t", args: ["$a0"] }
+replace: "$t.getFloat($a0)"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "CompoundTag t; byte b; short sh; byte[] ba; int[] ia; CompoundTag other"
+    before: "t.getFloat(\"k\");"
+    after: "t.getFloat(\"k\");"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-compoundtag-putdouble
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.nbt.CompoundTag#putDouble(java.lang.String, double)"
+  bind: { recv: "$t", args: ["$a0", "$a1"] }
+replace: "$t.setDouble($a0, $a1)"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "CompoundTag t; byte b; short sh; byte[] ba; int[] ia; CompoundTag other"
+    before: "t.putDouble(\"k\", 1.0);"
+    after: "t.setDouble(\"k\", 1.0);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-compoundtag-getdouble
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.nbt.CompoundTag#getDouble(java.lang.String)"
+  bind: { recv: "$t", args: ["$a0"] }
+replace: "$t.getDouble($a0)"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "CompoundTag t; byte b; short sh; byte[] ba; int[] ia; CompoundTag other"
+    before: "t.getDouble(\"k\");"
+    after: "t.getDouble(\"k\");"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-compoundtag-putstring
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.nbt.CompoundTag#putString(java.lang.String, java.lang.String)"
+  bind: { recv: "$t", args: ["$a0", "$a1"] }
+replace: "$t.setString($a0, $a1)"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "CompoundTag t; byte b; short sh; byte[] ba; int[] ia; CompoundTag other"
+    before: "t.putString(\"k\", \"k\");"
+    after: "t.setString(\"k\", \"k\");"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-compoundtag-getstring
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.nbt.CompoundTag#getString(java.lang.String)"
+  bind: { recv: "$t", args: ["$a0"] }
+replace: "$t.getString($a0)"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "CompoundTag t; byte b; short sh; byte[] ba; int[] ia; CompoundTag other"
+    before: "t.getString(\"k\");"
+    after: "t.getString(\"k\");"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-compoundtag-putboolean
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.nbt.CompoundTag#putBoolean(java.lang.String, boolean)"
+  bind: { recv: "$t", args: ["$a0", "$a1"] }
+replace: "$t.setBoolean($a0, $a1)"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "CompoundTag t; byte b; short sh; byte[] ba; int[] ia; CompoundTag other"
+    before: "t.putBoolean(\"k\", true);"
+    after: "t.setBoolean(\"k\", true);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-compoundtag-getboolean
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.nbt.CompoundTag#getBoolean(java.lang.String)"
+  bind: { recv: "$t", args: ["$a0"] }
+replace: "$t.getBoolean($a0)"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "CompoundTag t; byte b; short sh; byte[] ba; int[] ia; CompoundTag other"
+    before: "t.getBoolean(\"k\");"
+    after: "t.getBoolean(\"k\");"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-compoundtag-putbytearray
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.nbt.CompoundTag#putByteArray(java.lang.String, byte[])"
+  bind: { recv: "$t", args: ["$a0", "$a1"] }
+replace: "$t.setByteArray($a0, $a1)"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "CompoundTag t; byte b; short sh; byte[] ba; int[] ia; CompoundTag other"
+    before: "t.putByteArray(\"k\", ba);"
+    after: "t.setByteArray(\"k\", ba);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-compoundtag-getbytearray
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.nbt.CompoundTag#getByteArray(java.lang.String)"
+  bind: { recv: "$t", args: ["$a0"] }
+replace: "$t.getByteArray($a0)"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "CompoundTag t; byte b; short sh; byte[] ba; int[] ia; CompoundTag other"
+    before: "t.getByteArray(\"k\");"
+    after: "t.getByteArray(\"k\");"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-compoundtag-putintarray
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.nbt.CompoundTag#putIntArray(java.lang.String, int[])"
+  bind: { recv: "$t", args: ["$a0", "$a1"] }
+replace: "$t.setIntArray($a0, $a1)"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "CompoundTag t; byte b; short sh; byte[] ba; int[] ia; CompoundTag other"
+    before: "t.putIntArray(\"k\", ia);"
+    after: "t.setIntArray(\"k\", ia);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-compoundtag-getintarray
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.nbt.CompoundTag#getIntArray(java.lang.String)"
+  bind: { recv: "$t", args: ["$a0"] }
+replace: "$t.getIntArray($a0)"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "CompoundTag t; byte b; short sh; byte[] ba; int[] ia; CompoundTag other"
+    before: "t.getIntArray(\"k\");"
+    after: "t.getIntArray(\"k\");"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-compoundtag-put
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.nbt.CompoundTag#put(java.lang.String, net.minecraft.nbt.Tag)"
+  bind: { recv: "$t", args: ["$a0", "$a1"] }
+replace: "$t.setTag($a0, $a1)"
+preconditions: ["statement"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "CompoundTag t; byte b; short sh; byte[] ba; int[] ia; CompoundTag other"
+    before: "t.put(\"k\", other);"
+    after: "t.setTag(\"k\", other);"
+  - name: "result used: 1.7.10 setTag returns void"
+    context: "CompoundTag t; byte b; short sh; byte[] ba; int[] ia; CompoundTag other"
+    before: "Object o = t.put(\"k\", other);"
+    after: "// TODO(porter:precondition) r-1.19.2-1.7.10-compoundtag-put: statement Object o = t.put(\"k\", other);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-compoundtag-get
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.nbt.CompoundTag#get(java.lang.String)"
+  bind: { recv: "$t", args: ["$a0"] }
+replace: "$t.getTag($a0)"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "CompoundTag t; byte b; short sh; byte[] ba; int[] ia; CompoundTag other"
+    before: "t.get(\"k\");"
+    after: "t.getTag(\"k\");"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-compoundtag-getcompound
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.nbt.CompoundTag#getCompound(java.lang.String)"
+  bind: { recv: "$t", args: ["$a0"] }
+replace: "$t.getCompoundTag($a0)"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "CompoundTag t; byte b; short sh; byte[] ba; int[] ia; CompoundTag other"
+    before: "t.getCompound(\"k\");"
+    after: "t.getCompoundTag(\"k\");"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-compoundtag-getlist
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.nbt.CompoundTag#getList(java.lang.String, int)"
+  bind: { recv: "$t", args: ["$a0", "$a1"] }
+replace: "$t.getTagList($a0, $a1)"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "CompoundTag t; byte b; short sh; byte[] ba; int[] ia; CompoundTag other"
+    before: "t.getList(\"k\", 1);"
+    after: "t.getTagList(\"k\", 1);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-compoundtag-contains-1
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.nbt.CompoundTag#contains(java.lang.String)"
+  bind: { recv: "$t", args: ["$a0"] }
+replace: "$t.hasKey($a0)"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "CompoundTag t; byte b; short sh; byte[] ba; int[] ia; CompoundTag other"
+    before: "t.contains(\"k\");"
+    after: "t.hasKey(\"k\");"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-compoundtag-contains-2
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.nbt.CompoundTag#contains(java.lang.String, int)"
+  bind: { recv: "$t", args: ["$a0", "$a1"] }
+replace: "$t.hasKey($a0, $a1)"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "CompoundTag t; byte b; short sh; byte[] ba; int[] ia; CompoundTag other"
+    before: "t.contains(\"k\", 1);"
+    after: "t.hasKey(\"k\", 1);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-compoundtag-remove
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.nbt.CompoundTag#remove(java.lang.String)"
+  bind: { recv: "$t", args: ["$a0"] }
+replace: "$t.removeTag($a0)"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "CompoundTag t; byte b; short sh; byte[] ba; int[] ia; CompoundTag other"
+    before: "t.remove(\"k\");"
+    after: "t.removeTag(\"k\");"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-compoundtag-isempty
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.nbt.CompoundTag#isEmpty()"
+  bind: { recv: "$t" }
+replace: "$t.hasNoTags()"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "CompoundTag t; byte b; short sh; byte[] ba; int[] ia; CompoundTag other"
+    before: "t.isEmpty();"
+    after: "t.hasNoTags();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-compoundtag-getallkeys
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.nbt.CompoundTag#getAllKeys()"
+  bind: { recv: "$t" }
+replace: "$t.func_150296_c()"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "CompoundTag t; byte b; short sh; byte[] ba; int[] ia; CompoundTag other"
+    before: "t.getAllKeys();"
+    after: "t.func_150296_c();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-compoundtag-gettagtype
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.nbt.CompoundTag#getTagType(java.lang.String)"
+  bind: { recv: "$t", args: ["$a0"] }
+replace: "$t.func_150299_b($a0)"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "CompoundTag t; byte b; short sh; byte[] ba; int[] ia; CompoundTag other"
+    before: "t.getTagType(\"k\");"
+    after: "t.func_150299_b(\"k\");"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-compoundtag-copy
+description: "1.7.10 NBTBase#copy() returns NBTBase: cast back."
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.nbt.CompoundTag#copy()"
+  bind: { recv: "$t" }
+replace: "((NBTTagCompound) $t.copy())"
+imports: ["net.minecraft.nbt.NBTTagCompound"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "CompoundTag t"
+    before: "Object o = t.copy();"
+    after: "Object o = ((NBTTagCompound) t.copy());"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-listtag-add
+description: "ListTag is a java.util.List in 1.19.2; NBTTagList#appendTag returns void."
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.nbt.ListTag#add(net.minecraft.nbt.Tag)"
+  bind: { recv: "$l", args: ["$e"] }
+replace: "$l.appendTag($e)"
+preconditions: ["statement"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "ListTag l; CompoundTag e; import net.minecraft.nbt.CompoundTag"
+    before: "l.add(e);"
+    after: "l.appendTag(e);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-listtag-size
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.nbt.ListTag#size()"
+  bind: { recv: "$l" }
+replace: "$l.tagCount()"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "ListTag l"
+    before: "Object o = l.size();"
+    after: "Object o = l.tagCount();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-listtag-getcompound
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.nbt.ListTag#getCompound(int)"
+  bind: { recv: "$l", args: ["$a0"] }
+replace: "$l.getCompoundTagAt($a0)"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "ListTag l"
+    before: "Object o = l.getCompound(0);"
+    after: "Object o = l.getCompoundTagAt(0);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-listtag-getstring
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.nbt.ListTag#getString(int)"
+  bind: { recv: "$l", args: ["$a0"] }
+replace: "$l.getStringTagAt($a0)"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "ListTag l"
+    before: "Object o = l.getString(0);"
+    after: "Object o = l.getStringTagAt(0);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-listtag-isempty
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.nbt.ListTag#isEmpty()"
+  bind: { recv: "$l" }
+replace: "($l.tagCount() == 0)"
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "ListTag l"
+    before: "boolean e = l.isEmpty();"
+    after: "boolean e = (l.tagCount() == 0);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-stringtag-valueof
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.nbt.StringTag#valueOf(java.lang.String)"
+  bind: { args: ["$s"] }
+replace: "new NBTTagString($s)"
+imports: ["net.minecraft.nbt.NBTTagString"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "Object o = StringTag.valueOf(\"x\");"
+    after: "Object o = new NBTTagString(\"x\");"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-inttag-valueof
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.nbt.IntTag#valueOf(int)"
+  bind: { args: ["$i"] }
+replace: "new NBTTagInt($i)"
+imports: ["net.minecraft.nbt.NBTTagInt"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "Object o = IntTag.valueOf(3);"
+    after: "Object o = new NBTTagInt(3);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-tag-const-tag-end
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.nbt.Tag#TAG_END"
+replace: "Constants.NBT.TAG_END"
+imports: ["net.minecraftforge.common.util.Constants"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "int i = Tag.TAG_END;"
+    after: "int i = Constants.NBT.TAG_END;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-tag-const-tag-byte
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.nbt.Tag#TAG_BYTE"
+replace: "Constants.NBT.TAG_BYTE"
+imports: ["net.minecraftforge.common.util.Constants"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "int i = Tag.TAG_BYTE;"
+    after: "int i = Constants.NBT.TAG_BYTE;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-tag-const-tag-short
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.nbt.Tag#TAG_SHORT"
+replace: "Constants.NBT.TAG_SHORT"
+imports: ["net.minecraftforge.common.util.Constants"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "int i = Tag.TAG_SHORT;"
+    after: "int i = Constants.NBT.TAG_SHORT;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-tag-const-tag-int
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.nbt.Tag#TAG_INT"
+replace: "Constants.NBT.TAG_INT"
+imports: ["net.minecraftforge.common.util.Constants"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "int i = Tag.TAG_INT;"
+    after: "int i = Constants.NBT.TAG_INT;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-tag-const-tag-long
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.nbt.Tag#TAG_LONG"
+replace: "Constants.NBT.TAG_LONG"
+imports: ["net.minecraftforge.common.util.Constants"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "int i = Tag.TAG_LONG;"
+    after: "int i = Constants.NBT.TAG_LONG;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-tag-const-tag-float
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.nbt.Tag#TAG_FLOAT"
+replace: "Constants.NBT.TAG_FLOAT"
+imports: ["net.minecraftforge.common.util.Constants"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "int i = Tag.TAG_FLOAT;"
+    after: "int i = Constants.NBT.TAG_FLOAT;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-tag-const-tag-double
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.nbt.Tag#TAG_DOUBLE"
+replace: "Constants.NBT.TAG_DOUBLE"
+imports: ["net.minecraftforge.common.util.Constants"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "int i = Tag.TAG_DOUBLE;"
+    after: "int i = Constants.NBT.TAG_DOUBLE;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-tag-const-tag-byte-array
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.nbt.Tag#TAG_BYTE_ARRAY"
+replace: "Constants.NBT.TAG_BYTE_ARRAY"
+imports: ["net.minecraftforge.common.util.Constants"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "int i = Tag.TAG_BYTE_ARRAY;"
+    after: "int i = Constants.NBT.TAG_BYTE_ARRAY;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-tag-const-tag-string
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.nbt.Tag#TAG_STRING"
+replace: "Constants.NBT.TAG_STRING"
+imports: ["net.minecraftforge.common.util.Constants"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "int i = Tag.TAG_STRING;"
+    after: "int i = Constants.NBT.TAG_STRING;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-tag-const-tag-list
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.nbt.Tag#TAG_LIST"
+replace: "Constants.NBT.TAG_LIST"
+imports: ["net.minecraftforge.common.util.Constants"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "int i = Tag.TAG_LIST;"
+    after: "int i = Constants.NBT.TAG_LIST;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-tag-const-tag-compound
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.nbt.Tag#TAG_COMPOUND"
+replace: "Constants.NBT.TAG_COMPOUND"
+imports: ["net.minecraftforge.common.util.Constants"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "int i = Tag.TAG_COMPOUND;"
+    after: "int i = Constants.NBT.TAG_COMPOUND;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-tag-const-tag-int-array
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.nbt.Tag#TAG_INT_ARRAY"
+replace: "Constants.NBT.TAG_INT_ARRAY"
+imports: ["net.minecraftforge.common.util.Constants"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "int i = Tag.TAG_INT_ARRAY;"
+    after: "int i = Constants.NBT.TAG_INT_ARRAY;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-tag-const-tag-any-numeric
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.nbt.Tag#TAG_ANY_NUMERIC"
+replace: "Constants.NBT.TAG_ANY_NUMERIC"
+imports: ["net.minecraftforge.common.util.Constants"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "int i = Tag.TAG_ANY_NUMERIC;"
+    after: "int i = Constants.NBT.TAG_ANY_NUMERIC;"

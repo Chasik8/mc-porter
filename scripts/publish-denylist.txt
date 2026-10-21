@@ -1,0 +1,4 @@
+# Java package prefixes of mods that are NOT open-licence. A public .java file declaring one of these packages fails
+# scripts/publish-check.sh: ported output of such mods stays local (CONTRIBUTING.md, "Legal model").
+# One prefix per line. Prefixes of your own private ports belong in scripts/publish-denylist.local.txt (git-ignored),
+# so that their names are not published either.

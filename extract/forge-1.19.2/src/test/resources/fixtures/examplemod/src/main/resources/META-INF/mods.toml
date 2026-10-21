@@ -1,0 +1,17 @@
+modLoader="javafml"
+loaderVersion="[43,)"
+license="MIT"
+[[mods]]
+modId="examplemod"
+version="1.0.0"
+displayName="Example Mod"
+authors="Alice, Bob"
+description='''
+A synthetic test mod.
+'''
+[[dependencies.examplemod]]
+    modId="forge"
+    mandatory=true
+    versionRange="[43,)"
+    ordering="NONE"
+    side="BOTH"

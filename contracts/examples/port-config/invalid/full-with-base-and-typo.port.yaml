@@ -1,0 +1,13 @@
+# invalid: full mode has no base (closure.known), and "stagess" is not a field
+schemaVersion: 1
+name: broken-full
+mode: full
+from: forge-1.19.2
+to: forge-1.7.10
+project: ../mod
+closure:
+  source: ../src
+  prefixes: [mod.]
+  seeds: [mod.A]
+  known: [../old]
+stagess: {}

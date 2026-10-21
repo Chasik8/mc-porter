@@ -1,0 +1,11 @@
+[ {
+  "modid" : "torchmaster",
+  "name" : "Torchmaster (unofficial 1.7.10 port)",
+  "description" : "Unofficial port of Torchmaster 19.2.93 (Forge 1.19.2) by xalcon to Minecraft Forge 1.7.10, made with the porter tool. Not supported by the original author: report problems to the port, not to Torchmaster.",
+  "version" : "19.2.93-port.1",
+  "mcversion" : "1.7.10",
+  "url" : "https://github.com/Xalcon/TorchMaster",
+  "authorList" : [ "xalcon" ],
+  "credits" : "Original mod and assets: xalcon (MIT). 1.7.10 port: porter demo.",
+  "logoFile" : ""
+} ]

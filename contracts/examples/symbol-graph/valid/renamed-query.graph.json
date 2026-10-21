@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "type": "queryResult",
+  "query": {
+    "symbol": { "version": "1.12.2", "kind": "class", "name": "net.minecraft.nbt.NBTTagCompound" },
+    "to": "1.7.10"
+  },
+  "path": [
+    {
+      "from": { "version": "1.12.2", "kind": "class", "name": "net.minecraft.nbt.NBTTagCompound" },
+      "to": { "version": "1.7.10", "kind": "class", "name": "net.minecraft.nbt.NBTTagCompound" },
+      "status": "same",
+      "confidence": 0.99,
+      "evidence": ["mapping-name-match", "hierarchy"]
+    }
+  ],
+  "status": "same",
+  "confidence": 0.99,
+  "results": [{ "version": "1.7.10", "kind": "class", "name": "net.minecraft.nbt.NBTTagCompound" }]
+}

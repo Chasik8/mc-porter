@@ -1,0 +1,3 @@
+dev.porter.testkit.runner.cli.TestCommands$Run
+dev.porter.testkit.runner.cli.TestCommands$Diff
+dev.porter.testkit.runner.cli.TestCommands$Roundtrip

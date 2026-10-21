@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "type": "graph",
+  "versions": [
+    { "id": "1.19.2", "canonical": "mojmap", "namespaces": ["obf", "srg", "mojmap", "parchment"] },
+    { "id": "1.18.2", "canonical": "mojmap", "namespaces": ["obf", "srg", "mojmap"] }
+  ],
+  "symbols": [
+    {
+      "ref": { "version": "1.19.2", "kind": "class", "name": "net.minecraft.world.level.Level" },
+      "names": { "mojmap": "net.minecraft.world.level.Level" }
+    },
+    {
+      "ref": {
+        "version": "1.19.2", "kind": "method", "owner": "net.minecraft.world.level.Level", "name": "getBlockEntity",
+        "desc": "(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/entity/BlockEntity;"
+      },
+      "names": { "mojmap": "getBlockEntity" },
+      "params": [{ "index": 1, "name": "pos", "source": "parchment" }]
+    }
+  ],
+  "edges": [
+    {
+      "from": {
+        "version": "1.19.2", "kind": "method", "owner": "net.minecraft.world.level.Level", "name": "getBlockEntity",
+        "desc": "(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/entity/BlockEntity;"
+      },
+      "to": {
+        "version": "1.18.2", "kind": "method", "owner": "net.minecraft.world.level.Level", "name": "getBlockEntity",
+        "desc": "(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/entity/BlockEntity;"
+      },
+      "status": "same",
+      "confidence": 0.97,
+      "evidence": ["bytecode-similarity", "mapping-name-match"]
+    },
+    {
+      "from": { "version": "1.19.2", "kind": "class", "name": "net.minecraft.world.level.Level" },
+      "to": { "version": "1.18.2", "kind": "class", "name": "net.minecraft.world.level.Level" },
+      "status": "same",
+      "confidence": 1.0,
+      "evidence": ["mapping-name-match"]
+    }
+  ]
+}

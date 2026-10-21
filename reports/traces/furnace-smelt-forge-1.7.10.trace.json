@@ -1,0 +1,5994 @@
+{
+  "schemaVersion" : 1,
+  "scenario" : "furnace-smelt",
+  "version" : "forge-1.7.10",
+  "status" : "passed",
+  "ticks" : 220,
+  "samples" : [ {
+    "tick" : 0,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:furnace"
+  }, {
+    "tick" : 0,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 0,
+    "key" : "item:[0,64,0]#1",
+    "value" : {
+      "item" : "minecraft:coal",
+      "count" : 1
+    }
+  }, {
+    "tick" : 0,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 0,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 0
+  }, {
+    "tick" : 0,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 0
+  }, {
+    "tick" : 1,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 1,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 1,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 1,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 1,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1600
+  }, {
+    "tick" : 1,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 1
+  }, {
+    "tick" : 2,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 2,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 2,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 2,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 2,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1599
+  }, {
+    "tick" : 2,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 2
+  }, {
+    "tick" : 3,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 3,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 3,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 3,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 3,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1598
+  }, {
+    "tick" : 3,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 3
+  }, {
+    "tick" : 4,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 4,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 4,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 4,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 4,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1597
+  }, {
+    "tick" : 4,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 4
+  }, {
+    "tick" : 5,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 5,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 5,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 5,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 5,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1596
+  }, {
+    "tick" : 5,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 5
+  }, {
+    "tick" : 6,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 6,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 6,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 6,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 6,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1595
+  }, {
+    "tick" : 6,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 6
+  }, {
+    "tick" : 7,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 7,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 7,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 7,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 7,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1594
+  }, {
+    "tick" : 7,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 7
+  }, {
+    "tick" : 8,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 8,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 8,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 8,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 8,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1593
+  }, {
+    "tick" : 8,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 8
+  }, {
+    "tick" : 9,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 9,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 9,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 9,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 9,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1592
+  }, {
+    "tick" : 9,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 9
+  }, {
+    "tick" : 10,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 10,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 10,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 10,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 10,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1591
+  }, {
+    "tick" : 10,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 10
+  }, {
+    "tick" : 11,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 11,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 11,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 11,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 11,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1590
+  }, {
+    "tick" : 11,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 11
+  }, {
+    "tick" : 12,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 12,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 12,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 12,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 12,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1589
+  }, {
+    "tick" : 12,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 12
+  }, {
+    "tick" : 13,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 13,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 13,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 13,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 13,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1588
+  }, {
+    "tick" : 13,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 13
+  }, {
+    "tick" : 14,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 14,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 14,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 14,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 14,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1587
+  }, {
+    "tick" : 14,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 14
+  }, {
+    "tick" : 15,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 15,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 15,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 15,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 15,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1586
+  }, {
+    "tick" : 15,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 15
+  }, {
+    "tick" : 16,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 16,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 16,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 16,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 16,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1585
+  }, {
+    "tick" : 16,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 16
+  }, {
+    "tick" : 17,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 17,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 17,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 17,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 17,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1584
+  }, {
+    "tick" : 17,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 17
+  }, {
+    "tick" : 18,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 18,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 18,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 18,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 18,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1583
+  }, {
+    "tick" : 18,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 18
+  }, {
+    "tick" : 19,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 19,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 19,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 19,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 19,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1582
+  }, {
+    "tick" : 19,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 19
+  }, {
+    "tick" : 20,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 20,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 20,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 20,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 20,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1581
+  }, {
+    "tick" : 20,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 20
+  }, {
+    "tick" : 21,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 21,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 21,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 21,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 21,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1580
+  }, {
+    "tick" : 21,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 21
+  }, {
+    "tick" : 22,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 22,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 22,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 22,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 22,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1579
+  }, {
+    "tick" : 22,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 22
+  }, {
+    "tick" : 23,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 23,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 23,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 23,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 23,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1578
+  }, {
+    "tick" : 23,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 23
+  }, {
+    "tick" : 24,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 24,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 24,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 24,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 24,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1577
+  }, {
+    "tick" : 24,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 24
+  }, {
+    "tick" : 25,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 25,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 25,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 25,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 25,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1576
+  }, {
+    "tick" : 25,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 25
+  }, {
+    "tick" : 26,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 26,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 26,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 26,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 26,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1575
+  }, {
+    "tick" : 26,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 26
+  }, {
+    "tick" : 27,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 27,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 27,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 27,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 27,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1574
+  }, {
+    "tick" : 27,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 27
+  }, {
+    "tick" : 28,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 28,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 28,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 28,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 28,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1573
+  }, {
+    "tick" : 28,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 28
+  }, {
+    "tick" : 29,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 29,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 29,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 29,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 29,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1572
+  }, {
+    "tick" : 29,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 29
+  }, {
+    "tick" : 30,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 30,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 30,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 30,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 30,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1571
+  }, {
+    "tick" : 30,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 30
+  }, {
+    "tick" : 31,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 31,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 31,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 31,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 31,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1570
+  }, {
+    "tick" : 31,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 31
+  }, {
+    "tick" : 32,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 32,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 32,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 32,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 32,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1569
+  }, {
+    "tick" : 32,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 32
+  }, {
+    "tick" : 33,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 33,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 33,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 33,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 33,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1568
+  }, {
+    "tick" : 33,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 33
+  }, {
+    "tick" : 34,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 34,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 34,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 34,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 34,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1567
+  }, {
+    "tick" : 34,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 34
+  }, {
+    "tick" : 35,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 35,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 35,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 35,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 35,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1566
+  }, {
+    "tick" : 35,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 35
+  }, {
+    "tick" : 36,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 36,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 36,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 36,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 36,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1565
+  }, {
+    "tick" : 36,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 36
+  }, {
+    "tick" : 37,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 37,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 37,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 37,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 37,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1564
+  }, {
+    "tick" : 37,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 37
+  }, {
+    "tick" : 38,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 38,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 38,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 38,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 38,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1563
+  }, {
+    "tick" : 38,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 38
+  }, {
+    "tick" : 39,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 39,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 39,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 39,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 39,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1562
+  }, {
+    "tick" : 39,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 39
+  }, {
+    "tick" : 40,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 40,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 40,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 40,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 40,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1561
+  }, {
+    "tick" : 40,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 40
+  }, {
+    "tick" : 41,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 41,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 41,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 41,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 41,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1560
+  }, {
+    "tick" : 41,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 41
+  }, {
+    "tick" : 42,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 42,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 42,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 42,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 42,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1559
+  }, {
+    "tick" : 42,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 42
+  }, {
+    "tick" : 43,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 43,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 43,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 43,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 43,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1558
+  }, {
+    "tick" : 43,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 43
+  }, {
+    "tick" : 44,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 44,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 44,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 44,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 44,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1557
+  }, {
+    "tick" : 44,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 44
+  }, {
+    "tick" : 45,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 45,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 45,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 45,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 45,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1556
+  }, {
+    "tick" : 45,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 45
+  }, {
+    "tick" : 46,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 46,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 46,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 46,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 46,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1555
+  }, {
+    "tick" : 46,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 46
+  }, {
+    "tick" : 47,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 47,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 47,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 47,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 47,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1554
+  }, {
+    "tick" : 47,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 47
+  }, {
+    "tick" : 48,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 48,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 48,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 48,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 48,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1553
+  }, {
+    "tick" : 48,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 48
+  }, {
+    "tick" : 49,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 49,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 49,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 49,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 49,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1552
+  }, {
+    "tick" : 49,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 49
+  }, {
+    "tick" : 50,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 50,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 50,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 50,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 50,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1551
+  }, {
+    "tick" : 50,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 50
+  }, {
+    "tick" : 51,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 51,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 51,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 51,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 51,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1550
+  }, {
+    "tick" : 51,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 51
+  }, {
+    "tick" : 52,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 52,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 52,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 52,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 52,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1549
+  }, {
+    "tick" : 52,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 52
+  }, {
+    "tick" : 53,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 53,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 53,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 53,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 53,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1548
+  }, {
+    "tick" : 53,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 53
+  }, {
+    "tick" : 54,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 54,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 54,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 54,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 54,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1547
+  }, {
+    "tick" : 54,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 54
+  }, {
+    "tick" : 55,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 55,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 55,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 55,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 55,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1546
+  }, {
+    "tick" : 55,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 55
+  }, {
+    "tick" : 56,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 56,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 56,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 56,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 56,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1545
+  }, {
+    "tick" : 56,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 56
+  }, {
+    "tick" : 57,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 57,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 57,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 57,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 57,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1544
+  }, {
+    "tick" : 57,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 57
+  }, {
+    "tick" : 58,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 58,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 58,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 58,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 58,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1543
+  }, {
+    "tick" : 58,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 58
+  }, {
+    "tick" : 59,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 59,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 59,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 59,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 59,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1542
+  }, {
+    "tick" : 59,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 59
+  }, {
+    "tick" : 60,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 60,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 60,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 60,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 60,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1541
+  }, {
+    "tick" : 60,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 60
+  }, {
+    "tick" : 61,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 61,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 61,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 61,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 61,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1540
+  }, {
+    "tick" : 61,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 61
+  }, {
+    "tick" : 62,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 62,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 62,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 62,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 62,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1539
+  }, {
+    "tick" : 62,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 62
+  }, {
+    "tick" : 63,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 63,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 63,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 63,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 63,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1538
+  }, {
+    "tick" : 63,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 63
+  }, {
+    "tick" : 64,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 64,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 64,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 64,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 64,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1537
+  }, {
+    "tick" : 64,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 64
+  }, {
+    "tick" : 65,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 65,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 65,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 65,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 65,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1536
+  }, {
+    "tick" : 65,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 65
+  }, {
+    "tick" : 66,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 66,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 66,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 66,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 66,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1535
+  }, {
+    "tick" : 66,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 66
+  }, {
+    "tick" : 67,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 67,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 67,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 67,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 67,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1534
+  }, {
+    "tick" : 67,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 67
+  }, {
+    "tick" : 68,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 68,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 68,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 68,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 68,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1533
+  }, {
+    "tick" : 68,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 68
+  }, {
+    "tick" : 69,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 69,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 69,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 69,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 69,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1532
+  }, {
+    "tick" : 69,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 69
+  }, {
+    "tick" : 70,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 70,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 70,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 70,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 70,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1531
+  }, {
+    "tick" : 70,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 70
+  }, {
+    "tick" : 71,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 71,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 71,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 71,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 71,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1530
+  }, {
+    "tick" : 71,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 71
+  }, {
+    "tick" : 72,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 72,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 72,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 72,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 72,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1529
+  }, {
+    "tick" : 72,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 72
+  }, {
+    "tick" : 73,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 73,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 73,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 73,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 73,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1528
+  }, {
+    "tick" : 73,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 73
+  }, {
+    "tick" : 74,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 74,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 74,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 74,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 74,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1527
+  }, {
+    "tick" : 74,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 74
+  }, {
+    "tick" : 75,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 75,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 75,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 75,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 75,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1526
+  }, {
+    "tick" : 75,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 75
+  }, {
+    "tick" : 76,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 76,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 76,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 76,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 76,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1525
+  }, {
+    "tick" : 76,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 76
+  }, {
+    "tick" : 77,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 77,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 77,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 77,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 77,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1524
+  }, {
+    "tick" : 77,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 77
+  }, {
+    "tick" : 78,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 78,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 78,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 78,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 78,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1523
+  }, {
+    "tick" : 78,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 78
+  }, {
+    "tick" : 79,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 79,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 79,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 79,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 79,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1522
+  }, {
+    "tick" : 79,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 79
+  }, {
+    "tick" : 80,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 80,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 80,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 80,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 80,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1521
+  }, {
+    "tick" : 80,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 80
+  }, {
+    "tick" : 81,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 81,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 81,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 81,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 81,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1520
+  }, {
+    "tick" : 81,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 81
+  }, {
+    "tick" : 82,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 82,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 82,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 82,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 82,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1519
+  }, {
+    "tick" : 82,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 82
+  }, {
+    "tick" : 83,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 83,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 83,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 83,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 83,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1518
+  }, {
+    "tick" : 83,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 83
+  }, {
+    "tick" : 84,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 84,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 84,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 84,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 84,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1517
+  }, {
+    "tick" : 84,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 84
+  }, {
+    "tick" : 85,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 85,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 85,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 85,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 85,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1516
+  }, {
+    "tick" : 85,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 85
+  }, {
+    "tick" : 86,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 86,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 86,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 86,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 86,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1515
+  }, {
+    "tick" : 86,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 86
+  }, {
+    "tick" : 87,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 87,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 87,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 87,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 87,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1514
+  }, {
+    "tick" : 87,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 87
+  }, {
+    "tick" : 88,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 88,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 88,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 88,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 88,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1513
+  }, {
+    "tick" : 88,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 88
+  }, {
+    "tick" : 89,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 89,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 89,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 89,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 89,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1512
+  }, {
+    "tick" : 89,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 89
+  }, {
+    "tick" : 90,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 90,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 90,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 90,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 90,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1511
+  }, {
+    "tick" : 90,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 90
+  }, {
+    "tick" : 91,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 91,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 91,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 91,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 91,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1510
+  }, {
+    "tick" : 91,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 91
+  }, {
+    "tick" : 92,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 92,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 92,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 92,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 92,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1509
+  }, {
+    "tick" : 92,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 92
+  }, {
+    "tick" : 93,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 93,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 93,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 93,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 93,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1508
+  }, {
+    "tick" : 93,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 93
+  }, {
+    "tick" : 94,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 94,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 94,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 94,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 94,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1507
+  }, {
+    "tick" : 94,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 94
+  }, {
+    "tick" : 95,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 95,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 95,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 95,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 95,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1506
+  }, {
+    "tick" : 95,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 95
+  }, {
+    "tick" : 96,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 96,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 96,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 96,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 96,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1505
+  }, {
+    "tick" : 96,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 96
+  }, {
+    "tick" : 97,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 97,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 97,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 97,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 97,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1504
+  }, {
+    "tick" : 97,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 97
+  }, {
+    "tick" : 98,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 98,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 98,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 98,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 98,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1503
+  }, {
+    "tick" : 98,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 98
+  }, {
+    "tick" : 99,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 99,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 99,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 99,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 99,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1502
+  }, {
+    "tick" : 99,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 99
+  }, {
+    "tick" : 100,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 100,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 100,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 100,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 100,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1501
+  }, {
+    "tick" : 100,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 100
+  }, {
+    "tick" : 101,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 101,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 101,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 101,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 101,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1500
+  }, {
+    "tick" : 101,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 101
+  }, {
+    "tick" : 102,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 102,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 102,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 102,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 102,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1499
+  }, {
+    "tick" : 102,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 102
+  }, {
+    "tick" : 103,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 103,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 103,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 103,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 103,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1498
+  }, {
+    "tick" : 103,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 103
+  }, {
+    "tick" : 104,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 104,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 104,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 104,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 104,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1497
+  }, {
+    "tick" : 104,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 104
+  }, {
+    "tick" : 105,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 105,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 105,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 105,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 105,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1496
+  }, {
+    "tick" : 105,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 105
+  }, {
+    "tick" : 106,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 106,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 106,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 106,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 106,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1495
+  }, {
+    "tick" : 106,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 106
+  }, {
+    "tick" : 107,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 107,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 107,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 107,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 107,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1494
+  }, {
+    "tick" : 107,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 107
+  }, {
+    "tick" : 108,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 108,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 108,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 108,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 108,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1493
+  }, {
+    "tick" : 108,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 108
+  }, {
+    "tick" : 109,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 109,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 109,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 109,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 109,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1492
+  }, {
+    "tick" : 109,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 109
+  }, {
+    "tick" : 110,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 110,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 110,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 110,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 110,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1491
+  }, {
+    "tick" : 110,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 110
+  }, {
+    "tick" : 111,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 111,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 111,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 111,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 111,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1490
+  }, {
+    "tick" : 111,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 111
+  }, {
+    "tick" : 112,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 112,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 112,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 112,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 112,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1489
+  }, {
+    "tick" : 112,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 112
+  }, {
+    "tick" : 113,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 113,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 113,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 113,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 113,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1488
+  }, {
+    "tick" : 113,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 113
+  }, {
+    "tick" : 114,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 114,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 114,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 114,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 114,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1487
+  }, {
+    "tick" : 114,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 114
+  }, {
+    "tick" : 115,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 115,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 115,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 115,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 115,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1486
+  }, {
+    "tick" : 115,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 115
+  }, {
+    "tick" : 116,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 116,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 116,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 116,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 116,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1485
+  }, {
+    "tick" : 116,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 116
+  }, {
+    "tick" : 117,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 117,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 117,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 117,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 117,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1484
+  }, {
+    "tick" : 117,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 117
+  }, {
+    "tick" : 118,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 118,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 118,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 118,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 118,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1483
+  }, {
+    "tick" : 118,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 118
+  }, {
+    "tick" : 119,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 119,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 119,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 119,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 119,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1482
+  }, {
+    "tick" : 119,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 119
+  }, {
+    "tick" : 120,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 120,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 120,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 120,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 120,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1481
+  }, {
+    "tick" : 120,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 120
+  }, {
+    "tick" : 121,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 121,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 121,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 121,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 121,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1480
+  }, {
+    "tick" : 121,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 121
+  }, {
+    "tick" : 122,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 122,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 122,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 122,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 122,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1479
+  }, {
+    "tick" : 122,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 122
+  }, {
+    "tick" : 123,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 123,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 123,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 123,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 123,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1478
+  }, {
+    "tick" : 123,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 123
+  }, {
+    "tick" : 124,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 124,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 124,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 124,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 124,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1477
+  }, {
+    "tick" : 124,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 124
+  }, {
+    "tick" : 125,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 125,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 125,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 125,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 125,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1476
+  }, {
+    "tick" : 125,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 125
+  }, {
+    "tick" : 126,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 126,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 126,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 126,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 126,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1475
+  }, {
+    "tick" : 126,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 126
+  }, {
+    "tick" : 127,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 127,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 127,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 127,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 127,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1474
+  }, {
+    "tick" : 127,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 127
+  }, {
+    "tick" : 128,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 128,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 128,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 128,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 128,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1473
+  }, {
+    "tick" : 128,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 128
+  }, {
+    "tick" : 129,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 129,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 129,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 129,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 129,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1472
+  }, {
+    "tick" : 129,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 129
+  }, {
+    "tick" : 130,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 130,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 130,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 130,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 130,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1471
+  }, {
+    "tick" : 130,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 130
+  }, {
+    "tick" : 131,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 131,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 131,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 131,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 131,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1470
+  }, {
+    "tick" : 131,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 131
+  }, {
+    "tick" : 132,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 132,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 132,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 132,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 132,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1469
+  }, {
+    "tick" : 132,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 132
+  }, {
+    "tick" : 133,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 133,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 133,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 133,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 133,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1468
+  }, {
+    "tick" : 133,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 133
+  }, {
+    "tick" : 134,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 134,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 134,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 134,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 134,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1467
+  }, {
+    "tick" : 134,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 134
+  }, {
+    "tick" : 135,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 135,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 135,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 135,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 135,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1466
+  }, {
+    "tick" : 135,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 135
+  }, {
+    "tick" : 136,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 136,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 136,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 136,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 136,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1465
+  }, {
+    "tick" : 136,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 136
+  }, {
+    "tick" : 137,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 137,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 137,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 137,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 137,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1464
+  }, {
+    "tick" : 137,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 137
+  }, {
+    "tick" : 138,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 138,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 138,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 138,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 138,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1463
+  }, {
+    "tick" : 138,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 138
+  }, {
+    "tick" : 139,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 139,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 139,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 139,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 139,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1462
+  }, {
+    "tick" : 139,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 139
+  }, {
+    "tick" : 140,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 140,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 140,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 140,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 140,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1461
+  }, {
+    "tick" : 140,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 140
+  }, {
+    "tick" : 141,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 141,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 141,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 141,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 141,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1460
+  }, {
+    "tick" : 141,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 141
+  }, {
+    "tick" : 142,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 142,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 142,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 142,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 142,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1459
+  }, {
+    "tick" : 142,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 142
+  }, {
+    "tick" : 143,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 143,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 143,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 143,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 143,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1458
+  }, {
+    "tick" : 143,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 143
+  }, {
+    "tick" : 144,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 144,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 144,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 144,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 144,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1457
+  }, {
+    "tick" : 144,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 144
+  }, {
+    "tick" : 145,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 145,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 145,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 145,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 145,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1456
+  }, {
+    "tick" : 145,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 145
+  }, {
+    "tick" : 146,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 146,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 146,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 146,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 146,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1455
+  }, {
+    "tick" : 146,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 146
+  }, {
+    "tick" : 147,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 147,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 147,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 147,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 147,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1454
+  }, {
+    "tick" : 147,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 147
+  }, {
+    "tick" : 148,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 148,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 148,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 148,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 148,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1453
+  }, {
+    "tick" : 148,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 148
+  }, {
+    "tick" : 149,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 149,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 149,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 149,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 149,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1452
+  }, {
+    "tick" : 149,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 149
+  }, {
+    "tick" : 150,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 150,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 150,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 150,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 150,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1451
+  }, {
+    "tick" : 150,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 150
+  }, {
+    "tick" : 151,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 151,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 151,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 151,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 151,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1450
+  }, {
+    "tick" : 151,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 151
+  }, {
+    "tick" : 152,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 152,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 152,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 152,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 152,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1449
+  }, {
+    "tick" : 152,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 152
+  }, {
+    "tick" : 153,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 153,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 153,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 153,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 153,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1448
+  }, {
+    "tick" : 153,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 153
+  }, {
+    "tick" : 154,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 154,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 154,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 154,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 154,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1447
+  }, {
+    "tick" : 154,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 154
+  }, {
+    "tick" : 155,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 155,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 155,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 155,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 155,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1446
+  }, {
+    "tick" : 155,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 155
+  }, {
+    "tick" : 156,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 156,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 156,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 156,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 156,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1445
+  }, {
+    "tick" : 156,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 156
+  }, {
+    "tick" : 157,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 157,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 157,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 157,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 157,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1444
+  }, {
+    "tick" : 157,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 157
+  }, {
+    "tick" : 158,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 158,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 158,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 158,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 158,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1443
+  }, {
+    "tick" : 158,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 158
+  }, {
+    "tick" : 159,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 159,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 159,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 159,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 159,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1442
+  }, {
+    "tick" : 159,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 159
+  }, {
+    "tick" : 160,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 160,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 160,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 160,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 160,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1441
+  }, {
+    "tick" : 160,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 160
+  }, {
+    "tick" : 161,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 161,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 161,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 161,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 161,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1440
+  }, {
+    "tick" : 161,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 161
+  }, {
+    "tick" : 162,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 162,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 162,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 162,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 162,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1439
+  }, {
+    "tick" : 162,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 162
+  }, {
+    "tick" : 163,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 163,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 163,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 163,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 163,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1438
+  }, {
+    "tick" : 163,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 163
+  }, {
+    "tick" : 164,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 164,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 164,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 164,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 164,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1437
+  }, {
+    "tick" : 164,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 164
+  }, {
+    "tick" : 165,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 165,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 165,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 165,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 165,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1436
+  }, {
+    "tick" : 165,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 165
+  }, {
+    "tick" : 166,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 166,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 166,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 166,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 166,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1435
+  }, {
+    "tick" : 166,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 166
+  }, {
+    "tick" : 167,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 167,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 167,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 167,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 167,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1434
+  }, {
+    "tick" : 167,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 167
+  }, {
+    "tick" : 168,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 168,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 168,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 168,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 168,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1433
+  }, {
+    "tick" : 168,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 168
+  }, {
+    "tick" : 169,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 169,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 169,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 169,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 169,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1432
+  }, {
+    "tick" : 169,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 169
+  }, {
+    "tick" : 170,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 170,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 170,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 170,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 170,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1431
+  }, {
+    "tick" : 170,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 170
+  }, {
+    "tick" : 171,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 171,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 171,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 171,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 171,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1430
+  }, {
+    "tick" : 171,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 171
+  }, {
+    "tick" : 172,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 172,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 172,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 172,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 172,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1429
+  }, {
+    "tick" : 172,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 172
+  }, {
+    "tick" : 173,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 173,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 173,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 173,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 173,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1428
+  }, {
+    "tick" : 173,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 173
+  }, {
+    "tick" : 174,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 174,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 174,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 174,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 174,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1427
+  }, {
+    "tick" : 174,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 174
+  }, {
+    "tick" : 175,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 175,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 175,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 175,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 175,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1426
+  }, {
+    "tick" : 175,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 175
+  }, {
+    "tick" : 176,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 176,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 176,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 176,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 176,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1425
+  }, {
+    "tick" : 176,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 176
+  }, {
+    "tick" : 177,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 177,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 177,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 177,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 177,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1424
+  }, {
+    "tick" : 177,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 177
+  }, {
+    "tick" : 178,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 178,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 178,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 178,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 178,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1423
+  }, {
+    "tick" : 178,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 178
+  }, {
+    "tick" : 179,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 179,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 179,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 179,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 179,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1422
+  }, {
+    "tick" : 179,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 179
+  }, {
+    "tick" : 180,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 180,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 180,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 180,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 180,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1421
+  }, {
+    "tick" : 180,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 180
+  }, {
+    "tick" : 181,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 181,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 181,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 181,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 181,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1420
+  }, {
+    "tick" : 181,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 181
+  }, {
+    "tick" : 182,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 182,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 182,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 182,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 182,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1419
+  }, {
+    "tick" : 182,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 182
+  }, {
+    "tick" : 183,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 183,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 183,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 183,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 183,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1418
+  }, {
+    "tick" : 183,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 183
+  }, {
+    "tick" : 184,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 184,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 184,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 184,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 184,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1417
+  }, {
+    "tick" : 184,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 184
+  }, {
+    "tick" : 185,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 185,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 185,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 185,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 185,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1416
+  }, {
+    "tick" : 185,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 185
+  }, {
+    "tick" : 186,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 186,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 186,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 186,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 186,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1415
+  }, {
+    "tick" : 186,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 186
+  }, {
+    "tick" : 187,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 187,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 187,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 187,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 187,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1414
+  }, {
+    "tick" : 187,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 187
+  }, {
+    "tick" : 188,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 188,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 188,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 188,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 188,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1413
+  }, {
+    "tick" : 188,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 188
+  }, {
+    "tick" : 189,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 189,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 189,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 189,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 189,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1412
+  }, {
+    "tick" : 189,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 189
+  }, {
+    "tick" : 190,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 190,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 190,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 190,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 190,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1411
+  }, {
+    "tick" : 190,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 190
+  }, {
+    "tick" : 191,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 191,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 191,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 191,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 191,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1410
+  }, {
+    "tick" : 191,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 191
+  }, {
+    "tick" : 192,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 192,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 192,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 192,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 192,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1409
+  }, {
+    "tick" : 192,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 192
+  }, {
+    "tick" : 193,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 193,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 193,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 193,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 193,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1408
+  }, {
+    "tick" : 193,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 193
+  }, {
+    "tick" : 194,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 194,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 194,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 194,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 194,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1407
+  }, {
+    "tick" : 194,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 194
+  }, {
+    "tick" : 195,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 195,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 195,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 195,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 195,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1406
+  }, {
+    "tick" : 195,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 195
+  }, {
+    "tick" : 196,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 196,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 196,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 196,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 196,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1405
+  }, {
+    "tick" : 196,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 196
+  }, {
+    "tick" : 197,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 197,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 197,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 197,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 197,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1404
+  }, {
+    "tick" : 197,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 197
+  }, {
+    "tick" : 198,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 198,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 198,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 198,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 198,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1403
+  }, {
+    "tick" : 198,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 198
+  }, {
+    "tick" : 199,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 199,
+    "key" : "item:[0,64,0]#0",
+    "value" : {
+      "item" : "minecraft:iron_ore",
+      "count" : 1
+    }
+  }, {
+    "tick" : 199,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 199,
+    "key" : "item:[0,64,0]#2",
+    "value" : null
+  }, {
+    "tick" : 199,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1402
+  }, {
+    "tick" : 199,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 199
+  }, {
+    "tick" : 200,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 200,
+    "key" : "item:[0,64,0]#0",
+    "value" : null
+  }, {
+    "tick" : 200,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 200,
+    "key" : "item:[0,64,0]#2",
+    "value" : {
+      "item" : "minecraft:iron_ingot",
+      "count" : 1
+    }
+  }, {
+    "tick" : 200,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1401
+  }, {
+    "tick" : 200,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 0
+  }, {
+    "tick" : 201,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 201,
+    "key" : "item:[0,64,0]#0",
+    "value" : null
+  }, {
+    "tick" : 201,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 201,
+    "key" : "item:[0,64,0]#2",
+    "value" : {
+      "item" : "minecraft:iron_ingot",
+      "count" : 1
+    }
+  }, {
+    "tick" : 201,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1400
+  }, {
+    "tick" : 201,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 0
+  }, {
+    "tick" : 202,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 202,
+    "key" : "item:[0,64,0]#0",
+    "value" : null
+  }, {
+    "tick" : 202,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 202,
+    "key" : "item:[0,64,0]#2",
+    "value" : {
+      "item" : "minecraft:iron_ingot",
+      "count" : 1
+    }
+  }, {
+    "tick" : 202,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1399
+  }, {
+    "tick" : 202,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 0
+  }, {
+    "tick" : 203,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 203,
+    "key" : "item:[0,64,0]#0",
+    "value" : null
+  }, {
+    "tick" : 203,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 203,
+    "key" : "item:[0,64,0]#2",
+    "value" : {
+      "item" : "minecraft:iron_ingot",
+      "count" : 1
+    }
+  }, {
+    "tick" : 203,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1398
+  }, {
+    "tick" : 203,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 0
+  }, {
+    "tick" : 204,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 204,
+    "key" : "item:[0,64,0]#0",
+    "value" : null
+  }, {
+    "tick" : 204,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 204,
+    "key" : "item:[0,64,0]#2",
+    "value" : {
+      "item" : "minecraft:iron_ingot",
+      "count" : 1
+    }
+  }, {
+    "tick" : 204,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1397
+  }, {
+    "tick" : 204,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 0
+  }, {
+    "tick" : 205,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 205,
+    "key" : "item:[0,64,0]#0",
+    "value" : null
+  }, {
+    "tick" : 205,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 205,
+    "key" : "item:[0,64,0]#2",
+    "value" : {
+      "item" : "minecraft:iron_ingot",
+      "count" : 1
+    }
+  }, {
+    "tick" : 205,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1396
+  }, {
+    "tick" : 205,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 0
+  }, {
+    "tick" : 206,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 206,
+    "key" : "item:[0,64,0]#0",
+    "value" : null
+  }, {
+    "tick" : 206,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 206,
+    "key" : "item:[0,64,0]#2",
+    "value" : {
+      "item" : "minecraft:iron_ingot",
+      "count" : 1
+    }
+  }, {
+    "tick" : 206,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1395
+  }, {
+    "tick" : 206,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 0
+  }, {
+    "tick" : 207,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 207,
+    "key" : "item:[0,64,0]#0",
+    "value" : null
+  }, {
+    "tick" : 207,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 207,
+    "key" : "item:[0,64,0]#2",
+    "value" : {
+      "item" : "minecraft:iron_ingot",
+      "count" : 1
+    }
+  }, {
+    "tick" : 207,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1394
+  }, {
+    "tick" : 207,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 0
+  }, {
+    "tick" : 208,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 208,
+    "key" : "item:[0,64,0]#0",
+    "value" : null
+  }, {
+    "tick" : 208,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 208,
+    "key" : "item:[0,64,0]#2",
+    "value" : {
+      "item" : "minecraft:iron_ingot",
+      "count" : 1
+    }
+  }, {
+    "tick" : 208,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1393
+  }, {
+    "tick" : 208,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 0
+  }, {
+    "tick" : 209,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 209,
+    "key" : "item:[0,64,0]#0",
+    "value" : null
+  }, {
+    "tick" : 209,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 209,
+    "key" : "item:[0,64,0]#2",
+    "value" : {
+      "item" : "minecraft:iron_ingot",
+      "count" : 1
+    }
+  }, {
+    "tick" : 209,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1392
+  }, {
+    "tick" : 209,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 0
+  }, {
+    "tick" : 210,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 210,
+    "key" : "item:[0,64,0]#0",
+    "value" : null
+  }, {
+    "tick" : 210,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 210,
+    "key" : "item:[0,64,0]#2",
+    "value" : {
+      "item" : "minecraft:iron_ingot",
+      "count" : 1
+    }
+  }, {
+    "tick" : 210,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1391
+  }, {
+    "tick" : 210,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 0
+  }, {
+    "tick" : 211,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 211,
+    "key" : "item:[0,64,0]#0",
+    "value" : null
+  }, {
+    "tick" : 211,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 211,
+    "key" : "item:[0,64,0]#2",
+    "value" : {
+      "item" : "minecraft:iron_ingot",
+      "count" : 1
+    }
+  }, {
+    "tick" : 211,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1390
+  }, {
+    "tick" : 211,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 0
+  }, {
+    "tick" : 212,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 212,
+    "key" : "item:[0,64,0]#0",
+    "value" : null
+  }, {
+    "tick" : 212,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 212,
+    "key" : "item:[0,64,0]#2",
+    "value" : {
+      "item" : "minecraft:iron_ingot",
+      "count" : 1
+    }
+  }, {
+    "tick" : 212,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1389
+  }, {
+    "tick" : 212,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 0
+  }, {
+    "tick" : 213,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 213,
+    "key" : "item:[0,64,0]#0",
+    "value" : null
+  }, {
+    "tick" : 213,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 213,
+    "key" : "item:[0,64,0]#2",
+    "value" : {
+      "item" : "minecraft:iron_ingot",
+      "count" : 1
+    }
+  }, {
+    "tick" : 213,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1388
+  }, {
+    "tick" : 213,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 0
+  }, {
+    "tick" : 214,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 214,
+    "key" : "item:[0,64,0]#0",
+    "value" : null
+  }, {
+    "tick" : 214,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 214,
+    "key" : "item:[0,64,0]#2",
+    "value" : {
+      "item" : "minecraft:iron_ingot",
+      "count" : 1
+    }
+  }, {
+    "tick" : 214,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1387
+  }, {
+    "tick" : 214,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 0
+  }, {
+    "tick" : 215,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 215,
+    "key" : "item:[0,64,0]#0",
+    "value" : null
+  }, {
+    "tick" : 215,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 215,
+    "key" : "item:[0,64,0]#2",
+    "value" : {
+      "item" : "minecraft:iron_ingot",
+      "count" : 1
+    }
+  }, {
+    "tick" : 215,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1386
+  }, {
+    "tick" : 215,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 0
+  }, {
+    "tick" : 216,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 216,
+    "key" : "item:[0,64,0]#0",
+    "value" : null
+  }, {
+    "tick" : 216,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 216,
+    "key" : "item:[0,64,0]#2",
+    "value" : {
+      "item" : "minecraft:iron_ingot",
+      "count" : 1
+    }
+  }, {
+    "tick" : 216,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1385
+  }, {
+    "tick" : 216,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 0
+  }, {
+    "tick" : 217,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 217,
+    "key" : "item:[0,64,0]#0",
+    "value" : null
+  }, {
+    "tick" : 217,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 217,
+    "key" : "item:[0,64,0]#2",
+    "value" : {
+      "item" : "minecraft:iron_ingot",
+      "count" : 1
+    }
+  }, {
+    "tick" : 217,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1384
+  }, {
+    "tick" : 217,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 0
+  }, {
+    "tick" : 218,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 218,
+    "key" : "item:[0,64,0]#0",
+    "value" : null
+  }, {
+    "tick" : 218,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 218,
+    "key" : "item:[0,64,0]#2",
+    "value" : {
+      "item" : "minecraft:iron_ingot",
+      "count" : 1
+    }
+  }, {
+    "tick" : 218,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1383
+  }, {
+    "tick" : 218,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 0
+  }, {
+    "tick" : 219,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 219,
+    "key" : "item:[0,64,0]#0",
+    "value" : null
+  }, {
+    "tick" : 219,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 219,
+    "key" : "item:[0,64,0]#2",
+    "value" : {
+      "item" : "minecraft:iron_ingot",
+      "count" : 1
+    }
+  }, {
+    "tick" : 219,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1382
+  }, {
+    "tick" : 219,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 0
+  }, {
+    "tick" : 220,
+    "key" : "block:[0,64,0]",
+    "value" : "minecraft:lit_furnace"
+  }, {
+    "tick" : 220,
+    "key" : "item:[0,64,0]#0",
+    "value" : null
+  }, {
+    "tick" : 220,
+    "key" : "item:[0,64,0]#1",
+    "value" : null
+  }, {
+    "tick" : 220,
+    "key" : "item:[0,64,0]#2",
+    "value" : {
+      "item" : "minecraft:iron_ingot",
+      "count" : 1
+    }
+  }, {
+    "tick" : 220,
+    "key" : "nbt:[0,64,0]/BurnTime",
+    "value" : 1381
+  }, {
+    "tick" : 220,
+    "key" : "nbt:[0,64,0]/CookTime",
+    "value" : 0
+  } ],
+  "assertions" : [ {
+    "step" : 5,
+    "tick" : 220,
+    "expr" : "item:[0,64,0]#2.item == 'minecraft:iron_ingot' && item:[0,64,0]#2.count == 1",
+    "passed" : true
+  }, {
+    "step" : 6,
+    "tick" : 220,
+    "expr" : "item:[0,64,0]#0 == null && item:[0,64,0]#1 == null",
+    "passed" : true
+  }, {
+    "step" : 7,
+    "tick" : 220,
+    "expr" : "nbt:[0,64,0]/BurnTime > 0",
+    "passed" : true
+  } ]
+}

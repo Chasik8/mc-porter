@@ -1,0 +1,841 @@
+# Hand-written rules Forge 1.19.2 -> Forge 1.7.10 (10.13.4.1614, MCP stable_12). Every source member was
+# checked against the Mojang 1.19.2 mappings, every target member against the MCP 1.7.10 jar (javap).
+# Synthetic tests only. Generated from a compact spec; edit freely, keep one test per rule at least.
+# Directions: Direction (+ Axis, AxisDirection, Plane) map onto the porter shim; get3DDataValue() is the
+# 1.7.10 side number. Conversions to ForgeDirection live in dev.porter.shim.Worlds.
+schemaVersion: 1
+id: r-1.19.2-1.7.10-type-direction
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.core.Direction"
+replace: "dev.porter.shim.Direction"
+preconditions: ["shim:direction"]
+confidence: 0.95
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "import net.minecraft.core.Direction;"
+    after: "import dev.porter.shim.Direction;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-type-direction-axis
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.core.Direction$Axis"
+replace: "dev.porter.shim.Direction.Axis"
+preconditions: ["shim:direction"]
+confidence: 0.95
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "import net.minecraft.core.Direction.Axis;"
+    after: "import dev.porter.shim.Direction.Axis;"
+  - name: "outer type not renamed by this rule alone: qualified to avoid a clash"
+    context: "import net.minecraft.core.Direction"
+    before: "Direction.Axis x = null;"
+    after: "dev.porter.shim.Direction.Axis x = null;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-type-direction-axisdirection
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.core.Direction$AxisDirection"
+replace: "dev.porter.shim.Direction.AxisDirection"
+preconditions: ["shim:direction"]
+confidence: 0.95
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "import net.minecraft.core.Direction.AxisDirection;"
+    after: "import dev.porter.shim.Direction.AxisDirection;"
+  - name: "outer type not renamed by this rule alone: qualified to avoid a clash"
+    context: "import net.minecraft.core.Direction"
+    before: "Direction.AxisDirection x = null;"
+    after: "dev.porter.shim.Direction.AxisDirection x = null;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-type-direction-plane
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.core.Direction$Plane"
+replace: "dev.porter.shim.Direction.Plane"
+preconditions: ["shim:direction"]
+confidence: 0.95
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - before: "import net.minecraft.core.Direction.Plane;"
+    after: "import dev.porter.shim.Direction.Plane;"
+  - name: "outer type not renamed by this rule alone: qualified to avoid a clash"
+    context: "import net.minecraft.core.Direction"
+    before: "Direction.Plane x = null;"
+    after: "dev.porter.shim.Direction.Plane x = null;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-const-down
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.core.Direction#DOWN"
+  bind: { recv: "$t" }
+replace: "$t.DOWN"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "import net.minecraft.core.Direction"
+    before: "Object o = Direction.DOWN;"
+    after: "Object o = Direction.DOWN;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-const-up
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.core.Direction#UP"
+  bind: { recv: "$t" }
+replace: "$t.UP"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "import net.minecraft.core.Direction"
+    before: "Object o = Direction.UP;"
+    after: "Object o = Direction.UP;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-const-north
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.core.Direction#NORTH"
+  bind: { recv: "$t" }
+replace: "$t.NORTH"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "import net.minecraft.core.Direction"
+    before: "Object o = Direction.NORTH;"
+    after: "Object o = Direction.NORTH;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-const-south
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.core.Direction#SOUTH"
+  bind: { recv: "$t" }
+replace: "$t.SOUTH"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "import net.minecraft.core.Direction"
+    before: "Object o = Direction.SOUTH;"
+    after: "Object o = Direction.SOUTH;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-const-west
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.core.Direction#WEST"
+  bind: { recv: "$t" }
+replace: "$t.WEST"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "import net.minecraft.core.Direction"
+    before: "Object o = Direction.WEST;"
+    after: "Object o = Direction.WEST;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-const-east
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.core.Direction#EAST"
+  bind: { recv: "$t" }
+replace: "$t.EAST"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "import net.minecraft.core.Direction"
+    before: "Object o = Direction.EAST;"
+    after: "Object o = Direction.EAST;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-const-axis-x
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.core.Direction$Axis#X"
+  bind: { recv: "$t" }
+replace: "$t.X"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "import net.minecraft.core.Direction"
+    before: "Object o = Direction.Axis.X;"
+    after: "Object o = Direction.Axis.X;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-const-axis-y
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.core.Direction$Axis#Y"
+  bind: { recv: "$t" }
+replace: "$t.Y"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "import net.minecraft.core.Direction"
+    before: "Object o = Direction.Axis.Y;"
+    after: "Object o = Direction.Axis.Y;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-const-axis-z
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.core.Direction$Axis#Z"
+  bind: { recv: "$t" }
+replace: "$t.Z"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "import net.minecraft.core.Direction"
+    before: "Object o = Direction.Axis.Z;"
+    after: "Object o = Direction.Axis.Z;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-const-axisdirection-positive
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.core.Direction$AxisDirection#POSITIVE"
+  bind: { recv: "$t" }
+replace: "$t.POSITIVE"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "import net.minecraft.core.Direction"
+    before: "Object o = Direction.AxisDirection.POSITIVE;"
+    after: "Object o = Direction.AxisDirection.POSITIVE;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-const-axisdirection-negative
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.core.Direction$AxisDirection#NEGATIVE"
+  bind: { recv: "$t" }
+replace: "$t.NEGATIVE"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "import net.minecraft.core.Direction"
+    before: "Object o = Direction.AxisDirection.NEGATIVE;"
+    after: "Object o = Direction.AxisDirection.NEGATIVE;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-const-plane-horizontal
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.core.Direction$Plane#HORIZONTAL"
+  bind: { recv: "$t" }
+replace: "$t.HORIZONTAL"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "import net.minecraft.core.Direction"
+    before: "Object o = Direction.Plane.HORIZONTAL;"
+    after: "Object o = Direction.Plane.HORIZONTAL;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-const-plane-vertical
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.core.Direction$Plane#VERTICAL"
+  bind: { recv: "$t" }
+replace: "$t.VERTICAL"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "import net.minecraft.core.Direction"
+    before: "Object o = Direction.Plane.VERTICAL;"
+    after: "Object o = Direction.Plane.VERTICAL;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-get3ddatavalue
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.Direction#get3DDataValue()"
+  bind: { recv: "$r" }
+replace: "$r.get3DDataValue()"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Direction d; Direction.Axis a; Direction.AxisDirection ad; Direction.Plane pl; int n; double dd; String s; import net.minecraft.core.Direction"
+    before: "Object o = d.get3DDataValue();"
+    after: "Object o = d.get3DDataValue();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-get2ddatavalue
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.Direction#get2DDataValue()"
+  bind: { recv: "$r" }
+replace: "$r.get2DDataValue()"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Direction d; Direction.Axis a; Direction.AxisDirection ad; Direction.Plane pl; int n; double dd; String s; import net.minecraft.core.Direction"
+    before: "Object o = d.get2DDataValue();"
+    after: "Object o = d.get2DDataValue();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-getopposite
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.Direction#getOpposite()"
+  bind: { recv: "$r" }
+replace: "$r.getOpposite()"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Direction d; Direction.Axis a; Direction.AxisDirection ad; Direction.Plane pl; int n; double dd; String s; import net.minecraft.core.Direction"
+    before: "Object o = d.getOpposite();"
+    after: "Object o = d.getOpposite();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-getstepx
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.Direction#getStepX()"
+  bind: { recv: "$r" }
+replace: "$r.getStepX()"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Direction d; Direction.Axis a; Direction.AxisDirection ad; Direction.Plane pl; int n; double dd; String s; import net.minecraft.core.Direction"
+    before: "Object o = d.getStepX();"
+    after: "Object o = d.getStepX();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-getstepy
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.Direction#getStepY()"
+  bind: { recv: "$r" }
+replace: "$r.getStepY()"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Direction d; Direction.Axis a; Direction.AxisDirection ad; Direction.Plane pl; int n; double dd; String s; import net.minecraft.core.Direction"
+    before: "Object o = d.getStepY();"
+    after: "Object o = d.getStepY();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-getstepz
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.Direction#getStepZ()"
+  bind: { recv: "$r" }
+replace: "$r.getStepZ()"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Direction d; Direction.Axis a; Direction.AxisDirection ad; Direction.Plane pl; int n; double dd; String s; import net.minecraft.core.Direction"
+    before: "Object o = d.getStepZ();"
+    after: "Object o = d.getStepZ();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-getnormal
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.Direction#getNormal()"
+  bind: { recv: "$r" }
+replace: "$r.getNormal()"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Direction d; Direction.Axis a; Direction.AxisDirection ad; Direction.Plane pl; int n; double dd; String s; import net.minecraft.core.Direction"
+    before: "Object o = d.getNormal();"
+    after: "Object o = d.getNormal();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-getaxis
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.Direction#getAxis()"
+  bind: { recv: "$r" }
+replace: "$r.getAxis()"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Direction d; Direction.Axis a; Direction.AxisDirection ad; Direction.Plane pl; int n; double dd; String s; import net.minecraft.core.Direction"
+    before: "Object o = d.getAxis();"
+    after: "Object o = d.getAxis();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-getaxisdirection
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.Direction#getAxisDirection()"
+  bind: { recv: "$r" }
+replace: "$r.getAxisDirection()"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Direction d; Direction.Axis a; Direction.AxisDirection ad; Direction.Plane pl; int n; double dd; String s; import net.minecraft.core.Direction"
+    before: "Object o = d.getAxisDirection();"
+    after: "Object o = d.getAxisDirection();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-getclockwise
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.Direction#getClockWise()"
+  bind: { recv: "$r" }
+replace: "$r.getClockWise()"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Direction d; Direction.Axis a; Direction.AxisDirection ad; Direction.Plane pl; int n; double dd; String s; import net.minecraft.core.Direction"
+    before: "Object o = d.getClockWise();"
+    after: "Object o = d.getClockWise();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-getcounterclockwise
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.Direction#getCounterClockWise()"
+  bind: { recv: "$r" }
+replace: "$r.getCounterClockWise()"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Direction d; Direction.Axis a; Direction.AxisDirection ad; Direction.Plane pl; int n; double dd; String s; import net.minecraft.core.Direction"
+    before: "Object o = d.getCounterClockWise();"
+    after: "Object o = d.getCounterClockWise();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-toyrot
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.Direction#toYRot()"
+  bind: { recv: "$r" }
+replace: "$r.toYRot()"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Direction d; Direction.Axis a; Direction.AxisDirection ad; Direction.Plane pl; int n; double dd; String s; import net.minecraft.core.Direction"
+    before: "Object o = d.toYRot();"
+    after: "Object o = d.toYRot();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-getname
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.Direction#getName()"
+  bind: { recv: "$r" }
+replace: "$r.getName()"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Direction d; Direction.Axis a; Direction.AxisDirection ad; Direction.Plane pl; int n; double dd; String s; import net.minecraft.core.Direction"
+    before: "Object o = d.getName();"
+    after: "Object o = d.getName();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-getserializedname
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.Direction#getSerializedName()"
+  bind: { recv: "$r" }
+replace: "$r.getSerializedName()"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Direction d; Direction.Axis a; Direction.AxisDirection ad; Direction.Plane pl; int n; double dd; String s; import net.minecraft.core.Direction"
+    before: "Object o = d.getSerializedName();"
+    after: "Object o = d.getSerializedName();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-values
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.Direction#values()"
+  bind: { recv: "$r" }
+replace: "$r.values()"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Direction d; Direction.Axis a; Direction.AxisDirection ad; Direction.Plane pl; int n; double dd; String s; import net.minecraft.core.Direction"
+    before: "Object o = Direction.values();"
+    after: "Object o = Direction.values();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-from3ddatavalue-int
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.Direction#from3DDataValue(int)"
+  bind: { recv: "$r", args: ["$a0"] }
+replace: "$r.from3DDataValue($a0)"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Direction d; Direction.Axis a; Direction.AxisDirection ad; Direction.Plane pl; int n; double dd; String s; import net.minecraft.core.Direction"
+    before: "Object o = Direction.from3DDataValue(n);"
+    after: "Object o = Direction.from3DDataValue(n);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-from2ddatavalue-int
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.Direction#from2DDataValue(int)"
+  bind: { recv: "$r", args: ["$a0"] }
+replace: "$r.from2DDataValue($a0)"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Direction d; Direction.Axis a; Direction.AxisDirection ad; Direction.Plane pl; int n; double dd; String s; import net.minecraft.core.Direction"
+    before: "Object o = Direction.from2DDataValue(n);"
+    after: "Object o = Direction.from2DDataValue(n);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-fromyrot-double
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.Direction#fromYRot(double)"
+  bind: { recv: "$r", args: ["$a0"] }
+replace: "$r.fromYRot($a0)"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Direction d; Direction.Axis a; Direction.AxisDirection ad; Direction.Plane pl; int n; double dd; String s; import net.minecraft.core.Direction"
+    before: "Object o = Direction.fromYRot(dd);"
+    after: "Object o = Direction.fromYRot(dd);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-fromnormal-int-int-int
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.Direction#fromNormal(int, int, int)"
+  bind: { recv: "$r", args: ["$a0", "$a1", "$a2"] }
+replace: "$r.fromNormal($a0, $a1, $a2)"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Direction d; Direction.Axis a; Direction.AxisDirection ad; Direction.Plane pl; int n; double dd; String s; import net.minecraft.core.Direction"
+    before: "Object o = Direction.fromNormal(n, n, n);"
+    after: "Object o = Direction.fromNormal(n, n, n);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-byname-string
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.Direction#byName(java.lang.String)"
+  bind: { recv: "$r", args: ["$a0"] }
+replace: "$r.byName($a0)"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Direction d; Direction.Axis a; Direction.AxisDirection ad; Direction.Plane pl; int n; double dd; String s; import net.minecraft.core.Direction"
+    before: "Object o = Direction.byName(s);"
+    after: "Object o = Direction.byName(s);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-get-axisdirection-axis
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.Direction#get(net.minecraft.core.Direction$AxisDirection, net.minecraft.core.Direction$Axis)"
+  bind: { recv: "$r", args: ["$a0", "$a1"] }
+replace: "$r.get($a0, $a1)"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Direction d; Direction.Axis a; Direction.AxisDirection ad; Direction.Plane pl; int n; double dd; String s; import net.minecraft.core.Direction"
+    before: "Object o = Direction.get(ad, a);"
+    after: "Object o = Direction.get(ad, a);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-fromaxisanddirection-axis-axisdirection
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.Direction#fromAxisAndDirection(net.minecraft.core.Direction$Axis, net.minecraft.core.Direction$AxisDirection)"
+  bind: { recv: "$r", args: ["$a0", "$a1"] }
+replace: "$r.fromAxisAndDirection($a0, $a1)"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Direction d; Direction.Axis a; Direction.AxisDirection ad; Direction.Plane pl; int n; double dd; String s; import net.minecraft.core.Direction"
+    before: "Object o = Direction.fromAxisAndDirection(a, ad);"
+    after: "Object o = Direction.fromAxisAndDirection(a, ad);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-axis-ishorizontal
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.Direction$Axis#isHorizontal()"
+  bind: { recv: "$r" }
+replace: "$r.isHorizontal()"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Direction d; Direction.Axis a; Direction.AxisDirection ad; Direction.Plane pl; int n; double dd; String s; import net.minecraft.core.Direction"
+    before: "Object o = a.isHorizontal();"
+    after: "Object o = a.isHorizontal();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-axis-isvertical
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.Direction$Axis#isVertical()"
+  bind: { recv: "$r" }
+replace: "$r.isVertical()"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Direction d; Direction.Axis a; Direction.AxisDirection ad; Direction.Plane pl; int n; double dd; String s; import net.minecraft.core.Direction"
+    before: "Object o = a.isVertical();"
+    after: "Object o = a.isVertical();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-axis-choose-int-int-int
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.Direction$Axis#choose(int, int, int)"
+  bind: { recv: "$r", args: ["$a0", "$a1", "$a2"] }
+replace: "$r.choose($a0, $a1, $a2)"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Direction d; Direction.Axis a; Direction.AxisDirection ad; Direction.Plane pl; int n; double dd; String s; import net.minecraft.core.Direction"
+    before: "Object o = a.choose(n, n, n);"
+    after: "Object o = a.choose(n, n, n);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-axis-choose-double-double-double
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.Direction$Axis#choose(double, double, double)"
+  bind: { recv: "$r", args: ["$a0", "$a1", "$a2"] }
+replace: "$r.choose($a0, $a1, $a2)"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Direction d; Direction.Axis a; Direction.AxisDirection ad; Direction.Plane pl; int n; double dd; String s; import net.minecraft.core.Direction"
+    before: "Object o = a.choose(dd, dd, dd);"
+    after: "Object o = a.choose(dd, dd, dd);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-axis-getname
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.Direction$Axis#getName()"
+  bind: { recv: "$r" }
+replace: "$r.getName()"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Direction d; Direction.Axis a; Direction.AxisDirection ad; Direction.Plane pl; int n; double dd; String s; import net.minecraft.core.Direction"
+    before: "Object o = a.getName();"
+    after: "Object o = a.getName();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-axis-test-direction
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.Direction$Axis#test(net.minecraft.core.Direction)"
+  bind: { recv: "$r", args: ["$a0"] }
+replace: "$r.test($a0)"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Direction d; Direction.Axis a; Direction.AxisDirection ad; Direction.Plane pl; int n; double dd; String s; import net.minecraft.core.Direction"
+    before: "Object o = a.test(d);"
+    after: "Object o = a.test(d);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-axis-getplane
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.Direction$Axis#getPlane()"
+  bind: { recv: "$r" }
+replace: "$r.getPlane()"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Direction d; Direction.Axis a; Direction.AxisDirection ad; Direction.Plane pl; int n; double dd; String s; import net.minecraft.core.Direction"
+    before: "Object o = a.getPlane();"
+    after: "Object o = a.getPlane();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-axisdirection-getstep
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.Direction$AxisDirection#getStep()"
+  bind: { recv: "$r" }
+replace: "$r.getStep()"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Direction d; Direction.Axis a; Direction.AxisDirection ad; Direction.Plane pl; int n; double dd; String s; import net.minecraft.core.Direction"
+    before: "Object o = ad.getStep();"
+    after: "Object o = ad.getStep();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-axisdirection-opposite
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.Direction$AxisDirection#opposite()"
+  bind: { recv: "$r" }
+replace: "$r.opposite()"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Direction d; Direction.Axis a; Direction.AxisDirection ad; Direction.Plane pl; int n; double dd; String s; import net.minecraft.core.Direction"
+    before: "Object o = ad.opposite();"
+    after: "Object o = ad.opposite();"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-direction-plane-test-direction
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.core.Direction$Plane#test(net.minecraft.core.Direction)"
+  bind: { recv: "$r", args: ["$a0"] }
+replace: "$r.test($a0)"
+preconditions: ["shim:direction"]
+confidence: 1.0
+provenance: { source: manual, ref: "manual: verified against Mojang 1.19.2 mappings and the MCP 1.7.10 jar (javap)" }
+tests:
+  - context: "Direction d; Direction.Axis a; Direction.AxisDirection ad; Direction.Plane pl; int n; double dd; String s; import net.minecraft.core.Direction"
+    before: "Object o = pl.test(d);"
+    after: "Object o = pl.test(d);"

@@ -1,0 +1,20 @@
+# Illustrative adapter rule (contract example). Not a production rule:
+# real rules live in rules/ and are owned by the rewriter.
+schemaVersion: 1
+id: r-1.19.2-1.7.10-level-getblockentity
+description: Level#getBlockEntity(BlockPos) -> World#getTileEntity(int, int, int)
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.level.Level#getBlockEntity(net.minecraft.core.BlockPos)"
+  bind: { recv: "$w", args: ["$pos"] }
+replace: "$w.getTileEntity($pos.getX(), $pos.getY(), $pos.getZ())"
+preconditions: []
+reversible: false
+confidence: 1.0
+provenance: { source: manual, ref: "contracts/examples (illustration)" }
+tests:
+  - context: "Level level; BlockPos pos;"
+    before: "BlockEntity be = level.getBlockEntity(pos);"
+    after: "TileEntity be = world.getTileEntity(pos.getX(), pos.getY(), pos.getZ());"
