@@ -157,6 +157,12 @@ final class Platform1710 implements Executor.Platform {
     private FakePlayer player() {
         if (player == null) {
             player = FakePlayerFactory.getMinecraft(world);
+            if (player.playerNetServerHandler == null) {
+                // a disconnected connection: Forge code that answers a click with a packet (a cancelled or denied
+                // PlayerInteractEvent sends a block change) must not fail for the scenario player
+                new net.minecraft.network.NetHandlerPlayServer(net.minecraft.server.MinecraftServer.getServer(),
+                        new net.minecraft.network.NetworkManager(false), player);
+            }
         }
         return player;
     }

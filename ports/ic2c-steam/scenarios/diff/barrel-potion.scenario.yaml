@@ -1,0 +1,35 @@
+schemaVersion: 1
+id: barrel-potion
+description: >-
+  scenarios.md S4 potion barrel: nether wart, sugar (swiftness), 5 redstone, 3 water buckets; ageing
+  5000*3^q: 5000 -> quality 1, +15000 -> quality 2; tap; glass bottle -> potion with 600-tick swiftness, 2750 mB left.
+world: flat-void
+maxTicks: 30000
+tolerance:
+  "*": { abs: 0 }
+  "block:[0,64,0]": { ignore: true }
+  "player:inv": { ignore: true }
+steps:
+  - place_block: { at: [0, 64, 0], block: "ic2:scaffold_wooden" }
+  - interact: { at: [0, 64, 0], side: up, holding: "ic2:barrel" }
+  - tick: 1
+  - interact: { at: [0, 64, 0], side: up, holding: "minecraft:nether_wart" }
+  - interact: { at: [0, 64, 0], side: up, holding: "minecraft:sugar" }
+  - interact: { at: [0, 64, 0], side: up, holding: "alias:redstone_x5" }
+  - interact: { at: [0, 64, 0], side: up, holding: "minecraft:water_bucket" }
+  - interact: { at: [0, 64, 0], side: up, holding: "minecraft:water_bucket" }
+  - interact: { at: [0, 64, 0], side: up, holding: "minecraft:water_bucket" }
+  - sample: { what: ["field:[0,64,0]/brewType", "field:[0,64,0]/fluidAmount", "field:[0,64,0]/wheatAmount", "field:[0,64,0]/hopsAmount", "field:[0,64,0]/beerQuality", "field:[0,64,0]/alcoholLevel", "field:[0,64,0]/solidRatio", "field:[0,64,0]/opened", "field:[0,64,0]/age"] }
+  - assert: { expr: "field:[0,64,0]/brewType == 10 && field:[0,64,0]/fluidAmount == 3000 && field:[0,64,0]/wheatAmount == 5", message: "potion barrel: 3000 mB, 5 redstone" }
+  - tick: 5000
+  - sample: { what: ["field:[0,64,0]/brewType", "field:[0,64,0]/fluidAmount", "field:[0,64,0]/wheatAmount", "field:[0,64,0]/hopsAmount", "field:[0,64,0]/beerQuality", "field:[0,64,0]/alcoholLevel", "field:[0,64,0]/solidRatio", "field:[0,64,0]/opened", "field:[0,64,0]/age"] }
+  - assert: { expr: "field:[0,64,0]/beerQuality == 1", message: "quality 1 after 5000 ticks" }
+  - tick: 15000
+  - sample: { what: ["field:[0,64,0]/brewType", "field:[0,64,0]/fluidAmount", "field:[0,64,0]/wheatAmount", "field:[0,64,0]/hopsAmount", "field:[0,64,0]/beerQuality", "field:[0,64,0]/alcoholLevel", "field:[0,64,0]/solidRatio", "field:[0,64,0]/opened", "field:[0,64,0]/age"] }
+  - assert: { expr: "field:[0,64,0]/beerQuality == 2", message: "quality 2 after +15000 ticks" }
+  - interact: { at: [0, 64, 0], side: north, holding: "ic2:tree_tap" }
+  - sample: { what: ["field:[0,64,0]/brewType", "field:[0,64,0]/fluidAmount", "field:[0,64,0]/wheatAmount", "field:[0,64,0]/hopsAmount", "field:[0,64,0]/beerQuality", "field:[0,64,0]/alcoholLevel", "field:[0,64,0]/solidRatio", "field:[0,64,0]/opened", "field:[0,64,0]/age"] }
+  - assert: { expr: "field:[0,64,0]/opened == true && field:[0,64,0]/solidRatio == 1 && field:[0,64,0]/alcoholLevel == 0", message: "opened: solidRatio 1, level 0" }
+  - interact: { at: [0, 64, 0], side: up, holding: "minecraft:glass_bottle" }
+  - sample: { what: ["field:[0,64,0]/fluidAmount", "player:inv"] }
+  - assert: { expr: "field:[0,64,0]/fluidAmount == 2750", message: "250 mB per bottle" }

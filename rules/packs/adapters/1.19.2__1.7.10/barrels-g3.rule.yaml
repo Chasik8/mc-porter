@@ -1,0 +1,157 @@
+schemaVersion: 1
+id: r-1.19.2-1.7.10-barrels-g3-field-items-dusts-redstone
+description: "field net.minecraft.world.item.Items#DUSTS_REDSTONE (really Forge Tags.Items.DUSTS_REDSTONE, mis-attributed to Items) -> dev.porter.shim.mc.Tags.Items.DUSTS_REDSTONE"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "net.minecraft.world.item.Items#DUSTS_REDSTONE"
+replace: "dev.porter.shim.mc.Tags.Items.DUSTS_REDSTONE"
+priority: 5
+confidence: 0.85
+provenance: { source: agent, ref: "barrels closure round 3 (group G3): one rule per distinct javac symbol; source = Mojang 1.19.2 mappings / Forge 43.5.2, target = MCP 1.7.10" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object t = Items.DUSTS_REDSTONE;"
+    after: "Object t = dev.porter.shim.mc.Tags.Items.DUSTS_REDSTONE;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-barrels-g3-field-items-dusts-glowstone
+description: "field net.minecraft.world.item.Items#DUSTS_GLOWSTONE (really Forge Tags.Items.DUSTS_GLOWSTONE, mis-attributed to Items) -> dev.porter.shim.mc.Tags.Items.DUSTS_GLOWSTONE"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "net.minecraft.world.item.Items#DUSTS_GLOWSTONE"
+replace: "dev.porter.shim.mc.Tags.Items.DUSTS_GLOWSTONE"
+priority: 5
+confidence: 0.85
+provenance: { source: agent, ref: "barrels closure round 3 (group G3): one rule per distinct javac symbol; source = Mojang 1.19.2 mappings / Forge 43.5.2, target = MCP 1.7.10" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object t = Items.DUSTS_GLOWSTONE;"
+    after: "Object t = dev.porter.shim.mc.Tags.Items.DUSTS_GLOWSTONE;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-barrels-g3-field-items-ores-iron
+description: "field net.minecraft.world.item.Items#ORES_IRON (really Forge Tags.Items.ORES_IRON, mis-attributed to Items) -> dev.porter.shim.mc.Tags.Items.ORES_IRON"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "net.minecraft.world.item.Items#ORES_IRON"
+replace: "dev.porter.shim.mc.Tags.Items.ORES_IRON"
+priority: 5
+confidence: 0.85
+provenance: { source: agent, ref: "barrels closure round 3 (group G3): one rule per distinct javac symbol; source = Mojang 1.19.2 mappings / Forge 43.5.2, target = MCP 1.7.10" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object t = Items.ORES_IRON;"
+    after: "Object t = dev.porter.shim.mc.Tags.Items.ORES_IRON;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-barrels-g3-field-items-ores-gold
+description: "field net.minecraft.world.item.Items#ORES_GOLD (really Forge Tags.Items.ORES_GOLD, mis-attributed to Items) -> dev.porter.shim.mc.Tags.Items.ORES_GOLD"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "net.minecraft.world.item.Items#ORES_GOLD"
+replace: "dev.porter.shim.mc.Tags.Items.ORES_GOLD"
+priority: 5
+confidence: 0.85
+provenance: { source: agent, ref: "barrels closure round 3 (group G3): one rule per distinct javac symbol; source = Mojang 1.19.2 mappings / Forge 43.5.2, target = MCP 1.7.10" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object t = Items.ORES_GOLD;"
+    after: "Object t = dev.porter.shim.mc.Tags.Items.ORES_GOLD;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-barrels-g3-call-itemstack-hascraftingremainingitem
+description: "call net.minecraft.world.item.ItemStack#hasCraftingRemainingItem() -> ItemStackExt.hasCraftingRemainingItem($s)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.item.ItemStack#hasCraftingRemainingItem()"
+  bind: { recv: "$s" }
+replace: "ItemStackExt.hasCraftingRemainingItem($s)"
+imports: ["dev.porter.shim.mc.ItemStackExt"]
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure round 3 (group G3): one rule per distinct javac symbol; source = Mojang 1.19.2 mappings / Forge 43.5.2, target = MCP 1.7.10" }
+tests:
+  - context: "ItemStack s; import net.minecraft.world.item.ItemStack"
+    before: "boolean b = s.hasCraftingRemainingItem();"
+    after: "boolean b = ItemStackExt.hasCraftingRemainingItem(s);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-barrels-g3-call-itemstack-getcraftingremainingitem
+description: "call net.minecraft.world.item.ItemStack#getCraftingRemainingItem() -> ItemStackExt.getCraftingRemainingItem($s)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.item.ItemStack#getCraftingRemainingItem()"
+  bind: { recv: "$s" }
+replace: "ItemStackExt.getCraftingRemainingItem($s)"
+imports: ["dev.porter.shim.mc.ItemStackExt"]
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure round 3 (group G3): one rule per distinct javac symbol; source = Mojang 1.19.2 mappings / Forge 43.5.2, target = MCP 1.7.10" }
+tests:
+  - context: "ItemStack s; import net.minecraft.world.item.ItemStack"
+    before: "Object r = s.getCraftingRemainingItem();"
+    after: "Object r = ItemStackExt.getCraftingRemainingItem(s);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-barrels-g3-call-itemstack-hurt
+description: "call net.minecraft.world.item.ItemStack#hurt(int, RandomSource, ServerPlayer) -> ItemStackExt.hurt($s, $n, $r)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.item.ItemStack#hurt(int, net.minecraft.util.RandomSource, net.minecraft.server.level.ServerPlayer)"
+  bind: { recv: "$s", args: ["$n", "$r", "$p"] }
+replace: "ItemStackExt.hurt($s, $n, $r)"
+imports: ["dev.porter.shim.mc.ItemStackExt"]
+preconditions: ["pure:$p"]
+confidence: 0.85
+provenance: { source: agent, ref: "barrels closure round 3 (group G3): one rule per distinct javac symbol; source = Mojang 1.19.2 mappings / Forge 43.5.2, target = MCP 1.7.10" }
+tests:
+  - context: "ItemStack s; RandomSource r; ServerPlayer p; import net.minecraft.world.item.ItemStack; import net.minecraft.util.RandomSource; import net.minecraft.server.level.ServerPlayer"
+    before: "boolean b = s.hurt(1, r, p);"
+    after: "boolean b = ItemStackExt.hurt(s, 1, r);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-barrels-g3-new-mobeffectinstance-5-impure-visible
+description: "new MobEffectInstance(MobEffect, int, int, boolean, boolean) whose visible flag is a getter call (copy of an instance) -> new PotionEffect($e.id, $d, $a, $amb); the flag is dropped"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  new: "net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffect, int, int, boolean, boolean)"
+  bind: { args: ["$e", "$d", "$a", "$amb", "$vis"] }
+replace: "new PotionEffect($e.id, $d, $a, $amb)"
+imports: ["net.minecraft.potion.PotionEffect"]
+priority: 4
+confidence: 0.8
+provenance: { source: agent, ref: "barrels closure round 3 (group G3): one rule per distinct javac symbol; source = Mojang 1.19.2 mappings / Forge 43.5.2, target = MCP 1.7.10" }
+tests:
+  - context: "MobEffect e; MobEffectInstance m; import net.minecraft.world.effect.MobEffect; import net.minecraft.world.effect.MobEffectInstance"
+    before: "Object i = new MobEffectInstance(e, 20, 1, false, m.isVisible());"
+    after: "Object i = new PotionEffect(e.id, 20, 1, false);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-barrels-g3-type-mobeffects
+description: "type net.minecraft.world.effect.MobEffects (constants referenced under SRG names, unmapped when the rewrite runs) -> dev.porter.shim.mc.MobEffects"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.world.effect.MobEffects"
+replace: "dev.porter.shim.mc.MobEffects"
+priority: 5
+confidence: 0.85
+provenance: { source: agent, ref: "barrels closure round 3 (group G3): one rule per distinct javac symbol; source = Mojang 1.19.2 mappings / Forge 43.5.2, target = MCP 1.7.10" }
+tests:
+  - before: "import net.minecraft.world.effect.MobEffects;"
+    after: "import dev.porter.shim.mc.MobEffects;"

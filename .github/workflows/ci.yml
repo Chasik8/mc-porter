@@ -1,25 +1,69 @@
 name: ci
 
+# Pull-request workflow. Required status check on `main`: the job named `build` (it is the last job and summarises the
+# others, so it is also red, with a message, when the throttle stops a run; it is never left "pending").
+#   throttle -> core (check.sh + publish-check + change detection) -> ports (one job per added/changed ports/<mod>/) -> build
+# `pull_request` (not pull_request_target): fork code never gets a write token or secrets. See CONTRIBUTING.md ("CI").
+
 on:
   push:
+    branches: [main]
   pull_request:
 
 permissions:
   contents: read
 
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
-  build:
+  throttle:
+    name: throttle
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 5
+    permissions:
+      actions: read      # list this workflow's runs; nothing else
+      contents: read
+    outputs:
+      throttled: ${{ steps.t.outputs.throttled }}
+      message: ${{ steps.t.outputs.message }}
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0   # publish-check diffs a PR against its base
+          sparse-checkout: scripts/ci
+          persist-credentials: false
+      - name: Max 1 CI run per hour per contributor
+        id: t
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          THROTTLE_PR: ${{ github.event.pull_request.number }}
+        run: python3 scripts/ci/throttle.py
+
+  core:
+    name: core
+    needs: throttle
+    if: needs.throttle.outputs.throttled != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    outputs:
+      matrix: ${{ steps.detect.outputs.matrix }}
+      count: ${{ steps.detect.outputs.count }}
+      regression: ${{ steps.detect.outputs.regression }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # publish-check and the port detection diff a PR against its base
+          persist-credentials: false
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '21'
-      - uses: gradle/actions/setup-gradle@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pyyaml==6.0.2
+      - uses: gradle/actions/setup-gradle@v4     # caches ~/.gradle (dependencies, wrapper) keyed by the build files
       - name: check.sh (build + unit tests + every rule's before/after tests + contract examples + catalog + dist zip)
         run: scripts/check.sh
       - name: Publish safety (no private/, mappings, decompiled code, binaries, local paths, e-mails)
@@ -27,14 +71,81 @@ jobs:
           BASE_REF: ${{ github.event_name == 'pull_request' && format('origin/{0}', github.base_ref) || '' }}
         run: |
           if [ -n "$BASE_REF" ]; then scripts/publish-check.sh; else scripts/publish-check.sh --all; fi
-      - name: Upload the distribution
+      - name: Which ports does this change add or touch?
+        id: detect
+        env:
+          BASE_REF: ${{ github.event_name == 'pull_request' && format('origin/{0}', github.base_ref) || 'HEAD' }}
+        run: |
+          python3 scripts/ci/ports.py changed --base "$BASE_REF" --github-output
+          {
+            echo '### Ports in this change'
+            echo '```'
+            python3 scripts/ci/ports.py changed --base "$BASE_REF"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Pack the built porter for the port jobs
+        if: steps.detect.outputs.count != '0'
+        run: tar -C cli/build/install -czf porter-install.tgz porter
+      - name: Porter build for the port jobs (1 day)
+        if: steps.detect.outputs.count != '0'
+        uses: actions/upload-artifact@v4
+        with:
+          name: porter-install
+          path: porter-install.tgz
+          retention-days: 1
+      - name: Upload the distribution (1 day; the porter tool itself, no mod content)
         uses: actions/upload-artifact@v4
         with:
           name: porter-dist
           path: cli/build/distributions/*.zip
+          retention-days: 1
       - name: Upload test reports
         if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: test-reports
           path: '**/build/reports/tests/'
+          retention-days: 3
+
+  ports:
+    name: port ${{ matrix.name }}
+    needs: core
+    if: needs.core.outputs.count != '0' && needs.core.result == 'success'
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix: ${{ fromJSON(needs.core.outputs.matrix) }}
+    uses: ./.github/workflows/port.yml
+    with:
+      port: ${{ matrix.port }}
+      name: ${{ matrix.name }}
+      config-name: ${{ matrix.configName }}
+      open: ${{ matrix.open }}
+
+  build:
+    # THE required check. Green only when the throttle let the run through, core passed and every port job passed.
+    name: build
+    needs: [throttle, core, ports]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Summarise
+        env:
+          THROTTLED: ${{ needs.throttle.outputs.throttled }}
+          MESSAGE: ${{ needs.throttle.outputs.message }}
+          THROTTLE_RESULT: ${{ needs.throttle.result }}
+          CORE: ${{ needs.core.result }}
+          PORTS: ${{ needs.ports.result }}
+        run: |
+          if [ "$THROTTLED" = "true" ]; then
+            echo "::error title=CI throttled::$MESSAGE"
+            echo "### CI throttled" >> "$GITHUB_STEP_SUMMARY"
+            echo "$MESSAGE" >> "$GITHUB_STEP_SUMMARY"
+            echo "Nothing was built. Push again (or ask a maintainer to re-run) after the time above: a new run replaces this red check." >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+          echo "throttle=$THROTTLE_RESULT core=$CORE ports=$PORTS"
+          [ "$THROTTLE_RESULT" = "success" ] || { echo "::error::throttle job did not run ($THROTTLE_RESULT)"; exit 1; }
+          [ "$CORE" = "success" ] || { echo "::error::core checks: $CORE"; exit 1; }
+          case "$PORTS" in success|skipped) ;; *) echo "::error::port checks: $PORTS"; exit 1 ;; esac

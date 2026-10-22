@@ -1,0 +1,84 @@
+tile.ic2cextras.reactorFluidPort.name=Reactor Fluid Port
+tile.ic2cextras.steamTurbine.name=Steam Turbine
+ic2cextras.port.noReactor=This port is not attached to a steam reactor or steam reactor chamber.
+ic2cextras.turbine.status=Steam Turbine: speed %s%%, %s EU/t, steam %s/%s mB, buffer %s/%s EU
+ic2cextras.gui.reactor.heat=Heat
+ic2cextras.gui.reactor.heatAmount=Heat: %s / %s
+ic2cextras.gui.reactor.steamOutput=Steam: %s mB/t
+ic2cextras.gui.reactor.title=Steam Reactor
+ic2cextras.gui.reactor.output=Output: %s mB
+ic2cextras.gui.reactor.water=Water
+ic2cextras.gui.reactor.steam=Steam
+# --- porter:barrels ---
+# --- end porter:barrels ---
+# --- porter:steam ---
+# --- end porter:steam ---
+# --- guide book (carried over from the hand port the hand port, texts adjusted to the porter build). In texts: \n = line break, \p = new page, "## " = sub-heading; key.2, key.3 ... continue a text ---
+item.ic2cextras.guideBook.name=IC2 Guide
+ic2cextras.guide.tooltip=Right click to read
+ic2cextras.guide.tooltip.hologram=Shift + right click a multiblock controller: show/hide the structure projection
+ic2cextras.guide.title=IC2 Guide
+ic2cextras.guide.intro=A field manual for the IC2 Classic Extras machines: steam power, multiblocks and brewing.\n\nClick an entry on the right to open it. Flip pages with the page corners, the arrow keys or the mouse wheel. Right click or Backspace goes back; the arrow at the bottom returns here.\n\nNew here? Start with "Using this Guide".
+ic2cextras.guide.contents=Contents
+ic2cextras.guide.backHint=Right click / Backspace: back
+ic2cextras.guide.cat.general=General
+ic2cextras.guide.cat.steam=Steam Power
+ic2cextras.guide.cat.brewing=Brewing
+ic2cextras.guide.recipe.shaped=Crafting
+ic2cextras.guide.recipe.shapeless=Crafting (shapeless)
+ic2cextras.guide.recipe.smelting=Furnace
+ic2cextras.guide.structure=Structure
+ic2cextras.guide.layer.all=All layers
+ic2cextras.guide.layer.one=Layer %s/%s
+ic2cextras.guide.layer.down=Layer down
+ic2cextras.guide.layer.up=Layer up
+ic2cextras.guide.reset=Reset view
+ic2cextras.guide.showValves=Show valves on the spots where they are allowed
+ic2cextras.guide.viewHint=Drag: rotate\nWheel: zoom
+ic2cextras.guide.dragHint=Drag to rotate, wheel to zoom
+ic2cextras.guide.parts=Parts
+ic2cextras.guide.partsLayer=Parts, layer %s
+ic2cextras.guide.air=Air
+ic2cextras.guide.controller=controller
+ic2cextras.guide.keepEmpty=keep empty
+ic2cextras.guide.altCount=Valve spots: %s
+ic2cextras.guide.mapHint=Pick a layer with the arrows to see its map, block by block. The front (controller side) is at the bottom of the map.
+ic2cextras.guide.front=front
+ic2cextras.guide.hologram.on=Projection on: translucent blocks are missing, red frames are wrong blocks. Shift + right click the controller again to hide it.
+ic2cextras.guide.hologram.off=Projection off.
+ic2cextras.guide.using_guide=Using this Guide
+ic2cextras.guide.using_guide.text=This book is a small version of the IC2 Classic wiki for the machines added by IC2 Classic Extras.\n\n## Navigation\nPage corners, arrow keys or the mouse wheel flip pages. Right click or Backspace goes back. Items in recipes can be clicked when they have their own page.\n\n## Multiblocks\nDrag the 3D model to rotate it and use the wheel to zoom. The arrow buttons show one layer at a time, bottom to top; the right page then shows the parts of that layer and a map of it.\nThe controller is outlined in yellow.\p## Projection\nPlace the controller first, facing the side you want as the front. Then shift + right click it with this book: the missing blocks appear as translucent ghosts around it, wrong blocks get a red frame.\nShift + right click the controller again to switch the projection off. It only exists on your screen.
+ic2cextras.guide.steam_overview=Steam Power
+ic2cextras.guide.steam_overview.text=Steam can be produced in the Fuel Boiler or the Steam Reactor, and is used for mid to high tier power in the Steam Turbine or the Steam Tunnel.\n\n## The chain\nWater -> Steam Reactor (via Reactor Fluid Port) or Fuel Boiler -> steam -> Steam Turbine (64 EU/t) or Steam Tunnel (up to 2048 EU/t) -> water comes back from the tunnel.\n\n## Moving fluids\nThe Reactor Fluid Port and the Fuel Boiler push steam into any adjacent fluid block: a turbine, a tunnel valve, a tank or a pipe. Pipes of other mods work too.\p## Numbers\nSteam reactor: 1 heat of a steam vent = 8 mB steam (config steamReactorMultiplier 2.0).\nFuel Boiler: 1024 mB/t when fully heated.\nSteam Turbine: 128 mB/t -> 64 EU/t.\nSteam Tunnel: every 1024 mB -> 512 EU, up to 4 times a tick.\n1 mB of water makes 160 mB of steam.
+ic2cextras.guide.steam_reactor=Steam Reactor
+ic2cextras.guide.steam_reactor.text=The Steam Reactor is an upgrade to the Nuclear Reactor, for a pretty high cost. A few rules change, which makes it more risky but a lot more interesting.\n\n## The rule changes\nThe heat the uranium puts out is now your production potential, not EU. The heat has to go through Steam Vents, which use the reactor's internal water tank to turn heat into steam.\p## Steam Vents\nSteam Vents convert heat to steam better the hotter they are. If they have no water or the steam can't go anywhere, they stop cooling at once - and the reactor heats up.\n\n## The reward\nThe steam reactor runs its components every tick, 20x the clock of a normal reactor. You have very little time to fix mistakes - but the possible output is much higher.
+ic2cextras.guide.steam_reactor.text.2=\p## Setting it up\n1. Build the Steam Reactor and its Steam Reactor Chambers.\n2. Put a Reactor Fluid Port against the reactor or a chamber.\n3. Water: pipe it into the port, put a tank/pump next to it, or right click the port with water buckets or cells.\n4. Steam: put a Steam Turbine, a Steam Tunnel valve, a tank or a pipe next to the port. The port pushes the steam out.\n5. Fill the reactor with uranium and Steam Vents, then give it a redstone signal - uranium only works with redstone.\p## Checking it\nRight click the reactor or a chamber with an empty hand (or a reactor component), or the port: the GUI shows water, steam and heat gauges and the steam output in mB/t.\n\n## Careful\n- A vent does nothing below 100 heat of its own.\n- The water tank holds only 2000 mB, the steam tank 20000 mB. If the steam is not taken away, the vents stop and the reactor overheats.\n- Components that are not made for the steam reactor (condensators, coolant cells...) are thrown out.\n- Use the Reactor Planner first!
+ic2cextras.guide.reactor_fluid_port=Reactor Fluid Port
+ic2cextras.guide.reactor_fluid_port.text=The missing link of the 1.7.10 steam reactor: the reactor never pushes its steam out by itself and only takes water from fluid pipes.\n\nPlace the port against a Steam Reactor or a Steam Reactor Chamber. Every tick it:\n- pushes up to 20000 mB of steam into every adjacent fluid block (turbine, tunnel valve, tank, pipe);\n- pulls up to 1000 mB of water from every adjacent block that offers water.\nPipes can also insert water into the port and extract steam from it.\p## Hand use\nRight click with a water bucket or water cell pours it into the reactor. Right click with an empty hand opens the reactor GUI with the gauges.\n\nYou can use several ports on one reactor.\nConfig: reactor.portSteamPerTick, reactor.portWaterPerTick.
+ic2cextras.guide.steam_vents=Steam Vents
+ic2cextras.guide.steam_vents.text=The Steam Vent uses water from the reactor to create steam. The hotter it is, the more efficient it gets.\n\nThis addon uses the 1.19.2 numbers (config balance.useNewSteamVentStats):\n## Steam Vent\nself 12, reactor 0 -> up to 96 mB/t\n## Reactor Steam Vent\nself 10, reactor 10 -> up to 80 mB/t\n## Overclocked Steam Vent\nself 40, reactor 72 -> up to 320 mB/t\n## Advanced Steam Vent\nself 24, reactor 0 -> up to 192 mB/t\p## How a vent works\n"reactor" heat is pulled from the reactor hull into the vent each tick. Below 100 heat of its own the vent idles. Above it, it boils water from its small buffer: the more heat it holds (up to its 1000 limit), the faster.\nEvery heat point removed makes 8 mB of steam and uses 1/160 of that as water.\nThe vent's buffer refills from the reactor's water tank. No water or a full steam tank = no cooling.
+ic2cextras.guide.steam_turbine=Steam Turbine
+ic2cextras.guide.steam_turbine.text=The Steam Turbine is the simple way to make EU from steam.\n\nIt takes up to 128 mB of steam per tick and spins up slowly (about 10 seconds to full speed). At full speed it makes 64 EU/t (MV), 2 mB of steam per EU. The water is lost.\n\nIt has its own 4000 EU buffer and outputs to any side. Put it directly next to a Reactor Fluid Port or a Fuel Boiler, or feed it with pipes.\n\nRight click shows its speed, output and steam.
+ic2cextras.guide.fuel_boiler=Fuel Boiler
+ic2cextras.guide.fuel_boiler.text=The Fuel Boiler is one of the endgame steam producers. It is a 2x2x2 multiblock: the Fuel Boiler block (top front left, facing you) and 7 Fuel Boiler Structure blocks.\n\nIt burns Fuel Cans to boil water into steam: 1024 mB of steam per tick once fully heated, very efficiently.\p## Heat\nHeating up is slow: it takes 30 fuel per heat point up to 24000 heat, and then 8 fuel per tick to stay there. It only boils above 3000 heat. Production grows with heat.\n\n## Water\nPipe water in, put water buckets/cells into the top left slot, or right click with them.\n\n## Steam\nThe controller pushes its steam into adjacent tanks, pipes, turbines or tunnel valves.\nUnlike the boilers of other mods it does not explode when it runs dry and you refill it.
+ic2cextras.guide.steam_tunnel=Steam Tunnel
+ic2cextras.guide.steam_tunnel.text=The Steam Tunnel is a multiblock that makes EU from steam and turns the steam back into water.\n\nIt uses up to 4096 mB of steam per tick to make up to 2048 EU/t: every 1024 mB is one stage of 512 EU, up to 4 stages per tick, sent as 512 EU (HV) packets.\p## Structure\nA hollow 3x3x5 tube of Machine Structure Blocks with the Steam Tunnel block in the middle of the front face. The 3 blocks inside must stay empty.\nValves may replace framing on the sides, top and bottom (not on the edges) and in the middle of the back. Steam goes in through valves; valves push the water back out.\n\n## Energy\nCables can be connected to any framing block of the shell.\nThe model in this book shows one valid layout with two valves.
+ic2cextras.guide.valves_framing=Valves and Structure Blocks
+ic2cextras.guide.valves_framing.text=## Machine Structure Block\nThe shell block of the Steam Tunnel. Crafted from a machine block (1.19.2 used the stone cutter).\n\n## Valve\nA simple multipurpose valve that allows outside access to a multiblock's fluids. Pipes, tanks and the Reactor Fluid Port can fill steam into it and take water out.\n\n## Fuel Boiler Structure\nThe casing of the Fuel Boiler; one craft gives 8.
+ic2cextras.guide.barrel=Barrel
+ic2cextras.guide.barrel.text=Brewing is simple, but it takes a lot of time - which is the whole point: it ages while you do other projects.\n\n## Setting up\nCraft a barrel and right click an IC2 Scaffold with it: the barrel sits in the scaffold. The chunk must stay loaded for the brew to age.\n\n## Filling\nRight click the barrel with the ingredients and with water (buckets or cells). The first ingredient decides the brew: wheat/hops = beer, sugar cane = rum, whisky grist = whisky, nether wart = potion.\p## Opening\nRight click a side with a Treetap: the tap goes in and the brew stops ageing. Sneak + right click with an empty Stone Mug, Glass or bottle pours one portion.\n\n## Picking up\nLeft click removes the tap (one portion is spilled). Left click again picks the barrel up with its brew; the scaffold stays.\n\nThere are 4 kinds of brew: beer, rum, whisky and potions.
+ic2cextras.guide.beer=Beer
+ic2cextras.guide.beer.text=Put in wheat, hops (up to 64 each) and water, then wait.\n\n- The hops : wheat ratio decides the alcohol level (from soup to black).\n- The amount of solids per bucket of water decides how solid the drink is (watery ... stodge).\n- The water decides the yield: one mug per 1000 mB.\n\nThe alcohol level decides the effects, the solid ratio their duration and the ageing stage their strength.\p## Ageing\nEach stage takes 3x longer than the one before: Brew -> Youngster (20 min) -> Beer (+1 h) -> Ale (+3 h) -> Dragonblood. After about 10 days it turns into Black Stuff.\n\nExample: 16 wheat, 8 hops, 8 buckets of water, tapped after 80 minutes = 8 mugs of Stodge White Beer.
+ic2cextras.guide.rum=Rum
+ic2cextras.guide.rum.text=Rum is the easiest brew: put in sugar cane (up to 32) and wait. Every cane gives 1000 mB.\n\nIt is quick too: about 6 minutes, no matter how many canes (time = 1200 x n x 0.95^(n-1) ticks). Tap it and pour it into mugs or glasses.
+ic2cextras.guide.whisky=Whisky
+ic2cextras.guide.whisky.text=Whisky is almost as easy as rum: put in Whisky Grist (up to 16) and water and wait... for a long time!\n\nOne whisky year is 1209600 ticks of loaded chunk (about 17 hours); a barrel counts up to 50 years.\nWhen you tap the barrel, the age is rounded down to the closest step: 10, 12, 15, 25 or 50 years. Some whisky evaporates over the years.\n\nWhisky never turns bad. Pour it into glasses. Drinking it makes you Shaky.\p## Whisky Grist\nMade in the Refinery: water and flour give unrefined whisky, which the Refinery then turns into grist.
+ic2cextras.guide.potion_barrel=Potion Brewing
+ic2cextras.guide.potion_barrel.text=Potion brewing works like a brewing stand, but all steps at once and in bulk.\n\nFirst put in nether wart, then the ingredient of the effect (for example sugar = swiftness, magma cream = fire resistance). Up to 20 redstone (longer, up to 30 minutes) or glowstone (stronger, up to level 3 - each level halves the duration) can be added. Water starts the brewing.\p## Yield\nEvery 250 mB fill one glass bottle. The best quality takes about 4 hours.\n\n## Overbrewing\nAfter 20 hours of brewing the potion turns bad. Don't leave it unattended for too long.
+ic2cextras.guide.refinery=Refinery
+ic2cextras.guide.refinery.text=The Refinery mixes items and fluids into better products. MV machine: 20 EU/t, 250 ticks per operation, two 16000 mB input tanks and an output tank; accepts upgrades.\n\nThe V buttons void a tank, F moves the output back into the second input tank.\p## Recipes\n- 1000 mB water + 4 flour -> 250 mB unrefined whisky (fast)\n- 1000 mB unrefined whisky -> 1 Whisky Grist\n- 100 mB water + coal dust -> hydrated coal dust\n- 1000 mB water + a mug/glass of strong beer -> alcohol\n- 4000 mB water + aged whisky -> lots of alcohol
+ic2cextras.guide.drinks=Drinks
+ic2cextras.guide.drinks.text=18 drinks fit into a Stone Mug or a Glass: teas, coffee, milk, cocoa, rum, beer and whisky.\n\n- Milk bucket + container: milk; with cocoa beans: cocoa.\n- Cook cocoa in a furnace to get hot cocoa.\n- Rum, beer and whisky come from the Barrel.\n\nIn this build the cold teas and the cold dark coffee have no crafting recipe (their 1.19.2 recipes take water as a fluid), so the teas and coffees made from them cannot be crafted either.\n\nAn empty mug or glass comes back after drinking.
+ic2cextras.guide.shaky=Shaky Effect
+ic2cextras.guide.shaky.text=Drinking whisky makes you drunk - and walking straight becomes impossible.\n\nThe Shaky effect does not touch your movement. Instead your body shakes so much that projectiles often miss you: "drunken master" style. Melee hits are not affected; Shaky II dodges more often.\n\nOld whisky gives longer and stronger Shaky.
+# --- end guide book ---

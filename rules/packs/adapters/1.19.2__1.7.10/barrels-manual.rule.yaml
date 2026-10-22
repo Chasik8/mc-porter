@@ -1,0 +1,216 @@
+schemaVersion: 1
+id: r-1.19.2-1.7.10-field-items-redstone-torch
+description: "field net.minecraft.world.item.Items#REDSTONE_TORCH -> the item of Blocks.redstone_torch (1.7.10 has no separate torch item field)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#REDSTONE_TORCH"
+replace: "Item.getItemFromBlock(Blocks.redstone_torch)"
+imports: ["net.minecraft.item.Item", "net.minecraft.init.Blocks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure, manual classes: one rule per distinct javac symbol; source = Mojang 1.19.2 mappings / Forge 43.5.2, target = MCP 1.7.10 / adapter pack (rewrite/shim/src/adapters)" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object i = Items.REDSTONE_TORCH;"
+    after: "Object i = Item.getItemFromBlock(Blocks.redstone_torch);"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-field-items-repeater
+description: "field net.minecraft.world.item.Items#REPEATER -> Items.repeater"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#REPEATER"
+replace: "Items.repeater"
+imports: ["net.minecraft.init.Items"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure, manual classes: one rule per distinct javac symbol; source = Mojang 1.19.2 mappings / Forge 43.5.2, target = MCP 1.7.10 / adapter pack (rewrite/shim/src/adapters)" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object i = Items.REPEATER;"
+    after: "Object i = Items.repeater;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-field-items-comparator
+description: "field net.minecraft.world.item.Items#COMPARATOR -> Items.comparator"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#COMPARATOR"
+replace: "Items.comparator"
+imports: ["net.minecraft.init.Items"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure, manual classes: one rule per distinct javac symbol; source = Mojang 1.19.2 mappings / Forge 43.5.2, target = MCP 1.7.10 / adapter pack (rewrite/shim/src/adapters)" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object i = Items.COMPARATOR;"
+    after: "Object i = Items.comparator;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-field-blocks-comparator
+description: "field net.minecraft.world.level.block.Blocks#COMPARATOR -> Blocks.unpowered_comparator (the 1.7.10 comparator is two blocks; the unpowered one is the placed/named one)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.level.block.Blocks#COMPARATOR"
+replace: "Blocks.unpowered_comparator"
+imports: ["net.minecraft.init.Blocks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure, manual classes: one rule per distinct javac symbol; source = Mojang 1.19.2 mappings / Forge 43.5.2, target = MCP 1.7.10 / adapter pack (rewrite/shim/src/adapters)" }
+tests:
+  - context: "import net.minecraft.world.level.block.Blocks"
+    before: "Object b = Blocks.COMPARATOR;"
+    after: "Object b = Blocks.unpowered_comparator;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-call-block-getname
+description: "call net.minecraft.world.level.block.Block#getName() -> new ChatComponentTranslation($b.getUnlocalizedName() + \".name\")"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.level.block.Block#getName()"
+  bind: { recv: "$b" }
+replace: "new ChatComponentTranslation($b.getUnlocalizedName() + \".name\")"
+imports: ["net.minecraft.util.ChatComponentTranslation"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure, manual classes: one rule per distinct javac symbol; source = Mojang 1.19.2 mappings / Forge 43.5.2, target = MCP 1.7.10 / adapter pack (rewrite/shim/src/adapters)" }
+tests:
+  - context: "Block b; import net.minecraft.world.level.block.Block"
+    before: "Object n = b.getName();"
+    after: "Object n = new ChatComponentTranslation(b.getUnlocalizedName() + \".name\");"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-field-blocktags-mineable-with-pickaxe
+description: "field net.minecraft.tags.BlockTags#MINEABLE_WITH_PICKAXE -> adapter BlockTags.MINEABLE_WITH_PICKAXE (blocks whose Forge harvest tool is pickaxe)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "net.minecraft.tags.BlockTags#MINEABLE_WITH_PICKAXE"
+replace: "BlockTags.MINEABLE_WITH_PICKAXE"
+imports: ["dev.porter.shim.mc.BlockTags"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure, manual classes: one rule per distinct javac symbol; source = Mojang 1.19.2 mappings / Forge 43.5.2, target = MCP 1.7.10 / adapter pack (rewrite/shim/src/adapters)" }
+tests:
+  - context: "import net.minecraft.tags.BlockTags"
+    before: "Object t = BlockTags.MINEABLE_WITH_PICKAXE;"
+    after: "Object t = BlockTags.MINEABLE_WITH_PICKAXE;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-field-blocktags-mineable-with-axe
+description: "field net.minecraft.tags.BlockTags#MINEABLE_WITH_AXE -> adapter BlockTags.MINEABLE_WITH_AXE (blocks whose Forge harvest tool is axe)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "net.minecraft.tags.BlockTags#MINEABLE_WITH_AXE"
+replace: "BlockTags.MINEABLE_WITH_AXE"
+imports: ["dev.porter.shim.mc.BlockTags"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure, manual classes: one rule per distinct javac symbol; source = Mojang 1.19.2 mappings / Forge 43.5.2, target = MCP 1.7.10 / adapter pack (rewrite/shim/src/adapters)" }
+tests:
+  - context: "import net.minecraft.tags.BlockTags"
+    before: "Object t = BlockTags.MINEABLE_WITH_AXE;"
+    after: "Object t = BlockTags.MINEABLE_WITH_AXE;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-field-blocktags-mineable-with-shovel
+description: "field net.minecraft.tags.BlockTags#MINEABLE_WITH_SHOVEL -> adapter BlockTags.MINEABLE_WITH_SHOVEL (blocks whose Forge harvest tool is shovel)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "net.minecraft.tags.BlockTags#MINEABLE_WITH_SHOVEL"
+replace: "BlockTags.MINEABLE_WITH_SHOVEL"
+imports: ["dev.porter.shim.mc.BlockTags"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure, manual classes: one rule per distinct javac symbol; source = Mojang 1.19.2 mappings / Forge 43.5.2, target = MCP 1.7.10 / adapter pack (rewrite/shim/src/adapters)" }
+tests:
+  - context: "import net.minecraft.tags.BlockTags"
+    before: "Object t = BlockTags.MINEABLE_WITH_SHOVEL;"
+    after: "Object t = BlockTags.MINEABLE_WITH_SHOVEL;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-field-blocktags-mineable-with-hoe
+description: "field net.minecraft.tags.BlockTags#MINEABLE_WITH_HOE -> adapter BlockTags.MINEABLE_WITH_HOE (blocks whose Forge harvest tool is hoe)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "net.minecraft.tags.BlockTags#MINEABLE_WITH_HOE"
+replace: "BlockTags.MINEABLE_WITH_HOE"
+imports: ["dev.porter.shim.mc.BlockTags"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure, manual classes: one rule per distinct javac symbol; source = Mojang 1.19.2 mappings / Forge 43.5.2, target = MCP 1.7.10 / adapter pack (rewrite/shim/src/adapters)" }
+tests:
+  - context: "import net.minecraft.tags.BlockTags"
+    before: "Object t = BlockTags.MINEABLE_WITH_HOE;"
+    after: "Object t = BlockTags.MINEABLE_WITH_HOE;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-field-blocktags-needs-stone-tool
+description: "field net.minecraft.tags.BlockTags#NEEDS_STONE_TOOL -> adapter BlockTags.NEEDS_STONE_TOOL (blocks whose Forge harvest level is the stone tier)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "net.minecraft.tags.BlockTags#NEEDS_STONE_TOOL"
+replace: "BlockTags.NEEDS_STONE_TOOL"
+imports: ["dev.porter.shim.mc.BlockTags"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure, manual classes: one rule per distinct javac symbol; source = Mojang 1.19.2 mappings / Forge 43.5.2, target = MCP 1.7.10 / adapter pack (rewrite/shim/src/adapters)" }
+tests:
+  - context: "import net.minecraft.tags.BlockTags"
+    before: "Object t = BlockTags.NEEDS_STONE_TOOL;"
+    after: "Object t = BlockTags.NEEDS_STONE_TOOL;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-field-blocktags-needs-iron-tool
+description: "field net.minecraft.tags.BlockTags#NEEDS_IRON_TOOL -> adapter BlockTags.NEEDS_IRON_TOOL (blocks whose Forge harvest level is the iron tier)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "net.minecraft.tags.BlockTags#NEEDS_IRON_TOOL"
+replace: "BlockTags.NEEDS_IRON_TOOL"
+imports: ["dev.porter.shim.mc.BlockTags"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure, manual classes: one rule per distinct javac symbol; source = Mojang 1.19.2 mappings / Forge 43.5.2, target = MCP 1.7.10 / adapter pack (rewrite/shim/src/adapters)" }
+tests:
+  - context: "import net.minecraft.tags.BlockTags"
+    before: "Object t = BlockTags.NEEDS_IRON_TOOL;"
+    after: "Object t = BlockTags.NEEDS_IRON_TOOL;"
+---
+schemaVersion: 1
+id: r-1.19.2-1.7.10-field-blocktags-needs-diamond-tool
+description: "field net.minecraft.tags.BlockTags#NEEDS_DIAMOND_TOOL -> adapter BlockTags.NEEDS_DIAMOND_TOOL (blocks whose Forge harvest level is the diamond tier)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "net.minecraft.tags.BlockTags#NEEDS_DIAMOND_TOOL"
+replace: "BlockTags.NEEDS_DIAMOND_TOOL"
+imports: ["dev.porter.shim.mc.BlockTags"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure, manual classes: one rule per distinct javac symbol; source = Mojang 1.19.2 mappings / Forge 43.5.2, target = MCP 1.7.10 / adapter pack (rewrite/shim/src/adapters)" }
+tests:
+  - context: "import net.minecraft.tags.BlockTags"
+    before: "Object t = BlockTags.NEEDS_DIAMOND_TOOL;"
+    after: "Object t = BlockTags.NEEDS_DIAMOND_TOOL;"

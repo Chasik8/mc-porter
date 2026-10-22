@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: barrel-rum
+description: >-
+  scenarios.md S2 Rum: 10 sugar cane -> 10000 mB type 2; needs 1200*n*0.95^(n-1) = 7562 ticks; tap + glass -> rum.
+world: flat-void
+maxTicks: 20000
+tolerance:
+  "*": { abs: 0 }
+  "block:[0,64,0]": { ignore: true }
+steps:
+  - place_block: { at: [0, 64, 0], block: "ic2:scaffold_wooden" }
+  - interact: { at: [0, 64, 0], side: up, holding: "ic2:barrel" }
+  - tick: 1
+  - interact: { at: [0, 64, 0], side: up, holding: "alias:sugar_cane_x10" }
+  - sample: { what: ["field:[0,64,0]/brewType", "field:[0,64,0]/fluidAmount", "field:[0,64,0]/wheatAmount", "field:[0,64,0]/hopsAmount", "field:[0,64,0]/beerQuality", "field:[0,64,0]/alcoholLevel", "field:[0,64,0]/solidRatio", "field:[0,64,0]/opened", "player:inv", "block:[0,64,0]"] }
+  - assert: { expr: "field:[0,64,0]/brewType == 2 && field:[0,64,0]/fluidAmount == 10000", message: "10 canes -> 10000 mB, type 2" }
+  - tick: 7562
+  - sample: { what: ["field:[0,64,0]/brewType", "field:[0,64,0]/fluidAmount", "field:[0,64,0]/wheatAmount", "field:[0,64,0]/hopsAmount", "field:[0,64,0]/beerQuality", "field:[0,64,0]/alcoholLevel", "field:[0,64,0]/solidRatio", "field:[0,64,0]/opened", "player:inv", "block:[0,64,0]"] }
+  - interact: { at: [0, 64, 0], side: south, holding: "ic2:tree_tap" }
+  - interact: { at: [0, 64, 0], side: up, holding: "ic2:glass" }
+  - sample: { what: ["field:[0,64,0]/brewType", "field:[0,64,0]/fluidAmount", "field:[0,64,0]/wheatAmount", "field:[0,64,0]/hopsAmount", "field:[0,64,0]/beerQuality", "field:[0,64,0]/alcoholLevel", "field:[0,64,0]/solidRatio", "field:[0,64,0]/opened", "player:inv", "block:[0,64,0]"] }
+  - assert: { expr: "contains(player:inv, 'rum') || contains(player:inv, 'glassDrink')", message: "a glass of rum in the inventory" }

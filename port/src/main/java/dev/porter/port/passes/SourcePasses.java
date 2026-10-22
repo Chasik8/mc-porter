@@ -305,6 +305,7 @@ public final class SourcePasses {
     private static final Pattern BLOCK_COMMENT = Text.re("/\\*.*?\\*/", Pattern.DOTALL);
     private static final Pattern LINE_COMMENT = Text.re("//[^\\n]*");
     private static final Pattern WORD = Text.re("\\b\\w+\\b");
+    private static final Pattern STRING_LITERAL = Text.re("\"(?:\\\\.|[^\"\\\\\\n])*\"");
 
     /** Drops single-type imports whose simple name is not used; returns the number dropped. */
     public static int unusedImports(Path root) {
@@ -312,6 +313,7 @@ public final class SourcePasses {
         eachFile(root, (p, s) -> {
             String code = BLOCK_COMMENT.matcher(s).replaceAll(" ");
             code = LINE_COMMENT.matcher(code).replaceAll(" ");
+            code = STRING_LITERAL.matcher(code).replaceAll("\"\""); // a word in a string is no use of an import
             code = IMP.matcher(code).replaceAll("");
             Set<String> words = new HashSet<>();
             Matcher w = WORD.matcher(code);
@@ -368,6 +370,41 @@ public final class SourcePasses {
                     e.path("reason").asString("")));
         }
         return out;
+    }
+
+    // ------------------------------------------------------------------------------------------ asset namespace
+
+    /**
+     * One namespace move of asset locations: {@code new ResourceLocation("<from>", "<path>...")} with a path starting
+     * with one of {@code paths} gets namespace {@code to}. For ports that ship the original mod's textures under their
+     * own namespace (generate {@code --asset-namespace}) while registry and recipe ids keep the original one.
+     */
+    public record AssetNamespace(String from, String to, List<String> paths) {
+    }
+
+    /** Applies the namespace moves to every Java file below {@code root}; returns the number of locations moved. */
+    public static int assetNamespaces(Path root, List<AssetNamespace> moves) {
+        int n = 0;
+        for (Path p : Text.javaFiles(root)) {
+            String s = Text.read(p);
+            String t = s;
+            for (AssetNamespace m : moves) {
+                String alts = m.paths().isEmpty() ? "" : "(?:" + String.join("|", m.paths().stream().map(Pattern::quote).toList()) + ")";
+                Pattern pat = Text.re("new ResourceLocation\\(\\s*\"" + Pattern.quote(m.from()) + "\"\\s*,\\s*\"(" + alts + ")");
+                Matcher mm = pat.matcher(t);
+                StringBuilder sb = new StringBuilder();
+                while (mm.find()) {
+                    mm.appendReplacement(sb, Matcher.quoteReplacement("new ResourceLocation(\"" + m.to() + "\", \"" + mm.group(1)));
+                    n++;
+                }
+                mm.appendTail(sb);
+                t = sb.toString();
+            }
+            if (!t.equals(s)) {
+                Text.write(p, t);
+            }
+        }
+        return n;
     }
 
     static Map<String, Object> noop() {

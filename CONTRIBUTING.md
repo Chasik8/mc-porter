@@ -45,13 +45,14 @@ What is public, what stays on your machine:
 - A ported **jar may be published only** for open-licence mods, or with the original author's written permission (`ports/catalog.yaml`: `distributable: true` requires `permission:` for `ARR`).
 - A profile must not contain the mod's code. Seeds and hub prefixes are class names (facts about the mod's structure); counted edits whose patterns quote the mod's code stay in the local overlay directories, not in the profile.
 - Mapping files (Mojang, MCP, SRG, Parchment, tiny) are never committed; porter builds what it needs in your cache.
+- The one place that may name a closed-licence mod is its own public profile: the one profile directory named in `scripts/publish-check.sh` (publish-check lifts the private-mod-name rule there and nowhere else). Such a profile must contain no code or assets derived from the mod (`porter inventory` category C = 0). CI checks the static part (`ports.py catalog-check`: no `patches/`, `textures/`, images or archives for ports whose catalog licence is not open) and cannot run the content part, because it cannot download the original. The maintainer runs `porter inventory` locally and the PR template asks for its output. CI skips building such a port (no direct url) and says so in the run summary.
 - CI runs `scripts/publish-check.sh` on every PR: it fails on `private/` paths, mapping files, decompiled code (decompiler banners, dense SRG names, CFR-style `var1` names, packages on `scripts/publish-denylist.txt` or your git-ignored `scripts/publish-denylist.local.txt`, and a built-in list of private-mod names, extendable with `$PUBLISH_FORBIDDEN_NAMES`), jars/classes, files over 1 MB, local absolute paths and e-mail addresses. It is a heuristic (reformatted code, renamed packages or mods missing from the denylist can pass); review still decides.
 
 ## Contribution types
 
 ### 0. Mod profiles
 
-A profile makes a mod portable for everyone who owns it: `ports/<mod>/<mod>.port.yaml` (schema `contracts/port-config.schema.json`; `mode: full` for a mod that does not exist on the target version, `mode: delta` for an addon over a base that does), scenario files, and any generic rules found on the way (those go to `rules/`). Add or update the entry in `ports/catalog.yaml` (status, scenario pass rate, licence, `distributable`). Machine-specific paths go into `vars:` or environment variables, never into the profile.
+Short version in [docs/guides/share-your-port.md](docs/guides/share-your-port.md). A profile makes a mod portable for everyone who owns it. The layout of `ports/<mod>/`: `README.md` (what the mod is, author and licence, download links to the *pages* of every original file, the one command, expected time, what was verified), `<mod>.port.yaml` with `inputs:` (page, file name and sha256 of every original file; `url` only for open-licence files), `run.sh` and `run.bat` (copy them from `ports/_template`), `scenarios/`, and `overlay/`/`project/` when needed. The list in `ports/README.md` is generated: run `porter catalog --write` after editing `ports/catalog.yaml` (`scripts/check.sh` fails when it is stale). Before the PR run `scripts/check.sh` and `scripts/publish-check.sh`. The port itself: `ports/<mod>/<mod>.port.yaml` (schema `contracts/port-config.schema.json`; `mode: full` for a mod that does not exist on the target version, `mode: delta` for an addon over a base that does), scenario files, and any generic rules found on the way (those go to `rules/`). Add or update the entry in `ports/catalog.yaml` (status, scenario pass rate, licence, `distributable`). Machine-specific paths go into `vars:` or environment variables, never into the profile.
 
 ### 1. Rules (most wanted)
 
@@ -166,6 +167,25 @@ tests:
 ### Automated checks (CI)
 
 What runs on every push and PR (`.github/workflows/ci.yml`, locally `scripts/check.sh`): `./gradlew build` (all unit tests, every public rule's before/after test in `:rewrite:test`, `ContractExamplesTest`), `scripts/validate-examples.sh` (every contract example, port configs and catalog included), validation of `ports/catalog.yaml`, and `scripts/publish-check.sh` on the changed files (see [Legal model](#legal-model); its limits are documented in the script header).
+
+### CI for ports (`.github/workflows/ci.yml`, `port.yml`, `nightly.yml`)
+
+Where things go: **a new port lives in its own `ports/<mod>/` folder** (config, scenarios, README, `run.sh`/`run.bat`) with its own rule files if it needs any (a rule pack of its own, never edits to the shared ones), plus one entry in `ports/catalog.yaml`. Changes to reference files (`rules/composite`, `rules/packs`, `rewrite/`, `ports/torchmaster`, `ports/_template`, `.github/`, `scripts/`, contracts; see `.github/CODEOWNERS`) need the maintainer's review, and CI re-runs the reference port for them.
+
+What a PR runs (the required status check is the job named `build`, which is green only when all of this is):
+
+1. **throttle**: at most **one CI run per hour per contributor** (your GitHub login, counted over this workflow's pull-request runs). A second run inside the hour stops at once with `max 1 CI run per hour per contributor; push again after HH:MM UTC` and `build` is red with that message, nothing else runs. **To retry: push again (or click "Re-run all jobs") after the time shown.** A run that was throttled, or was cancelled by your own newer push to the same PR, does not count. The maintainer and scheduled runs are exempt. Pushing to a PR cancels its previous run.
+2. **core**: `scripts/check.sh` (build, unit tests, every rule's before/after test, contract examples, catalog and its consistency) and `scripts/publish-check.sh`.
+3. **ports**: for every `ports/<mod>/` the PR adds or changes, one job runs `porter run` (inputs are downloaded from the `url:` declared in the profile and their sha256 is checked), builds the port, then runs its scenarios on dedicated 1.7.10 / 1.19.2 servers in batches. **Every port must also pass the automatic smoke scenario** (generated by CI: server starts with the mod, all its blocks and items register, no exceptions in the log). A port with no scenario files is allowed only with `smokeOnly: true` in its catalog entry (checked both ways). If the PR touches `rules/`, `rewrite/`, `port/`, `testkit/` or `scripts/ci/`, the TorchMaster port runs too (fast regression).
+4. **nightly** (and on demand: Actions -> nightly -> Run workflow): every port in the catalog, end to end; failures open or update one `nightly-failure` issue.
+
+Inputs must be **direct file URLs** (CI cannot use download pages). Keep the page in `page:` and put the direct file link in `url:`, only for open-licence files: a Modrinth CDN link (`https://cdn.modrinth.com/data/...`), a GitHub release asset or source archive (`https://github.com/<owner>/<repo>/releases/download/<tag>/<file>`, `.../archive/<commit>.zip`), or a CurseForge files CDN link (`https://mediafilez.forgecdn.net/files/<id>/<id>/<file>`, i.e. the link behind the "download" button / the API download URL of the file id). A `curseforge.com/.../files/<id>` or `modrinth.com/mod/...` page is HTML and fails with an explanation. Required inputs without a `url:` (non-open mods) cannot be checked by CI; the maintainer verifies such a port locally and merges it.
+
+Built jars are attached to the run only for ports that are open-licence and `distributable` in the catalog, for 2 days. Jars of any other port are never uploaded.
+
+Workflows use `pull_request` (never `pull_request_target`), so code from a fork never gets a write token or secrets; the top-level permission is `contents: read`. First-time accounts still need a maintainer's approval before the first run.
+
+Run the same pieces yourself: `ports/<mod>/run.sh`, `scripts/ci/ports.py inputs ports/<mod> --dest <dir>`, `scripts/ci/run-scenarios.sh` (needs the testkit servers, `scripts/ci/testkit-setup.sh` shows the Linux setup).
 
 Proposed additions, marked *proposed*:
 

@@ -127,6 +127,19 @@ public final class Bufs {
     public static java.util.UUID readUUID(PacketBuffer b) { return new java.util.UUID(b.readLong(), b.readLong()); }
 
     /** ResourceLocation.tryParse (null when the text is no valid location). */
+    /** FriendlyByteBuf.writeRegistryIdUnsafe: the entry's registry name (1.7.10 numeric ids differ per world). */
+    public static <V> PacketBuffer writeRegistryId(PacketBuffer b, IForgeRegistry<V> registry, Object value) {
+        @SuppressWarnings("unchecked")
+        ResourceLocation key = value == null ? null : registry.getKey((V) value);
+        return writeUtf(b, key == null ? "" : key.toString());
+    }
+
+    /** FriendlyByteBuf.readRegistryIdUnsafe */
+    public static <V> V readRegistryId(PacketBuffer b, IForgeRegistry<V> registry) {
+        String s = readUtf(b);
+        return s.isEmpty() ? null : registry.getValue(new ResourceLocation(s));
+    }
+
     public static ResourceLocation tryParse(String s) {
         if (s == null || s.isEmpty() || s.indexOf(':') != s.lastIndexOf(':')) return null;
         return new ResourceLocation(s);

@@ -1,0 +1,35 @@
+# Registry names of the addon (ic2cextras) and of IC2 Classic 1.2.6 for the scenario ids (steam + barrels).
+version: forge-1.7.10
+blocks:
+  "ic2:turbine_multi_block": "ic2cextras:turbine_multi_block"
+  "ic2:steam_tunnel": "ic2cextras:steam_tunnel"
+  "ic2:fuel_boiler_structure": "ic2cextras:fuel_boiler_structure"
+  "ic2:fuel_boiler": "ic2cextras:fuel_boiler"
+  "ic2:mfsu": "IC2:blockElectric@2"
+  "ic2:scaffold_wooden": "IC2:scaffold@0"
+  "ic2:barrel": "ic2cextras:barrel"
+  "ic2:refinery": "ic2cextras:refinery"
+  "ic2:steam_turbine": "ic2cextras:steamTurbine"
+items:
+  "alias:redstone_x5": { id: "minecraft:redstone", count: 5 }
+  "alias:re_battery_full": { id: "IC2:item.itemBatRECharged", nbt: { charge: 10000 } }
+  "ic2:flour": "IC2:item.itemFlour"
+  "alias:fuel_can_10000": { id: "IC2:item.itemFuelCan", nbt: { value: 10000, maxValue: 10000 } }
+  "alias:cell_water_x8": { id: "IC2:item.itemCellWater", count: 8 }
+  "alias:wheat_x16": { id: "minecraft:wheat", count: 16 }
+  "alias:hops_x8": { id: "IC2:item.itemHops", count: 8 }
+  "alias:mug_x4": { id: "IC2:item.itemMugEmpty", count: 4 }
+  "alias:sugar_cane_x10": { id: "minecraft:reeds", count: 10 }
+  "ic2:barrel": "ic2cextras:barrel"
+  "ic2:tree_tap": "IC2:item.itemTreetap"
+  "ic2:cell_empty": "IC2:item.itemCellEmpty"
+  "ic2:cell_water": "IC2:item.itemCellWater"
+  "ic2:hops": "IC2:item.itemHops"
+  "ic2:mug": "IC2:item.itemMugEmpty"
+  "ic2:glass": "ic2cextras:glass"
+  "ic2:fuel_can": "IC2:item.itemFuelCan"
+  "minecraft:sugar_cane": "minecraft:reeds"
+  "ic2:mug_beer": "ic2cextras:mug_beer"
+  "ic2:glass_rum": "ic2cextras:glass_rum"
+fluids:
+  "ic2:steam": "steam"

@@ -1,0 +1,279 @@
+{
+  "_doc": "IC2 Guide page registry. See docs/guide-book.md. Porter build: item names = the generated registry names (ic2cextras:fuel_boiler ...), structures = Ic2cextrasMultiblocks. Titles/texts are .lang keys; items are modid:name[@meta] or ic2:<Ic2Items field>[@meta].",
+  "categories": [
+    {
+      "id": "general",
+      "title": "ic2cextras.guide.cat.general",
+      "entries": [
+        {
+          "id": "using_guide",
+          "icon": "ic2cextras:guideBook",
+          "pages": [
+            {
+              "type": "text",
+              "text": "ic2cextras.guide.using_guide.text"
+            },
+            {
+              "type": "recipe",
+              "items": [
+                "ic2cextras:guideBook"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "steam",
+      "title": "ic2cextras.guide.cat.steam",
+      "entries": [
+        {
+          "id": "steam_overview",
+          "icon": "ic2:waterCell",
+          "pages": [
+            {
+              "type": "text",
+              "text": "ic2cextras.guide.steam_overview.text"
+            }
+          ]
+        },
+        {
+          "id": "steam_reactor",
+          "icon": "ic2:steamReactor",
+          "pages": [
+            {
+              "type": "text",
+              "text": "ic2cextras.guide.steam_reactor.text"
+            },
+            {
+              "type": "recipe",
+              "items": [
+                "ic2:steamReactor",
+                "ic2:steamReactorChamber"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reactor_fluid_port",
+          "icon": "ic2cextras:reactorFluidPort",
+          "pages": [
+            {
+              "type": "text",
+              "text": "ic2cextras.guide.reactor_fluid_port.text"
+            },
+            {
+              "type": "recipe",
+              "items": [
+                "ic2cextras:reactorFluidPort"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "steam_vents",
+          "icon": "ic2:reactorSteamVent",
+          "pages": [
+            {
+              "type": "text",
+              "text": "ic2cextras.guide.steam_vents.text"
+            },
+            {
+              "type": "recipe",
+              "items": [
+                "ic2:reactorSteamVent",
+                "ic2:reactorSteamVentCore",
+                "ic2:reactorSteamVentGold",
+                "ic2:reactorSteamVentDiamond"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "steam_turbine",
+          "icon": "ic2cextras:steamTurbine",
+          "pages": [
+            {
+              "type": "text",
+              "text": "ic2cextras.guide.steam_turbine.text"
+            },
+            {
+              "type": "recipe",
+              "items": [
+                "ic2cextras:steamTurbine"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fuel_boiler",
+          "icon": "ic2cextras:fuel_boiler",
+          "pages": [
+            {
+              "type": "text",
+              "text": "ic2cextras.guide.fuel_boiler.text"
+            },
+            {
+              "type": "multiblock",
+              "structure": "ic2cextras:fuel_boiler"
+            },
+            {
+              "type": "recipe",
+              "items": [
+                "ic2cextras:fuel_boiler",
+                "ic2cextras:fuel_boiler_structure"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "steam_tunnel",
+          "icon": "ic2cextras:steam_tunnel",
+          "pages": [
+            {
+              "type": "text",
+              "text": "ic2cextras.guide.steam_tunnel.text"
+            },
+            {
+              "type": "multiblock",
+              "structure": "ic2cextras:steam_tunnel"
+            },
+            {
+              "type": "recipe",
+              "items": [
+                "ic2cextras:steam_tunnel"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "valves_framing",
+          "icon": "ic2cextras:valve",
+          "pages": [
+            {
+              "type": "text",
+              "text": "ic2cextras.guide.valves_framing.text"
+            },
+            {
+              "type": "recipe",
+              "items": [
+                "ic2cextras:valve",
+                "ic2cextras:turbine_multi_block"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "brewing",
+      "title": "ic2cextras.guide.cat.brewing",
+      "entries": [
+        {
+          "id": "barrel",
+          "icon": "ic2cextras:barrel",
+          "pages": [
+            {
+              "type": "text",
+              "text": "ic2cextras.guide.barrel.text"
+            },
+            {
+              "type": "recipe",
+              "items": [
+                "ic2cextras:barrel"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "beer",
+          "icon": "ic2cextras:glass_beer",
+          "pages": [
+            {
+              "type": "text",
+              "text": "ic2cextras.guide.beer.text"
+            }
+          ]
+        },
+        {
+          "id": "rum",
+          "icon": "ic2cextras:glass_rum",
+          "pages": [
+            {
+              "type": "text",
+              "text": "ic2cextras.guide.rum.text"
+            }
+          ]
+        },
+        {
+          "id": "whisky",
+          "icon": "ic2cextras:glass_whisky",
+          "pages": [
+            {
+              "type": "text",
+              "text": "ic2cextras.guide.whisky.text"
+            }
+          ]
+        },
+        {
+          "id": "potion_barrel",
+          "icon": "minecraft:potion@8194",
+          "pages": [
+            {
+              "type": "text",
+              "text": "ic2cextras.guide.potion_barrel.text"
+            }
+          ]
+        },
+        {
+          "id": "refinery",
+          "icon": "ic2cextras:refinery",
+          "pages": [
+            {
+              "type": "text",
+              "text": "ic2cextras.guide.refinery.text"
+            },
+            {
+              "type": "recipe",
+              "items": [
+                "ic2cextras:refinery"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "drinks",
+          "icon": "ic2cextras:glass",
+          "pages": [
+            {
+              "type": "text",
+              "text": "ic2cextras.guide.drinks.text"
+            },
+            {
+              "type": "recipe",
+              "items": [
+                "ic2cextras:glass",
+                "ic2cextras:glass_milk",
+                "ic2cextras:glass_cocoa",
+                "ic2cextras:glass_hot_cocoa",
+                "ic2cextras:mug_milk",
+                "ic2cextras:mug_cocoa",
+                "ic2cextras:mug_hot_cocoa"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "shaky",
+          "icon": "ic2cextras:whisky_grist",
+          "pages": [
+            {
+              "type": "text",
+              "text": "ic2cextras.guide.shaky.text"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

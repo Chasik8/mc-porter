@@ -24,9 +24,35 @@ import java.util.regex.Pattern;
  *   <li>"A cannot be converted to B" with a preceding cast: {@code (Object)} is inserted after it;</li>
  *   <li>"A cannot be converted to T" (simple target, no cast): {@code (T)} is inserted before the expression;</li>
  *   <li>"x might not have been initialized" on {@code a[x.m()] = x = e;}: split into {@code x = e; a[x.m()] = x;}.</li>
+ *   <li>"x might not have been initialized" after CFR's {@code T y = c ? a : (x = b);} (the assignment moved into the
+ *       else branch, {@code y} unused): {@code x = c ? a : b;}.</li>
  * </ol>
  */
 public final class CastFix {
+    private static final java.util.regex.Pattern TERNARY_ASSIGN_HEAD = Pattern.compile("^(\\s*)[\\w.<>\\[\\]]+\\s+\\w+\\s*=\\s*(.+)$");
+
+    /**
+     * Finds, above line {@code from} (0-based), {@code T y = cond ? a : (var = b);} and rewrites it into
+     * {@code var = cond ? a : b;}. Returns the rewritten line index, or -1.
+     */
+    static int misplacedTernaryAssign(List<String> lines, int from, String var) {
+        String tail = ": (" + var + " = ";
+        for (int i = from - 1; i >= Math.max(0, from - 15); i--) {
+            String s = lines.get(i).replaceAll("\r+$", "");
+            int t = s.lastIndexOf(tail);
+            if (t < 0 || !s.endsWith(");")) {
+                continue;
+            }
+            Matcher h = TERNARY_ASSIGN_HEAD.matcher(s.substring(0, t));
+            if (!h.matches() || !h.group(2).contains("?")) {
+                continue;
+            }
+            String b = s.substring(t + tail.length(), s.length() - 2);
+            lines.set(i, h.group(1) + var + " = " + h.group(2).strip() + " : " + b + ";" + (lines.get(i).endsWith("\r") ? "\r" : ""));
+            return i;
+        }
+        return -1;
+    }
     private static final Set<String> PRIMS = Set.of("int", "long", "short", "byte", "char", "float", "double", "boolean");
     private static final Pattern FOREACH = Pattern.compile("(\\s*for \\((?:final )?)([\\w.<>?, \\[\\]]+?) (\\w+) : (.+)\\) \\{(\\s*)");
     private static final Pattern CFR_ASSIGN = Pattern.compile("(\\s*)(.+?)\\[(\\w+)\\.(\\w+)\\(\\)\\] = \\3 = (.+);");
@@ -83,6 +109,13 @@ public final class CastFix {
             boolean isFe = fe.matches();
             Matcher ast = CFR_ASSIGN.matcher(s);
             boolean isAst = ast.matches();
+            String uninit = errs.stream().map(Err::msg).filter(x -> x.startsWith("variable ") && x.contains(" might not have been initialized"))
+                    .map(x -> x.substring("variable ".length(), x.indexOf(' ', "variable ".length()))).findFirst().orElse(null);
+            if (!isAst && uninit != null && misplacedTernaryAssign(lines, ln - 1, uninit) >= 0) {
+                n++;
+                Text.write(p, String.join("\n", lines));
+                continue;
+            }
             if (isAst && errs.stream().anyMatch(e -> e.msg().contains("might not have been initialized"))) {
                 String ind = ast.group(1);
                 s = ind + ast.group(3) + " = " + ast.group(5) + ";" + cr + "\n" + ind + ast.group(2) + "[" + ast.group(3) + "." + ast.group(4) + "()] = " + ast.group(3) + ";";

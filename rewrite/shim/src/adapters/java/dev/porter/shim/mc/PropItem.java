@@ -44,7 +44,55 @@ public class PropItem extends Item {
     /** Forge IForgeItem#damageItem: the amount the stack should lose (the caller applies it); default = amount */
     public <T extends EntityLivingBase> int damageItem(ItemStack stack, int amount, T entity, Consumer<T> onBroken) { return amount; }
 
+    /** 1.19.2 Item#finishUsingItem (eaten / drunk); 1.7.10 onEaten calls it. */
+    public ItemStack finishUsingItem(ItemStack stack, World level, EntityLivingBase entity) { return stack; }
+
+    /** 1.19.2 Item#getName(ItemStack); 1.7.10 getItemStackDisplayName shows it. */
+    public IChatComponent getName(ItemStack stack) {
+        return new net.minecraft.util.ChatComponentTranslation(getUnlocalizedNameInefficiently(stack) + ".name");
+    }
+
+    /** 1.19.2 Item#allowedIn(CreativeModeTab) */
+    public boolean allowedIn(net.minecraft.creativetab.CreativeTabs tab) {
+        return tab == null || tab == net.minecraft.creativetab.CreativeTabs.tabAllSearch || tab == getCreativeTab();
+    }
+
+    /** 1.19.2 Item#fillItemCategory; 1.7.10 getSubItems collects it. */
+    public void fillItemCategory(net.minecraft.creativetab.CreativeTabs tab, NonNullList<ItemStack> items) {
+        if (allowedIn(tab)) items.add(new ItemStack(this));
+    }
+
+    /** Item.fillItemCategory on any 1.7.10 item. */
+    @SuppressWarnings("unchecked")
+    public static void fillItemCategory(Item item, net.minecraft.creativetab.CreativeTabs tab, List<ItemStack> items) {
+        if (item instanceof PropItem || item instanceof PropBlockItem) {
+            NonNullList<ItemStack> l = NonNullList.create();
+            if (item instanceof PropItem) ((PropItem) item).fillItemCategory(tab, l);
+            else ((PropBlockItem) item).fillItemCategory(tab, l);
+            items.addAll(l);
+        } else {
+            item.getSubItems(item, tab, items);
+        }
+    }
+
     // ------------------------------------------------------------------ 1.7.10 bridge
+
+    @Override
+    public ItemStack onEaten(ItemStack stack, World w, EntityPlayer p) { return finishUsingItem(stack, w, p); }
+
+    @Override
+    public String getItemStackDisplayName(ItemStack stack) {
+        IChatComponent c = getName(stack);
+        return c == null ? super.getItemStackDisplayName(stack) : c.getUnformattedText();
+    }
+
+    @Override
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public void getSubItems(Item item, net.minecraft.creativetab.CreativeTabs tab, List list) {
+        NonNullList<ItemStack> l = NonNullList.create();
+        fillItemCategory(tab, l);
+        list.addAll(l);
+    }
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World w, EntityPlayer p) {

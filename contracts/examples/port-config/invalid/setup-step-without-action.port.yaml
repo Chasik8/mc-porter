@@ -1,0 +1,14 @@
+# invalid: a setup step must name exactly one action (porter/command/download/unzip/copy/composite/delete), and a
+# download's sha256 is 64 hex digits
+schemaVersion: 1
+name: broken-setup
+mode: full
+from: forge-1.19.2
+to: forge-1.7.10
+project: ../mod
+setup:
+  steps:
+    - name: nothing-to-do
+      creates: [build/x]
+    - name: bad-hash
+      download: {url: "https://example.org/a.jar", sha256: not-a-hash, to: build/a.jar}

@@ -1,0 +1,64 @@
+# Template of a port profile (copy this folder to ports/<mod>, rename this file to <mod>.port.yaml).
+# Forge 1.19.2 -> Forge 1.7.10, run with `ports/<mod>/run.sh` or `run.bat` (that is `porter run ports/<mod>`).
+# Replace everything marked CHANGE. Variables defined by `porter run`: ${RUN_DIR} (workspace), ${PORTER_CACHE},
+# ${GRADLE_USER_HOME}, ${BUILD_JAVA_HOME}, ${INPUT_<NAME>} / ${INPUT_<NAME>_DIR} (the inputs below).
+schemaVersion: 1
+name: mymod                                  # CHANGE: short id, lower case
+description: Unofficial 1.7.10 port of My Mod.   # CHANGE
+mode: full                                   # full: the mod does not exist on 1.7.10; delta: addon over a base (needs closure.known)
+from: forge-1.19.2
+to: forge-1.7.10
+project: ${RUN_DIR}/project
+inputs:
+  # CHANGE: the original files the player supplies. page = where to download (never the file itself), sha256 of the file.
+  # url (a direct link, so porter fetches it itself) only for open-licence mods.
+  - name: source
+    mod: My Mod
+    version: 1.0.0
+    kind: sources                            # sources: a .zip/.tar.gz of the source tree; jar: a mod jar
+    page: https://github.com/example/mymod/releases/tag/v1.0.0
+    file: mymod-1.0.0-sources.zip
+    sha256: 0000000000000000000000000000000000000000000000000000000000000000
+prepare:
+  # declarative content (blocks, items, lang, recipes) and converted textures, done once before the port
+  - name: extract
+    args: [extract, --src, "${INPUT_SOURCE_DIR}", --version, "1.19.2", --mc-data, "${PORTER_CACHE}/mappings-1.19.2", --out, "${RUN_DIR}/project/build/porter-ir"]
+  - name: assets
+    args: [assets, --src, "${INPUT_SOURCE_DIR}/src/main/resources", --from, "1.19.2", --to, "1.7.10", --out, "${RUN_DIR}/project/build/porter-assets",
+           --ir, "${RUN_DIR}/project/build/porter-ir", --legacy-names, NS_CAMEL]
+jvmArgs: [-Xmx2g]
+classpath:
+  file: build/porter-cp.txt                  # written by the project's porterClasspath task (put it into project/dependencies.gradle)
+  exclude: [jabel]
+generate:
+  units:
+    - name: content
+      args: [--version, "1.7.10", --ir, "${RUN_DIR}/project/build/porter-ir", --assets, "${RUN_DIR}/project/build/porter-assets",
+             --modid, mymod, --mod-name, "My Mod (unofficial 1.7.10 port)", --mod-version, 1.0.0-port.1,
+             --package, com.example.mymod.gen, --legacy-names, NS_CAMEL, --no-nei]   # CHANGE modid, package
+closure:
+  source: ${INPUT_SOURCE_DIR}/src/main/java
+  prefixes: [com.example.mymod.]             # CHANGE: the mod's own packages
+  seeds: [com.example.mymod.MyMod]           # CHANGE: classes the mod starts from (@Mod class, event subscribers ...)
+rewrite:
+  rules: [../../rules/composite, ../../rules/packs/adapters]
+  graph: ["${PORTER_CACHE}/graph/out"]
+  shimPackage: com.example.mymod.shim        # CHANGE
+  classpath:
+    - "${PORTER_CACHE}/forge-1.19.2-compile/mc-forge-1.19.2-client-mojmap.jar"
+    - "${PORTER_CACHE}/forge-1.19.2-client/libraries/**/*.jar"
+  jvmArgs: [-Xmx3g, -Xss16m]
+  args: [--type-facts, "${PORTER_CACHE}/typefacts-1.19.2/forge-1.19.2-43.5.2.tsv"]
+install:
+  passes: [java8, tector, imports]
+  adapters: bundled
+compile:
+  options: [--release, "8", -Xplugin:jabel]
+  processorpath: ["${GRADLE_USER_HOME}/caches/modules-2/files-2.1/com.github.GTNewHorizons/jabel-javac-plugin/**/*.jar",
+                  "${GRADLE_USER_HOME}/caches/modules-2/files-2.1/net.bytebuddy/**/*1.14.9.jar"]
+  jvmArgs: [-Xmx1500m]
+build:
+  command: [./gradlew, --no-daemon, build]
+  env: { JAVA_HOME: "${BUILD_JAVA_HOME}", GRADLE_USER_HOME: "${GRADLE_USER_HOME}" }
+  jar: build/libs/mymod-0.1.0.jar            # CHANGE
+  obfcheckPrefix: com/example/mymod/         # CHANGE

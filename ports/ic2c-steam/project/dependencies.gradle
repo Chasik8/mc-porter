@@ -1,0 +1,19 @@
+/*
+ * IC2 Classic is a production (SRG-named) jar, so RFG deobfuscates it to MCP names for dev.
+ * devOnlyNonPublishable = compileOnly + runtimeOnly for runClient, never published / never shaded.
+ * The final jar is reobfuscated back to SRG by the reobfJar task, matching the real IC2C at runtime.
+ */
+dependencies {
+    devOnlyNonPublishable(rfg.deobf(project.files("libs/IC2Classic-1.7.10-1.2.6.jar")))
+    // closure port: the ported IC2C 2.x framework uses fastutil (a plain library, identical API) - shaded + relocated
+    shadowImplementation("it.unimi.dsi:fastutil:8.5.6")
+    // porter generate NEI integration (<pkg>.nei): original chickenbones NEI API, compile only - the mod runs without
+    // NEI (dedicated server); production jars deobfuscated by RFG like IC2C
+    compileOnly(rfg.deobf(project.files("libs/NotEnoughItems-1.7.10-1.0.5.120-universal.jar")))
+    compileOnly(rfg.deobf(project.files("libs/CodeChickenCore-1.7.10-1.0.7.48-universal.jar")))
+    compileOnly(rfg.deobf(project.files("libs/CodeChickenLib-1.7.10-1.1.3.141-universal.jar")))
+}
+
+// headless check of the generated NEI handlers: gradlew neiCheck (porter generate/scripts/nei, copied to porter-nei/)
+ext.neiCheckPackages = ['ic2cextras.ported.gen.nei', 'ic2cextras.ported.steam.gen.nei']
+apply from: 'porter-nei/nei-check.gradle'

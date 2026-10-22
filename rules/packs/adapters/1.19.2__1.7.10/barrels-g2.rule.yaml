@@ -1,0 +1,207 @@
+# closure port: item ray-tracing and entity helpers.
+schemaVersion: 1
+id: r-closure-mc-type-entityhitresult
+description: "type net.minecraft.world.phys.EntityHitResult -> dev.porter.shim.mc.EntityHitResult"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.world.phys.EntityHitResult"
+replace: "dev.porter.shim.mc.EntityHitResult"
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port (item ray-tracing helpers): source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import net.minecraft.world.phys.EntityHitResult;"
+    after: "import dev.porter.shim.mc.EntityHitResult;"
+---
+schemaVersion: 1
+id: r-closure-mc-call-livingentity-broadcastbreakevent-hand
+description: "call net.minecraft.world.entity.LivingEntity#broadcastBreakEvent(net.minecraft.world.InteractionHand) -> EntityExt.broadcastBreak($e, $h)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.entity.LivingEntity#broadcastBreakEvent(net.minecraft.world.InteractionHand)"
+  bind: { recv: "$e", args: ["$h"] }
+replace: "EntityExt.broadcastBreak($e, $h)"
+imports: ["dev.porter.shim.mc.EntityExt"]
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port (item ray-tracing helpers): source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - context: "LivingEntity e; import net.minecraft.world.entity.LivingEntity; import net.minecraft.world.InteractionHand; InteractionHand h"
+    before: "e.broadcastBreakEvent(h);"
+    after: "EntityExt.broadcastBreak(e, h);"
+---
+schemaVersion: 1
+id: r-closure-mc-call-livingentity-broadcastbreakevent-slot
+description: "call net.minecraft.world.entity.LivingEntity#broadcastBreakEvent(net.minecraft.world.entity.EquipmentSlot) -> EntityExt.broadcastBreak($e, $s)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.entity.LivingEntity#broadcastBreakEvent(net.minecraft.world.entity.EquipmentSlot)"
+  bind: { recv: "$e", args: ["$s"] }
+replace: "EntityExt.broadcastBreak($e, $s)"
+imports: ["dev.porter.shim.mc.EntityExt"]
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port (item ray-tracing helpers): source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - context: "LivingEntity e; import net.minecraft.world.entity.LivingEntity; import net.minecraft.world.entity.EquipmentSlot; EquipmentSlot s"
+    before: "e.broadcastBreakEvent(s);"
+    after: "EntityExt.broadcastBreak(e, s);"
+---
+schemaVersion: 1
+id: r-closure-mc-call-aabb-inflate
+description: "call net.minecraft.world.phys.AABB#inflate(double) -> $a.expand($d, $d, $d)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.phys.AABB#inflate(double)"
+  bind: { recv: "$a", args: ["$d"] }
+replace: "$a.expand($d, $d, $d)"
+preconditions: ["pure:$d"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port (item ray-tracing helpers): source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - context: "AABB a; double d; import net.minecraft.world.phys.AABB"
+    before: "Object x = a.inflate(d);"
+    after: "Object x = a.expand(d, d, d);"
+---
+schemaVersion: 1
+id: r-closure-mc-field-entityselector-no-spectators
+description: "field net.minecraft.world.entity.EntitySelector#NO_SPECTATORS -> EntityExt.NO_SPECTATORS"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "net.minecraft.world.entity.EntitySelector#NO_SPECTATORS"
+replace: "EntityExt.NO_SPECTATORS"
+imports: ["dev.porter.shim.mc.EntityExt"]
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port (item ray-tracing helpers): source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "Object p = EntitySelector.NO_SPECTATORS;"
+    after: "Object p = EntityExt.NO_SPECTATORS;"
+---
+schemaVersion: 1
+id: r-closure-mc-call-randomsource-create
+description: "call net.minecraft.util.RandomSource#create() -> new java.util.Random()"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.util.RandomSource#create()"
+replace: "new java.util.Random()"
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port (item ray-tracing helpers): source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - context: "import net.minecraft.util.RandomSource"
+    before: "Object r = RandomSource.create();"
+    after: "Object r = new java.util.Random();"
+---
+schemaVersion: 1
+id: r-closure-mc-field-minecraft-level
+description: "field net.minecraft.client.Minecraft#level -> $m.theWorld"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "net.minecraft.client.Minecraft#level"
+  bind: { recv: "$m" }
+replace: "$m.theWorld"
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port (item ray-tracing helpers): source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - context: "Minecraft m; import net.minecraft.client.Minecraft"
+    before: "Object w = m.level;"
+    after: "Object w = m.theWorld;"
+---
+schemaVersion: 1
+id: r-closure-mc-call-entity-getxrot
+description: "call net.minecraft.world.entity.Entity#getXRot() -> $e.rotationPitch"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.entity.Entity#getXRot()"
+  bind: { recv: "$e" }
+replace: "$e.rotationPitch"
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port (item ray-tracing helpers): source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - context: "Entity e; import net.minecraft.world.entity.Entity"
+    before: "float f = e.getXRot();"
+    after: "float f = e.rotationPitch;"
+---
+schemaVersion: 1
+id: r-closure-mc-call-entity-getyrot
+description: "call net.minecraft.world.entity.Entity#getYRot() -> $e.rotationYaw"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.entity.Entity#getYRot()"
+  bind: { recv: "$e" }
+replace: "$e.rotationYaw"
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port (item ray-tracing helpers): source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - context: "Entity e; import net.minecraft.world.entity.Entity"
+    before: "float f = e.getYRot();"
+    after: "float f = e.rotationYaw;"
+---
+schemaVersion: 1
+id: r-closure-mc-call-entity-geteyeposition
+description: "call net.minecraft.world.entity.Entity#getEyePosition(float) -> EntityExt.eyePosition($e, $f)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.entity.Entity#getEyePosition(float)"
+  bind: { recv: "$e", args: ["$f"] }
+replace: "EntityExt.eyePosition($e, $f)"
+imports: ["dev.porter.shim.mc.EntityExt"]
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port (item ray-tracing helpers): source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - context: "LivingEntity e; import net.minecraft.world.entity.LivingEntity"
+    before: "Object v = e.getEyePosition(1.0f);"
+    after: "Object v = EntityExt.eyePosition(e, 1.0f);"
+---
+schemaVersion: 1
+id: r-closure-mc-call-entity-getrootvehicle
+description: "call net.minecraft.world.entity.Entity#getRootVehicle() -> EntityExt.rootVehicle($e)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.entity.Entity#getRootVehicle()"
+  bind: { recv: "$e" }
+replace: "EntityExt.rootVehicle($e)"
+imports: ["dev.porter.shim.mc.EntityExt"]
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port (item ray-tracing helpers): source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - context: "Entity e; import net.minecraft.world.entity.Entity"
+    before: "Object v = e.getRootVehicle();"
+    after: "Object v = EntityExt.rootVehicle(e);"
+---
+schemaVersion: 1
+id: r-closure-mc-call-aabb-inflate-any
+description: "call net.minecraft.world.phys.AABB#inflate(double) with a non-repeatable argument -> EntityExt.inflate($a, $d)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.phys.AABB#inflate(double)"
+  bind: { recv: "$a", args: ["$d"] }
+replace: "EntityExt.inflate($a, $d)"
+imports: ["dev.porter.shim.mc.EntityExt"]
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port (item ray-tracing helpers): source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - context: "AABB a; Entity e; import net.minecraft.world.phys.AABB; import net.minecraft.world.entity.Entity"
+    before: "Object x = a.inflate(e.getPickRadius());"
+    after: "Object x = EntityExt.inflate(a, e.getPickRadius());"

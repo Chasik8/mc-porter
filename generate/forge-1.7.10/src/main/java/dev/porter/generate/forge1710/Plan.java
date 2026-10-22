@@ -312,8 +312,30 @@ final class Plan {
      * their generated base and the logic class gets no stub; the port constructs the logic class itself.
      */
     boolean sharedBlockLogic(IrNode.Block b) {
-        return b.logicClass() != null && ctx.ir.all(IrNode.Block.class).stream()
+        return b.logicClass() != null && !sourceConstructed(b) && ctx.ir.all(IrNode.Block.class).stream()
                 .filter(o -> b.logicClass().equals(o.logicClass())).count() > 1;
+    }
+
+    /** Extension of the extractor: the source registry's constructor arguments of the logic class. */
+    static final String NEW_ARGS = "porter-extract:newArgs";
+
+    /**
+     * True when the node's logic class is constructed like the source registry did ({@code --source-constructors}):
+     * {@code new Logic(<recorded arguments>)}, names set after construction, no generated base or stub for it.
+     */
+    boolean sourceConstructed(IrNode n) {
+        String logic = n instanceof IrNode.Block b ? b.logicClass() : n instanceof IrNode.Item i ? i.logicClass() : null;
+        return ctx.options.sourceConstructors() && logic != null;
+    }
+
+    /** {@code new Logic(args)} of a source-constructed node (arguments as recorded, raw Java). */
+    com.squareup.javapoet.CodeBlock sourceNew(IrNode n, String logicClass) {
+        java.util.List<String> args = new java.util.ArrayList<>();
+        JsonNode v = n.extensions() == null ? null : n.extensions().get(NEW_ARGS);
+        if (v != null && v.isArray()) {
+            v.forEach(x -> args.add(x.asString()));
+        }
+        return com.squareup.javapoet.CodeBlock.of("new $T($L)", cls(logicClass), String.join(", ", args));
     }
 
     ClassName tileClass(IrNode.BlockEntity be) {

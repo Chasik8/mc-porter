@@ -1,0 +1,108 @@
+name: nightly
+
+# Reference regression: EVERY port of ports/catalog.yaml, end to end (setup, port, build, scenarios, smoke).
+# Opens (or updates) one issue labelled `nightly-failure` when something breaks, and closes it when everything is green.
+
+on:
+  schedule:
+    - cron: '23 3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nightly
+  cancel-in-progress: false
+
+jobs:
+  plan:
+    if: github.repository == 'Chasik8/mc-porter'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    outputs:
+      matrix: ${{ steps.p.outputs.matrix }}
+      count: ${{ steps.p.outputs.count }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pyyaml==6.0.2
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Catalog <-> ports consistency (every port has scenarios or is marked smokeOnly)
+        run: python3 scripts/ci/ports.py catalog-check
+      - name: Build porter
+        run: ./gradlew :cli:installDist --console=plain
+      - run: tar -C cli/build/install -czf porter-install.tgz porter
+      - uses: actions/upload-artifact@v4
+        with:
+          name: porter-install
+          path: porter-install.tgz
+          retention-days: 1
+      - id: p
+        run: python3 scripts/ci/ports.py all --github-output
+
+  ports:
+    name: port ${{ matrix.name }}
+    needs: plan
+    if: needs.plan.outputs.count != '0'
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    uses: ./.github/workflows/port.yml
+    with:
+      port: ${{ matrix.port }}
+      name: ${{ matrix.name }}
+      config-name: ${{ matrix.configName }}
+      open: ${{ matrix.open }}
+
+  report:
+    name: report
+    needs: [plan, ports]
+    if: always() && github.repository == 'Chasik8/mc-porter'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      issues: write       # the only write permission of the workflow
+      actions: read       # to name the failed jobs
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPO: ${{ github.repository }}
+      RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      PLAN: ${{ needs.plan.result }}
+      PORTS: ${{ needs.ports.result }}
+    steps:
+      - name: Open, update or close the nightly issue
+        run: |
+          label=nightly-failure
+          gh label create "$label" --repo "$REPO" --color B60205 --description "Nightly reference regression failed" 2>/dev/null || true
+          existing="$(gh issue list --repo "$REPO" --label "$label" --state open --json number --jq '.[0].number // empty')"
+          if [ "$PLAN" = "success" ] && { [ "$PORTS" = "success" ] || [ "$PORTS" = "skipped" ]; }; then
+            if [ -n "$existing" ]; then
+              gh issue close "$existing" --repo "$REPO" --comment "Nightly is green again: $RUN_URL"
+            fi
+            echo "nightly green"; exit 0
+          fi
+          failed="$(gh api "repos/$REPO/actions/runs/${{ github.run_id }}/jobs" --paginate \
+                    --jq '.jobs[] | select(.conclusion=="failure") | "- " + .name' | sort -u)"
+          body="Nightly run $RUN_URL: plan=$PLAN ports=$PORTS.
+
+          Failed jobs:
+          ${failed:-"(none listed)"}
+
+          Reproduce locally: \`ports/<mod>/run.sh\`, then \`scripts/ci/run-scenarios.sh\` (see CONTRIBUTING.md, CI)."
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --repo "$REPO" --body "$body"
+          else
+            gh issue create --repo "$REPO" --label "$label" --title "Nightly regression failed" --body "$body"
+          fi
+          exit 1

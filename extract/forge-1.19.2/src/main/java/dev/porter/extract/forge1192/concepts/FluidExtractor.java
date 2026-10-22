@@ -73,6 +73,7 @@ public final class FluidExtractor {
             }
             Draft d = new Draft();
             d.id = r.id();
+            ctx.putHolders(d.extensions, r.value());
             if (c.obj() != null && Vals.isClassName(c.logicClass())) {
                 d.logicClass = c.logicClass();
             }

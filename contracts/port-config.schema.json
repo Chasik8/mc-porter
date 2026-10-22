@@ -2,44 +2,217 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:porter:contract:port-config",
   "title": "porter port config",
-  "description": "One port: what to port (dependency closure of seed classes), with which rules, into which target project, and how to compile, build and test it. Driven by `porter port --config <file>.port.yaml`. Strings may use ${NAME} variables (vars: or the environment). Relative paths resolve against the config file's directory, except sources, classpath.file and build.jar (project-relative). Every stage section is optional; a stage runs only when its section is present. Added by RFC 004 (additive, no change to the frozen v1 contracts).",
+  "description": "One port: what to port (dependency closure of seed classes), with which rules, into which target project, and how to compile, build and test it. Driven by `porter port --config <file>.port.yaml`. Strings may use ${NAME} variables (vars: or the environment). Relative paths resolve against the config file's directory, except sources, classpath.file and build.jar (project-relative). Every stage section is optional; a stage runs only when its section is present. Added by RFC 004; `inputs` and `prepare` added by RFC 007; plugins, setup, derive, patches, generate.langSections, install.assetNamespaces/langKeys by RFC 009 (all additive, schemaVersion stays 1).",
   "type": "object",
-  "required": ["schemaVersion", "name", "mode", "from", "to", "project"],
+  "required": [
+    "schemaVersion",
+    "name",
+    "mode",
+    "from",
+    "to",
+    "project"
+  ],
   "additionalProperties": false,
   "properties": {
-    "schemaVersion": { "const": 1 },
-    "name": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$", "description": "Short id of the port (used in logs and reports)." },
-    "description": { "type": "string" },
+    "schemaVersion": {
+      "const": 1
+    },
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*$",
+      "description": "Short id of the port (used in logs and reports)."
+    },
+    "description": {
+      "type": "string"
+    },
     "mode": {
       "description": "delta: the mod (or the host it extends) already exists on the target version; the port is an addon/delta over that base, and classes that are semantically identical in the base are left to it (closure.known is required). full: the mod does not exist on the target version and is ported whole; there is no base to keep (closure.known is not allowed).",
-      "enum": ["delta", "full"]
+      "enum": [
+        "delta",
+        "full"
+      ]
     },
-    "from": { "$ref": "#/$defs/platformVersion" },
-    "to": { "$ref": "#/$defs/platformVersion" },
+    "from": {
+      "$ref": "#/$defs/platformVersion"
+    },
+    "to": {
+      "$ref": "#/$defs/platformVersion"
+    },
     "vars": {
       "description": "Variables for ${NAME} substitution (machine-specific paths belong here or in the environment).",
       "type": "object",
-      "additionalProperties": { "type": "string" }
+      "additionalProperties": {
+        "type": "string"
+      }
     },
-    "project": { "type": "string", "description": "Target mod project (a Gradle project, usually a git working tree)." },
-    "sources": { "type": "string", "description": "Java source root, relative to the project (default src/main/java)." },
-    "work": { "type": "string", "description": "Work directory: state, logs, intermediate outputs (default <project>/build/porter-port)." },
-    "queue": { "$ref": "#/$defs/strings", "description": "Command prefix for heavy steps (child porter JVMs, javac, the build), e.g. a machine-wide job queue script." },
-    "jvmArgs": { "$ref": "#/$defs/strings", "description": "Default JVM options of child porter steps, e.g. [-Xmx2g]." },
+    "project": {
+      "type": "string",
+      "description": "Target mod project (a Gradle project, usually a git working tree)."
+    },
+    "sources": {
+      "type": "string",
+      "description": "Java source root, relative to the project (default src/main/java)."
+    },
+    "work": {
+      "type": "string",
+      "description": "Work directory: state, logs, intermediate outputs (default <project>/build/porter-port)."
+    },
+    "queue": {
+      "$ref": "#/$defs/strings",
+      "description": "Command prefix for heavy steps (child porter JVMs, javac, the build), e.g. a machine-wide job queue script."
+    },
+    "jvmArgs": {
+      "$ref": "#/$defs/strings",
+      "description": "Default JVM options of child porter steps, e.g. [-Xmx2g]."
+    },
+    "inputs": {
+      "description": "The original files a player supplies (RFC 007, p5/ports): `porter run` verifies each file's sha256 and passes it as ${INPUT_<NAME>}. `porter port` itself ignores this section.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "mod",
+          "version",
+          "page",
+          "file",
+          "sha256"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9._-]*$"
+          },
+          "mod": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "jar",
+              "sources"
+            ]
+          },
+          "page": {
+            "type": "string",
+            "pattern": "^https://"
+          },
+          "file": {
+            "type": "string",
+            "pattern": "^[^/\\\\]+$"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "url": {
+            "type": "string",
+            "pattern": "^https://"
+          },
+          "optional": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "plugins": {
+      "$ref": "#/$defs/strings",
+      "description": "Jars added to child porter steps (PORTER_PLUGINS), e.g. a mod-specific extract pattern pack."
+    },
     "classpath": {
       "description": "Target compile classpath: used by the compile stage, the loop (useClasspath) and as the type oracle of the hub stubs.",
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "file": { "type": "string", "description": "Project-relative file listing classpath entries (separated by ';' or newlines), e.g. written by a Gradle task." },
-        "exclude": { "$ref": "#/$defs/strings", "description": "Entries of the file that contain one of these substrings are dropped." },
-        "entries": { "$ref": "#/$defs/strings", "description": "More jars or class directories; globs (*, **, ?) allowed." }
+        "file": {
+          "type": "string",
+          "description": "Project-relative file listing classpath entries (separated by ';' or newlines), e.g. written by a Gradle task."
+        },
+        "exclude": {
+          "$ref": "#/$defs/strings",
+          "description": "Entries of the file that contain one of these substrings are dropped."
+        },
+        "entries": {
+          "$ref": "#/$defs/strings",
+          "description": "More jars or class directories; globs (*, **, ?) allowed."
+        }
+      }
+    },
+    "setup": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "steps"
+      ],
+      "description": "Stage setup (first): one-time prerequisites; a step whose creates all exist is skipped.",
+      "properties": {
+        "steps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/step"
+          }
+        }
+      }
+    },
+    "derive": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "steps"
+      ],
+      "description": "Stage derive (after setup): steps that derive the inputs of generate on every run (extract, select, assets, patches of the user's own sources).",
+      "properties": {
+        "steps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/step"
+          }
+        }
+      }
+    },
+    "inputs": {
+      "description": "The original files a player supplies (RFC 007): `porter run` verifies each file's sha256 before anything else and tells the player where to download a missing or wrong one. Values reach the config as ${INPUT_<NAME>} (the file) and, for kind sources, ${INPUT_<NAME>_DIR} (the unpacked tree); NAME is the input's name in upper case, '-' and '.' becoming '_'. `porter port` itself ignores this section.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "mod", "version", "page", "file", "sha256"],
+        "properties": {
+          "name": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$", "description": "Key for `porter run --input name=path`." },
+          "mod": { "type": "string", "description": "Name of the mod the file belongs to, as shown to the player." },
+          "version": { "type": "string", "description": "Mod version the file is from." },
+          "kind": { "enum": ["jar", "sources"], "description": "jar (default): a mod jar. sources: a .zip/.tar.gz/.tgz of a source tree (a single top-level directory is stripped)." },
+          "page": { "type": "string", "pattern": "^https://", "description": "Download page of the file (CurseForge, Modrinth, GitHub release...): where a player gets it. Never the file itself." },
+          "file": { "type": "string", "pattern": "^[^/\\\\]+$", "description": "Exact file name on that page." },
+          "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$", "description": "SHA-256 of the file, lower-case hex." },
+          "url": { "type": "string", "pattern": "^https://", "description": "Direct download link; porter fetches the file itself when the player gave none. Only for files of open-licence mods; leave out for everything else." },
+          "optional": { "type": "boolean", "description": "true: `porter run` works without this file (it is used only for extra checks); default false." }
+        }
+      }
+    },
+    "prepare": {
+      "description": "One-time `porter` command lines `porter run` executes before `porter port` (for example extract and assets); skipped when their stamp file shows they already ran. `porter port` ignores this section.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "args"],
+        "properties": {
+          "name": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$" },
+          "args": { "$ref": "#/$defs/nonEmptyStrings", "description": "A porter command line, e.g. [extract, --src, ...]." },
+          "jvmArgs": { "$ref": "#/$defs/strings" }
+        }
       }
     },
     "generate": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["units"],
+      "required": [
+        "units"
+      ],
       "properties": {
         "units": {
           "type": "array",
@@ -47,45 +220,121 @@
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["name", "args"],
+            "required": [
+              "name",
+              "args"
+            ],
             "properties": {
-              "name": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$" },
-              "args": { "$ref": "#/$defs/strings", "description": "`porter generate` arguments (without --out)." },
-              "exclude": { "$ref": "#/$defs/strings", "description": "Generated paths (project-relative) never installed." },
-              "jvmArgs": { "$ref": "#/$defs/strings" }
+              "name": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9._-]*$"
+              },
+              "args": {
+                "$ref": "#/$defs/strings",
+                "description": "`porter generate` arguments (without --out)."
+              },
+              "exclude": {
+                "$ref": "#/$defs/strings",
+                "description": "Generated paths (project-relative) never installed."
+              },
+              "jvmArgs": {
+                "$ref": "#/$defs/strings"
+              }
             }
           }
         },
-        "preserve": { "$ref": "#/$defs/strings", "description": "Project paths never overwritten by generated files (hand-edited generated files)." }
+        "preserve": {
+          "$ref": "#/$defs/strings",
+          "description": "Project paths never overwritten by generated files (hand-edited generated files)."
+        },
+        "langSections": {
+          "type": "boolean",
+          "description": "Merge each unit's generated .lang files into the project's under '# --- porter:<unit> ---' sections (in place; keys defined outside the section win) instead of keeping the project's file."
+        }
       }
     },
     "closure": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["source", "prefixes", "seeds"],
+      "required": [
+        "source",
+        "prefixes",
+        "seeds"
+      ],
       "properties": {
-        "source": { "type": "string", "description": "Source-version sources of the mod (e.g. a decompile)." },
-        "prefixes": { "$ref": "#/$defs/nonEmptyStrings", "description": "Package prefixes of the mod's own classes, e.g. [com.example.]." },
-        "seeds": { "$ref": "#/$defs/nonEmptyStrings", "description": "Top-level classes to port (what the AI or the user picked)." },
-        "include": { "$ref": "#/$defs/strings", "description": "Classes copied in addition (walked like seeds)." },
-        "cut": { "$ref": "#/$defs/strings", "description": "Hub prefixes: the walk stops; referenced hub classes become frontier stubs." },
-        "drop": { "$ref": "#/$defs/strings", "description": "Prefixes cut and not stubbed (references removed by rules or edits)." },
-        "stubExtra": { "$ref": "#/$defs/strings", "description": "More classes to stub (e.g. types the stubs' signatures need)." },
-        "known": { "$ref": "#/$defs/strings", "description": "delta mode: source roots of the base on the target side; closure classes whose API is identical there are not copied." }
+        "source": {
+          "type": "string",
+          "description": "Source-version sources of the mod (e.g. a decompile)."
+        },
+        "prefixes": {
+          "$ref": "#/$defs/nonEmptyStrings",
+          "description": "Package prefixes of the mod's own classes, e.g. [com.example.]."
+        },
+        "seeds": {
+          "$ref": "#/$defs/nonEmptyStrings",
+          "description": "Top-level classes to port (what the AI or the user picked)."
+        },
+        "include": {
+          "$ref": "#/$defs/strings",
+          "description": "Classes copied in addition (walked like seeds)."
+        },
+        "cut": {
+          "$ref": "#/$defs/strings",
+          "description": "Hub prefixes: the walk stops; referenced hub classes become frontier stubs."
+        },
+        "drop": {
+          "$ref": "#/$defs/strings",
+          "description": "Prefixes cut and not stubbed (references removed by rules or edits)."
+        },
+        "stubExtra": {
+          "$ref": "#/$defs/strings",
+          "description": "More classes to stub (e.g. types the stubs' signatures need)."
+        },
+        "known": {
+          "$ref": "#/$defs/strings",
+          "description": "delta mode: source roots of the base on the target side; closure classes whose API is identical there are not copied."
+        }
       }
     },
     "rewrite": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "rules": { "$ref": "#/$defs/strings", "description": "Rule files/directories (public packs first, then private)." },
-        "graph": { "$ref": "#/$defs/strings", "description": "Symbol-graph documents/directories." },
-        "platform": { "$ref": "#/$defs/strings", "description": "Extra package prefixes whose symbols must be rewritten." },
-        "relocate": { "type": "array", "items": { "type": "string", "pattern": "^[^=]+=[^=]+$" }, "description": "<from>=<to> package moves of the copied classes." },
-        "shimPackage": { "type": "string", "description": "Package the shim and the adapter pack are relocated to." },
-        "classpath": { "$ref": "#/$defs/strings", "description": "Source-version libraries for typing (globs allowed)." },
-        "jvmArgs": { "$ref": "#/$defs/strings" },
-        "args": { "$ref": "#/$defs/strings", "description": "More `porter rewrite` arguments." }
+        "rules": {
+          "$ref": "#/$defs/strings",
+          "description": "Rule files/directories (public packs first, then private)."
+        },
+        "graph": {
+          "$ref": "#/$defs/strings",
+          "description": "Symbol-graph documents/directories."
+        },
+        "platform": {
+          "$ref": "#/$defs/strings",
+          "description": "Extra package prefixes whose symbols must be rewritten."
+        },
+        "relocate": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[^=]+=[^=]+$"
+          },
+          "description": "<from>=<to> package moves of the copied classes."
+        },
+        "shimPackage": {
+          "type": "string",
+          "description": "Package the shim and the adapter pack are relocated to."
+        },
+        "classpath": {
+          "$ref": "#/$defs/strings",
+          "description": "Source-version libraries for typing (globs allowed)."
+        },
+        "jvmArgs": {
+          "$ref": "#/$defs/strings"
+        },
+        "args": {
+          "$ref": "#/$defs/strings",
+          "description": "More `porter rewrite` arguments."
+        }
       }
     },
     "install": {
@@ -96,78 +345,282 @@
           "type": "object",
           "additionalProperties": false,
           "properties": {
-            "overrides": { "type": "string", "description": "Directory of hand-written hub classes (relocated paths) used instead of generated stubs." },
-            "ownPrefix": { "type": "string", "description": "Package prefix of the target mod's own classes (default: first segment of the relocation target)." },
-            "unportedPrefixes": { "$ref": "#/$defs/strings", "description": "Relocated packages that were not ported (types there are invalid in stubs); default: relocated top-level packages of the closure." },
-            "header": { "type": "string", "description": "First line(s) of every generated stub." }
+            "overrides": {
+              "type": "string",
+              "description": "Directory of hand-written hub classes (relocated paths) used instead of generated stubs."
+            },
+            "keep": {
+              "$ref": "#/$defs/strings",
+              "description": "Hub members (source-version FQN `a.b.Hub#member`) copied as rewritten instead of stubbed: body/initializer given by rule declaration edits (RFC 010)."
+            },
+            "ownPrefix": {
+              "type": "string",
+              "description": "Package prefix of the target mod's own classes (default: first segment of the relocation target)."
+            },
+            "unportedPrefixes": {
+              "$ref": "#/$defs/strings",
+              "description": "Relocated packages that were not ported (types there are invalid in stubs); default: relocated top-level packages of the closure."
+            },
+            "header": {
+              "type": "string",
+              "description": "First line(s) of every generated stub."
+            }
           }
         },
-        "srgMappings": { "type": "string", "description": "tiny v2 file with mojmap and srg namespaces of the source version (from the user's own mapping download; never shipped)." },
-        "passes": { "type": "array", "items": { "enum": ["srgmoj", "java8", "tector", "edits", "imports"] }, "description": "Source passes in order (default: all)." },
-        "edits": { "type": "string", "description": "YAML list of counted call-site edits {file, pattern, replace, reason} (Python-style regex, DOTALL, first match)." },
-        "adapters": { "enum": ["bundled", "none"], "description": "bundled: copy porter's generic adapter pack, relocated to rewrite.shimPackage." },
-        "overlays": { "$ref": "#/$defs/strings", "description": "Directories copied over the stage in order (hand-written classes, mod-specific adapters)." }
+        "srgMappings": {
+          "type": "string",
+          "description": "tiny v2 file with mojmap and srg namespaces of the source version (from the user's own mapping download; never shipped)."
+        },
+        "passes": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "srgmoj",
+              "java8",
+              "tector",
+              "edits",
+              "assetns",
+              "imports"
+            ]
+          },
+          "description": "Source passes in order (default: all)."
+        },
+        "edits": {
+          "type": "string",
+          "description": "YAML list of counted call-site edits {file, pattern, replace, reason} (Python-style regex, DOTALL, first match)."
+        },
+        "adapters": {
+          "enum": [
+            "bundled",
+            "none"
+          ],
+          "description": "bundled: copy porter's generic adapter pack, relocated to rewrite.shimPackage."
+        },
+        "overlays": {
+          "$ref": "#/$defs/strings",
+          "description": "Directories copied over the stage in order (hand-written classes, mod-specific adapters)."
+        },
+        "assetNamespaces": {
+          "type": "array",
+          "description": "Pass assetns: new ResourceLocation(from, \"<path>...\") with one of the path prefixes gets namespace to.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "from",
+              "to"
+            ],
+            "properties": {
+              "from": {
+                "type": "string"
+              },
+              "to": {
+                "type": "string"
+              },
+              "paths": {
+                "$ref": "#/$defs/strings"
+              }
+            }
+          }
+        },
+        "langKeys": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "pattern",
+            "source",
+            "target",
+            "locales"
+          ],
+          "description": "After install: lang keys that the project's sources look up literally (pattern group 1), copied from the source mod's JSON lang files into a marked section of the existing target .lang files.",
+          "properties": {
+            "scan": {
+              "type": "string",
+              "description": "Project-relative source dir to scan (default src/main/java)."
+            },
+            "pattern": {
+              "type": "string"
+            },
+            "source": {
+              "type": "string"
+            },
+            "target": {
+              "type": "string",
+              "description": "Project-relative lang directory."
+            },
+            "locales": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "fallback": {
+              "type": "string"
+            },
+            "marker": {
+              "type": "string"
+            }
+          }
+        }
       }
     },
     "loop": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "useClasspath": { "type": "boolean", "description": "Pass the project sources, generated sources and the classpath (javac runner)." },
-        "args": { "$ref": "#/$defs/strings", "description": "More `porter loop` arguments." },
-        "jvmArgs": { "$ref": "#/$defs/strings" }
+        "useClasspath": {
+          "type": "boolean",
+          "description": "Pass the project sources, generated sources and the classpath (javac runner)."
+        },
+        "args": {
+          "$ref": "#/$defs/strings",
+          "description": "More `porter loop` arguments."
+        },
+        "jvmArgs": {
+          "$ref": "#/$defs/strings"
+        }
       }
     },
     "compile": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "javaHome": { "type": "string", "description": "JDK whose javac is used (default: the JDK running porter)." },
-        "jvmArgs": { "$ref": "#/$defs/strings", "description": "javac JVM options (passed as -J...)." },
-        "options": { "$ref": "#/$defs/strings", "description": "javac options, e.g. [--release, '8', -Xplugin:jabel]." },
-        "processorpath": { "$ref": "#/$defs/strings", "description": "javac plugin path (globs allowed)." },
+        "javaHome": {
+          "type": "string",
+          "description": "JDK whose javac is used (default: the JDK running porter)."
+        },
+        "jvmArgs": {
+          "$ref": "#/$defs/strings",
+          "description": "javac JVM options (passed as -J...)."
+        },
+        "options": {
+          "$ref": "#/$defs/strings",
+          "description": "javac options, e.g. [--release, '8', -Xplugin:jabel]."
+        },
+        "processorpath": {
+          "$ref": "#/$defs/strings",
+          "description": "javac plugin path (globs allowed)."
+        },
         "generatedSources": {
           "type": "array",
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["path", "content"],
-            "properties": { "path": { "type": "string" }, "content": { "type": "string" } }
+            "required": [
+              "path",
+              "content"
+            ],
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "content": {
+                "type": "string"
+              }
+            }
           },
           "description": "Small sources the project's build normally generates (e.g. a version Tags class)."
         },
-        "castfixRounds": { "type": "integer", "minimum": 0, "maximum": 10 },
-        "maxErrors": { "type": "integer", "minimum": 1 }
+        "castfixRounds": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "maxErrors": {
+          "type": "integer",
+          "minimum": 1
+        }
       }
     },
     "build": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["command"],
+      "required": [
+        "command"
+      ],
       "properties": {
-        "command": { "$ref": "#/$defs/nonEmptyStrings", "description": "Run in the project directory, e.g. [./gradlew, --no-daemon, spotlessApply, build]." },
-        "env": { "type": "object", "additionalProperties": { "type": "string" } },
-        "jar": { "type": "string", "description": "Project-relative path of the built (reobfuscated) jar." },
-        "obfcheckPrefix": { "type": "string", "description": "Internal-name prefix of the classes the reobf collision check covers, e.g. mymod/." }
+        "command": {
+          "$ref": "#/$defs/nonEmptyStrings",
+          "description": "Run in the project directory, e.g. [./gradlew, --no-daemon, spotlessApply, build]."
+        },
+        "env": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "jar": {
+          "type": "string",
+          "description": "Project-relative path of the built (reobfuscated) jar."
+        },
+        "obfcheckPrefix": {
+          "type": "string",
+          "description": "Internal-name prefix of the classes the reobf collision check covers, e.g. mymod/."
+        }
       }
     },
     "test": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["runs"],
+      "required": [
+        "runs"
+      ],
       "properties": {
         "runs": {
           "type": "array",
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["name", "args"],
+            "required": [
+              "name",
+              "args"
+            ],
             "properties": {
-              "name": { "type": "string" },
-              "args": { "$ref": "#/$defs/nonEmptyStrings", "description": "A porter command line, e.g. [test, diff, --scenario, ...]." },
-              "queue": { "$ref": "#/$defs/strings", "description": "Command prefix for this run (e.g. a single-Minecraft-instance lock)." },
-              "jvmArgs": { "$ref": "#/$defs/strings" }
+              "name": {
+                "type": "string"
+              },
+              "args": {
+                "$ref": "#/$defs/nonEmptyStrings",
+                "description": "A porter command line, e.g. [test, diff, --scenario, ...]."
+              },
+              "queue": {
+                "$ref": "#/$defs/strings",
+                "description": "Command prefix for this run (e.g. a single-Minecraft-instance lock)."
+              },
+              "jvmArgs": {
+                "$ref": "#/$defs/strings"
+              }
             }
+          }
+        }
+      }
+    },
+    "patches": {
+      "type": "array",
+      "description": "Unified diffs applied after a stage (porter patch apply): '---' paths relative to base (default: target), '+++' paths relative to target (default: the project).",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "after",
+          "patches"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "after": {
+            "type": "string"
+          },
+          "patches": {
+            "type": "string",
+            "description": "A patch file or a directory of *.patch files."
+          },
+          "base": {
+            "type": "string"
+          },
+          "target": {
+            "type": "string"
           }
         }
       }
@@ -175,17 +628,228 @@
   },
   "allOf": [
     {
-      "if": { "properties": { "mode": { "const": "delta" } }, "required": ["mode", "closure"] },
-      "then": { "properties": { "closure": { "required": ["known"] } } }
+      "if": {
+        "properties": {
+          "mode": {
+            "const": "delta"
+          }
+        },
+        "required": [
+          "mode",
+          "closure"
+        ]
+      },
+      "then": {
+        "properties": {
+          "closure": {
+            "required": [
+              "known"
+            ]
+          }
+        }
+      }
     },
     {
-      "if": { "properties": { "mode": { "const": "full" } }, "required": ["mode", "closure"] },
-      "then": { "properties": { "closure": { "not": { "required": ["known"] } } } }
+      "if": {
+        "properties": {
+          "mode": {
+            "const": "full"
+          }
+        },
+        "required": [
+          "mode",
+          "closure"
+        ]
+      },
+      "then": {
+        "properties": {
+          "closure": {
+            "not": {
+              "required": [
+                "known"
+              ]
+            }
+          }
+        }
+      }
     }
   ],
   "$defs": {
-    "platformVersion": { "type": "string", "pattern": "^[a-z][a-z0-9]*-[0-9]+(\\.[0-9]+){1,2}$" },
-    "strings": { "type": "array", "items": { "type": "string" } },
-    "nonEmptyStrings": { "type": "array", "items": { "type": "string" }, "minItems": 1 }
+    "platformVersion": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*-[0-9]+(\\.[0-9]+){1,2}$"
+    },
+    "strings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "nonEmptyStrings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "step": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "creates": {
+          "$ref": "#/$defs/strings",
+          "description": "Paths the step creates; when all exist the step is skipped (one-time setup)."
+        },
+        "porter": {
+          "$ref": "#/$defs/nonEmptyStrings",
+          "description": "A porter command line (child JVM)."
+        },
+        "jvmArgs": {
+          "$ref": "#/$defs/strings"
+        },
+        "command": {
+          "$ref": "#/$defs/nonEmptyStrings",
+          "description": "An external command; ./gradlew runs gradlew.bat on Windows."
+        },
+        "cwd": {
+          "type": "string"
+        },
+        "env": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "queue": {
+          "type": "boolean",
+          "description": "Run behind the config's queue prefix (default true)."
+        },
+        "download": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "url",
+            "to"
+          ],
+          "properties": {
+            "url": {
+              "type": "string"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-fA-F]{64}$"
+            },
+            "to": {
+              "type": "string"
+            }
+          }
+        },
+        "unzip": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "zip",
+            "to"
+          ],
+          "properties": {
+            "zip": {
+              "type": "string"
+            },
+            "to": {
+              "type": "string"
+            },
+            "prefix": {
+              "type": "string"
+            },
+            "classes": {
+              "type": "boolean"
+            },
+            "stripFirst": {
+              "type": "boolean"
+            }
+          }
+        },
+        "copy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "from",
+            "to"
+          ],
+          "properties": {
+            "from": {
+              "type": "string"
+            },
+            "to": {
+              "type": "string"
+            }
+          }
+        },
+        "delete": {
+          "$ref": "#/$defs/strings"
+        },
+        "composite": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "base",
+            "overlay",
+            "to"
+          ],
+          "description": "An image: base with the overlay's non-transparent pixels.",
+          "properties": {
+            "base": {
+              "type": "string"
+            },
+            "overlay": {
+              "type": "string"
+            },
+            "to": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "oneOf": [
+        {
+          "required": [
+            "porter"
+          ]
+        },
+        {
+          "required": [
+            "command"
+          ]
+        },
+        {
+          "required": [
+            "download"
+          ]
+        },
+        {
+          "required": [
+            "unzip"
+          ]
+        },
+        {
+          "required": [
+            "copy"
+          ]
+        },
+        {
+          "required": [
+            "delete"
+          ]
+        },
+        {
+          "required": [
+            "composite"
+          ]
+        }
+      ]
+    }
   }
 }

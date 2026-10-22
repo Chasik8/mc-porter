@@ -13,6 +13,16 @@ without changes to the core.
 > Status: v0.1.0, early. One version pair works end to end; it was validated on a private port of a large tech
 > mod. See [Status and limitations](#status-and-limitations).
 
+## I just want a mod on 1.7.10
+
+1. Download `porter-<version>.zip` from the [releases](https://github.com/Chasik8/mc-porter/releases) and unpack it.
+2. Open [`ports/README.md`](ports/README.md), find your mod, read its `README.md` (which files to download, how long it takes).
+3. Run `ports\<mod>\run.bat` (Windows) or `ports/<mod>/run.sh` (Linux/macOS). No Java needed: it fetches its own.
+4. Copy the jar it prints (`output/`) into your 1.7.10 Forge `mods` folder.
+
+Guides: [Use a ready port](docs/guides/use-a-ready-port.md), [Port your own mod](docs/guides/port-your-own-mod.md),
+[Share your port back](docs/guides/share-your-port.md).
+
 ## How it works
 
 ```
@@ -64,13 +74,13 @@ capped at 2–3 GB heap.
 
 ## Install
 
-From a release: unzip `porter-0.1.0.zip` and put its `bin/` on your `PATH` (`bin/porter` for Linux/macOS,
+From a release: unzip `porter-0.2.0.zip` and put its `bin/` on your `PATH` (`bin/porter` for Linux/macOS,
 `bin/porter.bat` for Windows). From source:
 
 ```sh
 git clone https://github.com/Chasik8/mc-porter.git mc-porter && cd mc-porter
 JAVA_HOME=/path/to/jdk-21 ./gradlew build          # tests + contract examples
-JAVA_HOME=/path/to/jdk-21 ./gradlew :cli:distZip   # -> cli/build/distributions/porter-0.1.0.zip
+JAVA_HOME=/path/to/jdk-21 ./gradlew :cli:distZip   # -> cli/build/distributions/porter-0.2.0.zip
 export PATH="$PWD/cli/build/install/porter/bin:$PATH"
 porter --help
 ```

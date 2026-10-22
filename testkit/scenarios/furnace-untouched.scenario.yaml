@@ -1,5 +1,7 @@
 schemaVersion: 1
 id: furnace-untouched
+# isolation: region -> may run simultaneously with other region scenarios (own region, no world-wide state)
+isolation: region
 description: >-
   A fresh furnace at the same place the smelting scenarios use is empty and cold. Run after them in one batch
   (one Minecraft launch per version), it proves the world is reset between scenarios.

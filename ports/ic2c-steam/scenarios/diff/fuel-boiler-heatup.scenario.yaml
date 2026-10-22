@@ -1,0 +1,25 @@
+schemaVersion: 1
+id: fuel-boiler-heatup
+# closure port: copy of private/scenarios/fuel-boiler-heatup.scenario.yaml + forge-1.7.10 keyMap (ported IC2C tile field names)
+description: >-
+  scenarios.md "fuel-boiler-heatup": cold Fuel Boiler (2x2x2) + 1 fuel can (10000) -> after 100 ticks heat 100,
+  fuel 7000 (+1 heat/t, 30 fuel per heat point).
+world: flat-void
+maxTicks: 400
+tolerance:
+  "*": { abs: 0, tickShift: 1 }
+keyMap:
+  forge-1.19.2:
+    "field:[1,65,0]/isValid": "field:[1,65,0]/formed"
+  forge-1.7.10:
+    "field:[1,65,0]/isValid": "field:[1,65,0]/formed"
+steps:
+  - build_multiblock: { id: "ic2:fuel_boiler", at: [0, 64, 0] }
+  - tick: 5
+  - fill_fluid: { at: [1, 65, 0], fluid: "minecraft:water", amount: 1000 }
+  - insert_item: { at: [1, 65, 0], slot: 2, item: "alias:fuel_can_10000" }
+  - sample: { every: 1, what: ["field:[1,65,0]/heat", "field:[1,65,0]/fuel", "field:[1,65,0]/formed"] }
+  - tick: 120
+  - assert: { expr: "field:[1,65,0]/formed == true", message: "boiler formed" }
+  - assert: { expr: "delta(field:[1,65,0]/heat, 20, 120) == 100", message: "+1 heat/t" }
+  - assert: { expr: "at(field:[1,65,0]/fuel, 20) - at(field:[1,65,0]/fuel, 120) == 3000", message: "30 fuel per heat point" }

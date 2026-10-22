@@ -14,8 +14,9 @@ def q(s):
 
 
 class Rules:
-    def __init__(self, topic, header):
+    def __init__(self, topic, header, ref=None):
         self.topic, self.header, self.out, self.ids = topic, header, [], set()
+        self.ref = ref or REF
 
     def _id(self, slug):
         i = ('r-1.19.2-1.7.10-' + slug).lower().replace('$', '-').replace('_', '-')
@@ -37,7 +38,7 @@ class Rules:
             s += 'preconditions: [' + ', '.join(f'"{p}"' for p in pre) + ']\n'
         if prio is not None:
             s += f'priority: {prio}\n'
-        s += f'confidence: 0.9\nprovenance: {{ source: agent, ref: "{q(REF)}" }}\ntests:\n'
+        s += f'confidence: 0.9\nprovenance: {{ source: agent, ref: "{q(self.ref)}" }}\ntests:\n'
         for ctx, before, after in tests:
             if ctx:
                 s += f'  - context: "{q(ctx)}"\n    before: "{q(before)}"\n'
@@ -367,8 +368,176 @@ def chat_sides():
     return R
 
 
+REF_FOOD = ('closure port of food, drinks and potion brewing: one rule per distinct javac symbol; source = Mojang 1.19.2 mappings / '
+            'Forge 43.5.2, target = MCP 1.7.10 / adapter pack (rewrite/shim/src/adapters)')
+
+
+def food_effects():
+    R = Rules('food-effects', 'Food, drinks and effects: FoodProperties, MobEffect categories/names, PotionUtils, area effect\n'
+              'clouds, using/finishing items, chat styles, registry ids in packets, item tags (ore dictionary), the\n'
+              '1.13+ vanilla items as their closest 1.7.10 substitutes (LegacyItems), Forge milk.', ref=REF_FOOD)
+    E = MC + 'world.effect.'
+    PL = MC + 'world.entity.player.Player'
+    LE = MC + 'world.entity.LivingEntity'
+    IS = MC + 'world.item.ItemStack'
+    IT = MC + 'world.item.Item'
+    C = MC + 'network.chat.'
+    R.type(MC + 'world.food.FoodProperties', S + 'FoodProperties', prio=5)
+    R.type(MC + 'world.food.FoodProperties$Builder', S + 'FoodProperties.Builder', prio=5,
+           test=('import net.minecraft.world.food.FoodProperties', 'FoodProperties.Builder b = null;', 'dev.porter.shim.mc.FoodProperties.Builder b = null;'))
+    R.type(E + 'MobEffectCategory', S + 'MobEffectCategory', prio=5)
+    R.call(E + 'MobEffect#getCategory()', 'MobEffectCategory.of($e)',
+           ('MobEffect e; import net.minecraft.world.effect.MobEffect', 'Object c = e.getCategory();', 'Object c = MobEffectCategory.of(e);'),
+           recv='$e', imports=[S + 'MobEffectCategory'])
+    R.call(E + 'MobEffect#getDisplayName()', 'new ChatComponentTranslation($e.getName())',
+           ('MobEffect e; import net.minecraft.world.effect.MobEffect', 'Object n = e.getDisplayName();', 'Object n = new ChatComponentTranslation(e.getName());'),
+           recv='$e', imports=['net.minecraft.util.ChatComponentTranslation'])
+    R.call(E + 'MobEffectInstance#isVisible()', 'true',
+           ('MobEffectInstance e; import net.minecraft.world.effect.MobEffectInstance', 'boolean v = e.isVisible();', 'boolean v = true;'),
+           recv='$e', pre=['pure:$e'])
+    R.new(E + 'MobEffectInstance(' + E + 'MobEffect, int, int)', 'new PotionEffect($e.id, $d, $a)',
+          ('MobEffect e; import net.minecraft.world.effect.MobEffect; import net.minecraft.world.effect.MobEffectInstance',
+           'Object i = new MobEffectInstance(e, 20, 1);', 'Object i = new PotionEffect(e.id, 20, 1);'),
+          args=['$e', '$d', '$a'], imports=['net.minecraft.potion.PotionEffect'], prio=5, slug='new-mobeffectinstance-3-any')
+    R.new(E + 'MobEffectInstance(' + E + 'MobEffect, int, int, boolean, boolean)', 'new PotionEffect($e.id, $d, $a, $amb)',
+          ('MobEffect e; import net.minecraft.world.effect.MobEffect; import net.minecraft.world.effect.MobEffectInstance',
+           'Object i = new MobEffectInstance(e, 20, 1, false, true);', 'Object i = new PotionEffect(e.id, 20, 1, false);'),
+          args=['$e', '$d', '$a', '$amb', '$vis'], imports=['net.minecraft.potion.PotionEffect'], pre=['pure:$vis'], prio=5,
+          slug='new-mobeffectinstance-5')
+    R.new(E + 'MobEffectInstance(' + E + 'MobEffect, int, int, boolean, boolean, boolean)', 'new PotionEffect($e.id, $d, $a, $amb)',
+          ('MobEffect e; import net.minecraft.world.effect.MobEffect; import net.minecraft.world.effect.MobEffectInstance',
+           'Object i = new MobEffectInstance(e, 20, 1, false, true, true);', 'Object i = new PotionEffect(e.id, 20, 1, false);'),
+          args=['$e', '$d', '$a', '$amb', '$vis', '$icon'], imports=['net.minecraft.potion.PotionEffect'], pre=['pure:$vis', 'pure:$icon'],
+          prio=5, slug='new-mobeffectinstance-6')
+    for f, t in (('MOVEMENT_SPEED', 'moveSpeed'), ('MOVEMENT_SLOWDOWN', 'moveSlowdown'), ('DIG_SPEED', 'digSpeed'),
+                 ('DIG_SLOWDOWN', 'digSlowdown'), ('DAMAGE_BOOST', 'damageBoost'), ('HEAL', 'heal'), ('HARM', 'harm'),
+                 ('JUMP', 'jump'), ('CONFUSION', 'confusion'), ('REGENERATION', 'regeneration'), ('DAMAGE_RESISTANCE', 'resistance'),
+                 ('FIRE_RESISTANCE', 'fireResistance'), ('WATER_BREATHING', 'waterBreathing'), ('INVISIBILITY', 'invisibility'),
+                 ('BLINDNESS', 'blindness'), ('NIGHT_VISION', 'nightVision'), ('HUNGER', 'hunger'), ('WEAKNESS', 'weakness'),
+                 ('POISON', 'poison'), ('WITHER', 'wither'), ('HEALTH_BOOST', 'field_76434_w'), ('ABSORPTION', 'field_76444_x'),
+                 ('SATURATION', 'field_76443_y')):
+        R.field(E + 'MobEffects#' + f, 'Potion.' + t,
+                ('import net.minecraft.world.effect.MobEffects', 'Object e = MobEffects.' + f + ';', 'Object e = Potion.' + t + ';'),
+                imports=['net.minecraft.potion.Potion'], prio=5)
+    for f in ('SLOW_FALLING', 'LEVITATION', 'GLOWING', 'LUCK', 'UNLUCK', 'CONDUIT_POWER', 'DOLPHINS_GRACE', 'BAD_OMEN',
+              'HERO_OF_THE_VILLAGE', 'DARKNESS'):
+        R.field(E + 'MobEffects#' + f, 'null',
+                ('import net.minecraft.world.effect.MobEffects', 'Object e = MobEffects.' + f + ';', 'Object e = null;'), prio=5)
+    R.type(MC + 'world.item.alchemy.PotionUtils', S + 'PotionUtils', prio=5)
+    R.type(MC + 'world.entity.AreaEffectCloud', S + 'AreaEffectCloud', prio=5)
+    R.call(MC + 'world.level.Level#addFreshEntity(' + MC + 'world.entity.Entity)', '$l.spawnEntityInWorld($e)',
+           ('Level l; Entity e; import net.minecraft.world.level.Level; import net.minecraft.world.entity.Entity', 'l.addFreshEntity(e);', 'l.spawnEntityInWorld(e);'),
+           recv='$l', args=['$e'], kind='mechanical')
+    # players and items in use
+    R.call(PL + '#displayClientMessage(' + C + 'Component, boolean)', '$p.addChatComponentMessage($c)',
+           ('Player p; Component c; import net.minecraft.world.entity.player.Player; import net.minecraft.network.chat.Component',
+            'p.displayClientMessage(c, false);', 'p.addChatComponentMessage(c);'),
+           recv='$p', args=['$c', '$b'], pre=['pure:$b'])
+    R.call(MC + 'world.entity.Entity#getRandom()', '$e.getRNG()',
+           ('LivingEntity e; import net.minecraft.world.entity.LivingEntity', 'Object r = e.getRandom();', 'Object r = e.getRNG();'),
+           recv='$e', kind='mechanical')
+    R.call(MC + 'world.entity.Entity#getName()', 'new ChatComponentText($e.getCommandSenderName())',
+           ('Player e; import net.minecraft.world.entity.player.Player', 'Object n = e.getName();', 'Object n = new ChatComponentText(e.getCommandSenderName());'),
+           recv='$e', imports=['net.minecraft.util.ChatComponentText'])
+    R.call(LE + '#setItemInHand(' + MC + 'world.InteractionHand, ' + IS + ')', '$p.setCurrentItemOrArmor(0, $s)',
+           ('Player p; InteractionHand h; ItemStack s; import net.minecraft.world.entity.player.Player; import net.minecraft.world.InteractionHand; import net.minecraft.world.item.ItemStack',
+            'p.setItemInHand(h, s);', 'p.setCurrentItemOrArmor(0, s);'),
+           recv='$p', args=['$h', '$s'], pre=['pure:$h'])
+    R.call(LE + '#startUsingItem(' + MC + 'world.InteractionHand)', '$p.setItemInUse($p.getHeldItem(), $p.getHeldItem().getMaxItemUseDuration())',
+           ('Player p; InteractionHand h; import net.minecraft.world.entity.player.Player; import net.minecraft.world.InteractionHand',
+            'p.startUsingItem(h);', 'p.setItemInUse(p.getHeldItem(), p.getHeldItem().getMaxItemUseDuration());'),
+           recv='$p', args=['$h'], pre=['pure:$p', 'pure:$h'])
+    R.call(IS + '#getDisplayName()', 'new ChatComponentText($s.getDisplayName())',
+           ('ItemStack s; import net.minecraft.world.item.ItemStack', 'Object n = s.getDisplayName();', 'Object n = new ChatComponentText(s.getDisplayName());'),
+           recv='$s', imports=['net.minecraft.util.ChatComponentText'], prio=5)
+    R.call(IS + '#addTagElement(java.lang.String, ' + MC + 'nbt.Tag)', 'ItemStacks.getOrCreateTag($s).setTag($k, $t)',
+           ('ItemStack s; Tag t; import net.minecraft.world.item.ItemStack; import net.minecraft.nbt.Tag', 's.addTagElement("a", t);', 'ItemStacks.getOrCreateTag(s).setTag("a", t);'),
+           recv='$s', args=['$k', '$t'], imports=[S + 'ItemStacks'])
+    R.call(IS + '#hasCraftingRemainingItem()', '$s.getItem().hasContainerItem($s)',
+           ('ItemStack s; import net.minecraft.world.item.ItemStack', 'boolean b = s.hasCraftingRemainingItem();', 'boolean b = s.getItem().hasContainerItem(s);'),
+           recv='$s', pre=['pure:$s'])
+    R.call(IS + '#getCraftingRemainingItem()', '$s.getItem().getContainerItem($s)',
+           ('ItemStack s; import net.minecraft.world.item.ItemStack', 'Object r = s.getCraftingRemainingItem();', 'Object r = s.getItem().getContainerItem(s);'),
+           recv='$s', pre=['pure:$s'])
+    R.call(IS + '#is(' + MC + 'tags.TagKey)', '$t.contains($s)',
+           ('ItemStack s; TagKey<Item> t; import net.minecraft.world.item.ItemStack; import net.minecraft.tags.TagKey; import net.minecraft.world.item.Item',
+            'boolean b = s.is(t);', 'boolean b = t.contains(s);'),
+           recv='$s', args=['$t'], prio=10)
+    R.call(IT + '#fillItemCategory(' + MC + 'world.item.CreativeModeTab, ' + MC + 'core.NonNullList)', 'PropItem.fillItemCategory($i, $t, $l)',
+           ('Item i; CreativeModeTab t; NonNullList<ItemStack> l; import net.minecraft.world.item.Item; import net.minecraft.world.item.CreativeModeTab; import net.minecraft.core.NonNullList; import net.minecraft.world.item.ItemStack',
+            'i.fillItemCategory(t, l);', 'PropItem.fillItemCategory(i, t, l);'),
+           recv='$i', args=['$t', '$l'], imports=[S + 'PropItem'], pre=['type:$i:' + IT, 'not-super'])
+    R.call(MC + 'world.level.block.entity.BlockEntity#getPersistentData()', 'TileData.get($b)',
+           ('BlockEntity b; import net.minecraft.world.level.block.entity.BlockEntity', 'Object t = b.getPersistentData();', 'Object t = TileData.get(b);'),
+           recv='$b', imports=[S + 'TileData'])
+    R.call(MC + 'nbt.CompoundTag#merge(' + MC + 'nbt.CompoundTag)', 'Nbt.merge($a, $b)',
+           ('CompoundTag a; CompoundTag b; import net.minecraft.nbt.CompoundTag', 'a.merge(b);', 'Nbt.merge(a, b);'),
+           recv='$a', args=['$b'], imports=[S + 'Nbt'])
+    R.call(MC + 'util.GsonHelper#getAsJsonObject(com.google.gson.JsonObject, java.lang.String)', '$o.getAsJsonObject($k)',
+           ('import net.minecraft.util.GsonHelper; com.google.gson.JsonObject o', 'Object j = GsonHelper.getAsJsonObject(o, "a");', 'Object j = o.getAsJsonObject("a");'),
+           args=['$o', '$k'], prio=5)
+    # chat styles
+    R.call(C + 'Component#getStyle()', '$c.getChatStyle()',
+           ('Component c; import net.minecraft.network.chat.Component', 'Object s = c.getStyle();', 'Object s = c.getChatStyle();'),
+           recv='$c', kind='mechanical')
+    R.call(C + 'MutableComponent#setStyle(' + C + 'Style)', '$c.setChatStyle($s)',
+           ('MutableComponent c; Style s; import net.minecraft.network.chat.MutableComponent; import net.minecraft.network.chat.Style', 'c.setStyle(s);', 'c.setChatStyle(s);'),
+           recv='$c', args=['$s'], kind='mechanical')
+    R.call(C + 'Style#applyFormat(net.minecraft.ChatFormatting)', 'Chat.applyFormat($s, $f)',
+           ('Style s; ChatFormatting f; import net.minecraft.network.chat.Style; import net.minecraft.ChatFormatting', 'Object t = s.applyFormat(f);', 'Object t = Chat.applyFormat(s, f);'),
+           recv='$s', args=['$f'], imports=[S + 'Chat'])
+    # registry ids in packets
+    FB = MC + 'network.FriendlyByteBuf'
+    # (patterns: the Forge extension methods are matched by name; the registry argument is often unresolved)
+    R.add('pattern-friendlybytebuf-writeregistryidunsafe', 'pattern', '$b.writeRegistryIdUnsafe($r, $v)', 'Bufs.writeRegistryId($b, $r, $v)',
+          [('FriendlyByteBuf b; IForgeRegistry<Item> r; Item v; import net.minecraft.network.FriendlyByteBuf; import net.minecraftforge.registries.IForgeRegistry; import net.minecraft.world.item.Item',
+            'b.writeRegistryIdUnsafe(r, v);', 'Bufs.writeRegistryId(b, r, v);')], imports=[S + 'Bufs'])
+    R.add('pattern-friendlybytebuf-readregistryidunsafe', 'pattern', '$b.readRegistryIdUnsafe($r)', 'Bufs.readRegistryId($b, $r)',
+          [('FriendlyByteBuf b; IForgeRegistry<Item> r; import net.minecraft.network.FriendlyByteBuf; import net.minecraftforge.registries.IForgeRegistry; import net.minecraft.world.item.Item',
+            'Object v = b.readRegistryIdUnsafe(r);', 'Object v = Bufs.readRegistryId(b, r);')], imports=[S + 'Bufs'])
+    # tags
+    R.type(MC + 'tags.ItemTags', S + 'ItemTags', prio=5)
+    R.type(F + 'registries.tags.ITagManager', S + 'ITagManager', prio=5)
+    # 1.13+ vanilla items: the closest 1.7.10 substitute
+    for f, t in (('RAW_IRON', 'LegacyItems.rawIron()'), ('RAW_GOLD', 'LegacyItems.rawGold()'), ('RAW_COPPER', 'LegacyItems.rawCopper()'),
+                 ('MUD', 'LegacyItems.MUD'), ('WET_SPONGE', 'LegacyItems.WET_SPONGE'), ('SPONGE', 'LegacyItems.SPONGE'),
+                 ('DIRT', 'LegacyItems.DIRT'), ('REDSTONE_BLOCK', 'LegacyItems.REDSTONE_BLOCK'), ('POTION', 'Items.potionitem'),
+                 ('SPLASH_POTION', 'LegacyItems.SPLASH_POTION'), ('LINGERING_POTION', 'LegacyItems.LINGERING_POTION'),
+                 ('TIPPED_ARROW', 'LegacyItems.TIPPED_ARROW'), ('RABBIT_FOOT', 'LegacyItems.RABBIT_FOOT'),
+                 ('PHANTOM_MEMBRANE', 'LegacyItems.PHANTOM_MEMBRANE'), ('PUFFERFISH', 'LegacyItems.PUFFERFISH'),
+                 ('COCOA_BEANS', 'LegacyItems.cocoaBeans()')):
+        imp = ['net.minecraft.init.Items'] if t.startswith('Items.') else [S + 'LegacyItems']
+        R.field(MC + 'world.item.Items#' + f, t,
+                ('import net.minecraft.world.item.Items', 'Object i = Items.' + f + ';', 'Object i = ' + t + ';'), imports=imp, prio=5)
+    R.type(F + 'common.ForgeMod', S + 'ForgeMod', prio=5)
+    R.new(MC + 'world.phys.AABB(' + MC + 'core.BlockPos)', 'AxisAlignedBB.getBoundingBox($p.getX(), $p.getY(), $p.getZ(), $p.getX() + 1, $p.getY() + 1, $p.getZ() + 1)',
+          ('BlockPos p; import net.minecraft.core.BlockPos; import net.minecraft.world.phys.AABB', 'Object b = new AABB(p);',
+           'Object b = AxisAlignedBB.getBoundingBox(p.getX(), p.getY(), p.getZ(), p.getX() + 1, p.getY() + 1, p.getZ() + 1);'),
+          args=['$p'], imports=['net.minecraft.util.AxisAlignedBB'], pre=['pure:$p'], slug='new-aabb-blockpos')
+    return R
+
+
+def fluid_tanks():
+    R = Rules('fluid-tanks', 'Fluids read from a tank: 1.19.2 tanks never return null (FluidStack.EMPTY), 1.7.10 tanks return null \n'
+              'when empty. Matched by name (the tank class is often a Forge template the model cannot type).', ref=REF_FOOD)
+    ctx = 'FluidTank t; FluidStack o; import net.minecraftforge.fluids.capability.templates.FluidTank; import net.minecraftforge.fluids.FluidStack'
+    for slug, pat, rep, b, a in (
+            ('isempty', '$t.getFluid().isEmpty()', 'FluidStacks.isEmpty($t.getFluid())', 'boolean e = t.getFluid().isEmpty();', 'boolean e = FluidStacks.isEmpty(t.getFluid());'),
+            ('getamount', '$t.getFluid().getAmount()', 'FluidStacks.amount($t.getFluid())', 'int n = t.getFluid().getAmount();', 'int n = FluidStacks.amount(t.getFluid());'),
+            ('isfluidequal', '$t.getFluid().isFluidEqual($o)', 'FluidStacks.isFluidEqual($t.getFluid(), $o)', 'boolean q = t.getFluid().isFluidEqual(o);', 'boolean q = FluidStacks.isFluidEqual(t.getFluid(), o);'),
+            ('getfluid', '$t.getFluid().getFluid()', 'FluidStacks.fluid($t.getFluid())', 'Object f = t.getFluid().getFluid();', 'Object f = FluidStacks.fluid(t.getFluid());'),
+            ('containsfluid', '$t.getFluid().containsFluid($o)', 'FluidStacks.containsFluid($t.getFluid(), $o)', 'boolean c = t.getFluid().containsFluid(o);', 'boolean c = FluidStacks.containsFluid(t.getFluid(), o);')):
+        R.add('pattern-tank-getfluid-' + slug, 'pattern', pat, rep, [(ctx, b, a)], imports=[S + 'FluidStacks'])
+    # 1.19.2 ItemStack.EMPTY is a receiver; 1.7.10 has null
+    IS = MC + 'world.item.ItemStack'
+    R.call(IS + '#sameItem(' + IS + ')', 'ItemStacks.sameItemAs($a, $b)',
+           ('ItemStack a; ItemStack b; import net.minecraft.world.item.ItemStack', 'boolean s = a.sameItem(b);', 'boolean s = ItemStacks.sameItemAs(a, b);'),
+           recv='$a', args=['$b'], imports=[S + 'ItemStacks'], prio=5, slug='call-itemstack-sameitem-nullsafe')
+    return R
+
+
 if __name__ == '__main__':
     n = 0
-    for f in (modloading, capabilities, entities, commands, items_blocks, world, chat_sides):
+    for f in (modloading, capabilities, entities, commands, items_blocks, world, chat_sides, food_effects, fluid_tanks):
         n += f().write()
     print(f'total {n} rules')

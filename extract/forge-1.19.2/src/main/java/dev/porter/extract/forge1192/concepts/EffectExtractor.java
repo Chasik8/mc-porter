@@ -58,6 +58,7 @@ public final class EffectExtractor {
                 }
             }
             Legacy.put(ext, r.id());
+            ctx.putHolders(ext, r.value());
             String logic = c.obj() != null && Vals.isClassName(c.logicClass()) ? c.logicClass() : null;
             ctx.sink.add(new IrNode.Effect(r.id(), key, logic, cat,
                     color == null ? null : String.format("#%06X", color & 0xFFFFFF), instant, null, null, prov, null,

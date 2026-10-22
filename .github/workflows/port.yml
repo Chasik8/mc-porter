@@ -1,0 +1,130 @@
+name: port
+
+# Reusable: build one port with `porter run`, then run its scenarios + the automatic smoke scenario on dedicated
+# servers. Called by ci.yml (ports a PR adds/changes, plus TorchMaster for the fast regression) and nightly.yml
+# (every port). Needs the artifact `porter-install` (the porter built by the calling workflow).
+
+on:
+  workflow_call:
+    inputs:
+      port:
+        description: port directory, e.g. ports/torchmaster
+        type: string
+        required: true
+      name:
+        type: string
+        required: true
+      config-name:
+        description: "`name:` of the port config (porter run's workspace name)"
+        type: string
+        required: true
+      open:
+        description: "open licence + distributable in the catalog: only then the jar is uploaded as a workflow artifact"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  port:
+    name: port ${{ inputs.name }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    steps:
+      - name: Porter home
+        run: echo "PORTER_HOME=$HOME/.porter" >> "$GITHUB_ENV"
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: |
+            8
+            17
+            21
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pyyaml==6.0.2
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: porter-install
+      - name: Unpack porter
+        run: tar -xzf porter-install.tgz && echo "PORTER=$PWD/porter/bin/porter" >> "$GITHUB_ENV"
+
+      # The porter setup (symbol graph, Mojang/Forge data, supertype table, the Gradle home with the 1.7.10 toolchain,
+      # downloads): minutes to tens of minutes, identical for every port of the pair. Keyed by what defines it.
+      - name: Cache the porter setup
+        uses: actions/cache@v4
+        with:
+          path: |
+            ${{ env.PORTER_HOME }}/cache
+            ${{ env.PORTER_HOME }}/gradle
+            ${{ env.PORTER_HOME }}/downloads
+            ${{ env.PORTER_HOME }}/stamps
+          key: porter-setup-v1-${{ runner.os }}-${{ hashFiles('port/src/main/java/dev/porter/port/start/**', 'graph/src/main/resources/**/sources.json', 'ports/_template/project/**') }}
+          restore-keys: |
+            porter-setup-v1-${{ runner.os }}-
+      # Forge 1.19.2 / 1.7.10 dedicated servers + the two test mods (scenario runs).
+      - name: Cache the testkit servers
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.PORTER_HOME }}/testkit
+          key: testkit-v1-${{ runner.os }}-${{ hashFiles('testkit/mod-*/**', 'scripts/ci/testkit-setup.sh') }}
+          restore-keys: |
+            testkit-v1-${{ runner.os }}-
+
+      - name: Download the declared inputs (direct URLs, sha256 verified)
+        id: inputs
+        run: |
+          mkdir -p "$RUNNER_TEMP/inputs"
+          python3 scripts/ci/ports.py inputs "${{ inputs.port }}" --dest "$RUNNER_TEMP/inputs" | tee "$RUNNER_TEMP/inputs.txt"
+          args=(); orig=""
+          while IFS='=' read -r n p; do
+            [ -n "$n" ] || continue
+            args+=(--input "$n=$p"); [ "$n" = original ] && orig="$p"
+          done < "$RUNNER_TEMP/inputs.txt"
+          printf '%s\n' "${args[@]}" > "$RUNNER_TEMP/input-args.txt"
+          echo "original=$orig" >> "$GITHUB_OUTPUT"
+
+      - name: porter run (setup, port, build)
+        run: |
+          mapfile -t args < "$RUNNER_TEMP/input-args.txt"
+          "$PORTER" run "${{ inputs.port }}" "${args[@]}" --home "$PORTER_HOME" --out "$RUNNER_TEMP/out"
+          ls -l "$RUNNER_TEMP/out"
+
+      - name: Servers and test mods
+        run: scripts/ci/testkit-setup.sh "$PORTER_HOME/runs/${{ inputs.config-name }}"
+
+      - name: Scenarios (batched) + smoke
+        env:
+          PORTER_TESTKIT_ENV: ${{ env.PORTER_HOME }}/testkit/env.properties
+          TK_WORK: ${{ runner.temp }}/tk
+        run: |
+          jar="$(ls "$RUNNER_TEMP"/out/*.jar | head -1)"
+          scripts/ci/run-scenarios.sh "${{ inputs.port }}" "$jar" "$PORTER_HOME/runs/${{ inputs.config-name }}" "${{ steps.inputs.outputs.original }}"
+
+      # Jars of open-licence ports only (catalog: licence + distributable), 2 days. A port that is not open is never uploaded.
+      - name: Built jar (open-licence ports only, 2 days)
+        if: success() && inputs.open
+        uses: actions/upload-artifact@v4
+        with:
+          name: port-${{ inputs.name }}
+          path: ${{ runner.temp }}/out/*.jar
+          retention-days: 2
+          if-no-files-found: error
+      - name: Reports and logs on failure (open-licence ports only, 3 days)
+        if: failure() && inputs.open
+        uses: actions/upload-artifact@v4
+        with:
+          name: port-${{ inputs.name }}-logs
+          path: |
+            ${{ env.PORTER_HOME }}/runs/${{ inputs.config-name }}/port-report.md
+            ${{ env.PORTER_HOME }}/runs/${{ inputs.config-name }}/logs/
+            ${{ runner.temp }}/tk/${{ inputs.name }}/**/console.log
+            ${{ runner.temp }}/tk/${{ inputs.name }}/**/*.diff.json
+          retention-days: 3
+          if-no-files-found: ignore

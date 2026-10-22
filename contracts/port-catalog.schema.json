@@ -38,6 +38,10 @@
             "type": "number", "minimum": 0, "maximum": 1
           },
           "licence": { "type": "string", "description": "SPDX id of the original mod's licence, or 'ARR' (all rights reserved)." },
+          "smokeOnly": {
+            "type": "boolean",
+            "description": "The profile has no scenario files: CI verifies the port only with the automatic smoke scenario (server starts with the mod, every block and item registers, no exceptions in the log). Must be true exactly when ports/<mod>/scenarios has no *.scenario.yaml (checked by scripts/ci/ports.py catalog-check). Added by RFC 008 (additive)."
+          },
           "distributable": {
             "type": "boolean",
             "description": "Whether a ported jar may be published: only true for open-licence mods or with the author's written permission (permission must then be set)."

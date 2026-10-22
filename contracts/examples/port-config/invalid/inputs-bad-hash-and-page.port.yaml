@@ -1,0 +1,16 @@
+# Invalid: sha256 is not 64 lower-case hex digits, the download page is not an https link, the file name has a
+# path, and kind is not jar|sources.
+schemaVersion: 1
+name: bad-inputs
+mode: full
+from: forge-1.19.2
+to: forge-1.7.10
+project: ../p
+inputs:
+  - name: original
+    mod: Example Mod
+    version: 1.2.0
+    kind: zip
+    page: http://example.org/examplemod
+    file: downloads/examplemod-1.2.0.jar
+    sha256: ABC123

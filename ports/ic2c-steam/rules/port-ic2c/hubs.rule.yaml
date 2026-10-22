@@ -1,0 +1,590 @@
+# IC2 Classic hubs on 1.7.10 (replaces the hand-written hub classes of patches/hubs): the hub stubs are generated from
+# the closure frontier; these rules give the few members the closure needs alive a 1.7.10 value (IC2C service
+# singletons -> the compat adapters of overlays/adapters, block entity types, tags, recipe registries). The members
+# whose body/initializer comes from here are listed in install.stubs.keep. Tests are synthetic (only owner names are
+# the mod's).
+schemaVersion: 1
+id: r-ic2c-hub-type-platform
+description: "type ic2.core.Platform -> the 1.7.10 platform adapter"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "ic2.core.Platform"
+replace: "ic2cextras.ported.compat.PortedPlatform"
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: IC2C service singletons -> compat adapters" }
+tests:
+  - before: "import ic2.core.Platform;"
+    after: "import ic2cextras.ported.compat.PortedPlatform;"
+---
+schemaVersion: 1
+id: r-ic2c-hub-type-sidedgateway
+description: "type ic2.core.utils.SidedGateway -> compat.SidedGateway"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "ic2.core.utils.SidedGateway"
+replace: "ic2cextras.ported.compat.SidedGateway"
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: IC2C service singletons -> compat adapters" }
+tests:
+  - before: "import ic2.core.utils.SidedGateway;"
+    after: "import ic2cextras.ported.compat.SidedGateway;"
+---
+schemaVersion: 1
+id: r-ic2c-hub-type-keyboard
+description: "type ic2.core.platform.player.Keyboard -> compat.Keyboard"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "ic2.core.platform.player.Keyboard"
+replace: "ic2cextras.ported.compat.Keyboard"
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: IC2C service singletons -> compat adapters" }
+tests:
+  - before: "import ic2.core.platform.player.Keyboard;"
+    after: "import ic2cextras.ported.compat.Keyboard;"
+---
+schemaVersion: 1
+id: r-ic2c-hub-type-tickscheduler
+description: "type ic2.core.platform.registries.TickScheduler -> compat.TickScheduler"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "ic2.core.platform.registries.TickScheduler"
+replace: "ic2cextras.ported.compat.TickScheduler"
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: IC2C service singletons -> compat adapters" }
+tests:
+  - before: "import ic2.core.platform.registries.TickScheduler;"
+    after: "import ic2cextras.ported.compat.TickScheduler;"
+---
+schemaVersion: 1
+id: r-ic2c-hub-type-ic2config
+description: "type ic2.core.utils.config.ic2.IC2Config -> compat.IC2Config"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "ic2.core.utils.config.ic2.IC2Config"
+replace: "ic2cextras.ported.compat.IC2Config"
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: IC2C service singletons -> compat adapters" }
+tests:
+  - before: "import ic2.core.utils.config.ic2.IC2Config;"
+    after: "import ic2cextras.ported.compat.IC2Config;"
+---
+schemaVersion: 1
+id: r-ic2c-hub-ic2-platform
+description: "IC2.PLATFORM: the platform adapter"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.core.IC2#PLATFORM"
+edit:
+  initializer: "new ic2cextras.ported.compat.PortedPlatform()"
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: hub stub member values" }
+tests:
+  - before: "public class IC2 {\n    public static final Object PLATFORM;\n}"
+    after: "public class IC2 {\n    public static final Object PLATFORM = new ic2cextras.ported.compat.PortedPlatform();\n}"
+---
+schemaVersion: 1
+id: r-ic2c-hub-ic2-networking
+description: "IC2.NETWORKING: one network manager per side"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.core.IC2#NETWORKING"
+edit:
+  initializer: "new ic2cextras.ported.compat.SidedGateway<>(ic2.core.networking.NetworkManager::new, ic2.core.networking.NetworkManager::new)"
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: hub stub member values" }
+tests:
+  - before: "public class IC2 {\n    public static final Object NETWORKING;\n}"
+    after: "public class IC2 {\n    public static final Object NETWORKING = new ic2cextras.ported.compat.SidedGateway<>(ic2.core.networking.NetworkManager::new, ic2.core.networking.NetworkManager::new);\n}"
+---
+schemaVersion: 1
+id: r-ic2c-hub-ic2-recipes
+description: "IC2.RECIPES: one recipe set per side"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.core.IC2#RECIPES"
+edit:
+  initializer: "new ic2cextras.ported.compat.SidedGateway<>(ic2.core.platform.recipes.misc.GlobalRecipes::new, ic2.core.platform.recipes.misc.GlobalRecipes::new)"
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: hub stub member values" }
+tests:
+  - before: "public class IC2 {\n    public static final Object RECIPES;\n}"
+    after: "public class IC2 {\n    public static final Object RECIPES = new ic2cextras.ported.compat.SidedGateway<>(ic2.core.platform.recipes.misc.GlobalRecipes::new, ic2.core.platform.recipes.misc.GlobalRecipes::new);\n}"
+---
+schemaVersion: 1
+id: r-ic2c-hub-ic2-audio
+description: "IC2.AUDIO: the (silent) audio manager"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.core.IC2#AUDIO"
+edit:
+  initializer: "new ic2.core.audio.AudioManager()"
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: hub stub member values" }
+tests:
+  - before: "public class IC2 {\n    public static final Object AUDIO;\n}"
+    after: "public class IC2 {\n    public static final Object AUDIO = new ic2.core.audio.AudioManager();\n}"
+---
+schemaVersion: 1
+id: r-ic2c-hub-ic2-keyboard
+description: "IC2.KEYBOARD: the server-view keyboard adapter"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.core.IC2#KEYBOARD"
+edit:
+  initializer: "new ic2cextras.ported.compat.Keyboard()"
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: hub stub member values" }
+tests:
+  - before: "public class IC2 {\n    public static final Object KEYBOARD;\n}"
+    after: "public class IC2 {\n    public static final Object KEYBOARD = new ic2cextras.ported.compat.Keyboard();\n}"
+---
+schemaVersion: 1
+id: r-ic2c-hub-ic2-tick-handler
+description: "IC2.TICK_HANDLER: the world tick scheduler adapter"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.core.IC2#TICK_HANDLER"
+edit:
+  initializer: "new ic2cextras.ported.compat.TickScheduler()"
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: hub stub member values" }
+tests:
+  - before: "public class IC2 {\n    public static final Object TICK_HANDLER;\n}"
+    after: "public class IC2 {\n    public static final Object TICK_HANDLER = new ic2cextras.ported.compat.TickScheduler();\n}"
+---
+schemaVersion: 1
+id: r-ic2c-hub-ic2-config
+description: "IC2.CONFIG: the config adapter (IC2C defaults)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.core.IC2#CONFIG"
+edit:
+  initializer: "new ic2cextras.ported.compat.IC2Config()"
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: hub stub member values" }
+tests:
+  - before: "public class IC2 {\n    public static Object CONFIG;\n}"
+    after: "public class IC2 {\n    public static Object CONFIG = new ic2cextras.ported.compat.IC2Config();\n}"
+---
+schemaVersion: 1
+id: r-ic2c-hub-ic2-mod-id
+description: "IC2.MOD_ID"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.core.IC2#MOD_ID"
+edit:
+  initializer: "\"ic2\""
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: hub stub member values" }
+tests:
+  - before: "public class IC2 {\n    public static String MOD_ID;\n}"
+    after: "public class IC2 {\n    public static String MOD_ID = \"ic2\";\n}"
+---
+schemaVersion: 1
+id: r-ic2c-hub-recipes-refining
+description: "GlobalRecipes.refining: the refinery recipe list (filled by RefineryTileEntity.loadRecipes on reload)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.core.platform.recipes.misc.GlobalRecipes#refining"
+edit:
+  initializer: "new ic2.core.block.machines.recipes.RefiningRecipeList(ic2.core.block.machines.tiles.mv.RefineryTileEntity::loadRecipes)"
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: hub stub member values" }
+tests:
+  - before: "public class GlobalRecipes {\n    public Object refining = this.create();\n}"
+    after: "public class GlobalRecipes {\n    public Object refining = new ic2.core.block.machines.recipes.RefiningRecipeList(ic2.core.block.machines.tiles.mv.RefineryTileEntity::loadRecipes);\n}"
+---
+schemaVersion: 1
+id: r-ic2c-hub-recipes-potions
+description: "GlobalRecipes.potions: the barrel potion brewing registry (filled by IC2Potions.registerBrewing on reload)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.core.platform.recipes.misc.GlobalRecipes#potions"
+edit:
+  initializer: "new ic2.core.platform.recipes.misc.PotionBrewRegistry(ic2.core.platform.registries.IC2Potions::registerBrewing)"
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: hub stub member values" }
+tests:
+  - before: "public class GlobalRecipes {\n    public Object potions = this.create();\n}"
+    after: "public class GlobalRecipes {\n    public Object potions = new ic2.core.platform.recipes.misc.PotionBrewRegistry(ic2.core.platform.registries.IC2Potions::registerBrewing);\n}"
+---
+schemaVersion: 1
+id: r-ic2c-hub-recipe-registry-potion-brewing
+description: "RecipeRegistry.POTION_BREWING: an empty sided holder (set from IC2.RECIPES by the port's init)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.api.recipes.RecipeRegistry#POTION_BREWING"
+edit:
+  initializer: "new ic2.api.util.SidedObject<>()"
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: hub stub member values" }
+tests:
+  - before: "public class RecipeRegistry {\n    public static final Object POTION_BREWING;\n}"
+    after: "public class RecipeRegistry {\n    public static final Object POTION_BREWING = new ic2.api.util.SidedObject<>();\n}"
+---
+schemaVersion: 1
+id: r-ic2c-hub-tiles-create
+description: "IC2Tiles.createTile: a 1.7.10 block entity type (the class registration is the generated content's)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.core.platform.registries.IC2Tiles#createTile(String, BlockEntityType.BlockEntitySupplier)"
+edit:
+  body: "\n        return new BlockEntityType<>(\"ic2:\" + name, creator, new java.util.HashSet<>());\n    "
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: hub stub member values" }
+tests:
+  - before: "public class IC2Tiles {\n    public static <T> BlockEntityType<T> createTile(String name, BlockEntityType.BlockEntitySupplier<T> creator) {\n        return null;\n    }\n}"
+    after: "public class IC2Tiles {\n    public static <T> BlockEntityType<T> createTile(String name, BlockEntityType.BlockEntitySupplier<T> creator) {\n        return new BlockEntityType<>(\"ic2:\" + name, creator, new java.util.HashSet<>());\n    }\n}"
+---
+schemaVersion: 1
+id: r-ic2c-hub-tags-forge-item
+description: "IC2Tags.createForgeItemTag: a forge: item tag (ore dictionary by name)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.core.platform.registries.IC2Tags#createForgeItemTag(String)"
+edit:
+  body: "\n        return TagKey.of(\"item\", \"forge:\" + name);\n    "
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: hub stub member values" }
+tests:
+  - before: "public class IC2Tags {\n    public static TagKey<Item> createForgeItemTag(String name) {\n        return null;\n    }\n}"
+    after: "public class IC2Tags {\n    public static TagKey<Item> createForgeItemTag(String name) {\n        return TagKey.of(\"item\", \"forge:\" + name);\n    }\n}"
+---
+schemaVersion: 1
+id: r-ic2c-hub-tags-fluid
+description: "IC2Tags.createFluidTag: a fluid tag; on 1.7.10 every fluid whose name contains the tag name is a member"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.core.platform.registries.IC2Tags#createFluidTag(String, String)"
+edit:
+  body: "\n        return TagKey.<Fluid>of(\"fluid\", owner + \":\" + name).withPredicate(o -> o instanceof Fluid && ((Fluid) o).getName() != null\n            && ((Fluid) o).getName().toLowerCase(java.util.Locale.ROOT).contains(name));\n    "
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: hub stub member values" }
+tests:
+  - before: "public class IC2Tags {\n    public static TagKey<Fluid> createFluidTag(String owner, String name) {\n        return null;\n    }\n}"
+    after: "public class IC2Tags {\n    public static TagKey<Fluid> createFluidTag(String owner, String name) {\n        return TagKey.<Fluid>of(\"fluid\", owner + \":\" + name).withPredicate(o -> o instanceof Fluid && ((Fluid) o).getName() != null\n            && ((Fluid) o).getName().toLowerCase(java.util.Locale.ROOT).contains(name));\n    }\n}"
+---
+schemaVersion: 1
+id: r-ic2c-potions-no-init
+description: "IC2Potions.init registers effects with Forge: the generated content registers the port's potions"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.core.platform.registries.IC2Potions#init()"
+edit:
+  remove: true
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: registries of the generated content" }
+tests:
+  - before: "public class IC2Potions {\n    public static void init() {\n        start();\n    }\n\n    public static void other() {\n    }\n}"
+    after: "public class IC2Potions {\n\n    public static void other() {\n    }\n}"
+---
+schemaVersion: 1
+id: r-ic2c-potions-no-register-effect
+description: "IC2Potions.registerEffect (Forge registry) is not ported"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.core.platform.registries.IC2Potions#registerEffect(String, T)"
+edit:
+  remove: true
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: registries of the generated content" }
+tests:
+  - before: "public class IC2Potions {\n    public static <T extends MobEffect> T registerEffect(String name, T effect) {\n        return effect;\n    }\n\n    public static void other() {\n    }\n}"
+    after: "public class IC2Potions {\n\n    public static void other() {\n    }\n}"
+---
+schemaVersion: 1
+id: r-ic2c-hub-tiles-linking-tile
+description: "IC2Tiles.LINKING_TILE: the block entity type of linking_tile"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.core.platform.registries.IC2Tiles#LINKING_TILE"
+edit:
+  initializer: "IC2Tiles.createTile(\"linking_tile\", ic2.core.block.base.tiles.BaseLinkingTileEntity::new)"
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: hub stub member values (names as in IC2Tiles.loadTiles)" }
+tests:
+  - before: "public class IC2Tiles {
+    public static Object LINKING_TILE;
+}"
+    after: "public class IC2Tiles {
+    public static Object LINKING_TILE = IC2Tiles.createTile(\"linking_tile\", ic2.core.block.base.tiles.BaseLinkingTileEntity::new);
+}"
+---
+schemaVersion: 1
+id: r-ic2c-hub-tiles-fuel-boiler-structure
+description: "IC2Tiles.FUEL_BOILER_STRUCTURE: the block entity type of fuel_boiler_structure"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.core.platform.registries.IC2Tiles#FUEL_BOILER_STRUCTURE"
+edit:
+  initializer: "IC2Tiles.createTile(\"fuel_boiler_structure\", ic2.core.block.multi.tiles.FuelBoilerLinkTileEntity::new)"
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: hub stub member values (names as in IC2Tiles.loadTiles)" }
+tests:
+  - before: "public class IC2Tiles {
+    public static Object FUEL_BOILER_STRUCTURE;
+}"
+    after: "public class IC2Tiles {
+    public static Object FUEL_BOILER_STRUCTURE = IC2Tiles.createTile(\"fuel_boiler_structure\", ic2.core.block.multi.tiles.FuelBoilerLinkTileEntity::new);
+}"
+---
+schemaVersion: 1
+id: r-ic2c-hub-tiles-valve-tile
+description: "IC2Tiles.VALVE: the block entity type of valve_tile"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.core.platform.registries.IC2Tiles#VALVE"
+edit:
+  initializer: "IC2Tiles.createTile(\"valve_tile\", ic2.core.block.storage.tiles.tank.BaseValveTileEntity::new)"
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: hub stub member values (names as in IC2Tiles.loadTiles)" }
+tests:
+  - before: "public class IC2Tiles {
+    public static Object VALVE;
+}"
+    after: "public class IC2Tiles {
+    public static Object VALVE = IC2Tiles.createTile(\"valve_tile\", ic2.core.block.storage.tiles.tank.BaseValveTileEntity::new);
+}"
+---
+schemaVersion: 1
+id: r-ic2c-hub-tiles-pushing-valve-tile
+description: "IC2Tiles.PUSHING_VALVE: the block entity type of pushing_valve_tile"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.core.platform.registries.IC2Tiles#PUSHING_VALVE"
+edit:
+  initializer: "IC2Tiles.createTile(\"pushing_valve_tile\", ic2.core.block.storage.tiles.tank.PushingValveTileEntity::new)"
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: hub stub member values (names as in IC2Tiles.loadTiles)" }
+tests:
+  - before: "public class IC2Tiles {
+    public static Object PUSHING_VALVE;
+}"
+    after: "public class IC2Tiles {
+    public static Object PUSHING_VALVE = IC2Tiles.createTile(\"pushing_valve_tile\", ic2.core.block.storage.tiles.tank.PushingValveTileEntity::new);
+}"
+---
+schemaVersion: 1
+id: r-ic2c-hub-tiles-steam-turbine
+description: "IC2Tiles.GENERATOR_STEAM_TURBINE: the block entity type of steam_turbine"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.core.platform.registries.IC2Tiles#GENERATOR_STEAM_TURBINE"
+edit:
+  initializer: "IC2Tiles.createTile(\"steam_turbine\", ic2.core.block.generators.tiles.SteamTurbineTileEntity::new)"
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: hub stub member values (names as in IC2Tiles.loadTiles)" }
+tests:
+  - before: "public class IC2Tiles {
+    public static Object GENERATOR_STEAM_TURBINE;
+}"
+    after: "public class IC2Tiles {
+    public static Object GENERATOR_STEAM_TURBINE = IC2Tiles.createTile(\"steam_turbine\", ic2.core.block.generators.tiles.SteamTurbineTileEntity::new);
+}"
+---
+schemaVersion: 1
+id: r-ic2c-hub-tiles-fuel-boiler
+description: "IC2Tiles.GENERATOR_FUEL_BOILER: the block entity type of fuel_boiler"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.core.platform.registries.IC2Tiles#GENERATOR_FUEL_BOILER"
+edit:
+  initializer: "IC2Tiles.createTile(\"fuel_boiler\", ic2.core.block.generators.tiles.FuelBoilerTileEntity::new)"
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: hub stub member values (names as in IC2Tiles.loadTiles)" }
+tests:
+  - before: "public class IC2Tiles {
+    public static Object GENERATOR_FUEL_BOILER;
+}"
+    after: "public class IC2Tiles {
+    public static Object GENERATOR_FUEL_BOILER = IC2Tiles.createTile(\"fuel_boiler\", ic2.core.block.generators.tiles.FuelBoilerTileEntity::new);
+}"
+---
+schemaVersion: 1
+id: r-ic2c-hub-tiles-steam-tunnel
+description: "IC2Tiles.STEAM_TUNNEL: the block entity type of steam_tunnel"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.core.platform.registries.IC2Tiles#STEAM_TUNNEL"
+edit:
+  initializer: "IC2Tiles.createTile(\"steam_tunnel\", ic2.core.block.generators.tiles.SteamTunnelTileEntity::new)"
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: hub stub member values (names as in IC2Tiles.loadTiles)" }
+tests:
+  - before: "public class IC2Tiles {
+    public static Object STEAM_TUNNEL;
+}"
+    after: "public class IC2Tiles {
+    public static Object STEAM_TUNNEL = IC2Tiles.createTile(\"steam_tunnel\", ic2.core.block.generators.tiles.SteamTunnelTileEntity::new);
+}"
+---
+schemaVersion: 1
+id: r-ic2c-hub-tiles-barrel
+description: "IC2Tiles.BARREL: the block entity type of barrel"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.core.platform.registries.IC2Tiles#BARREL"
+edit:
+  initializer: "IC2Tiles.createTile(\"barrel\", ic2.core.block.misc.tiles.BarrelTileEntity::new)"
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: hub stub member values (names as in IC2Tiles.loadTiles)" }
+tests:
+  - before: "public class IC2Tiles {
+    public static Object BARREL;
+}"
+    after: "public class IC2Tiles {
+    public static Object BARREL = IC2Tiles.createTile(\"barrel\", ic2.core.block.misc.tiles.BarrelTileEntity::new);
+}"
+---
+schemaVersion: 1
+id: r-ic2c-hub-tiles-refinery
+description: "IC2Tiles.REFINERY: the block entity type of refinery"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.core.platform.registries.IC2Tiles#REFINERY"
+edit:
+  initializer: "IC2Tiles.createTile(\"refinery\", ic2.core.block.machines.tiles.mv.RefineryTileEntity::new)"
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: hub stub member values (names as in IC2Tiles.loadTiles)" }
+tests:
+  - before: "public class IC2Tiles {
+    public static Object REFINERY;
+}"
+    after: "public class IC2Tiles {
+    public static Object REFINERY = IC2Tiles.createTile(\"refinery\", ic2.core.block.machines.tiles.mv.RefineryTileEntity::new);
+}"
+---
+schemaVersion: 1
+id: r-ic2c-hub-type-ic2textures
+description: "type ic2.core.platform.rendering.IC2Textures -> compat.IC2Textures (texture packages)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "ic2.core.platform.rendering.IC2Textures"
+replace: "ic2cextras.ported.compat.IC2Textures"
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: hubs with 1.7.10 behaviour -> compat adapters" }
+tests:
+  - before: "import ic2.core.platform.rendering.IC2Textures;"
+    after: "import ic2cextras.ported.compat.IC2Textures;"
+---
+schemaVersion: 1
+id: r-ic2c-hub-type-packetmanager
+description: "type ic2.core.networking.PacketManager -> compat.PacketManager (the 1.7.10 channel)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "ic2.core.networking.PacketManager"
+replace: "ic2cextras.ported.compat.PacketManager"
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: hubs with 1.7.10 behaviour -> compat adapters" }
+tests:
+  - before: "import ic2.core.networking.PacketManager;"
+    after: "import ic2cextras.ported.compat.PacketManager;"
+---
+schemaVersion: 1
+id: r-ic2c-hub-type-forgeregistrywrapper
+description: "type ic2.core.platform.registries.ForgeRegistryWrapper -> compat.ForgeRegistryWrapper (1.7.10 registry names)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "ic2.core.platform.registries.ForgeRegistryWrapper"
+replace: "ic2cextras.ported.compat.ForgeRegistryWrapper"
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: hubs with 1.7.10 behaviour -> compat adapters" }
+tests:
+  - before: "import ic2.core.platform.registries.ForgeRegistryWrapper;"
+    after: "import ic2cextras.ported.compat.ForgeRegistryWrapper;"
+---
+schemaVersion: 1
+id: r-ic2c-hub-type-specialfilters
+description: "type ic2.core.inventory.filter.SpecialFilters -> compat.SpecialFilters (the filters the closure uses)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "ic2.core.inventory.filter.SpecialFilters"
+replace: "ic2cextras.ported.compat.SpecialFilters"
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: hubs with 1.7.10 behaviour -> compat adapters" }
+tests:
+  - before: "import ic2.core.inventory.filter.SpecialFilters;"
+    after: "import ic2cextras.ported.compat.SpecialFilters;"
+---
+schemaVersion: 1
+id: r-ic2c-hub-type-itextureprovider
+description: "type ic2.core.platform.rendering.features.ITextureProvider -> compat.ITextureProvider (sprites from the texture packages)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "ic2.core.platform.rendering.features.ITextureProvider"
+replace: "ic2cextras.ported.compat.ITextureProvider"
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: hubs with 1.7.10 behaviour -> compat adapters" }
+tests:
+  - before: "import ic2.core.platform.rendering.features.ITextureProvider;"
+    after: "import ic2cextras.ported.compat.ITextureProvider;"

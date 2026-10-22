@@ -458,7 +458,26 @@ final class MenuGen {
                 .addModifiers(Modifier.PUBLIC).returns(Object.class).addParameter(TypeName.INT, "id").addParameter(T.PLAYER, "player")
                 .addParameter(T.WORLD, "world").addParameter(TypeName.INT, "x").addParameter(TypeName.INT, "y").addParameter(TypeName.INT, "z")
                 .addStatement("$T te = world.getTileEntity(x, y, z)", T.TILE);
+        String delegate = ctx.options.guiDelegate();
+        if (delegate != null) {
+            // ported containers build their own screens: the delegate opens menus with a logic class and its own ids
+            CodeBlock.Builder ids = CodeBlock.builder();
+            for (IrNode.Menu m : menus) {
+                if (m.logicClass() != null) {
+                    ids.add("id == $L || ", guiConstant(m));
+                }
+            }
+            ClassName d = ClassName.bestGuess(delegate);
+            server.beginControlFlow("if ($L$T.handles(id))", ids.build(), d)
+                    .addStatement("return $T.server(id, player, world, x, y, z)", d).endControlFlow();
+            client.beginControlFlow("if ($L$T.handles(id))", ids.build(), d)
+                    .addStatement("return $T.client(id, player, world, x, y, z)", d).endControlFlow();
+            ctx.info("gui-delegate", delegate, "menus with a logic class and the delegate's ids open through " + delegate);
+        }
         for (IrNode.Menu m : menus) {
+            if (delegate != null && m.logicClass() != null) {
+                continue;
+            }
             Optional<IrNode.BlockEntity> be = blockEntityOf(ctx, m);
             CodeBlock check = be.isPresent() ? CodeBlock.of(" && te instanceof $T", plan.tileBase(be.get().id())) : CodeBlock.of("");
             server.beginControlFlow("if (id == $L$L)", guiConstant(m), check)

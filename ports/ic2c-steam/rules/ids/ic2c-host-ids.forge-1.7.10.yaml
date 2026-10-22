@@ -1,0 +1,49 @@
+# IC2C 2.1.3.4 (1.19.2) ids of objects that already exist in IC2C 1.2.6 / vanilla 1.7.10 under other
+# registry names. Format = testkit id map (porter generate --id-map, porter test --ids).
+# Verified: testkit pilot runs (scenarios/ids-forge-1.7.10.yaml) or IC2.java createItem/createBlock (1.2.6 src).
+version: forge-1.7.10
+blocks:
+  "ic2:scaffold_wooden": "IC2:scaffold@0"
+items:
+  "ic2:hops": "IC2:item.itemHops"
+  "ic2:mug": "IC2:item.itemMugEmpty"
+  # NEI (refinery unrefined whisky input; RefineryRecipes uses Ic2Items.flour)
+  "ic2:flour": "IC2:item.itemFlour"
+  # NEI potion brews: 1.19.2 vanilla ids renamed in 1.7.10 (same as PotionBrewRegistry.RENAMED)
+  "minecraft:glistering_melon_slice": "minecraft:speckled_melon"
+  "minecraft:pufferfish": "minecraft:fish@3"
+  "ic2:tree_tap": "IC2:item.itemTreetap"
+  "ic2:cell_empty": "IC2:item.itemCellEmpty"
+  "ic2:cell_water": "IC2:item.itemCellWater"
+  "minecraft:sugar_cane": "minecraft:reeds"
+  "ic2:complex_circuit": "IC2:item.itemPartCircuitAdv"
+  "ic2:advanced_machine_block": "IC2:blockMachine@12"
+  "ic2:rubber_wood": "IC2:rubberWood@0"
+  "minecraft:cocoa_beans": "minecraft:dye@3"
+  "minecraft:nether_bricks": "minecraft:nether_brick"
+  "ic2:circuit": "IC2:item.itemPartCircuit"
+  "ic2:advanced_circuit": "IC2:item.itemPartCircuitAdv"
+  "ic2:machine_block": "IC2:blockMachine@0"
+  "ic2:iron_furnace": "IC2:blockMachine@1"
+  "ic2:plate_iridium": "IC2:item.itemPartIridium"
+  # --- substitutes (no 1.2.6 object of the same kind; closest IC2C 1.2.6 stand-in, as chosen by the hand port
+  # the hand port SteamMultiblocks/BarrelModule recipes). Used for recipe ingredients only.
+  "ic2:upgrade_basic_fluid_export": "IC2:item.ic2upgrades@7"
+  "ic2:plating_heat_capacity": "IC2:item.reactorPlatingHeat"
+  "ic2:personal_tank": "IC2:blockMachine@8"
+  "ic2:machine_tank": "IC2:blockMachine@8"
+  "ic2:stabilized_machine_block": "IC2:blockMachine@12"
+  "ic2:pipe": "IC2:item.itemCellEmpty"
+  "ic2:alloy_smelter": "IC2:blockMachine@2"
+  # the closure-ported ic2cextras:steam_turbine has no recipe (1.19.2 recipe has an any-of key the IR cannot hold);
+  # the craftable phase-1 turbine (same 1.19.2 block, hand-ported) stands in as the Steam Tunnel ingredient
+  "ic2:steam_turbine": "ic2cextras:steamTurbine"
+  # refining (Refinery ore processing) outputs: 1.19.2 raw ore -> IC2C 1.2.6 dust (both smelt into one ingot);
+  # ore_uranium is the uranium ore drop (1.2.6 itemOreUran)
+  "minecraft:raw_iron": "IC2:item.itemDustIron"
+  "minecraft:raw_gold": "IC2:item.itemDustGold"
+  "minecraft:raw_copper": "IC2:item.itemDustCopper"
+  "ic2:raw_tin": "IC2:item.itemDustTin"
+  "ic2:ore_uranium": "IC2:item.itemOreUran"
+  "ic2:dust_coal": "IC2:item.itemDustCoal"
+  "ic2:dust_hydrated_coal": "IC2:item.itemFuelCoalDust"

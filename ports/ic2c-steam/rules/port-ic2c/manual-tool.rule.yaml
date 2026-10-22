@@ -1,0 +1,83 @@
+# ic2.core.utils.helpers.Tool on 1.7.10 (replaces the former patches/manual Tool.java).
+# 1.19.2 harvest tools are block tags + tool tiers (TierSortingRegistry); on 1.7.10 they are block properties
+# (Block.setHarvestLevel / getHarvestTool / getHarvestLevel). The tags themselves come from the generic adapter
+# BlockTags (answered from those properties); only the tier half is IC2C-specific code here.
+schemaVersion: 1
+id: r-ic2c-manual-tool-registerblock
+description: "Tool.ToolType#registerBlock: Block.setHarvestLevel (the enum constant names are Forge's tool classes) instead of block tag files"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.core.utils.helpers.Tool$ToolType#registerBlock(net.minecraft.world.level.block.Block, int)"
+edit:
+  body: "\n            block.setHarvestLevel(this.name().toLowerCase(java.util.Locale.ROOT), level);\n        "
+confidence: 0.9
+provenance: { source: manual, ref: "patches/manual Tool.java (register)" }
+tests:
+  - before: "public final class Tool {\n    public static enum ToolType {\n        PICKAXE;\n        void registerBlock(Block block, int level) {\n            IC2Tags.registerTags(null, null, block);\n        }\n    }\n}"
+    after: "public final class Tool {\n    public static enum ToolType {\n        PICKAXE;\n        void registerBlock(Block block, int level) {\n            block.setHarvestLevel(this.name().toLowerCase(java.util.Locale.ROOT), level);\n        }\n    }\n}"
+---
+schemaVersion: 1
+id: r-ic2c-manual-tool-iscorrecttool-level
+description: "Tool.ToolType#isCorrectTool(state, level): the block's tool tag and its Forge harvest level <= level (instead of tool tiers)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.core.utils.helpers.Tool$ToolType#isCorrectTool(net.minecraft.world.level.block.state.BlockState, int)"
+edit:
+  body: "\n            return BlockState.isIn(state, this.type) && state.getBlock().getHarvestLevel(state.getMeta()) <= level;\n        "
+confidence: 0.9
+provenance: { source: manual, ref: "patches/manual Tool.java (isCorrectTool)" }
+tests:
+  - before: "public final class Tool {\n    public static enum ToolType {\n        PICKAXE;\n        boolean isCorrectTool(BlockState state, int level) {\n            return this.isCorrectTool(state, this.getTierForLevel(level));\n        }\n    }\n}"
+    after: "public final class Tool {\n    public static enum ToolType {\n        PICKAXE;\n        boolean isCorrectTool(BlockState state, int level) {\n            return BlockState.isIn(state, this.type) && state.getBlock().getHarvestLevel(state.getMeta()) <= level;\n        }\n    }\n}"
+---
+schemaVersion: 1
+id: r-ic2c-manual-tool-remove-tier-check
+description: "Tool#isCorrectTool(state, Tier): removed (1.7.10 has no tool tiers; the level overload stays)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.core.utils.helpers.Tool#isCorrectTool(net.minecraft.world.level.block.state.BlockState, net.minecraft.world.item.Tier)"
+edit:
+  remove: true
+confidence: 0.9
+provenance: { source: manual, ref: "patches/manual Tool.java (no Tier members)" }
+tests:
+  - before: "public final class Tool {\n    public boolean isCorrectTool(BlockState state, Tier tier) {\n        return true;\n    }\n}"
+    after: "public final class Tool {\n}"
+---
+schemaVersion: 1
+id: r-ic2c-manual-tooltype-remove-tier-check
+description: "Tool.ToolType#isCorrectTool(state, Tier): removed (1.7.10 has no tool tiers)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.core.utils.helpers.Tool$ToolType#isCorrectTool(net.minecraft.world.level.block.state.BlockState, net.minecraft.world.item.Tier)"
+edit:
+  remove: true
+confidence: 0.9
+provenance: { source: manual, ref: "patches/manual Tool.java (no Tier members)" }
+tests:
+  - before: "public final class Tool {\n    public static enum ToolType {\n        PICKAXE;\n        boolean isCorrectTool(BlockState state, Tier tier) {\n            return true;\n        }\n    }\n}"
+    after: "public final class Tool {\n    public static enum ToolType {\n        PICKAXE;\n    }\n}"
+---
+schemaVersion: 1
+id: r-ic2c-manual-tooltype-remove-tier-for-level
+description: "Tool.ToolType#getTierForLevel: removed (1.7.10 has no tool tiers; harvest levels are ints)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.core.utils.helpers.Tool$ToolType#getTierForLevel(int)"
+edit:
+  remove: true
+confidence: 0.9
+provenance: { source: manual, ref: "patches/manual Tool.java (no Tier members)" }
+tests:
+  - before: "public final class Tool {\n    public static enum ToolType {\n        PICKAXE;\n        private Tier getTierForLevel(int level) {\n            return null;\n        }\n    }\n}"
+    after: "public final class Tool {\n    public static enum ToolType {\n        PICKAXE;\n    }\n}"

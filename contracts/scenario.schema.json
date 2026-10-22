@@ -16,6 +16,7 @@
       "pattern": "^[a-z0-9][a-z0-9_-]*$"
     },
     "side": { "enum": ["server", "client"], "default": "server", "description": "client = needs a rendering client (GUI checks)." },
+    "isolation": { "enum": ["region", "global"], "default": "global", "description": "region = the scenario only touches blocks, tile entities and entities around its own positions and no world-wide state (weather, time, spawning, registries, the player): the runner may run it simultaneously with other region scenarios in one world, each shifted into its own region (3x3 grid, 128 blocks apart, at most 9 per launch). global (default) = runs alone, with a world reset before and after." },
     "maxTicks": { "type": "integer", "minimum": 1, "description": "Hard timeout in game ticks; runner fails the scenario with status timeout beyond it." },
     "tolerance": {
       "description": "Comparison tolerances for traces, by sample key or key prefix ('*' = default). Numeric values match if |a-b| <= abs or |a-b| <= rel*max(|a|,|b|); tickShift allows samples to be matched within ±N ticks.",

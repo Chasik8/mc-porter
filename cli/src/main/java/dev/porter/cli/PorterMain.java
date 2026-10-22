@@ -38,6 +38,12 @@ public final class PorterMain implements Runnable {
         System.setProperty("porter.verbose", Boolean.toString(on));
     }
 
+    @Option(names = "--jobs", scope = CommandLine.ScopeType.INHERIT, paramLabel = "<n>",
+            description = "Parallel jobs for independent work (default: available cores, or $PORTER_JOBS). 1 = sequential.")
+    void jobs(int n) {
+        System.setProperty("porter.jobs", Integer.toString(n));
+    }
+
     @Override
     public void run() {
         spec.commandLine().usage(spec.commandLine().getOut());
@@ -53,6 +59,7 @@ public final class PorterMain implements Runnable {
      * version, short outputs and {@code porter port} (which prints one line per stage itself) pass through unchanged.
      */
     public static int execute(String[] args, java.io.PrintStream out, java.io.PrintStream err) {
+        installPlugins(System.getenv("PORTER_PLUGINS"));
         List<String> a = List.of(args);
         boolean verbose = a.contains("--verbose") || Compact.verbose();
         String cmd = commandWords(a);
@@ -100,7 +107,7 @@ public final class PorterMain implements Runnable {
         List<String> words = new java.util.ArrayList<>();
         for (int i = 0; i < args.size() && words.size() < 2; i++) {
             String x = args.get(i);
-            if (x.equals("--reports-dir")) {
+            if (x.equals("--reports-dir") || x.equals("--jobs")) {
                 i++;
             } else if (x.startsWith("-") || x.startsWith("@")) {
                 if (!words.isEmpty()) {
@@ -108,7 +115,7 @@ public final class PorterMain implements Runnable {
                 }
             } else {
                 words.add(x);
-                if (!x.equals("test") && !x.equals("graph")) {
+                if (!x.equals("test") && !x.equals("graph") && !x.equals("patch")) {
                     break;
                 }
             }
@@ -127,6 +134,35 @@ public final class PorterMain implements Runnable {
         } catch (java.io.IOException e) {
             return null;
         }
+    }
+
+    /**
+     * Plugins: jars (or class directories) from {@code PORTER_PLUGINS} (separated by the platform path separator)
+     * join the context class loader, so their {@code META-INF/services} providers (subcommands, extract pattern
+     * packs) are found like built-in ones. Child porter JVMs inherit the variable.
+     */
+    static void installPlugins(String spec) {
+        if (spec == null || spec.isBlank()) {
+            return;
+        }
+        List<java.net.URL> urls = new java.util.ArrayList<>();
+        for (String e : spec.split(java.util.regex.Pattern.quote(java.io.File.pathSeparator))) {
+            if (e.isBlank()) {
+                continue;
+            }
+            Path p = Path.of(e.strip());
+            if (!Files.exists(p)) {
+                continue; // not built yet (a port's setup stage creates it)
+            }
+            try {
+                urls.add(p.toUri().toURL());
+            } catch (java.net.MalformedURLException ex) {
+                throw new IllegalStateException(ex);
+            }
+        }
+        ClassLoader parent = Thread.currentThread().getContextClassLoader();
+        Thread.currentThread().setContextClassLoader(new java.net.URLClassLoader(urls.toArray(new java.net.URL[0]),
+                parent != null ? parent : PorterMain.class.getClassLoader()));
     }
 
     /** Runs the CLI without exiting the JVM (used by tests). */
@@ -176,7 +212,8 @@ public final class PorterMain implements Runnable {
 
     private static final Map<String, String> GROUPS = Map.of(
             "graph", "Symbol graph across Minecraft versions (graph)",
-            "test", "Round-trip and differential scenario tests (testkit)");
+            "test", "Round-trip and differential scenario tests (testkit)",
+            "patch", "Unified diffs between trees (port)");
 
     /** Parent of nested commands ({@code graph}, {@code test}); prints usage. */
     @Command

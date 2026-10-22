@@ -1,0 +1,308 @@
+# IC2 Classic 2.1.3.4 (Forge 1.19.2) -> addon "IC2 Classic Extras" for IC2 Classic 1.2.6 (Forge 1.7.10): steam power
+# (fuel boiler, steam tunnel, steam turbine, valves), barrels and drinks (beer, rum, whisky, potions, refinery), the
+# guide book. Delta mode: the addon runs next to the player's IC2 Classic 1.2.6.
+#
+# The profile ships no IC2 Classic code, textures or texts. Everything derived from IC2 Classic is made on the
+# player's machine from the player's own two jars (inputs below): decompiled (CFR, pinned), extracted, selected,
+# and the logic (steam, barrels/drinks/refinery) ported as a dependency closure rewritten with porter's rules and the
+# rules here; the classes the closure stops at become generated stubs. See README.md.
+#
+# Run: `porter run <this dir> --input ic2c-1192=<jar> --input ic2c-1710=<jar>` (or run.bat / run.sh).
+#   INPUT_IC2C_1192 / INPUT_IC2C_1710  the two jars (porter run sets them)
+#   RUN_DIR       workspace of this port (porter run: $PORTER_HOME/runs/ic2c-steam; default: run/ next to this file)
+#   PORTER_CACHE  porter's shared cache: symbol graph (graph/out) and the 1.19.2 mapping data (mappings-1.19.2)
+#   BUILD_JAVA_HOME  JDK 17+ for the Gradle build;  JAVA8_HOME  Java 8 that runs the decompiler (output depends on it)
+#   GRADLE_USER_HOME Gradle's cache (porter run sets it)
+schemaVersion: 1
+name: ic2c-steam
+description: IC2 Classic 2.1.3.4 steam power, barrels/drinks and the guide book as an addon to IC2 Classic 1.2.6 (Forge 1.7.10).
+mode: delta
+from: forge-1.19.2
+to: forge-1.7.10
+vars:
+  RUN: ${RUN_DIR}
+  PORTER_ROOT: ${PORT_DIR}/../..
+  RULES: ${PORT_DIR}/../../rules
+  D1192: ${RUN_DIR}/derived/ic2c-1192
+  D1710: ${RUN_DIR}/derived/ic2c-1710
+  JAR1192: ${INPUT_IC2C_1192}
+  JAR1710: ${INPUT_IC2C_1710}
+project: ${RUN}/project
+work: ${RUN}/work
+jvmArgs: [-Xmx2g]
+inputs:
+  - name: ic2c-1192
+    mod: IC2 Classic
+    version: 1.19.2-2.1.3.4
+    page: https://www.curseforge.com/minecraft/mc-mods/ic2-classic/files/8545995
+    file: IC2Classic-1.19.2-2.1.3.4.jar
+    sha256: f0a99733ef33491eca418831d681a79902250d341650f652d06f8b88d3627f83
+  - name: ic2c-1710
+    mod: IC2 Classic
+    version: 1.7.10-1.2.6
+    page: https://www.curseforge.com/minecraft/mc-mods/ic2-classic/files/8014397
+    file: IC2Classic-1.7.10-1.2.6.jar
+    sha256: 05637e89c67d28a6248251158848ca42aa6ff830e84dd093ada56d637d57e5c4
+plugins: ["${RUN}/derived/extract-pack"]
+classpath:
+  file: build/porter-cp.txt
+  exclude: [jabel]
+
+setup:
+  steps:
+    # the player's jars, decompiled once (CFR 0.152 from Maven Central; runs on $JAVA8_HOME when set, else on porter's Java)
+    - name: decompile-1192
+      porter: [decompile, --jar, "${JAR1192}", --sha256, f0a99733ef33491eca418831d681a79902250d341650f652d06f8b88d3627f83,
+               --out, "${D1192}", --tools, "${RUN}/derived/tools"]
+      creates: ["${D1192}/.porter-decompile"]
+    - name: decompile-1710
+      porter: [decompile, --jar, "${JAR1710}", --sha256, 05637e89c67d28a6248251158848ca42aa6ff830e84dd093ada56d637d57e5c4,
+               --out, "${D1710}", --tools, "${RUN}/derived/tools"]
+      creates: ["${D1710}/.porter-decompile"]
+    # the IC2 Classic extract pattern pack (hand-written, names IC2C classes), compiled against porter
+    - name: extract-pack
+      command: ["${JAVA_HOME}/bin/javac", -nowarn, -encoding, UTF-8, --release, "21", -d, "${RUN}/derived/extract-pack",
+                "${PORT_DIR}/extract-pack/src/ic2cprofile/extract/Ic2cBuiltins.java", "${PORT_DIR}/extract-pack/src/ic2cprofile/extract/Ic2cMenus.java",
+                "${PORT_DIR}/extract-pack/src/ic2cprofile/extract/Ic2cMultiblocks.java", "${PORT_DIR}/extract-pack/src/ic2cprofile/extract/Ic2cPack.java",
+                "${PORT_DIR}/extract-pack/src/ic2cprofile/extract/Ic2cRecipes.java", "${PORT_DIR}/extract-pack/src/ic2cprofile/extract/Ic2cTextures.java",
+                "${PORT_DIR}/extract-pack/src/ic2cprofile/extract/Ic2cWiki.java", "${PORT_DIR}/extract-pack/src/ic2cprofile/extract/MenuFields.java"]
+      queue: false
+      creates: ["${RUN}/derived/extract-pack/ic2cprofile/extract/Ic2cPack.class"]
+    - name: extract-pack-services
+      copy: {from: "${PORT_DIR}/extract-pack/src/META-INF", to: "${RUN}/derived/extract-pack/META-INF"}
+    # the 1.7.10 project: hand-written files (porter run lays its GTNH template underneath first)
+    - name: project
+      copy: {from: "${PORT_DIR}/project", to: "${RUN}/project"}
+      creates: ["${RUN}/project/build.gradle.kts"]
+    - name: lib-ic2c-1710
+      copy: {from: "${JAR1710}", to: "${RUN}/project/libs/IC2Classic-1.7.10-1.2.6.jar"}
+      creates: ["${RUN}/project/libs/IC2Classic-1.7.10-1.2.6.jar"]
+    # NotEnoughItems + CodeChicken libraries (compile only, for the generated NEI handlers): chickenbones' maven
+    - name: lib-nei
+      download: {url: "https://chickenbones.net/maven/codechicken/NotEnoughItems/1.7.10-1.0.5.120/NotEnoughItems-1.7.10-1.0.5.120-universal.jar",
+                 sha256: 3ebbc2f82b61812aa158375005a47da4d450bec870860fcbf015a64de74cde1c, to: "${RUN}/project/libs/NotEnoughItems-1.7.10-1.0.5.120-universal.jar"}
+    - name: lib-ccc
+      download: {url: "https://chickenbones.net/maven/codechicken/CodeChickenCore/1.7.10-1.0.7.48/CodeChickenCore-1.7.10-1.0.7.48-universal.jar",
+                 sha256: 98b33b39c05e83fe76d7bfedda76db686acccd53c0e996c11da75838b15a1399, to: "${RUN}/project/libs/CodeChickenCore-1.7.10-1.0.7.48-universal.jar"}
+    - name: lib-ccl
+      download: {url: "https://chickenbones.net/maven/codechicken/CodeChickenLib/1.7.10-1.1.3.141/CodeChickenLib-1.7.10-1.1.3.141-universal.jar",
+                 sha256: 49131e1960b8a968bdaf7806e595a73a9e96f7db1c128aaeb7b25a6a13c2788c, to: "${RUN}/project/libs/CodeChickenLib-1.7.10-1.1.3.141-universal.jar"}
+    # RetroFuturaGradle setup (Minecraft 1.7.10 deobfuscation), the compile classpath and the javac plugins (Jabel)
+    - name: classpath
+      command: [./gradlew, --no-daemon, -q, -I, "${PORTER_ROOT}/scripts/gradle/porter-classpath.gradle", porterClasspath]
+      cwd: ${RUN}/project
+      env: {JAVA_HOME: "${BUILD_JAVA_HOME}"}
+      creates: ["${RUN}/project/build/porter-cp.txt", "${RUN}/project/build/porter-processor"]
+
+derive:
+  steps:
+    # hand-written project files again (lang files get their porter sections refilled by generate)
+    - name: project-files
+      copy: {from: "${PORT_DIR}/project", to: "${RUN}/project"}
+    # textures the hand-written classes use, taken from the player's 1.19.2 jar
+    - {name: tex-turbine-front, unzip: {zip: "${JAR1192}", prefix: assets/ic2/textures/block/electric/generator/basic_steam_turbine/active_south.png, to: "${RUN}/derived/tex/blocks/steam_turbine/active", classes: false}}
+    - {name: tex-turbine-back, unzip: {zip: "${JAR1192}", prefix: assets/ic2/textures/block/electric/generator/basic_steam_turbine/inactive_north.png, to: "${RUN}/derived/tex/blocks/steam_turbine/back", classes: false}}
+    - {name: tex-turbine-down, unzip: {zip: "${JAR1192}", prefix: assets/ic2/textures/block/electric/generator/basic_steam_turbine/active_down.png, to: "${RUN}/derived/tex/blocks/steam_turbine/down", classes: false}}
+    - {name: tex-turbine-front-off, unzip: {zip: "${JAR1192}", prefix: assets/ic2/textures/block/electric/generator/basic_steam_turbine/inactive_south.png, to: "${RUN}/derived/tex/blocks/steam_turbine/inactive", classes: false}}
+    - {name: tex-turbine-side, unzip: {zip: "${JAR1192}", prefix: assets/ic2/textures/block/electric/generator/basic_steam_turbine/active_east.png, to: "${RUN}/derived/tex/blocks/steam_turbine/side", classes: false}}
+    - {name: tex-turbine-up, unzip: {zip: "${JAR1192}", prefix: assets/ic2/textures/block/electric/generator/basic_steam_turbine/active_up.png, to: "${RUN}/derived/tex/blocks/steam_turbine/up", classes: false}}
+    - {name: tex-reactor-gui, unzip: {zip: "${JAR1192}", prefix: assets/ic2/textures/gui_sprites/blocks/generators/reactor_steam/, to: "${RUN}/derived/tex/gui/reactor_steam", classes: false}}
+    - {name: tex-book-gui, unzip: {zip: "${JAR1192}", prefix: assets/ic2/textures/gui_sprites/items/wiki/, to: "${RUN}/derived/tex/gui/wiki", classes: false}}
+    - {name: tex-book-item, unzip: {zip: "${JAR1192}", prefix: assets/ic2/textures/item/misc/wiki_book.png, to: "${RUN}/derived/tex/items", classes: false}}
+    - {name: tex-chamber, unzip: {zip: "${JAR1192}", prefix: assets/ic2/textures/block/electric/generator/steam_reactor_chamber/up.png, to: "${RUN}/derived/tex/blocks/chamber", classes: false}}
+    - {name: place-turbine-front, copy: {from: "${RUN}/derived/tex/blocks/steam_turbine/active/active_south.png", to: "${RUN}/project/src/main/resources/assets/ic2cextras/textures/blocks/steam_turbine/active_front.png"}}
+    - {name: place-turbine-back, copy: {from: "${RUN}/derived/tex/blocks/steam_turbine/back/inactive_north.png", to: "${RUN}/project/src/main/resources/assets/ic2cextras/textures/blocks/steam_turbine/back.png"}}
+    - {name: place-turbine-down, copy: {from: "${RUN}/derived/tex/blocks/steam_turbine/down/active_down.png", to: "${RUN}/project/src/main/resources/assets/ic2cextras/textures/blocks/steam_turbine/down.png"}}
+    - {name: place-turbine-front-off, copy: {from: "${RUN}/derived/tex/blocks/steam_turbine/inactive/inactive_south.png", to: "${RUN}/project/src/main/resources/assets/ic2cextras/textures/blocks/steam_turbine/inactive_front.png"}}
+    - {name: place-turbine-side, copy: {from: "${RUN}/derived/tex/blocks/steam_turbine/side/active_east.png", to: "${RUN}/project/src/main/resources/assets/ic2cextras/textures/blocks/steam_turbine/side.png"}}
+    - {name: place-turbine-up, copy: {from: "${RUN}/derived/tex/blocks/steam_turbine/up/active_up.png", to: "${RUN}/project/src/main/resources/assets/ic2cextras/textures/blocks/steam_turbine/up.png"}}
+    - {name: place-reactor-gui-3, copy: {from: "${RUN}/derived/tex/gui/reactor_steam/gui6by3.png", to: "${RUN}/project/src/main/resources/assets/ic2cextras/textures/gui/steam_reactor_6by3.png"}}
+    - {name: place-reactor-gui-4, copy: {from: "${RUN}/derived/tex/gui/reactor_steam/gui6by4.png", to: "${RUN}/project/src/main/resources/assets/ic2cextras/textures/gui/steam_reactor_6by4.png"}}
+    - {name: place-reactor-gui-5, copy: {from: "${RUN}/derived/tex/gui/reactor_steam/gui6by5.png", to: "${RUN}/project/src/main/resources/assets/ic2cextras/textures/gui/steam_reactor_6by5.png"}}
+    - {name: place-reactor-gui-6, copy: {from: "${RUN}/derived/tex/gui/reactor_steam/gui6by6.png", to: "${RUN}/project/src/main/resources/assets/ic2cextras/textures/gui/steam_reactor_6by6.png"}}
+    - {name: place-reactor-gui-7, copy: {from: "${RUN}/derived/tex/gui/reactor_steam/gui6by7.png", to: "${RUN}/project/src/main/resources/assets/ic2cextras/textures/gui/steam_reactor_6by7.png"}}
+    - {name: place-reactor-gui-8, copy: {from: "${RUN}/derived/tex/gui/reactor_steam/gui6by8.png", to: "${RUN}/project/src/main/resources/assets/ic2cextras/textures/gui/steam_reactor_6by8.png"}}
+    - {name: place-reactor-gui-9, copy: {from: "${RUN}/derived/tex/gui/reactor_steam/gui6by9.png", to: "${RUN}/project/src/main/resources/assets/ic2cextras/textures/gui/steam_reactor_6by9.png"}}
+    - {name: place-book-gui, copy: {from: "${RUN}/derived/tex/gui/wiki/book.png", to: "${RUN}/project/src/main/resources/assets/ic2cextras/textures/gui/guide_book.png"}}
+    - {name: place-book-components, copy: {from: "${RUN}/derived/tex/gui/wiki/book_components.png", to: "${RUN}/project/src/main/resources/assets/ic2cextras/textures/gui/guide_components.png"}}
+    - {name: place-book-item, copy: {from: "${RUN}/derived/tex/items/wiki_book.png", to: "${RUN}/project/src/main/resources/assets/ic2cextras/textures/items/guide_book.png"}}
+    # the reactor fluid port texture: the steam reactor chamber's top, as it is (no pixels redrawn; cosmetic only)
+    - {name: tex-fluid-port, copy: {from: "${RUN}/derived/tex/blocks/chamber/up.png", to: "${RUN}/project/src/main/resources/assets/ic2cextras/textures/blocks/reactor_fluid_port.png"}}
+    # declarative content: whole-mod IR, the two units' IR (selection + overlay), their assets
+    - name: extract
+      porter: [extract, --src, "${D1192}", --version, "1.19.2", --mc-data, "${PORTER_CACHE}/mappings-1.19.2", --out, "${RUN}/ir-all"]
+    - name: select-barrels
+      porter: [select, --ir, "${RUN}/ir-all", --spec, "${PORT_DIR}/select/barrels.select.yaml", --sources, "${D1192}/java", --out, "${RUN}/ir/barrels"]
+    - name: select-steam
+      porter: [select, --ir, "${RUN}/ir-all", --spec, "${PORT_DIR}/select/steam.select.yaml", --sources, "${D1192}/java", --out, "${RUN}/ir/steam"]
+    - name: assets-barrels
+      porter: [assets, --src, "${D1192}/res", --from, "1.19.2", --to, "1.7.10", --out, "${RUN}/assets/barrels", --ir, "${RUN}/ir/barrels/barrels.block.ir.json",
+               --ir, "${RUN}/ir/barrels/barrels.blockEntity.ir.json", --ir, "${RUN}/ir/barrels/barrels.effect.ir.json", --ir, "${RUN}/ir/barrels/barrels.fluid.ir.json",
+               --ir, "${RUN}/ir/barrels/barrels.item.ir.json", --ir, "${RUN}/ir/barrels/barrels.menu.ir.json", --ir, "${RUN}/ir/barrels/barrels.mod.ir.json",
+               --ir, "${RUN}/ir/barrels/barrels.recipe.ir.json", --ir, "${RUN}/ir/barrels/barrels.unknown.ir.json", --legacy-names, NS_CAMEL,
+               --select, ic2, --literals, "${PORT_DIR}/select/barrels.logic-files.txt", --literals-root, "${D1192}/java",
+               --include, "textures/item/food_and_drink/mug/*", --include, "textures/item/food_and_drink/glass/*",
+               --include, "textures/item/food_and_drink/barrel/*", --include, textures/item/food_and_drink/barrel.png,
+               --include, textures/item/food_and_drink/whisky_grist.png, --include, "textures/mob_effect/shaky*",
+               --include, "textures/block/machine/mv/refinery/*"]
+    - name: assets-steam
+      porter: [assets, --src, "${D1192}/res", --from, "1.19.2", --to, "1.7.10", --out, "${RUN}/assets/steam", --ir, "${RUN}/ir/steam/steam.block.ir.json",
+               --ir, "${RUN}/ir/steam/steam.blockEntity.ir.json", --ir, "${RUN}/ir/steam/steam.fluid.ir.json", --ir, "${RUN}/ir/steam/steam.item.ir.json",
+               --ir, "${RUN}/ir/steam/steam.menu.ir.json", --ir, "${RUN}/ir/steam/steam.mod.ir.json", --ir, "${RUN}/ir/steam/steam.multiblock.ir.json",
+               --ir, "${RUN}/ir/steam/steam.recipe.ir.json", --ir, "${RUN}/ir/steam/steam.unknown.ir.json", --legacy-names, NS_CAMEL, --keep-model-files,
+               --select, ic2, --literals, "${PORT_DIR}/select/steam.logic-files.txt", --literals-root, "${D1192}/java",
+               --include, "textures/misc/gui/*", --include, textures/gui_sprites/misc/comparator_helper.png,
+               --include, textures/gui_sprites/misc/filter_helper.png, --include, textures/gui_sprites/misc/inventory_helper.png]
+
+generate:
+  langSections: true
+  units:
+    - name: barrels
+      args: [--version, "1.7.10", --embed, --gui-ids, 50-59, --potion-ids, 25-31, --asset-namespace, ic2cextras, --legacy-names, NS_CAMEL,
+             --modid, ic2cextras, --package, ic2cextras.ported.gen, --source-constructors, --gui-delegate, ic2cextras.ported.compat.PortedGui, --assets, "${RUN}/assets/barrels",
+             --id-map, "${PORT_DIR}/rules/ids/ic2c-host-ids.forge-1.7.10.yaml", --ir, "${RUN}/ir/barrels"]
+    - name: steam
+      args: [--version, "1.7.10", --embed, --gui-ids, 60-69, --potion-ids, 25-31, --asset-namespace, ic2cextras, --legacy-names, NS_CAMEL,
+             --modid, ic2cextras, --package, ic2cextras.ported.steam.gen, --source-constructors, --gui-delegate, ic2cextras.ported.compat.PortedGui, --assets, "${RUN}/assets/steam",
+             --id-map, "${PORT_DIR}/rules/ids/ic2c-host-ids.forge-1.7.10.yaml", --ir, "${RUN}/ir/steam"]
+
+closure:
+  source: ${D1192}/java
+  prefixes: [ic2.]
+  seeds:
+    - ic2.core.block.generators.tiles.FuelBoilerTileEntity
+    - ic2.core.block.generators.tiles.SteamTunnelTileEntity
+    - ic2.core.block.generators.tiles.SteamTurbineTileEntity
+    - ic2.core.block.generators.FuelBoilerBlock
+    - ic2.core.block.generators.TurbineBlock
+    - ic2.core.block.multi.TurbineMultiBlock
+    - ic2.core.block.multi.tiles.FuelBoilerLinkTileEntity
+    - ic2.core.block.storage.tiles.tank.BaseValveTileEntity
+    - ic2.core.block.storage.tiles.tank.PushingValveTileEntity
+    - ic2.core.block.generators.containers.FuelBoilerContainer
+    - ic2.core.block.generators.components.FuelBoilerComponent
+    # barrels / drinks / refinery / potion brewing (the classes of select/barrels.logic-files.txt)
+    - ic2.api.items.IDrinkContainer
+    - ic2.api.items.IDrinkableFluid
+    - ic2.api.recipes.ingridients.inputs.SubItemInput
+    - ic2.core.block.base.misc.comparator.types.special.BarrelComparator
+    - ic2.core.block.machines.components.mv.RefineryComponent
+    - ic2.core.block.machines.containers.mv.RefineryContainer
+    - ic2.core.block.machines.recipes.misc.AlcoholInput
+    - ic2.core.block.machines.recipes.misc.AlcoholOutput
+    - ic2.core.block.machines.recipes.misc.WhiskyOutput
+    - ic2.core.block.machines.tiles.mv.RefineryTileEntity
+    - ic2.core.block.misc.BarrelBlock
+    - ic2.core.block.misc.tiles.BarrelTileEntity
+    - ic2.core.entity.potion.ShakyPredicate
+    - ic2.core.item.block.BarrelItem
+    - ic2.core.item.food_and_drink.GlassItem
+    - ic2.core.item.food_and_drink.IC2Drink
+    - ic2.core.item.food_and_drink.IC2FoodsAndDrinks
+    - ic2.core.item.food_and_drink.MugItem
+    - ic2.core.item.food_and_drink.drinks.BaseTea
+    - ic2.core.item.food_and_drink.drinks.Beer
+    - ic2.core.item.food_and_drink.drinks.BlackTea
+    - ic2.core.item.food_and_drink.drinks.Cocoa
+    - ic2.core.item.food_and_drink.drinks.Coffee
+    - ic2.core.item.food_and_drink.drinks.ColdBlackTea
+    - ic2.core.item.food_and_drink.drinks.ColdDarkCoffee
+    - ic2.core.item.food_and_drink.drinks.ColdFruitTea
+    - ic2.core.item.food_and_drink.drinks.ColdGreenTea
+    - ic2.core.item.food_and_drink.drinks.ColdTea
+    - ic2.core.item.food_and_drink.drinks.DarkCoffee
+    - ic2.core.item.food_and_drink.drinks.FruitTea
+    - ic2.core.item.food_and_drink.drinks.GreenTea
+    - ic2.core.item.food_and_drink.drinks.HotCocoa
+    - ic2.core.item.food_and_drink.drinks.IcedTea
+    - ic2.core.item.food_and_drink.drinks.Milk
+    - ic2.core.item.food_and_drink.drinks.Rum
+    - ic2.core.item.food_and_drink.drinks.Tea
+    - ic2.core.item.food_and_drink.drinks.Whisky
+    - ic2.core.platform.recipes.misc.PotionBrewRegistry
+  include: [ic2.core.block.machines.recipes.ItemStackStrategy, ic2.core.platform.registries.IC2Properties,
+            ic2.core.platform.registries.IC2Potions, ic2.core.block.machines.recipes.RefiningRecipeList,
+            ic2.core.platform.registries.IC2People, ic2.api.util.SidedObject, ic2.core.item.base.IC2Item,
+            ic2.core.item.base.IC2BlockItem, ic2.core.item.base.PropertiesBuilder, ic2.core.item.base.IC2TexturedBlockItem]
+  cut: [ic2.core.platform.registries., ic2.core.IC2, ic2.core.platform.lang, ic2.core.platform.rendering, ic2.core.block.rendering,
+        ic2.core.wiki, ic2.core.platform.recipes, ic2.core.item., ic2.core.block.machines, ic2.core.block.crops, ic2.core.block.storage,
+        ic2.core.block.misc, ic2.core.networking.PacketManager, ic2.core.platform.events.IC2EventHandler, ic2.core.audio.,
+        ic2.core.energy., ic2.api.crops., ic2.core.block.transport.item., ic2.core.block.cables.,
+        ic2.core.inventory.filter.SpecialFilters, ic2.core.inventory.custom., ic2.api.recipes.RecipeRegistry,
+        ic2.core.block.base.ICamouflageBlock]
+  drop: [ic2.api.blocks.wrench.BaseWrenchHandler, ic2.api.blocks.wrench.ChestWrenchHandler, ic2.api.blocks.wrench.DispenserWrenchHandler,
+         ic2.api.blocks.wrench.HopperWrenchHandler, ic2.api.blocks.wrench.HorizontalWrenchHandler,
+         ic2.api.blocks.wrench.InvertedHorizontalWrenchHandler, ic2.api.blocks.wrench.ObserverBlockWrenchHandler,
+         ic2.api.blocks.wrench.PillarWrenchHandler, ic2.api.blocks.wrench.PistonWrenchHandler, ic2.api.blocks.wrench.StairWrenchHandler,
+         ic2.core.platform.corehacks.mixins.client.ScreenMixin, ic2.core.platform.corehacks.mixins.server.ChunkMixin,
+         ic2.core.platform.corehacks.mixins.server.ContainerMixin, ic2.core.platform.corehacks.mixins.server.SlotMixin,
+         ic2.core.entity.potion.SimpleEffect, ic2.core.entity.potion.RadiationEffect]
+  stubExtra: [ic2.api.crops.ICropTile, ic2.api.recipes.registries.IIngredientRegistry, ic2.core.audio.IAudioPosition,
+              ic2.core.inventory.base.ICurioGetter, ic2.core.platform.recipes.misc.GlobalRecipes,
+              ic2.core.platform.rendering.features.item.IMultiItemModel]
+  # the base: IC2 Classic 1.2.6 (the host on 1.7.10); identical classes would be left to it (measured: 0/7 identical)
+  known: ["${D1710}/java"]
+
+# public rules: the composite pack and the whole adapter pack (incl. the modern-API files), then the IC2C rules
+rewrite:
+  rules: ["${RULES}/composite/1.19.2__1.7.10", "${RULES}/packs/adapters/1.19.2__1.7.10", "${PORT_DIR}/rules/pilot-curated/vanilla-forge.rule.yaml",
+          "${RUN}/work/gen/barrels/porter-rules", "${RUN}/work/gen/steam/porter-rules", "${PORT_DIR}/rules/pilot-curated/content-host.rule.yaml",
+          "${PORT_DIR}/rules/port-ic2c", "${PORT_DIR}/rules/closure-guifix.rule.yaml"]
+  graph: ["${PORTER_CACHE}/graph/out"]
+  platform: [ic2.]
+  relocate: [ic2.=ic2cextras.ported.]
+  shimPackage: ic2cextras.ported.shim
+  jvmArgs: [-Xmx2g, -Xss16m]
+
+install:
+  stubs:
+    ownPrefix: ic2cextras.
+    unportedPrefixes: [ic2cextras.ported.core., ic2cextras.ported.api.]
+    header: "// porter:hub-stub - generated by porter from the rewritten hub class; members = those the closure references.\n"
+    # hub members with a 1.7.10 body/initializer from rules/port-ic2c/hubs.rule.yaml
+    keep: [ic2.core.platform.recipes.misc.GlobalRecipes#refining, ic2.core.platform.recipes.misc.GlobalRecipes#potions,
+           ic2.core.platform.registries.IC2Tiles#createTile, ic2.core.platform.registries.IC2Tags#createForgeItemTag,
+           ic2.core.platform.registries.IC2Tags#createFluidTag, ic2.core.block.rendering.world.impl.BlockHighlighter#IHighlightController,
+           ic2.core.block.rendering.world.impl.BlockHighlighter#Highlighter,
+           ic2.core.block.base.ICamouflageBlock#getTile]
+  srgMappings: ${PORTER_CACHE}/graph/out/mappings/1.19.2.tiny
+  passes: [srgmoj, java8, tector, edits, assetns, imports]
+  edits: edits/manual-edits.yaml
+  assetNamespaces: [{from: ic2, to: ic2cextras, paths: [textures/, misc/gui/]}]
+  # adapters: porter's generic 1.19.2-API adapter pack (bundled); overlays/adapters: IC2C 1.2.6 interop + Carbon Config
+  adapters: bundled
+  overlays: [overlays/adapters]
+  langKeys:
+    scan: src/main/java/ic2cextras/ported/core
+    pattern: '"((?:gui|misc|tooltip)\.ic2\.[a-z0-9_.]+)"'
+    source: ${D1192}/res/assets/ic2/lang
+    target: src/main/resources/assets/ic2cextras/lang
+    locales: {en_us: en_US, ru_ru: ru_RU, uk_ua: uk_UA, zh_cn: zh_CN, cs_cz: cs_CZ, ja_jp: ja_JP, ko_kr: ko_KR, pt_br: pt_BR}
+    marker: porter:closure-gui
+
+loop:
+  useClasspath: true
+  args: [--runner, javac, --max-iter, "10", --shim,
+         --javac-opt=--release, --javac-opt=8, --javac-opt=-processorpath,
+         "--javac-opt=${RUN}/project/build/porter-processor/jabel-javac-plugin-1.0.2-GTNH.jar;${RUN}/project/build/porter-processor/byte-buddy-1.14.9.jar;${RUN}/project/build/porter-processor/byte-buddy-agent-1.14.9.jar",
+         --javac-opt=-Xplugin:jabel,
+         --rules, "${RULES}/composite/1.19.2__1.7.10", --rules, "${RULES}/packs/adapters/1.19.2__1.7.10", --rules, "${PORT_DIR}/rules/pilot-curated/vanilla-forge.rule.yaml",
+         --rules, "${PORT_DIR}/rules/port-ic2c", --rules, "${PORT_DIR}/rules/closure-guifix.rule.yaml",
+         --rules, "${RUN}/work/gen/barrels/porter-rules", --rules, "${RUN}/work/gen/steam/porter-rules",
+         --graph, "${PORTER_CACHE}/graph/out", --no-queue]
+  jvmArgs: [-Xmx1800m]
+
+compile:
+  jvmArgs: [-Xmx1500m]
+  options: [--release, "8", -Xplugin:jabel]
+  processorpath: ["${RUN}/project/build/porter-processor/*.jar"]
+  generatedSources:
+    - path: ic2cextras/Tags.java
+      content: "package ic2cextras;\npublic class Tags { public static final String VERSION = \"dev\"; }\n"
+  castfixRounds: 3
+
+build:
+  command: [./gradlew, --no-daemon, spotlessApply, build, neiCheck]
+  env: {JAVA_HOME: "${BUILD_JAVA_HOME}"}
+  jar: build/libs/ic2cextras-0.1.0.jar
+  obfcheckPrefix: ic2cextras/

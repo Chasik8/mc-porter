@@ -1,0 +1,32 @@
+schemaVersion: 1
+id: barrel-beer
+description: >-
+  scenarios.md S1 Beer: barrel on a wooden scaffold, 8 water cells + 16 wheat + 8 hops, aged 24000 + 72000 ticks
+  (stage 1 Youngster, stage 2 Beer), tree tap on the north side, one click with 4 mugs -> 1 beer, 7000 mB left.
+world: flat-void
+maxTicks: 100000
+tolerance:
+  "*": { abs: 0 }
+  "block:[0,64,0]": { ignore: true }
+steps:
+  - place_block: { at: [0, 64, 0], block: "ic2:scaffold_wooden" }
+  - interact: { at: [0, 64, 0], side: up, holding: "ic2:barrel" }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/brewType", "field:[0,64,0]/fluidAmount", "field:[0,64,0]/wheatAmount", "field:[0,64,0]/hopsAmount", "field:[0,64,0]/beerQuality", "field:[0,64,0]/alcoholLevel", "field:[0,64,0]/solidRatio", "field:[0,64,0]/opened", "player:inv", "block:[0,64,0]"] }
+  - interact: { at: [0, 64, 0], side: up, holding: "alias:cell_water_x8" }
+  - interact: { at: [0, 64, 0], side: up, holding: "alias:wheat_x16" }
+  - interact: { at: [0, 64, 0], side: up, holding: "alias:hops_x8" }
+  - sample: { what: ["field:[0,64,0]/brewType", "field:[0,64,0]/fluidAmount", "field:[0,64,0]/wheatAmount", "field:[0,64,0]/hopsAmount", "field:[0,64,0]/beerQuality", "field:[0,64,0]/alcoholLevel", "field:[0,64,0]/solidRatio", "field:[0,64,0]/opened", "player:inv", "block:[0,64,0]"] }
+  - assert: { expr: "field:[0,64,0]/brewType == 1 && field:[0,64,0]/fluidAmount == 8000 && field:[0,64,0]/wheatAmount == 16 && field:[0,64,0]/hopsAmount == 8", message: "type 1, 8000 mB, wheat 16, hops 8" }
+  - tick: 24000
+  - sample: { what: ["field:[0,64,0]/brewType", "field:[0,64,0]/fluidAmount", "field:[0,64,0]/wheatAmount", "field:[0,64,0]/hopsAmount", "field:[0,64,0]/beerQuality", "field:[0,64,0]/alcoholLevel", "field:[0,64,0]/solidRatio", "field:[0,64,0]/opened", "player:inv", "block:[0,64,0]"] }
+  - assert: { expr: "field:[0,64,0]/beerQuality == 1", message: "stage 1 (Youngster) after 24000 ticks" }
+  - tick: 72000
+  - sample: { what: ["field:[0,64,0]/brewType", "field:[0,64,0]/fluidAmount", "field:[0,64,0]/wheatAmount", "field:[0,64,0]/hopsAmount", "field:[0,64,0]/beerQuality", "field:[0,64,0]/alcoholLevel", "field:[0,64,0]/solidRatio", "field:[0,64,0]/opened", "player:inv", "block:[0,64,0]"] }
+  - assert: { expr: "field:[0,64,0]/beerQuality == 2", message: "stage 2 (Beer) after +72000 ticks" }
+  - interact: { at: [0, 64, 0], side: north, holding: "ic2:tree_tap" }
+  - sample: { what: ["field:[0,64,0]/brewType", "field:[0,64,0]/fluidAmount", "field:[0,64,0]/wheatAmount", "field:[0,64,0]/hopsAmount", "field:[0,64,0]/beerQuality", "field:[0,64,0]/alcoholLevel", "field:[0,64,0]/solidRatio", "field:[0,64,0]/opened", "player:inv", "block:[0,64,0]"] }
+  - assert: { expr: "field:[0,64,0]/opened == true && field:[0,64,0]/alcoholLevel == 2 && field:[0,64,0]/solidRatio == 6", message: "opened; alc 2 (White), solid 6 (Stodge)" }
+  - interact: { at: [0, 64, 0], side: up, holding: "alias:mug_x4" }
+  - sample: { what: ["field:[0,64,0]/brewType", "field:[0,64,0]/fluidAmount", "field:[0,64,0]/wheatAmount", "field:[0,64,0]/hopsAmount", "field:[0,64,0]/beerQuality", "field:[0,64,0]/alcoholLevel", "field:[0,64,0]/solidRatio", "field:[0,64,0]/opened", "player:inv", "block:[0,64,0]"] }
+  - assert: { expr: "field:[0,64,0]/fluidAmount == 7000", message: "one mug drawn (1000 mB), 7000 mB left" }

@@ -97,6 +97,78 @@ class PortToolsTest {
     }
 
     @Test
+    void inventoryOverlapCountsSharedTokenEightGrams() {
+        String code = "class A { int f(int a, int b) { return a * b + a - b; } }";
+        java.util.Set<Long> ref = InventoryCommand.shingles(InventoryCommand.tokens(code));
+        assertEquals(1.0, InventoryCommand.overlap("package x;\nimport y.Z;\n// c\n" + code, ref), 1e-9);
+        assertEquals(0.0, InventoryCommand.overlap("class B { void g() { System.out.println(42); } }", ref), 1e-9);
+    }
+
+    @Test
+    void hubStubStubsUsedNestedTypesAndDropsObjectSupertypes() {
+        Path rw = tmp.resolve("rw");
+        src(rw, "my.ported.block.Valve", """
+                import my.ported.base.ICamo;
+                public class Valve implements ICamo { Object w = new ICamo.Wrapper(this); }
+                """);
+        src(rw, "my.ported.base.ICamo", """
+                import net.minecraft.world.level.Level;
+                public interface ICamo {
+                    default int getTile() { return 1; }
+                    public static class Wrapper
+                    implements Object {
+                        ICamo owner;
+                        public Wrapper(ICamo owner) { this.owner = owner; }
+                        public boolean effects(Level l) { return owner.getTile() > 0; }
+                    }
+                }
+                """);
+        List<Relocation> rel = List.of(Relocation.parse("com.example.mod.=my.ported."));
+        List<String> fr = List.of("com.example.mod.base.ICamo");
+        HubStubs hs = new HubStubs(rw, List.of("com.example.mod.block.Valve"), fr, Set.of(),
+                new HubStubs.Options(rel, "my.", List.of("my.ported.base."), "// stub\n", Set.of("com.example.mod.base.ICamo#getTile")));
+        hs.write(rw, fr, tmp.resolve("out"), null);
+        String stub = Text.read(tmp.resolve("out/my/ported/base/ICamo.java"));
+        assertTrue(stub.contains("default int getTile() { return 1; }"), "kept member: " + stub);
+        assertTrue(stub.contains("public Wrapper(ICamo owner) {"), stub);
+        assertFalse(stub.contains("implements Object"), stub);
+        assertFalse(stub.contains("effects"), "unreferenced member of a nested type dropped: " + stub);
+        assertFalse(stub.contains("Level"), stub);
+    }
+
+    @Test
+    void hubRedirectedByATypeRuleGetsNoStub() {
+        assertTrue(HubStubs.redirected("package my.ported.net;\nimport my.compat.Packets;\npublic class Packets {}\n", "com.example.mod.net.Packets"));
+        assertFalse(HubStubs.redirected("package my.ported.net;\nimport my.compat.Other;\npublic class Packets {}\n", "com.example.mod.net.Packets"));
+    }
+
+    @Test
+    void hubStubKeepsListedMembersChainsConstructorsAndDropsHubLocalInitialisers() {
+        Path rw = tmp.resolve("rw2");
+        src(rw, "my.ported.machine.Mill", "import my.ported.registry.Types;\nimport my.ported.registry.Base;\n"
+                + "public class Mill extends Base { Object a = Types.MILL; Object b = Types.OTHER; Object c = Types.PLAIN; }\n");
+        src(rw, "my.ported.registry.Types", "public class Types {\n    public static Object MILL = Types.create(\"mill\");\n"
+                + "    public static Object OTHER = Types.lookup(\"other\");\n    public static Object PLAIN = new Object();\n"
+                + "    public static Object create(String n) { return n.length(); }\n    static Object lookup(String n) { return null; }\n}\n");
+        src(rw, "my.ported.registry.Base", "public class Base extends Thread {\n    public Base(String name, int size) { super(name); }\n"
+                + "    public Base(String name) { this(name, size(name)); }\n    static int size(String n) { return 1; }\n}\n");
+        List<Relocation> rel = List.of(Relocation.parse("com.example.mod.=my.ported."));
+        List<String> port = List.of("com.example.mod.machine.Mill");
+        List<String> fr = List.of("com.example.mod.registry.Types", "com.example.mod.registry.Base");
+        HubStubs hs = new HubStubs(rw, port, fr, Set.of(), new HubStubs.Options(rel, "my.", List.of("my.ported.registry."), "// stub\n",
+                Set.of("com.example.mod.registry.Types#create")));
+        hs.write(rw, fr, tmp.resolve("out2"), null);
+        String types = Text.read(tmp.resolve("out2/my/ported/registry/Types.java"));
+        assertTrue(types.contains("public static Object create(String n) { return n.length(); }"), "kept as rewritten: " + types);
+        assertTrue(types.contains("public static Object MILL = Types.create(\"mill\");"), "calls a kept method: " + types);
+        assertTrue(types.contains("public static Object OTHER;"), "calls a stubbed hub method: no initialiser: " + types);
+        assertTrue(types.contains("public static Object PLAIN = new Object();"), types);
+        String base = Text.read(tmp.resolve("out2/my/ported/registry/Base.java"));
+        assertTrue(base.contains("public Base(String name, int size) {\n        super(name);\n        // porter:hub-stub inert"), base);
+        assertTrue(base.contains("public Base(String name) {\n        // porter:hub-stub inert"), "this(...) with a hub-local call is not kept: " + base);
+    }
+
+    @Test
     void java8PassRewritesRecordsAndPrivateInterfaceMethods() {
         Path d = tmp.resolve("j8");
         src(d, "a.P", "public record P(int x, String name) { }\n");
@@ -123,6 +195,15 @@ class PortToolsTest {
         assertTrue(Text.read(d.resolve("a/MyTile.java")).contains("this(new BlockPos(0, 0, 0), null);"));
         assertEquals(1, SourcePasses.unusedImports(d));
         assertFalse(Text.read(d.resolve("a/MyTile.java")).contains("a.Unused"));
+        src(d, "a.Msg", """
+                import a.Tier;
+
+                public class Msg {
+                    String s = "Unsupported Tier";
+                }
+                """);
+        assertEquals(1, SourcePasses.unusedImports(d));
+        assertFalse(Text.read(d.resolve("a/Msg.java")).contains("a.Tier"), "a word in a string literal is no use");
         SourcePasses.edits(d, List.of(new SourcePasses.SourceEdit("a/MyTile.java", "(extends )Base\\b", "\\1NewBase", "rebase")));
         assertTrue(Text.read(d.resolve("a/MyTile.java")).contains("extends NewBase"));
         assertThrows(IllegalStateException.class, () -> SourcePasses.edits(d,
@@ -165,6 +246,18 @@ class PortToolsTest {
         assertEquals(5, r.errors());
         assertEquals(2, r.symbols().stream().filter(e -> e.key().equals("method Level#m_46467_")).findFirst().orElseThrow().count());
         assertTrue(r.symbols().stream().anyMatch(e -> e.key().equals("class net.minecraft.world.InteractionHand")));
+    }
+
+    @Test
+    void castFixMovesCfrTernaryAssignmentBack() {
+        Path p = tmp.resolve("proj2");
+        Text.write(p.resolve("src/C.java"), "class C {\n    int f(int a, int b) {\n        float ratio;\n"
+                + "        float f = b > 0 ? (float) a / b : (ratio = a > 0 ? 10.0f : 0.0f);\n        return ratio >= 4.0f ? 1 : 0;\n    }\n}\n");
+        String log = "src/C.java:5: error: variable ratio might not have been initialized\n"
+                + "        return ratio >= 4.0f ? 1 : 0;\n               ^\n1 error\n";
+        assertEquals(1, CastFix.apply(log, p));
+        String c = Text.read(p.resolve("src/C.java"));
+        assertTrue(c.contains("        ratio = b > 0 ? (float) a / b : a > 0 ? 10.0f : 0.0f;\n"), c);
     }
 
     @Test

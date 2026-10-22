@@ -1,0 +1,72 @@
+# closure port: remaining entity ray-tracing symbols.
+schemaVersion: 1
+id: r-closure-mc-call-entity-getpickradius
+description: "call net.minecraft.world.entity.Entity#getPickRadius() -> EntityExt.pickRadius($e)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.entity.Entity#getPickRadius()"
+  bind: { recv: "$e" }
+replace: "EntityExt.pickRadius($e)"
+imports: ["dev.porter.shim.mc.EntityExt"]
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port (entity ray-tracing, round 2): source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - context: "Entity e; import net.minecraft.world.entity.Entity"
+    before: "float f = e.getPickRadius();"
+    after: "float f = EntityExt.pickRadius(e);"
+---
+schemaVersion: 1
+id: r-closure-mc-call-level-getentities-pred
+description: "call net.minecraft.world.level.Level#getEntities(Entity, AABB, Predicate) -> EntityExt.getEntities($w, $e, $a, $p)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.level.Level#getEntities(net.minecraft.world.entity.Entity, net.minecraft.world.phys.AABB, java.util.function.Predicate)"
+  bind: { recv: "$w", args: ["$e", "$a", "$p"] }
+replace: "EntityExt.getEntities($w, $e, $a, $p)"
+imports: ["dev.porter.shim.mc.EntityExt"]
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port (entity ray-tracing, round 2): source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - context: "Level w; Entity e; AABB a; java.util.function.Predicate p; import net.minecraft.world.level.Level; import net.minecraft.world.entity.Entity; import net.minecraft.world.phys.AABB"
+    before: "Object l = w.getEntities(e, a, p);"
+    after: "Object l = EntityExt.getEntities(w, e, a, p);"
+---
+schemaVersion: 1
+id: r-closure-mc-call-aabb-clip
+description: "call net.minecraft.world.phys.AABB#clip(Vec3, Vec3) -> EntityExt.clip($a, $f, $t)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.phys.AABB#clip(net.minecraft.world.phys.Vec3, net.minecraft.world.phys.Vec3)"
+  bind: { recv: "$a", args: ["$f", "$t"] }
+replace: "EntityExt.clip($a, $f, $t)"
+imports: ["dev.porter.shim.mc.EntityExt"]
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port (entity ray-tracing, round 2): source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - context: "AABB a; Vec3 f; Vec3 t; import net.minecraft.world.phys.AABB; import net.minecraft.world.phys.Vec3"
+    before: "Object o = a.clip(f, t);"
+    after: "Object o = EntityExt.clip(a, f, t);"
+---
+schemaVersion: 1
+id: r-closure-mc-call-object-broadcastbreakevent
+description: "call (untyped receiver) #broadcastBreakEvent(InteractionHand) -> EntityExt.broadcastBreak($e, $h)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "java.lang.Object#broadcastBreakEvent(net.minecraft.world.InteractionHand)"
+  bind: { recv: "$e", args: ["$h"] }
+replace: "EntityExt.broadcastBreak($e, $h)"
+imports: ["dev.porter.shim.mc.EntityExt"]
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port (entity ray-tracing, round 2): source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - context: "Object e; import net.minecraft.world.InteractionHand; InteractionHand h"
+    before: "e.broadcastBreakEvent(h);"
+    after: "EntityExt.broadcastBreak(e, h);"

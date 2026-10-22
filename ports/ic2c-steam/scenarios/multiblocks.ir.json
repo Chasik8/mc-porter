@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "version": "forge-1.19.2",
+    "modId": "ic2",
+    "tool": "testkit (hand-written from ic2cextras Structures + IC2C 2.1.3.4 testStructure)"
+  },
+  "nodes": [
+    {
+      "kind": "multiblock",
+      "id": "ic2:steam_tunnel",
+      "size": [
+        3,
+        3,
+        5
+      ],
+      "palette": {
+        "S": "ic2:turbine_multi_block",
+        "K": "ic2:steam_tunnel",
+        "_": "minecraft:air"
+      },
+      "layers": [
+        [
+          "SSS",
+          "SSS",
+          "SSS",
+          "SSS",
+          "SSS"
+        ],
+        [
+          "SKS",
+          "S_S",
+          "S_S",
+          "S_S",
+          "SSS"
+        ],
+        [
+          "SSS",
+          "SSS",
+          "SSS",
+          "SSS",
+          "SSS"
+        ]
+      ],
+      "controller": {
+        "block": "ic2:steam_tunnel",
+        "pos": [
+          1,
+          1,
+          0
+        ],
+        "facing": "north"
+      },
+      "rotatable": true,
+      "provenance": {
+        "file": "manual",
+        "line": 0,
+        "version": "forge-1.19.2",
+        "via": "manual"
+      }
+    },
+    {
+      "kind": "multiblock",
+      "id": "ic2:fuel_boiler",
+      "size": [
+        2,
+        2,
+        2
+      ],
+      "palette": {
+        "B": "ic2:fuel_boiler_structure",
+        "K": "ic2:fuel_boiler"
+      },
+      "layers": [
+        [
+          "BB",
+          "BB"
+        ],
+        [
+          "BK",
+          "BB"
+        ]
+      ],
+      "controller": {
+        "block": "ic2:fuel_boiler",
+        "pos": [
+          1,
+          1,
+          0
+        ],
+        "facing": "north"
+      },
+      "rotatable": true,
+      "provenance": {
+        "file": "manual",
+        "line": 0,
+        "version": "forge-1.19.2",
+        "via": "manual"
+      }
+    }
+  ]
+}

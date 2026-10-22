@@ -1,0 +1,120 @@
+# carbonconfig library adapter rules (private; shim.lib adapters)
+schemaVersion: 1
+id: r-closure-mc-type-configentry
+description: "type carbonconfiglib.config.ConfigEntry -> dev.porter.shim.lib.ConfigEntry"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "carbonconfiglib.config.ConfigEntry"
+replace: "dev.porter.shim.lib.ConfigEntry"
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import carbonconfiglib.config.ConfigEntry;"
+    after: "import dev.porter.shim.lib.ConfigEntry;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-configentry-intvalue
+description: "type carbonconfiglib.config.ConfigEntry$IntValue -> dev.porter.shim.lib.ConfigEntry.IntValue"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "carbonconfiglib.config.ConfigEntry$IntValue"
+replace: "dev.porter.shim.lib.ConfigEntry.IntValue"
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import carbonconfiglib.config.ConfigEntry.IntValue;"
+    after: "import dev.porter.shim.lib.ConfigEntry.IntValue;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-configentry-doublevalue
+description: "type carbonconfiglib.config.ConfigEntry$DoubleValue -> dev.porter.shim.lib.ConfigEntry.DoubleValue"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "carbonconfiglib.config.ConfigEntry$DoubleValue"
+replace: "dev.porter.shim.lib.ConfigEntry.DoubleValue"
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import carbonconfiglib.config.ConfigEntry.DoubleValue;"
+    after: "import dev.porter.shim.lib.ConfigEntry.DoubleValue;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-configentry-floatvalue
+description: "type carbonconfiglib.config.ConfigEntry$FloatValue -> dev.porter.shim.lib.ConfigEntry.FloatValue"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "carbonconfiglib.config.ConfigEntry$FloatValue"
+replace: "dev.porter.shim.lib.ConfigEntry.FloatValue"
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import carbonconfiglib.config.ConfigEntry.FloatValue;"
+    after: "import dev.porter.shim.lib.ConfigEntry.FloatValue;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-configentry-longvalue
+description: "type carbonconfiglib.config.ConfigEntry$LongValue -> dev.porter.shim.lib.ConfigEntry.LongValue"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "carbonconfiglib.config.ConfigEntry$LongValue"
+replace: "dev.porter.shim.lib.ConfigEntry.LongValue"
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import carbonconfiglib.config.ConfigEntry.LongValue;"
+    after: "import dev.porter.shim.lib.ConfigEntry.LongValue;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-configentry-boolvalue
+description: "type carbonconfiglib.config.ConfigEntry$BoolValue -> dev.porter.shim.lib.ConfigEntry.BoolValue"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "carbonconfiglib.config.ConfigEntry$BoolValue"
+replace: "dev.porter.shim.lib.ConfigEntry.BoolValue"
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import carbonconfiglib.config.ConfigEntry.BoolValue;"
+    after: "import dev.porter.shim.lib.ConfigEntry.BoolValue;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-configentry-stringvalue
+description: "type carbonconfiglib.config.ConfigEntry$StringValue -> dev.porter.shim.lib.ConfigEntry.StringValue"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "carbonconfiglib.config.ConfigEntry$StringValue"
+replace: "dev.porter.shim.lib.ConfigEntry.StringValue"
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import carbonconfiglib.config.ConfigEntry.StringValue;"
+    after: "import dev.porter.shim.lib.ConfigEntry.StringValue;"
+---
+schemaVersion: 1
+id: r-closure-mc-type-configsection
+description: "type carbonconfiglib.config.ConfigSection -> dev.porter.shim.lib.ConfigSection"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "carbonconfiglib.config.ConfigSection"
+replace: "dev.porter.shim.lib.ConfigSection"
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
+tests:
+  - before: "import carbonconfiglib.config.ConfigSection;"
+    after: "import dev.porter.shim.lib.ConfigSection;"

@@ -1,0 +1,857 @@
+schemaVersion: 1
+id: steam-turbine-standalone
+description: >-
+  Standalone steam turbine block (1.7.10 only): steam is fed at 128 mB/t for 400 ticks (rotor spins up 0.005/t, EU buffer
+  fills to 4000, rotor then coasts down while the buffer stays full), then the feed stops. Numbers are compared between
+  jars.
+world: flat-void
+maxTicks: 2000
+tolerance:
+  "*": { abs: 0 }
+steps:
+  - place_block: { at: [0, 64, 0], block: "ic2:steam_turbine" }
+  - tick: 2
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - fill_fluid: { at: [0, 64, 0], fluid: "ic2:steam", amount: 128 }
+  - tick: 1
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - tick: 250
+  - sample: { what: ["field:[0,64,0]/energy", "field:[0,64,0]/speed", "field:[0,64,0]/lastProduction", "fluid:[0,64,0]"] }
+  - assert: { expr: "field:[0,64,0]/energy > 0", message: "turbine produced energy" }

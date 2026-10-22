@@ -1,0 +1,17 @@
+# Steam: fuel boiler, steam tunnel, steam turbine, valves, steam fluid (porter select).
+# Ids are IC2 Classic 2.1.3.4 registry names; the classes are its logic classes (relocated).
+unit: steam
+modId: ic2
+seed: '^ic2:(steam_turbine|steam_tunnel|fuel_boiler|fuel_boiler_structure|turbine_multi_block|valve|valve_pushing|steam)$'
+customTypes: []
+unknownFiles: [FuelBoilerTileEntity.java, SteamTunnelTileEntity.java, SteamTurbineTileEntity.java, TurbineMultiBlock.java, FuelBoilerBlock.java, TurbineBlock.java]
+hostIds: [../rules/ids/ic2c-host-ids.forge-1.7.10.yaml]
+hostKeep: ['ic2:steam_turbine']   # in the host id map since the install round; the unit still generates it
+relocate: ['ic2.=ic2cextras.ported.']
+# framework classes shared by hundreds of objects: the generated base is used instead
+generic: [ic2.core.item.base.IC2SimpleItem, ic2.core.fluid.IC2Fluid, ic2.core.entity.potion.SimpleEffect,
+          ic2.core.block.machines.BaseMachineBlock, ic2.core.item.misc.CellItem, ic2.core.block.base.IC2Block, ic2.core.item.base.IC2BlockItem]
+legacyNames: {from: 'ic2.', to: 'ic2cextras.', source: 'pilot-select:ns-camel(ic2cextras)'}
+# IC2C draws the GUI of containers/<x>/<Name>Container with components/<x>/<Name>Component
+screenConvention: {replace: [['.containers.', '.components.']], suffix: [Container, Component]}
+overlay: steam.overlay.yaml

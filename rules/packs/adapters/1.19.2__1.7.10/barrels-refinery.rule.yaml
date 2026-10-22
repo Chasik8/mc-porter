@@ -1,0 +1,37 @@
+schemaVersion: 1
+id: r-closure-mc-call-fluidstack-nullsafe-containsfluid
+description: "call net.minecraftforge.fluids.FluidStack#containsFluid(net.minecraftforge.fluids.FluidStack) -> FluidStacks.containsFluid($s, $o) (1.19.2 FluidStack.EMPTY is null on 1.7.10)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraftforge.fluids.FluidStack#containsFluid(net.minecraftforge.fluids.FluidStack)"
+  bind: { recv: "$s", args: ["$o"] }
+replace: "FluidStacks.containsFluid($s, $o)"
+imports: ["dev.porter.shim.mc.FluidStacks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: machine recipe lookup (an empty second tank is null on 1.7.10)" }
+tests:
+  - context: "FluidStack s; FluidStack o; import net.minecraftforge.fluids.FluidStack"
+    before: "boolean b = s.containsFluid(o);"
+    after: "boolean b = FluidStacks.containsFluid(s, o);"
+---
+schemaVersion: 1
+id: r-closure-mc-new-fluidstack-copy-amount
+description: "new net.minecraftforge.fluids.FluidStack(net.minecraftforge.fluids.FluidStack, int) -> FluidStacks.withAmount($s, $n) (1.19.2 FluidStack.EMPTY is null on 1.7.10)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  new: "net.minecraftforge.fluids.FluidStack(net.minecraftforge.fluids.FluidStack, int)"
+  bind: { args: ["$s", "$n"] }
+replace: "FluidStacks.withAmount($s, $n)"
+imports: ["dev.porter.shim.mc.FluidStacks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: a machine drains an empty second tank" }
+tests:
+  - context: "FluidStack s; import net.minecraftforge.fluids.FluidStack"
+    before: "Object c = new FluidStack(s, 5);"
+    after: "Object c = FluidStacks.withAmount(s, 5);"

@@ -27,6 +27,9 @@ import java.util.regex.Pattern;
  *       fields are kept when they only use valid types and call nothing.</li>
  * </ul>
  * Hand-written hubs live in an overrides directory ({@code <path>.java}) and are copied instead of the stub.
+ * Members listed in {@link Options#keep} ({@code a.b.Hub#member}, source-version FQN) are copied as rewritten - body,
+ * initializer and all, whether the closure references them or not: the port gives them target-side code with rule
+ * declaration edits ({@code edit: body / initializer}) instead of a hand-written hub.
  */
 public final class HubStubs {
     public static final String DEFAULT_HEADER =
@@ -47,7 +50,7 @@ public final class HubStubs {
     private static final Pattern ANNOT = Text.re("@\\w+(?:\\.\\w+)*(?:\\s*\\([^)]*\\))?");
     private static final Pattern WORD = Text.re("\\b\\w+\\b");
     private static final Pattern QUAL = Text.re("\\b([A-Z]\\w*)\\s*\\.\\s*(\\w+)\\b");
-    private static final Pattern NEW = Text.re("\\bnew\\s+([A-Z]\\w*)\\s*[(<]");
+    private static final Pattern NEW = Text.re("\\bnew\\s+(?:[A-Z]\\w*\\s*\\.\\s*)*([A-Z]\\w*)\\s*[(<]"); // Outer.Nested: the nested name
     private static final Pattern EXTENDS = Text.re("\\bextends\\s+([A-Z]\\w*)");
     private static final Pattern STATIC_IMPORT = Text.re("import\\s+static\\s+[\\w.]*?\\.([A-Z]\\w*)\\.(\\w+)\\s*;");
     private static final Pattern CAP_WORD = Text.re("\\b([A-Z]\\w*)\\b");
@@ -68,10 +71,20 @@ public final class HubStubs {
     private static final Pattern DECL_ANNOT = Text.re("^\\s*@(\\w+)(\\([^)]*\\))?\\s*$\\n?", Pattern.MULTILINE);
     private static final Pattern ANY_IMPORT = Text.re("^\\s*import\\s+[^;]+;", Pattern.MULTILINE);
     private static final Pattern IMPORT_LINE = Text.re("^\\s*import\\s+(?:static\\s+)?([\\w.*]+)\\s*;[ \\t]*\\n", Pattern.MULTILINE);
+    private static final Pattern NESTED_REF = Text.re("\\b([A-Z]\\w*)\\s*\\.\\s*([A-Z]\\w*)\\b");
     private static final Pattern LIST_SPLIT = Text.re(",(?![^<]*>)");
 
     /** Settings: relocations of the mod's classes, own output prefix and the relocated packages that were not ported. */
-    public record Options(List<Relocation> relocations, String ownPrefix, List<String> unportedPrefixes, String header) {
+    public record Options(List<Relocation> relocations, String ownPrefix, List<String> unportedPrefixes, String header,
+                          Set<String> keep) {
+        public Options {
+            keep = keep == null ? Set.of() : Set.copyOf(keep);
+        }
+
+        /** Options without kept members. */
+        public Options(List<Relocation> relocations, String ownPrefix, List<String> unportedPrefixes, String header) {
+            this(relocations, ownPrefix, unportedPrefixes, header, Set.of());
+        }
     }
 
     private final Options opts;
@@ -111,6 +124,7 @@ public final class HubStubs {
     public Map<String, Integer> write(Path rw, List<String> frontierC, Path out, Path overrides) {
         int stubs = 0;
         int over = 0;
+        int redirectedCount = 0;
         for (String c : frontierC) {
             String rel = Relocation.path(opts.relocations(), c);
             Path dst = out.resolve(rel);
@@ -119,7 +133,12 @@ public final class HubStubs {
                 txt = Text.read(overrides.resolve(rel));
                 over++;
             } else {
-                txt = opts.header() + stubClass(Text.read(rw.resolve(rel)), c);
+                String rewritten = Text.read(rw.resolve(rel));
+                if (redirected(rewritten, c)) {
+                    redirectedCount++;
+                    continue; // a type rule sent every use of the hub to another class: no stub
+                }
+                txt = opts.header() + stubClass(rewritten, c);
                 stubs++;
             }
             Text.write(dst, txt);
@@ -127,7 +146,25 @@ public final class HubStubs {
         Map<String, Integer> m = new java.util.LinkedHashMap<>();
         m.put("stubs", stubs);
         m.put("overrides", over);
+        if (redirectedCount > 0) {
+            m.put("redirected", redirectedCount);
+        }
         return m;
+    }
+
+    /**
+     * True when the rewriter redirected the hub type itself ({@code type} rule to an adapter): the rewritten hub then
+     * imports a class of its own simple name from another package, and every user names the adapter.
+     */
+    public static boolean redirected(String rewritten, String fqn) {
+        String simple = fqn.substring(fqn.lastIndexOf('.') + 1);
+        Matcher m = Text.re("^\\s*import\\s+([\\w.]+)\\.(\\w+)\\s*;", Pattern.MULTILINE).matcher(rewritten);
+        while (m.find()) {
+            if (m.group(2).equals(simple)) {
+                return true; // the hub's own package never imports itself
+            }
+        }
+        return false;
     }
 
     // ---------------------------------------------------------------- helpers (same semantics as the reference)
@@ -243,11 +280,40 @@ public final class HubStubs {
         final Map<String, String> imports;
         final Set<String> local;
         final String cname;
+        final String fqn;
 
-        Ctx(Map<String, String> imports, Set<String> local, String cname) {
+        Ctx(Map<String, String> imports, Set<String> local, String cname, String fqn) {
             this.imports = imports;
             this.local = local;
             this.cname = cname;
+            this.fqn = fqn;
+        }
+
+        /** the stub still extends a class (else a kept constructor may only call super() without arguments) */
+        boolean hasSuperclass = true;
+
+        boolean kept(String member) {
+            return opts.keep().contains(fqn + "#" + member);
+        }
+
+        /**
+         * A call of one of the hub's own stubbed methods (unqualified or qualified with the hub's name); calls of kept
+         * methods do not count.
+         */
+        boolean hubLocalCall(String text) {
+            Matcher a = LOCAL_CALL.matcher(text);
+            while (a.find()) {
+                if (!kept(a.group(1))) {
+                    return true;
+                }
+            }
+            Matcher b = Text.re("\\b" + Pattern.quote(cname) + "\\s*\\.\\s*([a-z]\\w*)\\s*\\(").matcher(text);
+            while (b.find()) {
+                if (!kept(b.group(1))) {
+                    return true;
+                }
+            }
+            return false;
         }
 
         Set<String> badNames(String text) {
@@ -255,6 +321,10 @@ public final class HubStubs {
             all(CAP_WORD, text, m -> words.add(m.group(1)));
             Set<String> bad = new HashSet<>();
             for (String w : words) {
+                if (local.contains(w) && !used.contains(w) && !kept(w) && !w.equals(cname)) {
+                    bad.add(w); // a nested type of this hub that the stub drops (the closure does not use it)
+                    continue;
+                }
                 if (local.contains(w) || w.equals(cname) || JAVA_LANG.contains(w) || CONSTANT.matcher(w).matches()) {
                     continue;
                 }
@@ -266,6 +336,13 @@ public final class HubStubs {
                     bad.add(w);
                 }
             }
+            // Outer.Nested of a frontier class: its stub keeps the nested type only when the closure uses it
+            all(NESTED_REF, text, m -> {
+                String outer = imports.get(m.group(1));
+                if (outer != null && frontier.contains(outer) && !used.contains(m.group(2))) {
+                    bad.add(m.group(2));
+                }
+            });
             return bad;
         }
     }
@@ -312,16 +389,27 @@ public final class HubStubs {
         if (TYPE_DECL.matcher(paren < 0 ? hb : hb.substring(0, paren)).find()) {
             Matcher nm = TYPE_DECL_NAME.matcher(hb);
             nm.find();
-            return used.contains(nm.group(1)) ? m : null;
+            if (ctx.kept(nm.group(1))) {
+                return m;
+            }
+            if (!used.contains(nm.group(1))) {
+                return null;
+            }
+            // copied whole while it only names valid types; stubbed like the hub when it does not
+            return ctx.badNames(ANNOT.matcher(m).replaceAll(" ")).isEmpty() && !Text.re("\\bimplements\\s+Object\\b").matcher(m).find()
+                    ? m : stubNested(m, nm.group(1), ctx);
         }
         Matcher mm = CALL.matcher(hb);
         boolean call = mm.find();
         int eq = hb.indexOf('=');
         if (call && (eq < 0 || mm.start() < eq)) {
             String name = mm.group(1);
+            if (ctx.kept(name)) {
+                return OVERRIDE.matcher(m).replaceAll("");
+            }
             boolean isStatic = STATIC_WORD.matcher(hb.substring(0, mm.start())).find();
             if (name.equals(cname)) {
-                if (!news.contains(cname)) {
+                if (!kind.equals("enum") && !news.contains(cname) && !(explicitSuper(m) && ctx.hasSuperclass)) { // enum constants call it
                     return null;
                 }
             } else if (!used.contains(name) || (isStatic && !qual.contains(cname + "#" + name))) {
@@ -334,7 +422,9 @@ public final class HubStubs {
             if (m.stripTrailing().endsWith(";") && m.indexOf('{') < 0) {
                 return OVERRIDE.matcher(m).replaceAll(""); // abstract / interface method
             }
-            return sig + " {\n        " + inertBody(hb.substring(0, mm.start()), name.equals(cname)) + "\n    }";
+            String lead = name.equals(cname) ? leadingCall(m, ctx) : null;
+            return sig + " {\n        " + (lead != null ? lead + "\n        " : "")
+                    + inertBody(hb.substring(0, mm.start()), name.equals(cname)) + "\n    }";
         }
         // field(s)
         String decl = m.endsWith(";") ? m.substring(0, m.length() - 1) : m;
@@ -342,7 +432,11 @@ public final class HubStubs {
         int feq = d0.indexOf('=');
         String lhs = feq >= 0 ? decl.substring(0, feq) : decl;
         Matcher names = LAST_NAME.matcher(lhs);
-        if (!names.find() || !qual.contains(cname + "#" + names.group(1))) {
+        boolean named = names.find();
+        if (named && ctx.kept(names.group(1))) {
+            return m;
+        }
+        if (!named || !qual.contains(cname + "#" + names.group(1))) {
             return null;
         }
         if (!ctx.badNames(ANNOT.matcher(lhs).replaceAll(" ")).isEmpty()) {
@@ -352,7 +446,7 @@ public final class HubStubs {
         String init = feq >= 0 ? decl.substring(feq + 1).strip() : null;
         if (init != null && !init.isEmpty() && STATIC_WORD.matcher(lhs).find() && ctx.badNames(init).isEmpty()) {
             // keep data initialisers that only use valid types and no hub-local (stubbed) method
-            if (!LOCAL_CALL.matcher(init).find()) {
+            if (!ctx.hubLocalCall(init)) {
                 return lhs + " = " + init + ";";
             }
         }
@@ -363,6 +457,52 @@ public final class HubStubs {
             return lhs + " = " + (d == null || d.isEmpty() ? "null" : d) + ";";
         }
         return FINAL.matcher(lhs).replaceAll("") + ";";
+    }
+
+    /**
+     * True when a constructor starts with {@code super(<arguments>)}: its class (not instantiated by the closure, but
+     * maybe a ported class's superclass) keeps it, or the implicit default constructor would not compile.
+     */
+    private static boolean explicitSuper(String member) {
+        int ob = member.indexOf('{');
+        return ob >= 0 && Text.re("^\\s*super\\s*\\(\\s*[^)\\s]").matcher(member.substring(ob + 1)).find();
+    }
+
+    /**
+     * The explicit {@code super(...)} / {@code this(...)} call that starts a constructor, when it uses only valid types
+     * and no hub-local method (a stubbed constructor must still chain to a superclass without a no-argument one).
+     */
+    private String leadingCall(String member, Ctx ctx) {
+        int ob = member.indexOf('{');
+        int cb = member.lastIndexOf('}');
+        if (ob < 0 || cb <= ob) {
+            return null;
+        }
+        String body = member.substring(ob + 1, cb).strip();
+        String bb = blankStrings(body);
+        int open = bb.indexOf('(');
+        if (!ctx.hasSuperclass && bb.startsWith("super")) {
+            return null; // the superclass was dropped: Object()
+        }
+        if (open < 0 || !(bb.substring(0, open).strip().equals("super") || bb.substring(0, open).strip().equals("this"))) {
+            return null;
+        }
+        int paren = 0;
+        for (int i = open; i < bb.length(); i++) {
+            char c = bb.charAt(i);
+            if (c == '(') {
+                paren++;
+            } else if (c == ')') {
+                paren--;
+            } else if (c == ';' && paren == 0) {
+                String args = bb.substring(open + 1, i);
+                if (!ctx.badNames(args).isEmpty() || ctx.hubLocalCall(args)) {
+                    return null;
+                }
+                return body.substring(0, i + 1);
+            }
+        }
+        return null;
     }
 
     String stubClass(String text, String fqn) {
@@ -386,7 +526,7 @@ public final class HubStubs {
         });
         Set<String> local = new HashSet<>();
         all(TYPE_DECL_NAME, body, x -> local.add(x.group(1)));
-        Ctx ctx = new Ctx(imports, local, cname);
+        Ctx ctx = new Ctx(imports, local, cname, fqn);
         // header: drop annotations of invalid types and supertypes that are not valid on the target.
         // (m.start() is an offset into the comment-stripped source, applied to `pre` after blank-line removal, as the
         // reference implementation does.)
@@ -397,6 +537,7 @@ public final class HubStubs {
         declAnnots = Text.sub(DECL_ANNOT, a -> ctx.badNames(a.group(1)).contains(a.group(1)) || a.group(1).equals("Mod") ? "" : a.group(), declAnnots);
         header = cleanList("extends", header, ctx);
         header = cleanList("implements", header, ctx);
+        ctx.hasSuperclass = !kind.equals("class") || Text.re("\\bextends\\b").matcher(blankStrings(header)).find();
         pre = declAnnots + header;
         List<String> mem = members(body);
         List<String> out = new ArrayList<>();
@@ -428,6 +569,47 @@ public final class HubStubs {
         }, txt);
     }
 
+    /**
+     * A nested type of a hub that the closure uses: stubbed like the hub itself (header sanitised, members the closure
+     * references with inert bodies), not copied whole; {@code a.b.Hub$Nested#member} keeps members of it.
+     */
+    private String stubNested(String m, String name, Ctx outer) {
+        String bs = blankStrings(m);
+        Matcher km = Text.re("\\b(class|interface|enum|@interface|record)\\s+" + Pattern.quote(name) + "\\b").matcher(bs);
+        if (!km.find()) {
+            return m;
+        }
+        int ob = bs.indexOf('{', km.end());
+        int cb = m.lastIndexOf('}');
+        if (ob < 0 || cb <= ob) {
+            return m;
+        }
+        String kind = km.group(1);
+        Ctx ctx = new Ctx(outer.imports, outer.local, name, outer.fqn + "$" + name);
+        String header = m.substring(0, ob + 1);
+        header = cleanList("extends", header, ctx);
+        header = cleanList("implements", header, ctx);
+        ctx.hasSuperclass = !kind.equals("class") || Text.re("\\bextends\\b").matcher(blankStrings(header)).find();
+        List<String> mem = members(m.substring(ob + 1, cb));
+        List<String> out = new ArrayList<>();
+        if (kind.equals("enum")) {
+            String first = mem.isEmpty() ? "" : mem.get(0);
+            out.add(first.endsWith(";") ? first : first + ";");
+            mem = mem.subList(Math.min(1, mem.size()), mem.size());
+        }
+        for (String x : mem) {
+            String y = stubMember(x, kind, ctx);
+            if (y != null && !y.isEmpty()) {
+                out.add(y.replace("\n", "\n    "));
+            }
+        }
+        StringBuilder sb = new StringBuilder(header.stripTrailing());
+        for (String y : out) {
+            sb.append("\n        ").append(y);
+        }
+        return sb.append("\n    }").toString();
+    }
+
     private String cleanList(String kw, String txt, Ctx ctx) {
         Matcher mm = Text.re("\\b" + kw + "\\b([^{]*?)(?=\\bimplements\\b|\\{|$)", Pattern.DOTALL).matcher(txt);
         if (!mm.find()) {
@@ -436,7 +618,7 @@ public final class HubStubs {
         List<String> keep = new ArrayList<>();
         for (String x : LIST_SPLIT.split(mm.group(1), -1)) {
             x = x.strip();
-            if (!x.isEmpty() && ctx.badNames(x).isEmpty()) {
+            if (!x.isEmpty() && ctx.badNames(x).isEmpty() && !x.equals("Object") && !x.equals("java.lang.Object")) {
                 keep.add(x);
             }
         }

@@ -78,6 +78,8 @@ public final class Executor {
     private final JsonArray log = new JsonArray();
     private final long maxTicks;
     private final long startedAt = System.currentTimeMillis();
+    private final int dx;
+    private final int dz;
     private int index;
     private long tick;
     private long remaining;
@@ -87,11 +89,46 @@ public final class Executor {
     private String message;
 
     public Executor(JsonObject plan, Platform platform, File out) {
+        this(plan, platform, out, 0, 0);
+    }
+
+    /** dx: region shift of a simultaneous run; the plan's ops are already shifted, sample keys are shifted on use. */
+    public Executor(JsonObject plan, Platform platform, File out, int dx, int dz) {
+        this.dx = dx;
+        this.dz = dz;
         this.plan = plan;
         this.platform = platform;
         this.ops = plan.getAsJsonArray("ops");
         this.out = out;
         this.maxTicks = plan.has("maxTicks") ? plan.get("maxTicks").getAsLong() : Long.MAX_VALUE;
+    }
+
+    /** Copy of a plan with every op position (at) moved by dx/dz. */
+    public static JsonObject shiftPlan(JsonObject plan, int dx, int dz) {
+        JsonObject c = new JsonParser().parse(plan.toString()).getAsJsonObject();
+        for (JsonElement e : c.getAsJsonArray("ops")) {
+            JsonObject op = e.getAsJsonObject();
+            if (op.has("at") && op.get("at").isJsonArray()) {
+                JsonArray a = op.getAsJsonArray("at");
+                JsonArray n = new JsonArray();
+                n.add(new JsonPrimitive(Integer.valueOf(a.get(0).getAsInt() + dx)));
+                n.add(a.get(1));
+                n.add(new JsonPrimitive(Integer.valueOf(a.get(2).getAsInt() + dz)));
+                op.add("at", n);
+            }
+        }
+        return c;
+    }
+
+    /** Sample key with its [x,y,z] target moved by dx/dz. */
+    public static String shiftKey(String key, int dx, int dz) {
+        int open = key.indexOf(":[");
+        if (open < 0) {
+            return key;
+        }
+        int close = key.indexOf(']', open);
+        String[] p = key.substring(open + 2, close).split(",");
+        return key.substring(0, open + 2) + (Integer.parseInt(p[0].trim()) + dx) + "," + p[1].trim() + "," + (Integer.parseInt(p[2].trim()) + dz) + key.substring(close);
     }
 
     public static JsonObject readPlan(File file) throws Exception {
@@ -267,7 +304,7 @@ public final class Executor {
             String key = keys.get(i).getAsString();
             JsonElement v;
             try {
-                v = platform.probe(Probe.parse(key));
+                v = platform.probe(Probe.parse(dx == 0 && dz == 0 ? key : shiftKey(key, dx, dz)));
             } catch (Throwable t) {
                 v = JsonNull.INSTANCE;
                 JsonObject l = new JsonObject();

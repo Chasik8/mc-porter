@@ -158,7 +158,11 @@ final class ContentGen {
             }
             String field = blockField(b.id());
             t.addField(FieldSpec.builder(T.BLOCK, field, Modifier.PUBLIC, Modifier.STATIC).build());
-            bl.addStatement("$L = new $T()", field, plan.blockClass(b));
+            if (plan.sourceConstructed(b)) {
+                bl.addStatement("$L = $L", field, plan.sourceNew(b, b.logicClass()));
+            } else {
+                bl.addStatement("$L = new $T()", field, plan.blockClass(b));
+            }
             if (b.logicClass() != null) {
                 bl.addStatement("$T.$L($L)", plan.blockBase(b.id()), BlockGen.APPLY_LEGACY, field);
             }
@@ -198,7 +202,11 @@ final class ContentGen {
             }
             String field = itemField(i.id());
             t.addField(FieldSpec.builder(T.ITEM, field, Modifier.PUBLIC, Modifier.STATIC).build());
-            if (ItemGen.shared(ctx, i)) {
+            if (plan.sourceConstructed(i)) {
+                it.addStatement("$L = $L", field, plan.sourceNew(i, i.logicClass()));
+                it.addStatement("$L.setUnlocalizedName($S)", field, plan.legacyName(i.id(), i.extensions()));
+                it.addStatement("$L.setTextureName($S)", field, new ItemGen(plan).icon(i));
+            } else if (ItemGen.shared(ctx, i)) {
                 if (i.textures() == null || i.textures().get("layer0") == null) ctx.warn("item-no-texture", i.id(), "no layer0 texture; icon " + new ItemGen(plan).icon(i) + " assumed");
                 it.addStatement("$L = new $T($S, $S, $S)", field, plan.itemClass(i), plan.registryName(i.id()),
                         plan.legacyName(i.id(), i.extensions()), new ItemGen(plan).icon(i));

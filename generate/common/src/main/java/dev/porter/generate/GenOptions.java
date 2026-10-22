@@ -23,13 +23,28 @@ import java.nio.file.Path;
  *                       (host-mod or renamed vanilla ids); wins over the default resolution. Empty map = none.
  * @param nei            1.7.10: generate the NotEnoughItems integration (recipe pages for custom recipe types, fluids,
  *                       multiblocks; hidden objects). Needs the NEI API at compile time only (compileOnly).
+ * @param sourceConstructors construct logic classes like the source registry did: {@code new Logic(args)} with the
+ *                       arguments the extractor recorded ({@code porter-extract:newArgs}), names set after construction;
+ *                       for logic classes ported whole (closure), whose constructors are the source's
+ * @param guiDelegate    1.7.10: class whose static {@code handles(int)}, {@code server(...)} and {@code client(...)}
+ *                       ({@code int id, EntityPlayer, World, int x, int y, int z}) open the GUIs of menus with a logic
+ *                       class (ported containers build their own screens) and every id it handles; null = none
  */
 public record GenOptions(String version, String basePackage, String modId, String modName, String modVersion,
         boolean embed, IntRange guiIds, IntRange potionIds, String channel, Path assetsDir, String assetNamespace,
-        LegacyNames legacyNames, boolean stubs, java.util.Map<String, String> idMap, boolean nei) {
+        LegacyNames legacyNames, boolean stubs, java.util.Map<String, String> idMap, boolean nei,
+        boolean sourceConstructors, String guiDelegate) {
 
     public GenOptions {
         idMap = idMap == null ? java.util.Map.of() : java.util.Collections.unmodifiableMap(new java.util.TreeMap<>(idMap));
+    }
+
+    /** Options without source constructors and GUI delegate (backwards-compatible constructor). */
+    public GenOptions(String version, String basePackage, String modId, String modName, String modVersion,
+            boolean embed, IntRange guiIds, IntRange potionIds, String channel, Path assetsDir, String assetNamespace,
+            LegacyNames legacyNames, boolean stubs, java.util.Map<String, String> idMap, boolean nei) {
+        this(version, basePackage, modId, modName, modVersion, embed, guiIds, potionIds, channel, assetsDir,
+                assetNamespace, legacyNames, stubs, idMap, nei, false, null);
     }
 
     /** Options with NEI integration on (backwards-compatible constructor). */
@@ -37,7 +52,7 @@ public record GenOptions(String version, String basePackage, String modId, Strin
             boolean embed, IntRange guiIds, IntRange potionIds, String channel, Path assetsDir, String assetNamespace,
             LegacyNames legacyNames, boolean stubs, java.util.Map<String, String> idMap) {
         this(version, basePackage, modId, modName, modVersion, embed, guiIds, potionIds, channel, assetsDir,
-                assetNamespace, legacyNames, stubs, idMap, true);
+                assetNamespace, legacyNames, stubs, idMap, true, false, null);
     }
 
     /** Options without an id map (backwards-compatible constructor). */
@@ -45,7 +60,7 @@ public record GenOptions(String version, String basePackage, String modId, Strin
             boolean embed, IntRange guiIds, IntRange potionIds, String channel, Path assetsDir, String assetNamespace,
             LegacyNames legacyNames, boolean stubs) {
         this(version, basePackage, modId, modName, modVersion, embed, guiIds, potionIds, channel, assetsDir,
-                assetNamespace, legacyNames, stubs, java.util.Map.of(), true);
+                assetNamespace, legacyNames, stubs, java.util.Map.of(), true, false, null);
     }
 
     /** Inclusive integer range written as {@code from-to}. */

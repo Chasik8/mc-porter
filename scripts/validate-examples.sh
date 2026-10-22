@@ -17,13 +17,20 @@ for dir in contracts/examples/*/valid; do
 done
 
 echo "== invalid examples (must fail)"
+# one JVM per file: run PORTER_JOBS (default: cores) of them at a time, report in file order
+JOBS="${PORTER_JOBS:-$(nproc 2>/dev/null || echo 2)}"
+tmp="$(mktemp -d)"; i=0
 for f in contracts/examples/*/invalid/*; do
-  if porter validate --quiet "$f" > /dev/null; then
-    echo "FAIL: $f validated but must be invalid"; fail=1
-  else
-    echo "ok (rejected): $f"
-  fi
+  i=$((i+1))
+  ( if porter validate --quiet "$f" > /dev/null 2>&1; then echo "FAIL: $f validated but must be invalid" > "$tmp/$i.fail"; fi
+    echo "ok (rejected): $f" > "$tmp/$i.out" ) &
+  while [[ $(jobs -rp | wc -l) -ge $JOBS ]]; do wait -n || true; done
 done
+wait
+for n in $(seq 1 $i); do
+  [[ -e "$tmp/$n.fail" ]] && { cat "$tmp/$n.fail"; fail=1; } || cat "$tmp/$n.out"
+done
+rm -rf "$tmp"
 
 echo "== port catalog"
 porter validate ports/catalog.yaml || { echo "FAIL: ports/catalog.yaml"; fail=1; }

@@ -1,0 +1,57 @@
+# guifix closure rules (private rules/closure batch9) not in the public packs. Priority 6: the public
+# r-1.19.2-1.7.10-call-item-getdescriptionid (PropItem.descriptionId, TorchMaster demo) would otherwise be ambiguous;
+# the installed build used these.
+schemaVersion: 1
+id: r-closure-mc-call-block-getdescriptionid
+description: "call net.minecraft.world.level.block.Block#getDescriptionId() -> ($b.getUnlocalizedName() + \".name\")"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.level.block.Block#getDescriptionId()"
+  bind: { recv: "$b" }
+replace: "($b.getUnlocalizedName() + \".name\")"
+priority: 6
+confidence: 0.9
+provenance: { source: agent, ref: "closure-steam agent: one rule per distinct javac symbol; source = Mojang 1.19.2 mappings, target = MCP 1.7.10 / shim adapter" }
+tests:
+  - context: "Block b; import net.minecraft.world.level.block.Block"
+    before: "String k = b.getDescriptionId();"
+    after: "String k = (b.getUnlocalizedName() + \".name\");"
+---
+schemaVersion: 1
+id: r-closure-mc-call-item-getdescriptionid
+description: "call net.minecraft.world.item.Item#getDescriptionId() -> ($i.getUnlocalizedName() + \".name\")"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.item.Item#getDescriptionId()"
+  bind: { recv: "$i" }
+replace: "($i.getUnlocalizedName() + \".name\")"
+priority: 6
+confidence: 0.9
+provenance: { source: agent, ref: "closure-steam agent: one rule per distinct javac symbol; source = Mojang 1.19.2 mappings, target = MCP 1.7.10 / shim adapter" }
+tests:
+  - context: "Item i; import net.minecraft.world.item.Item"
+    before: "String k = i.getDescriptionId();"
+    after: "String k = (i.getUnlocalizedName() + \".name\");"
+---
+schemaVersion: 1
+id: r-closure-mc-call-texturemanager-gettexture
+description: "call net.minecraft.client.renderer.texture.TextureManager#getTexture(net.minecraft.resources.ResourceLocation) -> Textures.get($m, $a)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.client.renderer.texture.TextureManager#getTexture(net.minecraft.resources.ResourceLocation)"
+  bind: { recv: "$m", args: ["$a"] }
+replace: "Textures.get($m, $a)"
+imports: ["ic2cextras.ported.shim.mc.client.Textures"]
+priority: 6
+confidence: 0.9
+provenance: { source: agent, ref: "closure-steam agent: one rule per distinct javac symbol; source = Mojang 1.19.2 mappings, target = MCP 1.7.10 / shim adapter" }
+tests:
+  - context: "TextureManager m; ResourceLocation a; import net.minecraft.client.renderer.texture.TextureManager; import net.minecraft.resources.ResourceLocation"
+    before: "Object t = m.getTexture(a);"
+    after: "Object t = Textures.get(m, a);"

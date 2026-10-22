@@ -24,6 +24,13 @@ public final class Chat {
         return c;
     }
 
+    /** Style.applyFormat: a copy of the style with the formatting applied (1.7.10 styles are mutable). */
+    public static ChatStyle applyFormat(ChatStyle style, EnumChatFormatting f) {
+        ChatStyle s = style == null ? new ChatStyle() : style.createShallowCopy();
+        withStyle(new ChatComponentText("").setChatStyle(s), f);
+        return s;
+    }
+
     @SuppressWarnings({"unchecked", "rawtypes"})
     public static String propertyName(Property p, Object v) { return p.getName((Comparable) v); }
 

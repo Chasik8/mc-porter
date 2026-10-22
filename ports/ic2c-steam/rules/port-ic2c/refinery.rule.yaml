@@ -1,0 +1,34 @@
+# Refinery / machine tiles on 1.7.10 (found by the refinery-whisky scenario). Tests are synthetic (only the owner
+# names are the mod's).
+schemaVersion: 1
+id: r-ic2c-refinery-recipe-empty-tanks
+description: "refining recipes: an empty first/second tank is FluidStack.EMPTY in 1.19.2 but null on 1.7.10, so only the id, catalyst and output must be non-null"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  pattern: "$l == null || $i == null || $s == null || $c == null || $o == null"
+replace: "$l == null || $c == null || $o == null"
+preconditions: ["in-subtype-of:ic2.api.recipes.registries.IRefiningRecipeList"]
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: refinery-whisky scenario (recipes with one tank were dropped)" }
+tests:
+  - context: "import ic2.api.recipes.registries.IRefiningRecipeList; extends IRefiningRecipeList; Object a; Object b; Object c; Object d; Object e"
+    before: "boolean bad = a == null || b == null || c == null || d == null || e == null;"
+    after: "boolean bad = a == null || d == null || e == null;"
+---
+schemaVersion: 1
+id: r-ic2c-base-tile-fallback-ticker
+description: "IC2C tiles tick through their ITickListener; generated blocks give 1.7.10 no ticker for them: the adapter's fallback ticker calls update()"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.core.block.base.tiles.BaseTileEntity"
+edit:
+  appendMembers: "\n\n    @Override\n    @SuppressWarnings(\"rawtypes\")\n    protected dev.porter.shim.mc.BlockEntityTicker porterFallbackTicker() {\n        return ITickListener::update;\n    }"
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: refinery-whisky scenario (the generated refinery block had no ticker)" }
+tests:
+  - before: "public abstract class BaseTileEntity {\n    int a;\n}"
+    after: "public abstract class BaseTileEntity {\n    int a;\n\n    @Override\n    @SuppressWarnings(\"rawtypes\")\n    protected dev.porter.shim.mc.BlockEntityTicker porterFallbackTicker() {\n        return ITickListener::update;\n    }\n}"

@@ -1,5 +1,7 @@
 schemaVersion: 1
 id: light-sources
+# isolation: region -> may run simultaneously with other region scenarios (own region, no world-wide state)
+isolation: region
 description: >-
   Light levels around an invisible light (air-like light source, placed in a section that holds a block) and around
   a Mega Torch: block light 15 at the source, minus one per block of distance (Manhattan) in open air.

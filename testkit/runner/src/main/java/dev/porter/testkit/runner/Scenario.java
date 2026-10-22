@@ -49,6 +49,11 @@ public final class Scenario {
         return doc.path("side").asString("server");
     }
 
+    /** "region" (may run simultaneously with other region scenarios in one world) or "global" (default: touches world-wide state). */
+    public String isolation() {
+        return doc.path("isolation").asString("global");
+    }
+
     public long maxTicks() {
         return doc.has("maxTicks") ? doc.path("maxTicks").asLong() : -1;
     }

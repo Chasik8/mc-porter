@@ -76,6 +76,41 @@ public final class ExtractContext {
         return r == null ? null : r.id();
     }
 
+    /** IR extension: the mod's static fields that hold a registered object ({@code a.b.Registry#FIELD}). */
+    public static final String HOLDERS = "porter-extract:holders";
+
+    private java.util.IdentityHashMap<Object, List<String>> holderIndex;
+
+    /**
+     * The mod's static fields whose value after the registration code ran is this very object (the registry holder
+     * fields other code reads, e.g. {@code ModItems.CUP}), sorted; empty when none.
+     */
+    public List<String> holdersOf(Object value) {
+        if (!(value instanceof V.Obj)) {
+            return List.of();
+        }
+        if (holderIndex == null) {
+            holderIndex = new java.util.IdentityHashMap<>();
+            for (Map.Entry<String, Object> e : interp.statics().entrySet()) {
+                if (e.getValue() instanceof V.Obj && e.getKey().contains("#")) {
+                    holderIndex.computeIfAbsent(e.getValue(), k -> new ArrayList<>()).add(e.getKey().replace('$', '.'));
+                }
+            }
+            holderIndex.values().forEach(java.util.Collections::sort);
+        }
+        return holderIndex.getOrDefault(value, List.of());
+    }
+
+    /** Puts {@link #HOLDERS} of a registered value into a node's extensions (nothing when none). */
+    public void putHolders(Map<String, tools.jackson.databind.JsonNode> ext, Object value) {
+        List<String> h = holdersOf(value);
+        if (!h.isEmpty()) {
+            tools.jackson.databind.node.ArrayNode a = tools.jackson.databind.node.JsonNodeFactory.instance.arrayNode();
+            h.forEach(a::add);
+            ext.put(HOLDERS, a);
+        }
+    }
+
     /** Registry of a registered value, or null. */
     public String registryOf(Object value) {
         if (value instanceof V.RegRef r) {

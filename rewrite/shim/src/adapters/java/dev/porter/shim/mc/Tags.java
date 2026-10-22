@@ -19,6 +19,14 @@ public final class Tags {
     }
 
     public static final class Items {
+        public static final TagKey<net.minecraft.item.Item> DUSTS_REDSTONE = TagKey.of("item", "forge:dusts/redstone");
+        public static final TagKey<net.minecraft.item.Item> DUSTS_GLOWSTONE = TagKey.of("item", "forge:dusts/glowstone");
+        public static final TagKey<net.minecraft.item.Item> ORES_IRON = TagKey.of("item", "forge:ores/iron");
+        public static final TagKey<net.minecraft.item.Item> ORES_GOLD = TagKey.of("item", "forge:ores/gold");
+        public static final TagKey<net.minecraft.item.Item> ORES_COPPER = TagKey.of("item", "forge:ores/copper");
+        public static final TagKey<net.minecraft.item.Item> INGOTS_IRON = TagKey.of("item", "forge:ingots/iron");
+        public static final TagKey<net.minecraft.item.Item> INGOTS_GOLD = TagKey.of("item", "forge:ingots/gold");
+
         private Items() {}
     }
 }

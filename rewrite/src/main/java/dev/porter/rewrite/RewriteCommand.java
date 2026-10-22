@@ -6,6 +6,7 @@ import dev.porter.core.cli.RunReport;
 import dev.porter.core.json.Json;
 import dev.porter.core.rule.Rule;
 import dev.porter.core.rule.RuleIo;
+import dev.porter.rewrite.engine.CfrLambdas;
 import dev.porter.rewrite.engine.NameTable;
 import dev.porter.rewrite.engine.Rewriter;
 import dev.porter.rewrite.engine.RuleBook;
@@ -213,7 +214,7 @@ public final class RewriteCommand implements PorterSubcommand, Callable<Integer>
                 Path rel = src.relativize(p);
                 String relS = rel.toString().replace('\\', '/');
                 boolean target = matchers.isEmpty() || matchers.stream().anyMatch(m -> m.matches(Path.of(relS)) || m.matches(rel));
-                files.add(new Rewriter.SourceFile(relS, Files.readString(p, StandardCharsets.UTF_8), target));
+                files.add(new Rewriter.SourceFile(relS, CfrLambdas.fix(Files.readString(p, StandardCharsets.UTF_8)), target));
             }
         } catch (IOException e) {
             throw new UncheckedIOException(e);

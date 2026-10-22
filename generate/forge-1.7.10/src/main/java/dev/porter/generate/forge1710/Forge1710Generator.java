@@ -61,6 +61,7 @@ public final class Forge1710Generator implements TargetGenerator {
             ctx.info("nei-off", ctx.options.modId(), "--no-nei: no NotEnoughItems integration");
         }
         new ContentGen(plan, blocks, fluids).run();
+        new HolderRules(plan).run();
         for (IrNode.Lang l : ctx.ir.all(IrNode.Lang.class)) {
             ctx.info("lang-by-assets", l.id(), "lang files come from `porter assets` (--assets); IR lang node not rendered here");
         }

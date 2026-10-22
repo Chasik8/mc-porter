@@ -1,5 +1,7 @@
 schemaVersion: 1
 id: torchmaster-registry
+# isolation: region -> may run simultaneously with other region scenarios (own region, no world-wide state)
+isolation: region
 description: >-
   Registered content: blocks (megatorch, dreadlamp, feral flare lantern, invisible light) and items (the three block
   items + frozen pearl) under the torchmaster namespace.

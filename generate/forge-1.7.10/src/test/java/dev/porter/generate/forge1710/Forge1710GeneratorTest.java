@@ -227,6 +227,50 @@ class Forge1710GeneratorTest {
                 "no texture in the assets: vanilla behaviour");
     }
 
+    /**
+     * --source-constructors: logic classes ported whole are built with the source registry's constructor arguments
+     * (no shared base, names set after construction); --gui-delegate: menus with a logic class open through the
+     * delegate. Synthetic.
+     */
+    @Test
+    void sourceConstructorsAndGuiDelegate(@TempDir Path tmp) throws Exception {
+        String prov = "\"provenance\": {\"file\": \"Items.java\", \"line\": 1, \"version\": \"forge-1.19.2\"}";
+        String ir = """
+                {"schemaVersion": 1, "source": {"version": "forge-1.19.2", "modId": "demo", "tool": "test"}, "nodes": [
+                 {"kind": "mod", "id": "demo", "name": "Demo", "version": "1.0", "mainClass": "org.demo.Demo", PROV},
+                 {"kind": "item", "id": "demo:cup_tea", "logicClass": "org.demo.CupItem",
+                  "extensions": {"porter-extract:newArgs": ["\\"cup_tea\\"", "org.demo.Drinks.TEA"], "porter-extract:holders": ["org.demo.Reg#CUP_TEA"]}, PROV},
+                 {"kind": "item", "id": "demo:cup_milk", "logicClass": "org.demo.CupItem",
+                  "extensions": {"porter-extract:newArgs": ["\\"cup_milk\\"", "org.demo.Drinks.MILK"]}, PROV},
+                 {"kind": "block", "id": "demo:still", "logicClass": "org.demo.StillBlock", "blockEntity": "demo:still",
+                  "extensions": {"porter-extract:holders": ["org.demo.Reg#STILL"]}, PROV},
+                 {"kind": "blockEntity", "id": "demo:still", "logicClass": "org.demo.StillTile", "blocks": ["demo:still"], "menu": "demo:still", PROV},
+                 {"kind": "menu", "id": "demo:still", "logicClass": "org.demo.StillContainer", "blockEntity": "demo:still",
+                  "size": {"width": 176, "height": 166}, "slots": [{"index": 0, "x": 8, "y": 8}], "playerInventory": {"x": 8, "y": 84}, PROV}
+                ]}
+                """.replace("PROV", prov);
+        Path f = tmp.resolve("demo.ir.json");
+        Files.writeString(f, ir);
+        GenOptions o = new GenOptions("1.7.10", "org.demo.gen", "demo", null, null, true, GenOptions.IntRange.parse("50-69"),
+                GenOptions.IntRange.parse("25-31"), null, null, null, GenOptions.LegacyNames.NS_CAMEL, false, Map.of(), false,
+                true, "org.demo.port.Guis");
+        GenContext ctx = Generate.run(new Forge1710Generator(), IrIndex.load(List.of(f)), o).context();
+        String content = file(ctx, "src/main/java/org/demo/gen/DemoContent.java");
+        assertTrue(content.contains("itemCupTea = new CupItem(\"cup_tea\", org.demo.Drinks.TEA);"), content);
+        assertTrue(content.contains("itemCupTea.setUnlocalizedName(\"demo.cupTea\");"), content);
+        assertTrue(content.contains("itemCupMilk = new CupItem(\"cup_milk\", org.demo.Drinks.MILK);"), content);
+        assertTrue(content.contains("blockStill = new StillBlock();"), content);
+        assertFalse(ctx.out.files().keySet().stream().anyMatch(p -> p.contains("SharedItemBase")), "no shared base");
+        String handler = file(ctx, "src/main/java/org/demo/gen/DemoGuiHandler.java");
+        assertTrue(handler.contains("if (id == GUI_STILL || Guis.handles(id)) {\n            return Guis.server(id, player, world, x, y, z);"), handler);
+        assertTrue(handler.contains("return Guis.client(id, player, world, x, y, z);"), handler);
+        assertFalse(handler.contains("new StillContainer("), handler);
+        String rules = file(ctx, "porter-rules/holders.rule.yaml");
+        assertTrue(rules.contains("  field: \"org.demo.Reg#CUP_TEA\"\nreplace: \"DemoContent.itemCupTea\""), rules);
+        assertTrue(rules.contains("  field: \"org.demo.Reg#STILL\"\nreplace: \"DemoContent.blockStill\""), rules);
+        assertTrue(rules.contains("    before: \"Object o = Reg.STILL;\"\n    after: \"Object o = DemoContent.blockStill;\""), rules);
+    }
+
     /** Shared logic classes (one class, several items) and --id-map host references. Synthetic. */
     @Test
     void sharedLogicClassAndIdMap(@TempDir Path tmp) throws Exception {

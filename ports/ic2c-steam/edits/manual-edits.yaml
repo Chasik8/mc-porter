@@ -1,0 +1,97 @@
+# Counted call-site edits of the IC2C steam closure port that stay manual after RFC 006 (p5/ruleslang):
+# decompiler (CFR) artefacts of this source only. The other 23 are rules now (rules/port-ic2c,
+# public loot/chat/adapters-idioms rules). Python-style regex (DOTALL), first match, must match exactly once.
+edits:
+- file: ic2cextras/ported/core/block/transport/fluid/graph/FluidGrid.java
+  pattern: (\n([ \t]*)if \(combine\.isEmpty\(\)\) \{\n[ \t]*graph = new FluidGraph)
+  replace: \n\2FluidGraph graph;\1
+  reason: 'decompiler: lost local declaration'
+- file: ic2cextras/ported/core/inventory/handler/InventoryHandler.java
+  pattern: 'for \(Object i : \(Object\)slots\) \{'
+  replace: 'for (int i : slots) {'
+  reason: 'decompiler: for-each over int[] typed Object'
+- file: ic2cextras/ported/core/inventory/handler/InventoryHandler.java
+  pattern: 'for \(long list : \(Object\)this\.sideToSlot\) \{'
+  replace: 'for (IntList list : this.sideToSlot) {'
+  reason: 'decompiler: for-each over IntList[] typed long (1/2)'
+- file: ic2cextras/ported/core/inventory/handler/InventoryHandler.java
+  pattern: 'for \(long list : \(Object\)this\.sideToSlot\) \{'
+  replace: 'for (IntList list : this.sideToSlot) {'
+  reason: 'decompiler: for-each over IntList[] typed long (2/2)'
+- file: ic2cextras/ported/core/inventory/handler/InventoryHandler.java
+  pattern: Object object = Int2ByteMaps\.fastIterable
+  replace: java.util.Iterator<Int2ByteMap.Entry> object = Int2ByteMaps.fastIterable
+  reason: 'decompiler: iterator typed Object (1/2)'
+- file: ic2cextras/ported/core/inventory/handler/InventoryHandler.java
+  pattern: Object object = Int2ByteMaps\.fastIterable
+  replace: java.util.Iterator<Int2ByteMap.Entry> object = Int2ByteMaps.fastIterable
+  reason: 'decompiler: iterator typed Object (2/2)'
+- file: ic2cextras/ported/core/block/base/cache/BaseCache.java
+  pattern: T\[\] cache = new Object\[6\];
+  replace: T[] cache = (T[]) new Object[6];
+  reason: 'decompiler: generic array'
+- file: ic2cextras/ported/core/block/base/cache/InterfaceCache.java
+  pattern: this\.addCache\(dir, tile\);
+  replace: this.addCache(dir, (T) tile);
+  reason: 'decompiler: generic cast'
+- file: ic2cextras/ported/core/block/base/cache/InterfaceCache.java
+  pattern: return entry;
+  replace: return (T) entry;
+  reason: 'decompiler: generic cast'
+- file: ic2cextras/ported/core/block/base/cache/FilteredCapabilityCache.java
+  pattern: this\.addCache\(dir, cap\.orElse\(null\)\);
+  replace: this.addCache(dir, (T) cap.orElse(null));
+  reason: 'decompiler: generic cast'
+- file: ic2cextras/ported/api/network/IPlayerPacket.java
+  pattern: listener\.accept\(player\.openContainer\);
+  replace: listener.accept((T) player.openContainer);
+  reason: 'decompiler: generic cast'
+- file: ic2cextras/ported/api/network/IPlayerPacket.java
+  pattern: Optional\.of\(player\.openContainer\)
+  replace: Optional.of((T) player.openContainer)
+  reason: 'decompiler: generic cast'
+- file: ic2cextras/ported/core/networking/buffers/FieldBuffer.java
+  pattern: currentClass = currentClass\.getSuperclass\(\)\)
+  replace: currentClass = (Class<? extends TileEntity>) currentClass.getSuperclass())
+  reason: 'decompiler: generic cast'
+- file: ic2cextras/ported/core/networking/buffers/FieldBuffer.java
+  pattern: Enum\.valueOf\(this\.field\.getType\(\),
+  replace: Enum.valueOf((Class) this.field.getType(),
+  reason: 'decompiler: raw enum class'
+- file: ic2cextras/ported/core/utils/helpers/capabilities/StructureCapabilityProvider.java
+  pattern: new StructureCapabilityProvider<Object>\(cap, entry\)
+  replace: new StructureCapabilityProvider<T>(cap, entry)
+  reason: 'decompiler: generic argument'
+- file: ic2cextras/ported/core/utils/helpers/capabilities/StructureCapabilityProvider.java
+  pattern: new StructureCapabilityProvider<Object>\(cap, entry, active\)
+  replace: new StructureCapabilityProvider<T>(cap, entry, active)
+  reason: 'decompiler: generic argument'
+- file: ic2cextras/ported/core/networking/NetworkManager.java
+  pattern: (this\.fieldsToSync\.clear\(\);\n[ \t]*return) map;
+  replace: \1 (Map) map;
+  reason: 'decompiler: raw map return'
+- file: ic2cextras/ported/core/block/base/misc/LinkStorage.java
+  pattern: new ObjectArrayList\(this\.tiles\)
+  replace: new ObjectArrayList<BaseLinkingTileEntity>(this.tiles)
+  reason: 'decompiler: raw list'
+- file: ic2cextras/ported/core/block/base/tiles/BaseMultiBlockTileEntity.java
+  pattern: '(byte\[\] data = new byte\[this\.structurePositions\.length \* 3\];\s*)for \(long pos : this\.structurePositions\) \{'
+  replace: \1for (int i = 0; i < this.structurePositions.length; ++i) {\n                    long pos = this.structurePositions[i];
+  reason: 'decompiler: indexed loop turned into for-each, index still used'
+- file: ic2cextras/ported/core/inventory/transporter/IItemTransporter.java
+  pattern: 'for \(Object2IntMap\.Entry entry : Object2LongMaps\.fastIterable'
+  replace: 'for (it.unimi.dsi.fastutil.objects.Object2LongMap.Entry entry : Object2LongMaps.fastIterable'
+  reason: 'decompiler: wrong map entry type'
+# p5/guifix: 1.7.10 icon hooks (StateBlock.getStateIcon -> ModelIcons) and the slot background icon
+- file: ic2cextras/ported/core/block/base/IC2Block.java
+  pattern: (\npublic abstract class IC2Block\b[^{]*\{)
+  replace: \1\n    @Override\n    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)\n    public net.minecraft.util.IIcon getStateIcon(ic2cextras.ported.shim.mc.BlockState state, ic2cextras.ported.shim.Direction side) {\n        return ic2cextras.ported.compat.ModelIcons.icon(this, state, side);\n    }\n
+  reason: 1.7.10 icons from the 1.19.2 model sprites (StateBlock.getStateIcon -> ModelIcons, p5/guifix)
+- file: ic2cextras/ported/core/block/base/IC2ContainerBlock.java
+  pattern: (\npublic abstract class IC2ContainerBlock\b[^{]*\{)
+  replace: \1\n    @Override\n    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)\n    public net.minecraft.util.IIcon getStateIcon(ic2cextras.ported.shim.mc.BlockState state, ic2cextras.ported.shim.Direction side) {\n        return ic2cextras.ported.compat.ModelIcons.icon(this, state, side);\n    }\n
+  reason: 1.7.10 icons from the 1.19.2 model sprites (StateBlock.getStateIcon -> ModelIcons, p5/guifix)
+- file: ic2cextras/ported/core/inventory/slot/SlotBase.java
+  pattern: (\npublic class SlotBase\b[^{]*\{)
+  replace: '\1\n    /** 1.19.2 getNoItemIcon (atlas, sprite) -> 1.7.10 background icon (p5/guifix). */\n    @Override\n    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)\n    public net.minecraft.util.IIcon getBackgroundIconIndex() {\n        if (this.backgroundPair == null) return super.getBackgroundIconIndex();\n        return (net.minecraft.util.IIcon) ic2cextras.ported.shim.mc.client.ClientFluids.atlas(net.minecraft.client.Minecraft.getMinecraft(), this.backgroundPair.getFirst()).apply(this.backgroundPair.getSecond());\n    }\n\n    @Override\n    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)\n    public ResourceLocation getBackgroundIconTexture() {\n        return this.backgroundPair == null ? super.getBackgroundIconTexture() : this.backgroundPair.getFirst();\n    }\n'
+  reason: slot background sprite (1.19.2 Pair) -> 1.7.10 background icon (p5/guifix)

@@ -34,6 +34,13 @@ distributions {
             from(rootProject.layout.projectDirectory) {
                 include("README.md", "CHANGELOG.md", "CONTRIBUTING.md", "LICENSE", "NOTICE")
                 include("rules/**", "contracts/*.schema.json", "contracts/examples/**", "ports/**", "docs/release/**")
+                include("scripts/run-port.bat", "docs/guides/**")
+                exclude("**/*.sh")
+            }
+            // the launchers must stay executable in the zip, whatever system built it
+            from(rootProject.layout.projectDirectory) {
+                include("scripts/run-port.sh", "ports/*/run.sh")
+                filePermissions { unix("rwxr-xr-x") }
             }
         }
     }

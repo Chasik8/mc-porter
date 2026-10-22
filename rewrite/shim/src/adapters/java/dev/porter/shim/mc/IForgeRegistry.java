@@ -24,4 +24,7 @@ public interface IForgeRegistry<V> extends Iterable<V> {
     default java.util.stream.Stream<TagKey<V>> getTagNames() { return java.util.stream.Stream.empty(); }
 
     default boolean isEmpty() { return getValues().isEmpty(); }
+
+    /** The registry's tag manager: tag members are the TagKey's explicit members plus, for items, the ore dictionary. */
+    default ITagManager<V> tags() { return new ITagManager<>(this); }
 }

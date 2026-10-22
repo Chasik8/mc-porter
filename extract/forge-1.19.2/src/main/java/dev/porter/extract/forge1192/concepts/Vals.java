@@ -19,6 +19,9 @@ public final class Vals {
 
     public static final JsonNodeFactory F = JsonNodeFactory.instance;
 
+    /** Extension: source arguments of the logic class's constructor call ({@link #sourceConstructorArgs}). */
+    public static final String NEW_ARGS = "porter-extract:newArgs";
+
     /** How a registered value was constructed: the vanilla class it is (or extends) and the arguments into it. */
     public record Construction(String vanillaType, List<Object> args, String logicClass, Obj obj, VObj vobj) {
     }
@@ -143,6 +146,61 @@ public final class Vals {
             return o.enumName != null ? o.type.getSimpleName() + "." + o.enumName : "<" + o.type.getSimpleName() + ">";
         }
         return String.valueOf(a);
+    }
+
+    /**
+     * The arguments of the {@code new} expression that created a source object, as Java source with fully qualified
+     * names ({@code "cup_tea"}, {@code com.example.mod.Drinks.TEA}), or null when an argument
+     * is not a literal, a static field, an enum constant or a nested {@code new} of such arguments (anonymous classes,
+     * locals, method calls: the construction cannot be repeated on the target side). Empty for a no-argument call.
+     */
+    public static List<String> sourceConstructorArgs(Obj o) {
+        if (o == null || !(o.site instanceof spoon.reflect.code.CtConstructorCall<?> cc) || cc instanceof spoon.reflect.code.CtNewClass<?>) {
+            return null;
+        }
+        List<String> out = new ArrayList<>();
+        for (spoon.reflect.code.CtExpression<?> a : cc.getArguments()) {
+            String s = sourceExpr(a);
+            if (s == null) {
+                return null;
+            }
+            out.add(s);
+        }
+        return out;
+    }
+
+    static String sourceExpr(spoon.reflect.code.CtExpression<?> e) {
+        if (!e.getTypeCasts().isEmpty()) {
+            return null;
+        }
+        if (e instanceof spoon.reflect.code.CtLiteral<?> l) {
+            Object v = l.getValue();
+            if (v == null || v instanceof String || v instanceof Number || v instanceof Boolean || v instanceof Character) {
+                return l.toString();
+            }
+            return null;
+        }
+        if (e instanceof spoon.reflect.code.CtFieldRead<?> f && f.getVariable().isStatic() && f.getVariable().getDeclaringType() != null) {
+            String owner = f.getVariable().getDeclaringType().getQualifiedName();
+            return isClassName(owner) ? owner.replace('$', '.') + "." + f.getVariable().getSimpleName() : null;
+        }
+        if (e instanceof spoon.reflect.code.CtConstructorCall<?> c && !(c instanceof spoon.reflect.code.CtNewClass<?>)
+                && c.getType() != null && c.getType().getActualTypeArguments().isEmpty()) {
+            String t = c.getType().getQualifiedName();
+            if (!isClassName(t)) {
+                return null;
+            }
+            List<String> args = new ArrayList<>();
+            for (spoon.reflect.code.CtExpression<?> a : c.getArguments()) {
+                String s = sourceExpr(a);
+                if (s == null) {
+                    return null;
+                }
+                args.add(s);
+            }
+            return "new " + t.replace('$', '.') + "(" + String.join(", ", args) + ")";
+        }
+        return null;
     }
 
     public static List<Object> flatten(List<Object> args) {

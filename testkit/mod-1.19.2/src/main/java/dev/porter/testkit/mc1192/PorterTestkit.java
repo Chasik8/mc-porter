@@ -74,38 +74,29 @@ public final class PorterTestkit {
             return;
         }
         long wallLimit = Long.getLong("porter.wallSeconds", 600L) * 1000L;
-        boolean first = true;
-        // a batch plan holds several scenarios: one server launch, the world is reset between them
-        for (JsonObject sub : plans) {
-            Executor ex = new Executor(sub, platform, Executor.outFor(sub, out));
-            long t0 = System.currentTimeMillis();
-            try {
-                if (!first) {
-                    platform.reset();
-                    tickOnce(server, platform);
-                    tickOnce(server, platform);
-                    platform.reset();
-                    platform.drainLight();
-                }
-                first = false;
-                platform.prepare(sub);
-                // warm-up tick: chunks become block-entity ticking during the first tick after they are loaded; a scenario
-                // starts in the same state whether it is the first of a launch or follows a reset (batches)
-                tickOnce(server, platform);
-                platform.drainLight();
-                ex.start();
-                while (!ex.isDone()) {
-                    tickOnce(server, platform);
-                    ex.afterServerTick();
-                    if (System.currentTimeMillis() - t0 > wallLimit) {
-                        ex.finish("timeout", "wall-clock limit " + (wallLimit / 1000) + " s exceeded at tick " + ex.tick());
-                    }
-                }
-            } catch (Throwable t) {
-                t.printStackTrace();
-                ex.finish("error", "exception in server tick: " + t);
+        // a batch plan holds several scenarios: one launch; region scenarios run simultaneously, the rest one after another
+        final Platform1192 pf = platform;
+        final MinecraftServer srv = server;
+        dev.porter.testkit.mod.BatchDriver.run(plans, platform, out, new dev.porter.testkit.mod.BatchDriver.Hooks() {
+            public void prepare(JsonObject p) {
+                pf.prepare(p);
             }
-        }
+
+            public void tick() {
+                tickOnce(srv, pf);
+            }
+
+            public void beforeRunTick() {
+            }
+
+            public void reset() {
+                pf.reset();
+            }
+
+            public void settle() {
+                pf.drainLight();
+            }
+        }, wallLimit, new File(out.getAbsoluteFile().getParentFile(), "crash.json"));
         server.halt(false);
     }
 

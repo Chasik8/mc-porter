@@ -1,0 +1,724 @@
+---
+documents:
+  recipe:
+    schemaVersion: 2
+nodes:
+- file: "recipe"
+  id: "ic2:iron_to_raw"
+  merge:
+    fluidIngredients:
+    - fluid: "minecraft:lava"
+      amount: 50
+    machines:
+    - "ic2:refinery"
+    duration: 125
+    notes:
+    - "Output: 2-6 per operation"
+- file: "recipe"
+  id: "ic2:iron_to_raw_advanced"
+  merge:
+    fluidIngredients:
+    - fluid: "ic2:bio_fuel"
+      amount: 100
+    machines:
+    - "ic2:refinery"
+    duration: 125
+    notes:
+    - "Output: 6-10 per operation"
+- file: "recipe"
+  id: "ic2:iron_to_raw_alk"
+  merge:
+    fluidIngredients:
+    - fluid: "ic2:alcohol"
+      amount: 50
+    machines:
+    - "ic2:refinery"
+    duration: 125
+    notes:
+    - "Output: 10-14 per operation"
+- file: "recipe"
+  id: "ic2:gold_to_raw"
+  merge:
+    fluidIngredients:
+    - fluid: "minecraft:lava"
+      amount: 25
+    machines:
+    - "ic2:refinery"
+    duration: 125
+    notes:
+    - "Output: 1-3 per operation"
+- file: "recipe"
+  id: "ic2:gold_to_raw_advanced"
+  merge:
+    fluidIngredients:
+    - fluid: "ic2:bio_fuel"
+      amount: 50
+    machines:
+    - "ic2:refinery"
+    duration: 125
+    notes:
+    - "Output: 3-5 per operation"
+- file: "recipe"
+  id: "ic2:gold_to_raw_alk"
+  merge:
+    fluidIngredients:
+    - fluid: "ic2:alcohol"
+      amount: 25
+    machines:
+    - "ic2:refinery"
+    duration: 125
+    notes:
+    - "Output: 5-7 per operation"
+- file: "recipe"
+  id: "ic2:copper_to_raw"
+  merge:
+    fluidIngredients:
+    - fluid: "minecraft:lava"
+      amount: 75
+    machines:
+    - "ic2:refinery"
+    duration: 125
+    notes:
+    - "Output: 3-9 per operation"
+- file: "recipe"
+  id: "ic2:copper_to_raw_advanced"
+  merge:
+    fluidIngredients:
+    - fluid: "ic2:bio_fuel"
+      amount: 150
+    machines:
+    - "ic2:refinery"
+    duration: 125
+    notes:
+    - "Output: 9-15 per operation"
+- file: "recipe"
+  id: "ic2:copper_to_raw_alk"
+  merge:
+    fluidIngredients:
+    - fluid: "ic2:alcohol"
+      amount: 75
+    machines:
+    - "ic2:refinery"
+    duration: 125
+    notes:
+    - "Output: 15-21 per operation"
+- file: "recipe"
+  id: "ic2:tin_to_raw"
+  merge:
+    fluidIngredients:
+    - fluid: "minecraft:lava"
+      amount: 75
+    machines:
+    - "ic2:refinery"
+    duration: 125
+    notes:
+    - "Output: 3-9 per operation"
+- file: "recipe"
+  id: "ic2:tin_to_raw_advanced"
+  merge:
+    fluidIngredients:
+    - fluid: "ic2:bio_fuel"
+      amount: 150
+    machines:
+    - "ic2:refinery"
+    duration: 125
+    notes:
+    - "Output: 9-15 per operation"
+- file: "recipe"
+  id: "ic2:tin_to_raw_alk"
+  merge:
+    fluidIngredients:
+    - fluid: "ic2:alcohol"
+      amount: 75
+    machines:
+    - "ic2:refinery"
+    duration: 125
+    notes:
+    - "Output: 15-21 per operation"
+- file: "recipe"
+  id: "ic2:silver_to_raw"
+  merge:
+    fluidIngredients:
+    - fluid: "minecraft:lava"
+      amount: 25
+    machines:
+    - "ic2:refinery"
+    duration: 125
+    notes:
+    - "Output: 1-3 per operation"
+- file: "recipe"
+  id: "ic2:silver_to_raw_advanced"
+  merge:
+    fluidIngredients:
+    - fluid: "ic2:bio_fuel"
+      amount: 50
+    machines:
+    - "ic2:refinery"
+    duration: 125
+    notes:
+    - "Output: 3-5 per operation"
+- file: "recipe"
+  id: "ic2:silver_to_raw_alk"
+  merge:
+    fluidIngredients:
+    - fluid: "ic2:alcohol"
+      amount: 25
+    machines:
+    - "ic2:refinery"
+    duration: 125
+    notes:
+    - "Output: 5-7 per operation"
+- file: "recipe"
+  id: "ic2:aluminum_to_raw"
+  merge:
+    fluidIngredients:
+    - fluid: "minecraft:lava"
+      amount: 375
+    machines:
+    - "ic2:refinery"
+    duration: 125
+    notes:
+    - "Output: 15-45 per operation"
+- file: "recipe"
+  id: "ic2:aluminum_to_raw_advanced"
+  merge:
+    fluidIngredients:
+    - fluid: "ic2:bio_fuel"
+      amount: 750
+    machines:
+    - "ic2:refinery"
+    duration: 125
+    notes:
+    - "Output: 45-75 per operation"
+- file: "recipe"
+  id: "ic2:aluminum_to_raw_alk"
+  merge:
+    fluidIngredients:
+    - fluid: "ic2:alcohol"
+      amount: 375
+    machines:
+    - "ic2:refinery"
+    duration: 125
+    notes:
+    - "Output: 75-105 per operation"
+- file: "recipe"
+  id: "ic2:polished_uranium"
+  merge:
+    fluidIngredients:
+    - fluid: "ic2:alcohol"
+      amount: 100
+    machines:
+    - "ic2:refinery"
+    duration: 250
+- file: "recipe"
+  id: "ic2:polished_gold"
+  merge:
+    fluidIngredients:
+    - fluid: "ic2:alcohol"
+      amount: 500
+    machines:
+    - "ic2:refinery"
+    duration: 250
+- file: "recipe"
+  id: "ic2:refined_whisky"
+  merge:
+    fluidIngredients:
+    - fluid: "ic2:whisky"
+      amount: 1000
+    machines:
+    - "ic2:refinery"
+    duration: 250
+- file: "recipe"
+  id: "ic2:coal_dust_washing"
+  merge:
+    fluidIngredients:
+    - fluid: "minecraft:water"
+      amount: 100
+    machines:
+    - "ic2:refinery"
+    duration: 25
+- file: "recipe"
+  id: "ic2:charcoal_dust_washing"
+  merge:
+    fluidIngredients:
+    - fluid: "minecraft:water"
+      amount: 100
+    machines:
+    - "ic2:refinery"
+    duration: 25
+- file: "recipe"
+  id: "ic2:potion_brew/minecraft_golden_carrot/base/minecraft_night_vision"
+  merge:
+    machines:
+    - "ic2:barrel"
+    fluidIngredients:
+    - fluid: "minecraft:water"
+      amount: 1000
+    notes:
+    - "Effect: Night Vision"
+    - "Barrel: water, a nether wart, then the ingredients; redstone = longer, glowstone\
+      \ = stronger"
+- file: "recipe"
+  id: "ic2:potion_brew/minecraft_magma_cream/base/minecraft_fire_resistance"
+  merge:
+    machines:
+    - "ic2:barrel"
+    fluidIngredients:
+    - fluid: "minecraft:water"
+      amount: 1000
+    notes:
+    - "Effect: Fire Resistance"
+    - "Barrel: water, a nether wart, then the ingredients; redstone = longer, glowstone\
+      \ = stronger"
+- file: "recipe"
+  id: "ic2:potion_brew/minecraft_rabbit_foot/base/minecraft_jump_boost"
+  merge:
+    machines:
+    - "ic2:barrel"
+    fluidIngredients:
+    - fluid: "minecraft:water"
+      amount: 1000
+    notes:
+    - "Effect: Jump Boost"
+    - "Barrel: water, a nether wart, then the ingredients; redstone = longer, glowstone\
+      \ = stronger"
+- file: "recipe"
+  id: "ic2:potion_brew/minecraft_fermented_spider_eye/base/minecraft_weakness"
+  merge:
+    machines:
+    - "ic2:barrel"
+    fluidIngredients:
+    - fluid: "minecraft:water"
+      amount: 1000
+    notes:
+    - "Effect: Weakness"
+    - "Barrel: water, a nether wart, then the ingredients; redstone = longer, glowstone\
+      \ = stronger"
+- file: "recipe"
+  id: "ic2:potion_brew/minecraft_sugar/base/minecraft_speed"
+  merge:
+    machines:
+    - "ic2:barrel"
+    fluidIngredients:
+    - fluid: "minecraft:water"
+      amount: 1000
+    notes:
+    - "Effect: Speed"
+    - "Barrel: water, a nether wart, then the ingredients; redstone = longer, glowstone\
+      \ = stronger"
+- file: "recipe"
+  id: "ic2:potion_brew/minecraft_pufferfish/base/minecraft_water_breathing"
+  merge:
+    machines:
+    - "ic2:barrel"
+    fluidIngredients:
+    - fluid: "minecraft:water"
+      amount: 1000
+    notes:
+    - "Effect: Water Breathing"
+    - "Barrel: water, a nether wart, then the ingredients; redstone = longer, glowstone\
+      \ = stronger"
+- file: "recipe"
+  id: "ic2:potion_brew/minecraft_glistering_melon_slice/base/minecraft_instant_health"
+  merge:
+    machines:
+    - "ic2:barrel"
+    fluidIngredients:
+    - fluid: "minecraft:water"
+      amount: 1000
+    notes:
+    - "Effect: Instant Health"
+    - "Barrel: water, a nether wart, then the ingredients; redstone = longer, glowstone\
+      \ = stronger"
+- file: "recipe"
+  id: "ic2:potion_brew/minecraft_spider_eye/base/minecraft_poison"
+  merge:
+    machines:
+    - "ic2:barrel"
+    fluidIngredients:
+    - fluid: "minecraft:water"
+      amount: 1000
+    notes:
+    - "Effect: Poison"
+    - "Barrel: water, a nether wart, then the ingredients; redstone = longer, glowstone\
+      \ = stronger"
+- file: "recipe"
+  id: "ic2:potion_brew/minecraft_blaze_powder/base/minecraft_strength"
+  merge:
+    machines:
+    - "ic2:barrel"
+    fluidIngredients:
+    - fluid: "minecraft:water"
+      amount: 1000
+    notes:
+    - "Effect: Strength"
+    - "Barrel: water, a nether wart, then the ingredients; redstone = longer, glowstone\
+      \ = stronger"
+- file: "recipe"
+  id: "ic2:potion_brew/minecraft_phantom_membrane/base/minecraft_slow_falling"
+  merge:
+    machines:
+    - "ic2:barrel"
+    fluidIngredients:
+    - fluid: "minecraft:water"
+      amount: 1000
+    notes:
+    - "Effect: Slow Falling"
+    - "Barrel: water, a nether wart, then the ingredients; redstone = longer, glowstone\
+      \ = stronger"
+- file: "recipe"
+  id: "ic2:potion_brew/minecraft_fermented_spider_eye/minecraft_night_vision/minecraft_invisibility"
+  merge:
+    machines:
+    - "ic2:barrel"
+    fluidIngredients:
+    - fluid: "minecraft:water"
+      amount: 1000
+    notes:
+    - "Effect: Invisibility"
+    - "Turns a Night Vision brew"
+    - "Barrel: water, a nether wart, then the ingredients; redstone = longer, glowstone\
+      \ = stronger"
+- file: "recipe"
+  id: "ic2:potion_brew/minecraft_fermented_spider_eye/minecraft_jump_boost/minecraft_slowness"
+  merge:
+    machines:
+    - "ic2:barrel"
+    fluidIngredients:
+    - fluid: "minecraft:water"
+      amount: 1000
+    notes:
+    - "Effect: Slowness"
+    - "Turns a Jump Boost brew"
+    - "Barrel: water, a nether wart, then the ingredients; redstone = longer, glowstone\
+      \ = stronger"
+- file: "recipe"
+  id: "ic2:potion_brew/minecraft_fermented_spider_eye/minecraft_speed/minecraft_slowness"
+  merge:
+    machines:
+    - "ic2:barrel"
+    fluidIngredients:
+    - fluid: "minecraft:water"
+      amount: 1000
+    notes:
+    - "Effect: Slowness"
+    - "Turns a Speed brew"
+    - "Barrel: water, a nether wart, then the ingredients; redstone = longer, glowstone\
+      \ = stronger"
+- file: "recipe"
+  id: "ic2:potion_brew/minecraft_fermented_spider_eye/minecraft_instant_health/minecraft_instant_damage"
+  merge:
+    machines:
+    - "ic2:barrel"
+    fluidIngredients:
+    - fluid: "minecraft:water"
+      amount: 1000
+    notes:
+    - "Effect: Instant Damage"
+    - "Turns a Instant Health brew"
+    - "Barrel: water, a nether wart, then the ingredients; redstone = longer, glowstone\
+      \ = stronger"
+- file: "recipe"
+  id: "ic2:potion_brew/minecraft_fermented_spider_eye/minecraft_poison/minecraft_instant_damage"
+  merge:
+    machines:
+    - "ic2:barrel"
+    fluidIngredients:
+    - fluid: "minecraft:water"
+      amount: 1000
+    notes:
+    - "Effect: Instant Damage"
+    - "Turns a Poison brew"
+    - "Barrel: water, a nether wart, then the ingredients; redstone = longer, glowstone\
+      \ = stronger"
+- file: "recipe"
+  add:
+    kind: "recipe"
+    id: "ic2:barrel_brewing/beer_mug"
+    recipeType: "custom"
+    customType: "ic2:barrel_brewing"
+    ingredients:
+    - item: "minecraft:wheat"
+    - item: "ic2:hops"
+    - item: "ic2:mug"
+    fluidIngredients:
+    - fluid: "minecraft:water"
+      amount: 1000
+    result:
+      item: "ic2:mug_beer"
+    duration: 24000
+    machines:
+    - "ic2:barrel"
+    notes:
+    - "Up to 32 buckets of water, 64 wheat and 64 hops; the hops:wheat ratio sets\
+      \ the strength"
+    - "Ages while closed: quality rises after 1, 3, 9 and 27 in-game days"
+    - "Tap with a treetap, then fill mugs or glasses"
+    provenance:
+      file: "java/ic2/core/block/misc/tiles/BarrelTileEntity.java"
+      line: 0
+      version: "forge-1.19.2"
+      via: "manual"
+- file: "recipe"
+  add:
+    kind: "recipe"
+    id: "ic2:barrel_brewing/rum_mug"
+    recipeType: "custom"
+    customType: "ic2:barrel_brewing"
+    ingredients:
+    - item: "minecraft:sugar_cane"
+    - item: "ic2:mug"
+    result:
+      item: "ic2:mug_rum"
+    duration: 1200
+    machines:
+    - "ic2:barrel"
+    notes:
+    - "Up to 32 sugar canes (1000 mB each), no water"
+    - "1 min per cane, a little less per cane in big batches (32 canes: 6.5 min)"
+    - "Tap with a treetap, then fill mugs or glasses"
+    provenance:
+      file: "java/ic2/core/block/misc/tiles/BarrelTileEntity.java"
+      line: 0
+      version: "forge-1.19.2"
+      via: "manual"
+- file: "recipe"
+  add:
+    kind: "recipe"
+    id: "ic2:barrel_brewing/whisky_mug"
+    recipeType: "custom"
+    customType: "ic2:barrel_brewing"
+    ingredients:
+    - item: "ic2:whisky_grist"
+    - item: "ic2:mug"
+    fluidIngredients:
+    - fluid: "minecraft:water"
+      amount: 1000
+    result:
+      item: "ic2:mug_whisky"
+    duration: 1209600
+    machines:
+    - "ic2:barrel"
+    notes:
+    - "Water and up to 16 whisky grist"
+    - "One ageing step per 1,209,600 ticks; 10/12/15/25/50 steps = 1 to 5 years"
+    - "Tap with a treetap, then fill mugs or glasses"
+    provenance:
+      file: "java/ic2/core/block/misc/tiles/BarrelTileEntity.java"
+      line: 0
+      version: "forge-1.19.2"
+      via: "manual"
+- file: "recipe"
+  add:
+    kind: "recipe"
+    id: "ic2:barrel_brewing/beer_glass"
+    recipeType: "custom"
+    customType: "ic2:barrel_brewing"
+    ingredients:
+    - item: "minecraft:wheat"
+    - item: "ic2:hops"
+    - item: "ic2:glass"
+    fluidIngredients:
+    - fluid: "minecraft:water"
+      amount: 1000
+    result:
+      item: "ic2:glass_beer"
+    duration: 24000
+    machines:
+    - "ic2:barrel"
+    notes:
+    - "Up to 32 buckets of water, 64 wheat and 64 hops; the hops:wheat ratio sets\
+      \ the strength"
+    - "Ages while closed: quality rises after 1, 3, 9 and 27 in-game days"
+    - "Tap with a treetap, then fill mugs or glasses"
+    provenance:
+      file: "java/ic2/core/block/misc/tiles/BarrelTileEntity.java"
+      line: 0
+      version: "forge-1.19.2"
+      via: "manual"
+- file: "recipe"
+  add:
+    kind: "recipe"
+    id: "ic2:barrel_brewing/rum_glass"
+    recipeType: "custom"
+    customType: "ic2:barrel_brewing"
+    ingredients:
+    - item: "minecraft:sugar_cane"
+    - item: "ic2:glass"
+    result:
+      item: "ic2:glass_rum"
+    duration: 1200
+    machines:
+    - "ic2:barrel"
+    notes:
+    - "Up to 32 sugar canes (1000 mB each), no water"
+    - "1 min per cane, a little less per cane in big batches (32 canes: 6.5 min)"
+    - "Tap with a treetap, then fill mugs or glasses"
+    provenance:
+      file: "java/ic2/core/block/misc/tiles/BarrelTileEntity.java"
+      line: 0
+      version: "forge-1.19.2"
+      via: "manual"
+- file: "recipe"
+  add:
+    kind: "recipe"
+    id: "ic2:barrel_brewing/whisky_glass"
+    recipeType: "custom"
+    customType: "ic2:barrel_brewing"
+    ingredients:
+    - item: "ic2:whisky_grist"
+    - item: "ic2:glass"
+    fluidIngredients:
+    - fluid: "minecraft:water"
+      amount: 1000
+    result:
+      item: "ic2:glass_whisky"
+    duration: 1209600
+    machines:
+    - "ic2:barrel"
+    notes:
+    - "Water and up to 16 whisky grist"
+    - "One ageing step per 1,209,600 ticks; 10/12/15/25/50 steps = 1 to 5 years"
+    - "Tap with a treetap, then fill mugs or glasses"
+    provenance:
+      file: "java/ic2/core/block/misc/tiles/BarrelTileEntity.java"
+      line: 0
+      version: "forge-1.19.2"
+      via: "manual"
+- file: "recipe"
+  add:
+    kind: "recipe"
+    id: "ic2:alcohol_mug"
+    recipeType: "custom"
+    customType: "ic2:refining"
+    ingredients:
+    - item: "ic2:mug_beer"
+    fluidIngredients:
+    - fluid: "minecraft:water"
+      amount: 1000
+    result:
+      item: "ic2:mug"
+    fluidResults:
+    - fluid: "ic2:alcohol"
+      amount: 30
+    duration: 250
+    machines:
+    - "ic2:refinery"
+    notes:
+    - "Alcohol: hops x 10 x (age + 1) mB; needs a beer aged 2-4 steps with 2+ hops"
+    provenance:
+      file: "java/ic2/core/block/machines/tiles/mv/RefineryTileEntity.java"
+      line: 0
+      version: "forge-1.19.2"
+      via: "manual"
+- file: "recipe"
+  add:
+    kind: "recipe"
+    id: "ic2:whisky_mug"
+    recipeType: "custom"
+    customType: "ic2:refining"
+    ingredients:
+    - item: "ic2:mug_whisky"
+    fluidIngredients:
+    - fluid: "minecraft:water"
+      amount: 4000
+    result:
+      item: "ic2:mug"
+    fluidResults:
+    - fluid: "ic2:alcohol"
+      amount: 100
+    duration: 250
+    machines:
+    - "ic2:refinery"
+    notes:
+    - "Alcohol amount grows with the whisky's age (aged whisky only)"
+    provenance:
+      file: "java/ic2/core/block/machines/tiles/mv/RefineryTileEntity.java"
+      line: 0
+      version: "forge-1.19.2"
+      via: "manual"
+- file: "recipe"
+  add:
+    kind: "recipe"
+    id: "ic2:alcohol_glass"
+    recipeType: "custom"
+    customType: "ic2:refining"
+    ingredients:
+    - item: "ic2:glass_beer"
+    fluidIngredients:
+    - fluid: "minecraft:water"
+      amount: 1000
+    result:
+      item: "ic2:glass"
+    fluidResults:
+    - fluid: "ic2:alcohol"
+      amount: 30
+    duration: 250
+    machines:
+    - "ic2:refinery"
+    notes:
+    - "Alcohol: hops x 10 x (age + 1) mB; needs a beer aged 2-4 steps with 2+ hops"
+    provenance:
+      file: "java/ic2/core/block/machines/tiles/mv/RefineryTileEntity.java"
+      line: 0
+      version: "forge-1.19.2"
+      via: "manual"
+- file: "recipe"
+  add:
+    kind: "recipe"
+    id: "ic2:whisky_glass"
+    recipeType: "custom"
+    customType: "ic2:refining"
+    ingredients:
+    - item: "ic2:glass_whisky"
+    fluidIngredients:
+    - fluid: "minecraft:water"
+      amount: 4000
+    result:
+      item: "ic2:glass"
+    fluidResults:
+    - fluid: "ic2:alcohol"
+      amount: 100
+    duration: 250
+    machines:
+    - "ic2:refinery"
+    notes:
+    - "Alcohol amount grows with the whisky's age (aged whisky only)"
+    provenance:
+      file: "java/ic2/core/block/machines/tiles/mv/RefineryTileEntity.java"
+      line: 0
+      version: "forge-1.19.2"
+      via: "manual"
+- file: "recipe"
+  add:
+    kind: "recipe"
+    id: "ic2:unrefined_whisky"
+    recipeType: "custom"
+    customType: "ic2:refining"
+    ingredients:
+    - item: "ic2:flour"
+      count: 4
+    fluidIngredients:
+    - fluid: "minecraft:water"
+      amount: 1000
+    fluidResults:
+    - fluid: "ic2:whisky"
+      amount: 250
+    duration: 125
+    machines:
+    - "ic2:refinery"
+    provenance:
+      file: "java/ic2/core/block/machines/tiles/mv/RefineryTileEntity.java"
+      line: 0
+      version: "forge-1.19.2"
+      via: "manual"
+- file: "unknown"
+  remove: "ic2:alcohol_mug"
+- file: "unknown"
+  remove: "ic2:alcohol_glass"
+- file: "unknown"
+  remove: "ic2:whisky_mug"
+- file: "unknown"
+  remove: "ic2:whisky_glass"
+- file: "unknown"
+  remove: "ic2:unrefined_whisky"

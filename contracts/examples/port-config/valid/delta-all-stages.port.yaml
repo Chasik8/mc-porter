@@ -11,10 +11,39 @@ project: ../hostaddon
 work: build/port-steam
 queue: [bash, /home/me/bin/one-job-at-a-time.sh, porter]
 jvmArgs: [-Xmx2g]
+inputs:
+  - name: host-1192
+    mod: Host Mod
+    version: "4.0"
+    page: https://example.org/hostmod/files
+    file: host-1.19.2-4.0.jar
+    sha256: 0f0e0d0c0b0a09080706050403020100f0e0d0c0b0a09080706050403020100f
+plugins: [build/host-extract-pack.jar]
 classpath:
   file: build/porter-cp.txt
   exclude: [jabel]
   entries: ["${CACHE}/libs/fastutil-8.5.6.jar"]
+setup:
+  steps:
+    - name: decompile
+      porter: [decompile, --jar, "${INPUT_HOST_1192:-../downloads/host-1.19.2-4.0.jar}", --out, "${CACHE}/host-1.19.2-src"]
+      creates: ["${CACHE}/host-1.19.2-src/java"]
+    - name: cfr
+      download: {url: "https://repo1.maven.org/maven2/org/benf/cfr/0.152/cfr-0.152.jar", sha256: f686e8f3ded377d7bc87d216a90e9e9512df4156e75b06c655a16648ae8765b2, to: "${CACHE}/tools/cfr-0.152.jar"}
+    - name: project
+      copy: {from: project-files, to: ../hostaddon}
+    - name: textures
+      unzip: {zip: "${INPUT_HOST_1192:-../downloads/host-1.19.2-4.0.jar}", prefix: assets/host/textures/gui/, to: ../hostaddon/src/main/resources/assets/hostaddon/textures/gui, classes: false}
+    - name: classpath
+      command: [./gradlew, --no-daemon, -I, ../porter/scripts/gradle/porter-classpath.gradle, porterClasspath]
+      cwd: ../hostaddon
+      creates: [../hostaddon/build/porter-cp.txt]
+derive:
+  steps:
+    - name: extract
+      porter: [extract, --src, "${CACHE}/host-1.19.2-src", --version, "1.19.2", --out, build/ir-all]
+    - name: select
+      porter: [select, --ir, build/ir-all, --spec, steam.select.yaml, --out, steam/ir]
 generate:
   units:
     - name: steam
@@ -37,14 +66,29 @@ rewrite:
   relocate: [host.=hostaddon.ported.]
   shimPackage: hostaddon.ported.shim
   jvmArgs: [-Xmx2g, -Xss16m]
+patches:
+  - name: logic
+    after: generate
+    patches: patches/logic
+    base: "${CACHE}/host-1.19.2-src/java"
+    target: ../hostaddon/src/main/java
 install:
   stubs:
     overrides: hubs
+    keep: [com.example.base.registry.Machines#create]
   srgMappings: "${CACHE}/graph/out/mappings/1.19.2.tiny"
-  passes: [srgmoj, java8, tector, edits, imports]
+  passes: [srgmoj, java8, tector, edits, assetns, imports]
   edits: edits.yaml
+  assetNamespaces: [{from: host, to: hostaddon, paths: [textures/]}]
   adapters: bundled
   overlays: [manual, compat]
+  langKeys:
+    scan: src/main/java/hostaddon/ported
+    pattern: '"(gui\.host\.[a-z0-9_.]+)"'
+    source: "${CACHE}/host-1.19.2-src/res/assets/host/lang"
+    target: src/main/resources/assets/hostaddon/lang
+    locales: {en_us: en_US, ru_ru: ru_RU}
+    marker: porter:lang-keys
 loop:
   useClasspath: true
   args: [--runner, javac, --max-iter, "10", --shim, --rules, ../porter/rules/composite, --rules, ../porter/rules/packs/adapters]

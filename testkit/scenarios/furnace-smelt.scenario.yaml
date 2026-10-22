@@ -1,5 +1,7 @@
 schemaVersion: 1
 id: furnace-smelt
+# isolation: region -> may run simultaneously with other region scenarios (own region, no world-wide state)
+isolation: region
 description: Vanilla furnace smelts one iron ore with one coal (logic, dedicated server, both versions).
 world: flat-void
 maxTicks: 400

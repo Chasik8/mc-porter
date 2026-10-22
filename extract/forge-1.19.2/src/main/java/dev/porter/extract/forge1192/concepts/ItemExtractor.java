@@ -47,7 +47,12 @@ public final class ItemExtractor {
             d.provenance = ctx.prov(r.site(), ID);
             if (c.obj() != null && Vals.isClassName(c.logicClass())) {
                 d.logicClass = c.logicClass();
+                List<String> newArgs = Vals.sourceConstructorArgs(c.obj());
+                if (newArgs != null && !newArgs.isEmpty()) {
+                    d.extensions.put(Vals.NEW_ARGS, Vals.strings(newArgs));
+                }
             }
+            ctx.putHolders(d.extensions, v);
             if (!r.conditions().isEmpty()) {
                 d.extensions.put("porter-extract:conditions", Vals.strings(r.conditions()));
             }

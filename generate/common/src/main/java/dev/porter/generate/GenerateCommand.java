@@ -82,6 +82,12 @@ public final class GenerateCommand implements Callable<Integer>, PorterSubcomman
     @Option(names = "--no-nei", description = "1.7.10: no NotEnoughItems integration (default: generated; NEI is a compileOnly dependency).")
     boolean noNei;
 
+    @Option(names = "--source-constructors", description = "Construct logic classes with the source registry's constructor arguments (IR porter-extract:newArgs); for logic ported whole by the closure.")
+    boolean sourceConstructors;
+
+    @Option(names = "--gui-delegate", description = "1.7.10: class with static handles(int)/server(...)/client(...) that opens the GUIs of menus with a logic class (ported containers build their own screens).")
+    String guiDelegate;
+
     @Option(names = "--dry-run", description = "Generate in memory and report, write nothing.")
     boolean dryRun;
 
@@ -106,7 +112,8 @@ public final class GenerateCommand implements Callable<Integer>, PorterSubcomman
         try {
             options = new GenOptions(gen.get().version(), basePackage, modId, modName, modVersion, embed,
                     GenOptions.IntRange.parse(guiIds), GenOptions.IntRange.parse(potionIds), channel, assets,
-                    assetNamespace, legacyNames, !noStubs, idMap == null ? Map.of() : IdMaps.load(idMap), !noNei);
+                    assetNamespace, legacyNames, !noStubs, idMap == null ? Map.of() : IdMaps.load(idMap), !noNei, sourceConstructors,
+                    guiDelegate);
         } catch (IllegalArgumentException e) {
             err.println("porter generate: " + e.getMessage());
             report.put("error", e.getMessage()).write(RunReport.STATUS_FAILED, ExitCodes.USAGE);

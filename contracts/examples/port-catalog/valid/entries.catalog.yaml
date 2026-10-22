@@ -19,4 +19,5 @@ ports:
     status: compiles
     licence: ARR
     distributable: false
+    smokeOnly: true
     notes: Profile only; everyone runs the port locally against their own copy of the original jar.

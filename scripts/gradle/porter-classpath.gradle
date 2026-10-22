@@ -1,0 +1,30 @@
+// Gradle init script: adds the task `porterClasspath`, which writes build/porter-cp.txt (the main compile classpath,
+// one entry per line) for `porter port` (classpath.file), after building the classpath's own outputs, and copies the
+// annotation processors (javac plugins such as Jabel) into build/porter-processor/ for porter's own javac runs.
+// Use it without editing the project's build files:
+//   ./gradlew -I <porter>/scripts/gradle/porter-classpath.gradle porterClasspath
+allprojects {
+    afterEvaluate { p ->
+        if (p.extensions.findByName('sourceSets') != null && p.tasks.findByName('porterClasspath') == null) {
+            p.tasks.register('porterClasspath') {
+                def cp = p.sourceSets.main.compileClasspath
+                def ap = p.configurations.findByName('annotationProcessor')
+                def out = p.layout.buildDirectory.file('porter-cp.txt')
+                def apDir = p.layout.buildDirectory.dir('porter-processor')
+                dependsOn(cp) // classes the classpath needs built first (e.g. RFG's patchedMc)
+                outputs.upToDateWhen { false }
+                doLast {
+                    def f = out.get().asFile
+                    f.parentFile.mkdirs()
+                    f.text = cp.files.collect { it.absolutePath }.join('\n') + '\n'
+                    def d = apDir.get().asFile
+                    d.deleteDir()
+                    d.mkdirs()
+                    if (ap != null) {
+                        ap.files.each { jar -> java.nio.file.Files.copy(jar.toPath(), new File(d, jar.name).toPath()) }
+                    }
+                }
+            }
+        }
+    }
+}

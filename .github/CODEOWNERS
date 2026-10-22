@@ -1,5 +1,26 @@
-# Default owner of everything. Add area owners below (later lines win) as people take over modules or
-# version-pair packs, e.g.:
+# Default owner of everything. Later lines win. Add area owners below as people take over modules or version-pair
+# packs, e.g.:
 #   /rules/composite/1.19.2__1.7.10/   @someone
 #   /graph/                            @someone-else
+# The paths marked "reference" are what every port builds on and what nightly CI re-runs: a change there always
+# needs the maintainer's review. Do not give another owner a line below them without the maintainer on it too.
 *   @Chasik8
+
+# --- reference: rules, rule packs, adapters, rewrite engine
+/rules/                         @Chasik8
+/rules/composite/               @Chasik8
+/rules/packs/                   @Chasik8
+/rewrite/                       @Chasik8
+/rewrite/shim/                  @Chasik8
+
+# --- reference: the reference port (ports/torchmaster), the port template, the catalog
+/ports/torchmaster/             @Chasik8
+/ports/_template/               @Chasik8
+/ports/catalog.yaml             @Chasik8
+
+# --- what decides what is trusted: CI and its scripts, contracts, testkit, contribution rules
+/.github/                       @Chasik8
+/scripts/                       @Chasik8
+/contracts/                     @Chasik8
+/testkit/                       @Chasik8
+/CONTRIBUTING.md                @Chasik8

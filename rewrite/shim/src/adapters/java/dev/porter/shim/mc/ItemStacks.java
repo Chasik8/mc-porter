@@ -37,6 +37,15 @@ public final class ItemStacks {
         return a.getItem() == b.getItem() && a.getItemDamage() == b.getItemDamage() && ItemStack.areItemStackTagsEqual(a, b);
     }
 
+    /**
+     * ItemStack#sameItem: same item (1.7.10: and the same damage value unless the item is damageable, since 1.7.10 keeps
+     * item variants in the damage); false when either stack is empty, like 1.19.2.
+     */
+    public static boolean sameItemAs(ItemStack a, ItemStack b) {
+        if (isEmpty(a) || isEmpty(b)) return false;
+        return a.getItem() == b.getItem() && (a.getItem().isDamageable() || a.getItemDamage() == b.getItemDamage());
+    }
+
     /** ItemStack.isSame (item + damage) */
     public static boolean sameItem(ItemStack a, ItemStack b) {
         if (isEmpty(a) || isEmpty(b)) return isEmpty(a) && isEmpty(b);

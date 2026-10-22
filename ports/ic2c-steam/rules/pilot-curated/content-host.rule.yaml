@@ -1,0 +1,356 @@
+schemaVersion: 1
+id: r-pilot-host-ic2blocks-scaffold_wood
+description: "host object: IC2C 1.2.6 Ic2Items.scaffold (ItemStack)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "ic2.core.platform.registries.IC2Blocks#SCAFFOLD_WOOD"
+replace: "Block.getBlockFromItem(Ic2Items.scaffold.getItem())"
+imports: ["ic2.core.Ic2Items", "net.minecraft.block.Block"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot content_rules.py: IR selection + porter generate naming; holder field checked in the 1.19.2 source" }
+tests:
+  - context: "import ic2.core.platform.registries.IC2Blocks"
+    before: "Object o = IC2Blocks.SCAFFOLD_WOOD;"
+    after: "Object o = Block.getBlockFromItem(Ic2Items.scaffold.getItem());"
+---
+schemaVersion: 1
+id: r-pilot-host-ic2items-cell_empty
+description: "host object: IC2C 1.2.6 Ic2Items.cell (ItemStack)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "ic2.core.platform.registries.IC2Items#CELL_EMPTY"
+replace: "Ic2Items.cell.getItem()"
+imports: ["ic2.core.Ic2Items"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot content_rules.py: IR selection + porter generate naming; holder field checked in the 1.19.2 source" }
+tests:
+  - context: "import ic2.core.platform.registries.IC2Items"
+    before: "Object o = IC2Items.CELL_EMPTY;"
+    after: "Object o = Ic2Items.cell.getItem();"
+---
+schemaVersion: 1
+id: r-pilot-host-ic2items-cell_water
+description: "host object: IC2C 1.2.6 Ic2Items.waterCell (ItemStack)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "ic2.core.platform.registries.IC2Items#CELL_WATER"
+replace: "Ic2Items.waterCell.getItem()"
+imports: ["ic2.core.Ic2Items"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot content_rules.py: IR selection + porter generate naming; holder field checked in the 1.19.2 source" }
+tests:
+  - context: "import ic2.core.platform.registries.IC2Items"
+    before: "Object o = IC2Items.CELL_WATER;"
+    after: "Object o = Ic2Items.waterCell.getItem();"
+---
+schemaVersion: 1
+id: r-pilot-host-ic2items-dust_coal
+description: "host object: IC2C 1.2.6 Ic2Items.coalDust (ItemStack)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "ic2.core.platform.registries.IC2Items#DUST_COAL"
+replace: "Ic2Items.coalDust.getItem()"
+imports: ["ic2.core.Ic2Items"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot content_rules.py: IR selection + porter generate naming; holder field checked in the 1.19.2 source" }
+tests:
+  - context: "import ic2.core.platform.registries.IC2Items"
+    before: "Object o = IC2Items.DUST_COAL;"
+    after: "Object o = Ic2Items.coalDust.getItem();"
+---
+schemaVersion: 1
+id: r-pilot-host-ic2items-dust_hydrated_coal
+description: "host object: IC2C 1.2.6 Ic2Items.hydratedCoalDust (ItemStack)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "ic2.core.platform.registries.IC2Items#DUST_HYDRATED_COAL"
+replace: "Ic2Items.hydratedCoalDust.getItem()"
+imports: ["ic2.core.Ic2Items"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot content_rules.py: IR selection + porter generate naming; holder field checked in the 1.19.2 source" }
+tests:
+  - context: "import ic2.core.platform.registries.IC2Items"
+    before: "Object o = IC2Items.DUST_HYDRATED_COAL;"
+    after: "Object o = Ic2Items.hydratedCoalDust.getItem();"
+---
+schemaVersion: 1
+id: r-pilot-host-ic2items-flour
+description: "host object: IC2C 1.2.6 Ic2Items.flour (ItemStack)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "ic2.core.platform.registries.IC2Items#FLOUR"
+replace: "Ic2Items.flour.getItem()"
+imports: ["ic2.core.Ic2Items"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot content_rules.py: IR selection + porter generate naming; holder field checked in the 1.19.2 source" }
+tests:
+  - context: "import ic2.core.platform.registries.IC2Items"
+    before: "Object o = IC2Items.FLOUR;"
+    after: "Object o = Ic2Items.flour.getItem();"
+---
+schemaVersion: 1
+id: r-pilot-host-ic2items-hops
+description: "host object: IC2C 1.2.6 Ic2Items.hops (ItemStack)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "ic2.core.platform.registries.IC2Items#HOPS"
+replace: "Ic2Items.hops.getItem()"
+imports: ["ic2.core.Ic2Items"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot content_rules.py: IR selection + porter generate naming; holder field checked in the 1.19.2 source" }
+tests:
+  - context: "import ic2.core.platform.registries.IC2Items"
+    before: "Object o = IC2Items.HOPS;"
+    after: "Object o = Ic2Items.hops.getItem();"
+---
+schemaVersion: 1
+id: r-pilot-host-ic2items-mug
+description: "host object: IC2C 1.2.6 Ic2Items.mugEmpty (ItemStack)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "ic2.core.platform.registries.IC2Items#MUG"
+replace: "Ic2Items.mugEmpty.getItem()"
+imports: ["ic2.core.Ic2Items"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot content_rules.py: IR selection + porter generate naming; holder field checked in the 1.19.2 source" }
+tests:
+  - context: "import ic2.core.platform.registries.IC2Items"
+    before: "Object o = IC2Items.MUG;"
+    after: "Object o = Ic2Items.mugEmpty.getItem();"
+---
+schemaVersion: 1
+id: r-pilot-host-ic2items-plant_ball_compressed
+description: "host object: IC2C 1.2.6 Ic2Items.compressedPlantBall (ItemStack)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "ic2.core.platform.registries.IC2Items#PLANT_BALL_COMPRESSED"
+replace: "Ic2Items.compressedPlantBall.getItem()"
+imports: ["ic2.core.Ic2Items"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot content_rules.py: IR selection + porter generate naming; holder field checked in the 1.19.2 source" }
+tests:
+  - context: "import ic2.core.platform.registries.IC2Items"
+    before: "Object o = IC2Items.PLANT_BALL_COMPRESSED;"
+    after: "Object o = Ic2Items.compressedPlantBall.getItem();"
+---
+schemaVersion: 1
+id: r-pilot-host-ic2items-treetap
+description: "host object: IC2C 1.2.6 Ic2Items.treetap (ItemStack)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "ic2.core.platform.registries.IC2Items#TREETAP"
+replace: "Ic2Items.treetap.getItem()"
+imports: ["ic2.core.Ic2Items"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot content_rules.py: IR selection + porter generate naming; holder field checked in the 1.19.2 source" }
+tests:
+  - context: "import ic2.core.platform.registries.IC2Items"
+    before: "Object o = IC2Items.TREETAP;"
+    after: "Object o = Ic2Items.treetap.getItem();"
+---
+schemaVersion: 1
+id: r-barrels-host-ic2items-raw_tin
+description: "1.19.2 raw tin -> IC2C 1.2.6 tin dust (as the id map: ic2:raw_tin)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "ic2.core.platform.registries.IC2Items#RAW_TIN"
+replace: "Ic2Items.tinDust.getItem()"
+imports: ["ic2.core.Ic2Items"]
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: refinery/brewing ingredients without an addon object" }
+tests:
+  - context: "import ic2.core.platform.registries.IC2Items"
+    before: "Object o = IC2Items.RAW_TIN;"
+    after: "Object o = Ic2Items.tinDust.getItem();"
+---
+schemaVersion: 1
+id: r-barrels-host-ic2items-raw_silver
+description: "raw silver -> IC2C 1.2.6 silver dust"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "ic2.core.platform.registries.IC2Items#RAW_SILVER"
+replace: "Ic2Items.silverDust.getItem()"
+imports: ["ic2.core.Ic2Items"]
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: refinery/brewing ingredients without an addon object" }
+tests:
+  - context: "import ic2.core.platform.registries.IC2Items"
+    before: "Object o = IC2Items.RAW_SILVER;"
+    after: "Object o = Ic2Items.silverDust.getItem();"
+---
+schemaVersion: 1
+id: r-barrels-host-ic2items-raw_aluminium
+description: "raw aluminium -> an aluminium dust of the pack (none in IC2C 1.2.6)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "ic2.core.platform.registries.IC2Items#RAW_ALUMINIUM"
+replace: "LegacyItems.ore(\"dustAluminum\")"
+imports: ["dev.porter.shim.mc.LegacyItems"]
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: refinery/brewing ingredients without an addon object" }
+tests:
+  - context: "import ic2.core.platform.registries.IC2Items"
+    before: "Object o = IC2Items.RAW_ALUMINIUM;"
+    after: "Object o = LegacyItems.ore(\"dustAluminum\");"
+---
+schemaVersion: 1
+id: r-barrels-host-ic2items-ore_uranium_drop
+description: "uranium ore drop -> IC2C 1.2.6 itemOreUran (as the id map: ic2:ore_uranium)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "ic2.core.platform.registries.IC2Items#ORE_URANIUM_DROP"
+replace: "Ic2Items.uraniumDrop.getItem()"
+imports: ["ic2.core.Ic2Items"]
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: refinery/brewing ingredients without an addon object" }
+tests:
+  - context: "import ic2.core.platform.registries.IC2Items"
+    before: "Object o = IC2Items.ORE_URANIUM_DROP;"
+    after: "Object o = Ic2Items.uraniumDrop.getItem();"
+---
+schemaVersion: 1
+id: r-barrels-host-ic2items-ingot_polished_gold
+description: "polished gold (no 1.2.6 item) -> gold ingot"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "ic2.core.platform.registries.IC2Items#INGOT_POLISHED_GOLD"
+replace: "Items.gold_ingot"
+imports: ["net.minecraft.init.Items"]
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: refinery/brewing ingredients without an addon object" }
+tests:
+  - context: "import ic2.core.platform.registries.IC2Items"
+    before: "Object o = IC2Items.INGOT_POLISHED_GOLD;"
+    after: "Object o = Items.gold_ingot;"
+---
+schemaVersion: 1
+id: r-barrels-host-ic2items-dust_charcoal
+description: "charcoal dust -> a charcoal dust of the pack (none in IC2C 1.2.6)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "ic2.core.platform.registries.IC2Items#DUST_CHARCOAL"
+replace: "LegacyItems.ore(\"dustCharcoal\")"
+imports: ["dev.porter.shim.mc.LegacyItems"]
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: refinery/brewing ingredients without an addon object" }
+tests:
+  - context: "import ic2.core.platform.registries.IC2Items"
+    before: "Object o = IC2Items.DUST_CHARCOAL;"
+    after: "Object o = LegacyItems.ore(\"dustCharcoal\");"
+---
+schemaVersion: 1
+id: r-barrels-host-ic2items-dust_hydrated_charcoal
+description: "hydrated charcoal dust -> IC2C 1.2.6 hydrated coal dust"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "ic2.core.platform.registries.IC2Items#DUST_HYDRATED_CHARCOAL"
+replace: "Ic2Items.hydratedCoalDust.getItem()"
+imports: ["ic2.core.Ic2Items"]
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: refinery/brewing ingredients without an addon object" }
+tests:
+  - context: "import ic2.core.platform.registries.IC2Items"
+    before: "Object o = IC2Items.DUST_HYDRATED_CHARCOAL;"
+    after: "Object o = Ic2Items.hydratedCoalDust.getItem();"
+---
+schemaVersion: 1
+id: r-barrels-host-ic2items-chocolate
+description: "chocolate (no 1.2.6 item) -> cookie"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "ic2.core.platform.registries.IC2Items#CHOCOLATE"
+replace: "Items.cookie"
+imports: ["net.minecraft.init.Items"]
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: refinery/brewing ingredients without an addon object" }
+tests:
+  - context: "import ic2.core.platform.registries.IC2Items"
+    before: "Object o = IC2Items.CHOCOLATE;"
+    after: "Object o = Items.cookie;"
+---
+schemaVersion: 1
+id: r-barrels-host-ic2items-empty_splash_potion
+description: "splash potion bottle (no 1.7.10 item): placeholder"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "ic2.core.platform.registries.IC2Items#EMPTY_SPLASH_POTION"
+replace: "LegacyItems.ABSENT"
+imports: ["dev.porter.shim.mc.LegacyItems"]
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: refinery/brewing ingredients without an addon object" }
+tests:
+  - context: "import ic2.core.platform.registries.IC2Items"
+    before: "Object o = IC2Items.EMPTY_SPLASH_POTION;"
+    after: "Object o = LegacyItems.ABSENT;"
+---
+schemaVersion: 1
+id: r-barrels-host-ic2items-empty_lingering_potion
+description: "lingering potion bottle (no 1.7.10 item): placeholder"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "ic2.core.platform.registries.IC2Items#EMPTY_LINGERING_POTION"
+replace: "LegacyItems.ABSENT"
+imports: ["dev.porter.shim.mc.LegacyItems"]
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: refinery/brewing ingredients without an addon object" }
+tests:
+  - context: "import ic2.core.platform.registries.IC2Items"
+    before: "Object o = IC2Items.EMPTY_LINGERING_POTION;"
+    after: "Object o = LegacyItems.ABSENT;"
+---
+schemaVersion: 1
+id: r-barrels-host-ic2items-su_battery
+description: "host object: IC2C 1.2.6 Ic2Items.suBattery"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "ic2.core.platform.registries.IC2Items#SU_BATTERY"
+replace: "Ic2Items.suBattery.getItem()"
+imports: ["ic2.core.Ic2Items"]
+confidence: 0.9
+provenance: { source: agent, ref: "barrels closure port: refinery/brewing ingredients without an addon object" }
+tests:
+  - context: "import ic2.core.platform.registries.IC2Items"
+    before: "Object o = IC2Items.SU_BATTERY;"
+    after: "Object o = Ic2Items.suBattery.getItem();"

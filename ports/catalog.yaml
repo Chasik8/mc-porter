@@ -27,3 +27,14 @@ ports:
     distributable: true
     profile: ports/torchmaster
     notes: "porter demo: 28 classes, 0 counted edits, 6 differential scenarios; not tested in a real game yet"
+  - id: ic2classic-steam-1.19.2-1.7.10
+    mod: { name: "IC2 Classic (steam power, barrels and drinks, guide book)", version: 2.1.3.4, url: https://www.curseforge.com/minecraft/mc-mods/ic2-classic }
+    from: forge-1.19.2
+    to: forge-1.7.10
+    mode: delta
+    status: scenarios
+    scenarioPassRate: 1.0
+    licence: ARR
+    distributable: false
+    profile: ports/ic2c-steam
+    notes: "addon for IC2 Classic 1.2.6; you build it from your own two IC2 Classic jars, nothing of the mod is in this repo and the jar must not be shared; CI skips it (no direct url, ARR), the maintainer verifies it locally: 8 scenarios (6 differential vs 1.19.2, 2 on 1.7.10)"

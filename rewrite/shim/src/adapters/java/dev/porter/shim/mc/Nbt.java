@@ -59,6 +59,17 @@ public final class Nbt {
     }
 
     /** Tag.getAsString() */
+    /** CompoundTag.merge: copies every entry of {@code from} into {@code into}, merging nested compounds. */
+    public static NBTTagCompound merge(NBTTagCompound into, NBTTagCompound from) {
+        if (from == null || from == into) return into;
+        for (String k : keys(from)) {
+            NBTBase v = from.getTag(k);
+            if (v instanceof NBTTagCompound && into.hasKey(k, 10)) merge(into.getCompoundTag(k), (NBTTagCompound) v);
+            else into.setTag(k, v.copy());
+        }
+        return into;
+    }
+
     public static String asString(NBTBase b) { return b == null ? "" : b.toString(); }
 
     /** CompoundTag.getAllKeys() on a compound: 1.7.10 func_150296_c */

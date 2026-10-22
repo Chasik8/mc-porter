@@ -287,8 +287,28 @@ public final class TestCommands {
         int equalCount = 0;
         List<Scenario> scenarios = common.loadScenarios();
         var gui = new dev.porter.testkit.runner.gui.GuiReport(common.outDir().resolve("gui-report"));
-        List<JsonNode> tracesA = obtainAll(scenarios, sa, va, runner, common.outDir(), la, !common.noBatch);
-        List<JsonNode> tracesB = obtainAll(scenarios, sb, vb, runner, common.outDir(), lb, !common.noBatch);
+        boolean parallel = !common.sequential && dev.porter.core.cli.Jobs.get() > 1 && !va.equals(vb) && !sa.isTrace() && !sb.isTrace();
+        List<JsonNode> tracesA;
+        List<JsonNode> tracesB;
+        if (parallel) {
+            // both sides at once: separate run dirs (<scenario|batch>-<version>), ports (per version) and trace files
+            var fb = java.util.concurrent.CompletableFuture.supplyAsync(
+                    () -> obtainAll(scenarios, sb, vb, runner, common.outDir(), lb, !common.noBatch));
+            try {
+                tracesA = obtainAll(scenarios, sa, va, runner, common.outDir(), la, !common.noBatch);
+            } catch (RuntimeException e) {
+                fb.cancel(true);
+                throw e;
+            }
+            try {
+                tracesB = fb.join();
+            } catch (java.util.concurrent.CompletionException e) {
+                throw e.getCause() instanceof RuntimeException re ? re : e;
+            }
+        } else {
+            tracesA = obtainAll(scenarios, sa, va, runner, common.outDir(), la, !common.noBatch);
+            tracesB = obtainAll(scenarios, sb, vb, runner, common.outDir(), lb, !common.noBatch);
+        }
         for (int si = 0; si < scenarios.size(); si++) {
             Scenario sc = scenarios.get(si);
             JsonNode ta = tracesA.get(si);
@@ -393,6 +413,104 @@ public final class TestCommands {
                 report.put("error", e.toString()).write(RunReport.STATUS_ERROR, ExitCodes.ERROR);
                 return ExitCodes.ERROR;
             }
+        }
+    }
+
+    @Command(name = "obtainable", description = {"Survival check between two builds of a mod: its items that nothing makes.",
+        "Inputs: dumps of a dedicated server with the whole pack (testkit mod, -Dporter.dumpObtainable=<file>): registered items, "
+            + "crafting and smelting outputs. Results of the IR's custom (machine) recipes count as made. Fails when build B "
+            + "leaves more items unobtainable than build A."})
+    public static final class Obtainable implements Callable<Integer>, PorterSubcommand {
+        @CommandLine.Spec
+        CommandLine.Model.CommandSpec spec;
+
+        @Option(names = {"-h", "--help"}, usageHelp = true, description = "Show this help message and exit.")
+        boolean help;
+
+        @Option(names = "--a", required = true, paramLabel = "<dump.json>", description = "Dump of the reference build.")
+        Path a;
+
+        @Option(names = "--b", required = true, paramLabel = "<dump.json>", description = "Dump of the new build.")
+        Path b;
+
+        @Option(names = "--mod", required = true, paramLabel = "<modid>", description = "Mod whose items are checked.")
+        String mod;
+
+        @Option(names = "--ir", paramLabel = "<dir|file>", description = "IR whose custom recipe results count as made (ids ns:path -> <modid>:path). Repeatable.")
+        List<Path> ir = new ArrayList<>();
+
+        @Override
+        public String path() {
+            return "test obtainable";
+        }
+
+        @Override
+        public Integer call() {
+            RunReport report = new RunReport("test obtainable", spec.commandLine().getParseResult().originalArgs());
+            PrintWriter out = spec.commandLine().getOut();
+            java.util.Set<String> machine = new java.util.TreeSet<>();
+            for (Path p : ir) {
+                List<Path> files = new ArrayList<>();
+                if (Files.isDirectory(p)) {
+                    try (java.util.stream.Stream<Path> s = Files.walk(p)) {
+                        s.filter(f -> f.toString().endsWith(".ir.json")).sorted().forEach(files::add);
+                    } catch (IOException e) {
+                        throw new UncheckedIOException(e);
+                    }
+                } else {
+                    files.add(p);
+                }
+                for (Path f : files) {
+                    for (JsonNode n : Json.json().readTree(f.toFile()).path("nodes")) {
+                        if (!"recipe".equals(n.path("kind").asString("")) || !"custom".equals(n.path("recipeType").asString(""))) {
+                            continue;
+                        }
+                        List<JsonNode> res = new ArrayList<>();
+                        n.path("results").forEach(res::add);
+                        if (n.has("result")) {
+                            res.add(n.get("result"));
+                        }
+                        for (JsonNode r : res) {
+                            String id = r.path("item").asString(null);
+                            if (id != null && id.contains(":")) {
+                                machine.add(mod + ":" + id.substring(id.indexOf(':') + 1));
+                            }
+                        }
+                    }
+                }
+            }
+            List<String> ua = unobtainable(a, machine);
+            List<String> ub = unobtainable(b, machine);
+            out.printf("porter test obtainable: %s items made by nothing: A %d, B %d%n", mod, ua.size(), ub.size());
+            List<String> onlyB = new ArrayList<>(ub);
+            onlyB.removeAll(ua);
+            List<String> onlyA = new ArrayList<>(ua);
+            onlyA.removeAll(ub);
+            out.println("  only in B: " + onlyB);
+            out.println("  only in A: " + onlyA);
+            report.put("a", ua).put("b", ub).put("onlyB", onlyB).put("onlyA", onlyA);
+            boolean ok = ub.size() <= ua.size();
+            report.write(ok ? RunReport.STATUS_OK : RunReport.STATUS_FAILED, ok ? ExitCodes.OK : ExitCodes.FAILED);
+            return ok ? ExitCodes.OK : ExitCodes.FAILED;
+        }
+
+        private List<String> unobtainable(Path dump, java.util.Set<String> machine) {
+            JsonNode d = Json.json().readTree(dump.toFile());
+            java.util.Set<String> made = new java.util.TreeSet<>(machine);
+            for (String k : List.of("crafting", "smelting")) {
+                for (JsonNode x : d.path(k)) {
+                    String s = x.asString();
+                    made.add(s.contains("@") ? s.substring(0, s.indexOf('@')) : s);
+                }
+            }
+            List<String> res = new ArrayList<>();
+            for (JsonNode x : d.path("items")) {
+                String s = x.asString();
+                if (s.startsWith(mod + ":") && !made.contains(s)) {
+                    res.add(s);
+                }
+            }
+            return res;
         }
     }
 }

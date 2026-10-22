@@ -3,6 +3,24 @@
 All notable changes. Versions follow [Semantic Versioning](https://semver.org/); before 1.0 minor versions may
 break the CLI and the non-frozen formats.
 
+## [0.2.0] - 2026-10-22
+
+### Added
+- Port profiles that ship nothing of the original mod (RFC 009): new stages `setup` (one-time steps, skipped when what
+  they create exists) and `derive` (every run) with steps `porter`, `command`, `download` (sha256-pinned), `unzip`,
+  `copy`, `composite` (an image edit shipped as its changed pixels) and `delete`; `patches` applied after a stage,
+  from one tree to another (e.g. the user's own decompile -> the target project); `plugins` (`PORTER_PLUGINS`: extra
+  jars such as a mod-specific extract pattern pack); `generate.langSections`; install pass `assetns`
+  (`assetNamespaces`) and `install.langKeys`; `${NAME:-default}` and `${CONFIG_DIR}` in configs.
+- `porter decompile` (CFR 0.152 from Maven Central, sha256-pinned; resources copied), `porter select` (one unit's IR
+  from a whole-mod extract + an IR overlay; `--make-overlay` records hand edits of an IR as data), `porter patch
+  make|apply` (unified diffs across trees; `--blind` patches carry no text of their base, which is pinned by sha256),
+  `porter assets --select` (only the assets an IR references).
+- `scripts/gradle/porter-classpath.gradle`: Gradle init script for `build/porter-cp.txt` and the javac plugins.
+
+### Changed
+- Rewriter: two rules that write the same code under different placeholder names are no longer `ambiguous`.
+
 ## [0.1.0] - 2026-10-20
 
 First public release: one version pair (Forge 1.19.2 → Forge 1.7.10) end to end, as one CLI.

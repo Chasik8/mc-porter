@@ -1,0 +1,32 @@
+# A port that a player runs with `porter run`: the original files are listed under inputs (download page, exact
+# file name, sha256), a source archive of an open-licence mod may carry a direct link, and `prepare` lists the
+# one-time porter steps that come before `porter port`.
+schemaVersion: 1
+name: examplemod-run
+mode: full
+from: forge-1.19.2
+to: forge-1.7.10
+project: ${RUN_DIR}/project
+inputs:
+  - name: original
+    mod: Example Mod
+    version: 1.2.0
+    page: https://modrinth.com/mod/examplemod/version/1.2.0
+    file: examplemod-1.2.0.jar
+    sha256: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
+    optional: true
+  - name: source
+    mod: Example Mod
+    version: 1.2.0
+    kind: sources
+    page: https://github.com/example/examplemod/tags
+    file: examplemod-1.2.0-src.zip
+    sha256: fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210
+    url: https://github.com/example/examplemod/archive/refs/tags/v1.2.0.zip
+prepare:
+  - name: extract
+    args: [extract, --src, "${INPUT_SOURCE_DIR}", --version, "1.19.2", --out, "${RUN_DIR}/project/build/porter-ir"]
+closure:
+  source: ${INPUT_SOURCE_DIR}/src/main/java
+  prefixes: [com.example.examplemod.]
+  seeds: [com.example.examplemod.block.GrinderBlockEntity]

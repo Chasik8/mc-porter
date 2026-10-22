@@ -33,6 +33,14 @@ public final class ScenarioRunner {
         this.repoRoot = repoRoot;
     }
 
+    private boolean regions = true;
+
+    /** false: no simultaneous region scenarios (every batch scenario runs alone). */
+    public ScenarioRunner regions(boolean on) {
+        this.regions = on;
+        return this;
+    }
+
     /** One side of a run: version, subject jar (may be null for vanilla scenarios), extra mods, id map. */
     public record Side(String version, Path subject, List<Path> extraMods, IdMap ids) {
     }
@@ -64,8 +72,13 @@ public final class ScenarioRunner {
         if (server.size() > 1) {
             List<Path> mods = mods(side);
             List<ObjectNode> plans = new java.util.ArrayList<>();
+            int region = 0;
             for (int i : server) {
-                plans.add(new PlanCompiler(scenarios.get(i), side.version(), side.ids(), ir).compile());
+                ObjectNode plan = new PlanCompiler(scenarios.get(i), side.version(), side.ids(), ir).compile();
+                if (regions && region < 9 && scenarios.get(i).isolation().equals("region")) { // 9 = BatchDriver.MAX_REGIONS
+                    plan.put("region", region++);
+                }
+                plans.add(plan);
             }
             List<McLauncher.Outcome> outs = launcher.runBatch(plans, side.version(), mods);
             for (int k = 0; k < server.size(); k++) {

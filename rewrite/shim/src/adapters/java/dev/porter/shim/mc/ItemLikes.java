@@ -16,6 +16,11 @@ public final class ItemLikes {
     }
 
     public static ItemStack stack(Object o, int count) {
+        if (o instanceof ItemStack) {
+            ItemStack s = ((ItemStack) o).copy();
+            s.stackSize = count;
+            return s;
+        }
         if (o instanceof Block) return new ItemStack((Block) o, count);
         Item i = item(o);
         return i == null ? null : new ItemStack(i, count);

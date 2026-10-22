@@ -112,9 +112,17 @@ public abstract class ModernTileEntity extends TileEntity
             } else if (b instanceof EntityBlock) { // interface form
                 porterTicker = ((EntityBlock) b).getTicker(worldObj, Levels.getBlockState(this), (BlockEntityType) porterType);
             }
+            if (porterTicker == null) porterTicker = porterFallbackTicker();
         }
         if (porterTicker != null) porterTicker.tick(worldObj, new BlockPos(xCoord, yCoord, zCoord), Levels.getBlockState(this), this);
     }
+
+    /**
+     * Ticker used when the tile's block supplies none (a block generated from the IR is a plain Block, not an
+     * EntityBlock). A ported mod overrides this with the ticker its own blocks return.
+     */
+    @SuppressWarnings("rawtypes")
+    protected BlockEntityTicker porterFallbackTicker() { return null; }
 
     @Override
     public void validate() {
@@ -145,6 +153,7 @@ public abstract class ModernTileEntity extends TileEntity
             zCoord = z;
         }
         getBlockPos();
+        if (tag.hasKey("ForgeData", 10)) TileData.set(this, tag.getCompoundTag("ForgeData"));
         if (tag.hasKey("porter:state") && getBlockType() instanceof IStateBlock) {
             StateDefinition<?, ?> d = ((IStateBlock) getBlockType()).getStateDefinition();
             int i = tag.getInteger("porter:state");
@@ -156,6 +165,13 @@ public abstract class ModernTileEntity extends TileEntity
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         if (porterState != null && porterState.def != null) tag.setInteger("porter:state", porterState.index);
+        net.minecraft.nbt.NBTTagCompound data = TileData.peek(this);
+        if (data != null && !data.hasNoTags()) tag.setTag("ForgeData", data.copy());
+    }
+
+    /** Forge IForgeBlockEntity.getTileData()/getPersistentData(): the per-tile compound saved under "ForgeData". */
+    public NBTTagCompound getTileData() {
+        return TileData.get(this);
     }
 
     // ------------------------------------------------------------------ 1.7.10 IFluidHandler <- FLUID_HANDLER capability

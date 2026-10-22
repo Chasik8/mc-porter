@@ -36,6 +36,8 @@ import tools.jackson.databind.JsonNode;
 /**
  * Runs the stages of one port config. Stages (in this order; a stage runs only when its section is present):
  * <pre>
+ *   setup     one-time prerequisites (steps skipped when what they create exists): downloads, decompiles, toolchains
+ *   derive    steps that derive the inputs of generate on every run: extract, IR selection, assets, patches
  *   generate  porter generate per unit -> install generated files into the project (regen policy)
  *   closure   dependency closure of the seeds: classes to port + frontier hubs (+ known-identical check), coverage
  *   rewrite   porter rewrite of closure + frontier with the rules (relocated, shim package)
@@ -50,7 +52,7 @@ import tools.jackson.databind.JsonNode;
  * ({@code <work>/port-report.json} and {@code .md}) is rewritten.
  */
 public final class PortRunner {
-    public static final List<String> STAGES = List.of("generate", "closure", "rewrite", "install", "loop", "compile", "build", "test");
+    public static final List<String> STAGES = List.of("setup", "derive", "generate", "closure", "rewrite", "install", "loop", "compile", "build", "test");
 
     private final PortConfig cfg;
     private final PrintStream out;
@@ -141,6 +143,9 @@ public final class PortRunner {
             String error = null;
             try {
                 ok = runStage(s, summary);
+                if (ok) {
+                    ok = applyPatches(s, summary);
+                }
             } catch (RuntimeException e) {
                 summary.put("error", e.toString());
                 error = e.getMessage();
@@ -227,6 +232,7 @@ public final class PortRunner {
 
     private boolean runStage(String s, Map<String, Object> summary) {
         return switch (s) {
+            case "setup", "derive" -> new Steps(cfg, work, childEnv(), this::detail).run(s, cfg.section(s), summary);
             case "generate" -> generate(summary);
             case "closure" -> closure(summary);
             case "rewrite" -> rewrite(summary);
@@ -331,7 +337,50 @@ public final class PortRunner {
         List<String> jvm = jvmArgs.isEmpty() ? cfg.jvmArgs() : jvmArgs;
         List<String> cmd = Proc.porter(cfg.queue(), jvm, work.resolve("reports"), work.resolve("args/" + step + ".args"), args);
         detail("   porter " + args.get(0) + " ... (log: " + work.resolve("logs/" + step + ".log") + ")");
-        return Proc.run(cmd, cfg.dir(), Map.of("CLASSPATH", System.getProperty("java.class.path")), work.resolve("logs/" + step + ".log"), null);
+        return Proc.run(cmd, cfg.dir(), childEnv(), work.resolve("logs/" + step + ".log"), null);
+    }
+
+    /**
+     * Environment of child steps: porter's classpath (child porter JVMs and the queue's exec helper) and the
+     * plugins of the config ({@code plugins:}, joined to {@code PORTER_PLUGINS}).
+     */
+    Map<String, String> childEnv() {
+        Map<String, String> env = new LinkedHashMap<>();
+        env.put("CLASSPATH", System.getProperty("java.class.path"));
+        List<String> plugins = new ArrayList<>();
+        for (Path p : cfg.paths(cfg.section("plugins"))) {
+            plugins.add(p.toString());
+        }
+        String inherited = System.getenv("PORTER_PLUGINS");
+        if (inherited != null && !inherited.isBlank()) {
+            plugins.add(inherited);
+        }
+        if (!plugins.isEmpty()) {
+            env.put("PORTER_PLUGINS", String.join(java.io.File.pathSeparator, plugins));
+        }
+        return env;
+    }
+
+    /**
+     * {@code patches:} unified diffs applied after a stage ({@code after}); {@code base} is the root of the
+     * {@code ---} paths (default: the target), {@code target} the root of the {@code +++} paths (default: the project).
+     */
+    private boolean applyPatches(String stage, Map<String, Object> summary) {
+        Map<String, Object> done = new LinkedHashMap<>();
+        for (JsonNode p : cfg.section("patches")) {
+            if (!stage.equals(p.path("after").asString())) {
+                continue;
+            }
+            Path target = p.has("target") ? cfg.path(p.get("target").asString()) : cfg.project();
+            Path base = p.has("base") ? cfg.path(p.get("base").asString()) : target;
+            String name = p.path("name").asString(p.path("patches").asString());
+            dev.porter.port.patch.PatchSet.Applied a = dev.porter.port.patch.PatchSet.apply(cfg.path(p.path("patches").asString()), base, target);
+            done.put(name, a.written().size() + a.deleted().size());
+        }
+        if (!done.isEmpty()) {
+            summary.put("patches", done);
+        }
+        return true;
     }
 
     private static void deleteTree(Path p) {
@@ -397,9 +446,45 @@ public final class PortRunner {
 
     // ----------------------------------------------------------------------------------------------- generate
 
+    /**
+     * Merges a generated {@code .lang} file into the project's under {@code # --- porter:<unit> ---} ...
+     * {@code # --- end porter:<unit> ---}: the section is replaced in place (appended when missing); keys the file
+     * defines outside the section are not repeated, so hand-written entries win.
+     */
+    static void mergeLangSection(Path generated, Path project, String unit) {
+        String mark = "# --- porter:" + unit + " ---";
+        String end = "# --- end porter:" + unit + " ---";
+        String host = Files.exists(project) ? Text.read(project) : "";
+        int a = host.indexOf(mark + "\n");
+        int b = a < 0 ? -1 : host.indexOf(end, a);
+        String before = a < 0 ? host : host.substring(0, a);
+        String after = "";
+        if (b >= 0) {
+            int nl = host.indexOf('\n', b);
+            after = nl < 0 ? "" : host.substring(nl + 1);
+        }
+        Set<String> keys = new HashSet<>();
+        for (String l : (before + after).split("\n")) {
+            if (l.contains("=") && !l.startsWith("#")) {
+                keys.add(l.substring(0, l.indexOf('=')));
+            }
+        }
+        List<String> lines = new ArrayList<>();
+        for (String l : Text.read(generated).split("\n")) {
+            if (!l.isEmpty() && !l.startsWith("#") && !keys.contains(l.contains("=") ? l.substring(0, l.indexOf('=')) : l)) {
+                lines.add(l);
+            }
+        }
+        if (!before.isEmpty() && !before.endsWith("\n")) {
+            before += "\n";
+        }
+        Text.write(project, before + mark + "\n" + String.join("\n", lines) + "\n" + end + "\n" + after);
+    }
+
     private boolean generate(Map<String, Object> summary) {
         JsonNode g = cfg.section("generate");
         Set<String> preserve = new HashSet<>(PortConfig.strings(g.path("preserve")));
+        boolean langSections = g.path("langSections").asBoolean(false);
         Map<String, Object> units = new LinkedHashMap<>();
         boolean ok = true;
         for (JsonNode u : g.path("units")) {
@@ -436,13 +521,16 @@ public final class PortRunner {
             }
             for (Path f : files) {
                 String rel = dir.relativize(f).toString().replace('\\', '/');
-                if (rel.equals("porter-generate.json")) {
-                    continue;
+                if (rel.equals("porter-generate.json") || rel.startsWith("porter-rules/")) {
+                    continue; // the run's manifest; rewrite rules for the logic (porter rewrite --rules), not project files
                 }
                 Path dst = cfg.project().resolve(rel);
                 Path old = prev.resolve(rel);
                 if (exclude.contains(rel)) {
                     res.get("excluded").add(rel);
+                } else if (langSections && rel.endsWith(".lang")) {
+                    mergeLangSection(f, dst, name);
+                    res.computeIfAbsent("langMerged", k -> new ArrayList<>()).add(rel);
                 } else if (preserve.contains(rel)) {
                     res.get("preserved").add(rel);
                 } else if (!Files.exists(dst)) {
@@ -628,7 +716,8 @@ public final class PortRunner {
             }
             unported = List.copyOf(tops);
         }
-        HubStubs.Options so = new HubStubs.Options(rel, ownPrefix, unported, stubs.path("header").asString(HubStubs.DEFAULT_HEADER));
+        HubStubs.Options so = new HubStubs.Options(rel, ownPrefix, unported, stubs.path("header").asString(HubStubs.DEFAULT_HEADER),
+                new java.util.HashSet<>(PortConfig.strings(stubs.path("keep"))));
         HubStubs hs = new HubStubs(rw, port, frontier, oracle(), so);
         Path overrides = stubs.has("overrides") ? cfg.path(stubs.get("overrides").asString()) : null;
         summary.put("hubs", hs.write(rw, frontier, stage, overrides));
@@ -653,7 +742,14 @@ public final class PortRunner {
                     }
                 }
                 case "imports" -> pc.put(p, SourcePasses.unusedImports(stage));
-                default -> throw new IllegalArgumentException("unknown pass '" + p + "' (srgmoj, java8, tector, edits, imports)");
+                case "assetns" -> {
+                    List<SourcePasses.AssetNamespace> moves = new ArrayList<>();
+                    for (JsonNode m : in.path("assetNamespaces")) {
+                        moves.add(new SourcePasses.AssetNamespace(m.path("from").asString(), m.path("to").asString(), PortConfig.strings(m.path("paths"))));
+                    }
+                    pc.put(p, SourcePasses.assetNamespaces(stage, moves));
+                }
+                default -> throw new IllegalArgumentException("unknown pass '" + p + "' (srgmoj, java8, tector, edits, assetns, imports)");
             }
         }
         summary.put("passes", pc);
@@ -680,6 +776,17 @@ public final class PortRunner {
         List<String> installed = new ArrayList<>(new TreeSet<>(overlay(stage, src)));
         Text.writeLines(manifest, installed);
         summary.put("installed", installed.size());
+        if (in.has("langKeys")) {
+            JsonNode lk = in.get("langKeys");
+            Map<String, String> locales = new LinkedHashMap<>();
+            for (Map.Entry<String, JsonNode> e : lk.path("locales").properties()) {
+                locales.put(e.getKey(), e.getValue().asString());
+            }
+            summary.put("langKeys", dev.porter.port.passes.LangKeys.merge(cfg.project().resolve(lk.path("scan").asString("src/main/java")),
+                    java.util.regex.Pattern.compile(lk.path("pattern").asString()), cfg.path(lk.path("source").asString()),
+                    cfg.project().resolve(lk.path("target").asString()), locales, lk.path("fallback").asString("en_us"),
+                    lk.path("marker").asString("porter:lang-keys")));
+        }
         return true;
     }
 
@@ -861,8 +968,7 @@ public final class PortRunner {
             List<String> cmd = Proc.porter(queue, PortConfig.strings(t.path("jvmArgs")), work.resolve("reports"),
                     work.resolve("args/test-" + name + ".args"), PortConfig.strings(t.path("args")));
             detail("   test " + name + " (log: " + work.resolve("logs/test-" + name + ".log") + ")");
-            Proc.Result r = Proc.run(cmd, cfg.dir(), Map.of("CLASSPATH", System.getProperty("java.class.path")),
-                    work.resolve("logs/test-" + name + ".log"), null);
+            Proc.Result r = Proc.run(cmd, cfg.dir(), childEnv(), work.resolve("logs/test-" + name + ".log"), null);
             runs.put(name, r.exitCode());
             ok &= r.ok();
         }

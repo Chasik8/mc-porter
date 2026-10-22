@@ -48,6 +48,13 @@ public final class CommonOptions {
             + "version and mod set run in ONE launch, the world is reset between them).")
     boolean noBatch;
 
+    @Option(names = "--sequential", description = "diff/roundtrip: run side A, then side B (default: both sides at once, "
+            + "each in its own work directories and on its own server port; also implied by --jobs 1).")
+    boolean sequential;
+
+    @Option(names = "--no-regions", description = "Do not run scenarios marked isolation: region simultaneously in one world.")
+    boolean noRegions;
+
     List<Scenario> loadScenarios() {
         List<Scenario> out = new ArrayList<>();
         for (Path p : scenarios) {
@@ -77,7 +84,7 @@ public final class CommonOptions {
         PrintWriter notes = dev.porter.core.cli.Compact.verbose() ? log : new PrintWriter(java.io.Writer.nullWriter());
         McLauncher l = new McLauncher(e, w, timeout, retries, notes);
         Path sc = screens != null ? screens : RunReport.reportsDir().resolve("screens");
-        return new ScenarioRunner(l, IrIndex.read(ir), sc, Path.of("").toAbsolutePath());
+        return new ScenarioRunner(l, IrIndex.read(ir), sc, Path.of("").toAbsolutePath()).regions(!noRegions);
     }
 
     static List<Path> jars(List<Path> in) {

@@ -1,0 +1,18 @@
+schemaVersion: 1
+id: r-1.19.2-1.7.10-call-blockentity-gettiledata-adapter
+description: "call net.minecraft.world.level.block.entity.BlockEntity#getTileData() -> TileData.get($b) (1.7.10 tiles have no getTileData)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.level.block.entity.BlockEntity#getTileData()"
+  bind: { recv: "$b" }
+replace: "TileData.get($b)"
+imports: ["dev.porter.shim.mc.TileData"]
+priority: 6
+confidence: 0.85
+provenance: { source: agent, ref: "barrels closure port, group G4: one rule per distinct javac symbol; adapter dev.porter.shim.mc.TileData" }
+tests:
+  - context: "BlockEntity b; import net.minecraft.world.level.block.entity.BlockEntity"
+    before: "Object t = b.getTileData();"
+    after: "Object t = TileData.get(b);"

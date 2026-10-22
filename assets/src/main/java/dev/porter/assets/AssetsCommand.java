@@ -50,7 +50,7 @@ public final class AssetsCommand implements Callable<Integer>, PorterSubcommand 
     @Option(names = "--out", required = true, description = "Output directory.")
     Path out;
 
-    @Option(names = "--ir", description = "IR file(s) (*.ir.json): lang key table, sound categories, blocks to fill.")
+    @Option(names = "--ir", description = "IR file(s) (*.ir.json) or directories of them: lang key table, sound categories, blocks to fill.")
     List<Path> ir = new ArrayList<>();
 
     @Option(names = "--key-map", description = "JSON object {sourceKey: targetKey} overriding the key table.")
@@ -80,6 +80,20 @@ public final class AssetsCommand implements Callable<Integer>, PorterSubcommand 
     @Option(names = "--keep-model-files", description = "Keep models/, blockstates/ and texture packages in a 1.7.10 output.")
     boolean keepModelFiles;
 
+    @Option(names = "--select", paramLabel = "<ns>", description = "Convert only the assets of namespace <ns> that the --ir files reference "
+            + "(texture packages, menu/block/item/fluid textures, lang keys); the subset is written to <out>/selected/.")
+    String select;
+
+    @Option(names = "--include", paramLabel = "<glob>", description = "With --select: more files, glob relative to assets/<ns>/ ('*' crosses '/'; repeatable).")
+    List<String> include = new ArrayList<>();
+
+    @Option(names = "--literals", paramLabel = "<list>", description = "With --select: file listing Java sources (relative to --literals-root) whose "
+            + "string literals that are lang keys are kept too.")
+    Path literals;
+
+    @Option(names = "--literals-root", paramLabel = "<dir>", description = "Root of the --literals paths.")
+    Path literalsRoot;
+
     @Override
     public String path() {
         return "assets";
@@ -101,9 +115,35 @@ public final class AssetsCommand implements Callable<Integer>, PorterSubcommand 
         }
         try {
             Path assetsDir = Files.isDirectory(src.resolve("assets")) ? src.resolve("assets") : src;
+            if (select != null) {
+                List<JsonNode> docs = new ArrayList<>();
+                for (Path p : ir) {
+                    docs.add(Json.json().readTree(Files.readString(p)));
+                }
+                List<Path> lit = new ArrayList<>();
+                if (literals != null) {
+                    for (String l : Files.readAllLines(literals)) {
+                        if (!l.isBlank()) {
+                            lit.add((literalsRoot != null ? literalsRoot : literals.toAbsolutePath().getParent()).resolve(l.strip()));
+                        }
+                    }
+                }
+                Path sel = out.resolve("selected");
+                AssetSelect.Result sr = AssetSelect.select(assetsDir, select, docs, include, lit, sel);
+                outW.println("  selected: " + sr.textures() + " texture files, " + sr.langEntries() + " lang entries");
+                assetsDir = sel.resolve("assets");
+            }
             Context ctx = new Context();
             for (Path p : ir) {
-                ctx.ir.add(IrIo.read(p));
+                if (Files.isDirectory(p)) { // a directory stands for all its *.ir.json files (what `porter extract` wrote)
+                    try (Stream<Path> files = Files.list(p)) {
+                        for (Path f : files.filter(x -> x.getFileName().toString().endsWith(".ir.json")).sorted().toList()) {
+                            ctx.ir.add(IrIo.read(f));
+                        }
+                    }
+                } else {
+                    ctx.ir.add(IrIo.read(p));
+                }
             }
             if (keyMap != null) {
                 JsonNode km = Json.json().readTree(Files.readString(keyMap));

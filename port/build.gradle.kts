@@ -27,6 +27,11 @@ tasks.processResources {
         into("porter/adapters")
     }
     from(adapterIndex)
+    // single-file tools `porter run` uses to build the Forge 1.19.2 compile jars (shared with testkit/mod-1.19.2/setup*.sh)
+    from(rootProject.layout.projectDirectory.dir("testkit/mod-1.19.2/tools")) {
+        include("*.java")
+        into("dev/porter/port/start/tools")
+    }
 }
 
 tasks.withType<Test>().configureEach {

@@ -1,0 +1,19 @@
+schemaVersion: 1
+id: refinery-whisky
+description: >-
+  scenarios.md S5 refinery: 16000 water + 16 flour, 10000 EU from a charged RE battery (20 EU/t);
+  4 operations of 125 ticks (250 x RECIPE_TIME 0.5) -> 1000 mB unrefined whisky, 12000 mB water left.
+world: flat-void
+maxTicks: 2000
+tolerance:
+  "*": { abs: 0 }
+steps:
+  - place_block: { at: [0, 64, 0], block: "ic2:refinery" }
+  - tick: 2
+  - fill_fluid: { at: [0, 64, 0], fluid: "minecraft:water", amount: 16000 }
+  - insert_item: { at: [0, 64, 0], item: "ic2:flour", count: 16, slot: 1 }
+  - insert_item: { at: [0, 64, 0], item: "alias:re_battery_full", slot: 0 }
+  - sample: { what: ["fluid:[0,64,0]", "item:[0,64,0]#1", "field:[0,64,0]/progress"] }
+  - tick: 520
+  - sample: { what: ["fluid:[0,64,0]", "item:[0,64,0]#1", "field:[0,64,0]/progress", "field:[0,64,0]/energy"] }
+  - assert: { expr: "contains(fluid:[0,64,0], '12000') && contains(fluid:[0,64,0], '1000') && contains(item:[0,64,0]#1, '\"count\":0') == false", message: "1000 mB unrefined whisky, 12000 mB water left" }

@@ -1,0 +1,247 @@
+# counted manual edits of edits/manual-edits.yaml re-expressed as rules with the
+# RFC 006 language (p5/ruleslang). Staged here, outside rules/port-ic2c, so that runs of other branches that still
+# apply the regex edits are not affected; fold into rules/port-ic2c together with the reduced manual-edits list.
+# Tests are synthetic (only the owner names are the mod's).
+schemaVersion: 1
+id: r-closure-ic2c-decl-ihasinventory-slotaccess
+description: "IHasInventory bridges to the adapter raw slot access (was manual edit #3)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.core.inventory.base.IHasInventory"
+edit:
+  addSupertypes: ["dev.porter.shim.mc.ModernTileEntity.SlotAccess"]
+  addMembers: "\n    default int porterSlotCount() { return getSlotCount(); }\n\n    default ItemStack porterGetSlot(int slot) { return getInventoryStack(slot); }\n\n    default void porterSetSlot(int slot, ItemStack stack) { setStackInSlot(slot, stack); }\n"
+confidence: 0.9
+provenance: { source: manual, ref: "edits/manual-edits.yaml #3" }
+tests:
+  - before: "public interface IHasInventory {\n    public int getSlotCount();\n}"
+    after: "public interface IHasInventory extends dev.porter.shim.mc.ModernTileEntity.SlotAccess {\n    default int porterSlotCount() { return getSlotCount(); }\n\n    default ItemStack porterGetSlot(int slot) { return getInventoryStack(slot); }\n\n    default void porterSetSlot(int slot, ItemStack stack) { setStackInSlot(slot, stack); }\n\n    public int getSlotCount();\n}"
+---
+schemaVersion: 1
+id: r-closure-ic2c-decl-ienergytile-host
+description: "2.x IEnergyTile is a 1.2.6 IEnergyTile (was manual edit #4)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.api.energy.tile.IEnergyTile"
+edit:
+  addSupertypes: ["$target(ic2.api.energy.tile.IEnergyTile)"]
+confidence: 0.9
+provenance: { source: manual, ref: "edits/manual-edits.yaml #4" }
+tests:
+  - before: "public interface IEnergyTile\nextends ILocation {\n}"
+    after: "public interface IEnergyTile\nextends ILocation, ic2.api.energy.tile.IEnergyTile {\n}"
+---
+schemaVersion: 1
+id: r-closure-ic2c-decl-ienergyemitter-host
+description: "IEnergyEmitter: 1.2.6 emitsEnergyTo -> canEmitEnergy (was manual edit #5)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.api.energy.tile.IEnergyEmitter"
+edit:
+  addSupertypes: ["$target(ic2.api.energy.tile.IEnergyEmitter)"]
+  appendMembers: "\n\n    default public boolean emitsEnergyTo(net.minecraft.tileentity.TileEntity receiver, net.minecraftforge.common.util.ForgeDirection dir) {\n        return this.canEmitEnergy(ic2cextras.ported.compat.Ic2EnergyBridge.acceptor(receiver), ic2cextras.ported.compat.Ic2EnergyBridge.dir(dir));\n    }"
+confidence: 0.9
+provenance: { source: manual, ref: "edits/manual-edits.yaml #5" }
+tests:
+  - before: "public interface IEnergyEmitter\nextends IEnergyTile {\n    public boolean existing();\n}"
+    after: "public interface IEnergyEmitter\nextends IEnergyTile, ic2.api.energy.tile.IEnergyEmitter {\n    public boolean existing();\n\n    default public boolean emitsEnergyTo(net.minecraft.tileentity.TileEntity receiver, net.minecraftforge.common.util.ForgeDirection dir) {\n        return this.canEmitEnergy(ic2cextras.ported.compat.Ic2EnergyBridge.acceptor(receiver), ic2cextras.ported.compat.Ic2EnergyBridge.dir(dir));\n    }\n}"
+---
+schemaVersion: 1
+id: r-closure-ic2c-decl-ienergyacceptor-host
+description: "IEnergyAcceptor: 1.2.6 acceptsEnergyFrom -> canAcceptEnergy (was manual edit #6)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.api.energy.tile.IEnergyAcceptor"
+edit:
+  addSupertypes: ["$target(ic2.api.energy.tile.IEnergyAcceptor)"]
+  appendMembers: "\n\n    default public boolean acceptsEnergyFrom(net.minecraft.tileentity.TileEntity emitter, net.minecraftforge.common.util.ForgeDirection dir) {\n        return this.canAcceptEnergy(ic2cextras.ported.compat.Ic2EnergyBridge.emitter(emitter), ic2cextras.ported.compat.Ic2EnergyBridge.dir(dir));\n    }"
+confidence: 0.9
+provenance: { source: manual, ref: "edits/manual-edits.yaml #6" }
+tests:
+  - before: "public interface IEnergyAcceptor\nextends IEnergyTile {\n    public boolean existing();\n}"
+    after: "public interface IEnergyAcceptor\nextends IEnergyTile, ic2.api.energy.tile.IEnergyAcceptor {\n    public boolean existing();\n\n    default public boolean acceptsEnergyFrom(net.minecraft.tileentity.TileEntity emitter, net.minecraftforge.common.util.ForgeDirection dir) {\n        return this.canAcceptEnergy(ic2cextras.ported.compat.Ic2EnergyBridge.emitter(emitter), ic2cextras.ported.compat.Ic2EnergyBridge.dir(dir));\n    }\n}"
+---
+schemaVersion: 1
+id: r-closure-ic2c-decl-ienergysource-host
+description: "IEnergySource: 1.2.6 getOfferedEnergy/drawEnergy -> getProvidedEnergy/consumeEnergy (was manual edit #7)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.api.energy.tile.IEnergySource"
+edit:
+  addSupertypes: ["$target(ic2.api.energy.tile.IEnergySource)"]
+  addMembers: "\n    default public double getOfferedEnergy() {\n        return this.getProvidedEnergy();\n    }\n\n    default public void drawEnergy(double amount) {\n        this.consumeEnergy((int) Math.round(amount));\n    }\n"
+confidence: 0.9
+provenance: { source: manual, ref: "edits/manual-edits.yaml #7" }
+tests:
+  - before: "public interface IEnergySource\nextends IEnergyEmitter {\n    public int getProvidedEnergy();\n}"
+    after: "public interface IEnergySource\nextends IEnergyEmitter, ic2.api.energy.tile.IEnergySource {\n    default public double getOfferedEnergy() {\n        return this.getProvidedEnergy();\n    }\n\n    default public void drawEnergy(double amount) {\n        this.consumeEnergy((int) Math.round(amount));\n    }\n\n    public int getProvidedEnergy();\n}"
+---
+schemaVersion: 1
+id: r-closure-ic2c-decl-imultienergysource-host
+description: "IMultiEnergySource: 1.2.6 sendMultibleEnergyPackets/getMultibleEnergyPacketAmount (was manual edit #8)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.api.energy.tile.IMultiEnergySource"
+edit:
+  addSupertypes: ["$target(ic2.api.energy.tile.IMultiEnergySource)"]
+  addMembers: "\n    default public boolean sendMultibleEnergyPackets() {\n        return this.hasMultiplePackets();\n    }\n\n    default public int getMultibleEnergyPacketAmount() {\n        return this.getPacketCount();\n    }\n"
+confidence: 0.9
+provenance: { source: manual, ref: "edits/manual-edits.yaml #8" }
+tests:
+  - before: "public interface IMultiEnergySource\nextends IEnergySource {\n}"
+    after: "public interface IMultiEnergySource\nextends IEnergySource, ic2.api.energy.tile.IMultiEnergySource {\n    default public boolean sendMultibleEnergyPackets() {\n        return this.hasMultiplePackets();\n    }\n\n    default public int getMultibleEnergyPacketAmount() {\n        return this.getPacketCount();\n    }\n}"
+---
+schemaVersion: 1
+id: r-closure-ic2c-decl-imultienergytile-metadelegate
+description: "IMultiEnergyTile is a 1.2.6 IMetaDelegate: getSubTiles -> getTiles (was manual edit #9)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.api.energy.tile.IMultiEnergyTile"
+edit:
+  addSupertypes: ["$target(ic2.api.energy.tile.IMetaDelegate)"]
+  addMembers: "\n    default public java.util.List<net.minecraft.tileentity.TileEntity> getSubTiles() {\n        return ic2cextras.ported.compat.Ic2EnergyBridge.subTiles(this);\n    }\n"
+confidence: 0.9
+provenance: { source: manual, ref: "edits/manual-edits.yaml #9" }
+tests:
+  - before: "public interface IMultiEnergyTile\nextends IEnergyTile {\n    public List<IEnergyTile> getTiles();\n}"
+    after: "public interface IMultiEnergyTile\nextends IEnergyTile, ic2.api.energy.tile.IMetaDelegate {\n    default public java.util.List<net.minecraft.tileentity.TileEntity> getSubTiles() {\n        return ic2cextras.ported.compat.Ic2EnergyBridge.subTiles(this);\n    }\n\n    public List<IEnergyTile> getTiles();\n}"
+---
+schemaVersion: 1
+id: r-closure-ic2c-decl-energynet-instance
+description: "EnergyNet.INSTANCE = the 1.2.6 bridge (was manual edit #10)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.api.energy.EnergyNet#INSTANCE"
+edit:
+  initializer: "new ic2cextras.ported.compat.Ic2EnergyBridge()"
+confidence: 0.9
+provenance: { source: manual, ref: "edits/manual-edits.yaml #10" }
+tests:
+  - before: "public class EnergyNet {\n    public static IEnergyNet INSTANCE;\n}"
+    after: "public class EnergyNet {\n    public static IEnergyNet INSTANCE = new ic2cextras.ported.compat.Ic2EnergyBridge();\n}"
+---
+schemaVersion: 1
+id: r-closure-ic2c-fuelboiler-empty-can
+description: "fuel boiler: empty fuel container check through the host fuel can (was manual edit #11)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  pattern: "($item = ($s = $e).getItem()) instanceof IFuelableItem && !($f = (IFuelableItem) $item).hasFuel($s)"
+replace: "($f = ic2cextras.ported.compat.Ic2HostItems.fuelable($s = $e)) != null && !$f.hasFuel($s)"
+preconditions: ["in-subtype-of:ic2.core.block.generators.tiles.FuelBoilerTileEntity"]
+confidence: 0.9
+provenance: { source: manual, ref: "edits/manual-edits.yaml #11" }
+tests:
+  - context: "extends ic2.core.block.generators.tiles.FuelBoilerTileEntity; Object item; Object stack; IFuelableItem fuel"
+    before: "if ((item = (stack = (ItemStack) list.get(0)).getItem()) instanceof IFuelableItem && !(fuel = (IFuelableItem) item).hasFuel(stack)) { run(); }"
+    after: "if ((fuel = ic2cextras.ported.compat.Ic2HostItems.fuelable(stack = (ItemStack) list.get(0))) != null && !fuel.hasFuel(stack)) { run(); }"
+---
+schemaVersion: 1
+id: r-closure-ic2c-fuelboiler-refuel
+description: "fuel boiler: refuel from a fuel container through the host fuel can (was manual edits #12, #13)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  pattern: |
+    Item $i2 = $s.getItem();
+    if ($i2 instanceof IFuelableItem && ($it = (IFuelableItem) $i2).hasFuel($s)) $then;
+replace: "if (($it = ic2cextras.ported.compat.Ic2HostItems.fuelable($s)) != null && $it.hasFuel($s)) $then"
+preconditions: ["in-subtype-of:ic2.core.block.generators.tiles.FuelBoilerTileEntity"]
+confidence: 0.9
+provenance: { source: manual, ref: "edits/manual-edits.yaml #12, #13" }
+tests:
+  - context: "extends ic2.core.block.generators.tiles.FuelBoilerTileEntity; Object stack; IFuelableItem item"
+    before: |
+      Item other = stack.getItem();
+      if (other instanceof IFuelableItem && (item = (IFuelableItem) other).hasFuel(stack)) {
+          int added = item.amount(stack);
+      }
+    after: |
+      if ((item = ic2cextras.ported.compat.Ic2HostItems.fuelable(stack)) != null && item.hasFuel(stack)) {
+          int added = item.amount(stack);
+      }
+---
+schemaVersion: 1
+id: r-closure-ic2c-valve-modeldata-empty
+description: "valve camouflage model data (client, not ported) -> ModelData.EMPTY (was manual edit #36)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  pattern: "$c ? $x : ModelData.EMPTY"
+replace: "ModelData.EMPTY"
+preconditions: ["in-subtype-of:ic2.core.block.storage.tiles.tank.BaseValveTileEntity"]
+confidence: 0.9
+provenance: { source: manual, ref: "edits/manual-edits.yaml #36" }
+tests:
+  - context: "extends ic2.core.block.storage.tiles.tank.BaseValveTileEntity; boolean copied"
+    before: "Object d = this.copied ? ModelData.builder().build() : ModelData.EMPTY;"
+    after: "Object d = ModelData.EMPTY;"
+---
+schemaVersion: 1
+id: r-closure-ic2c-decl-ic2screen-ontooltip-removed
+description: "IC2Screen tooltip offset event handler removed: no RenderTooltipEvent on 1.7.10 (was manual edit #39)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.core.inventory.gui.IC2Screen#onTooltip(net.minecraftforge.client.event.RenderTooltipEvent$Pre)"
+edit:
+  remove: true
+confidence: 0.9
+provenance: { source: manual, ref: "edits/manual-edits.yaml #39" }
+tests:
+  - context: "import net.minecraftforge.client.event.RenderTooltipEvent"
+    before: "public class IC2Screen {\n    int kept;\n\n    @SubscribeEvent\n    public void onTooltip(RenderTooltipEvent.Pre event) {\n        event.setY(1);\n    }\n}"
+    after: "public class IC2Screen {\n    int kept;\n\n}"
+---
+schemaVersion: 1
+id: r-closure-ic2c-call-iconitem-create-paper
+description: "GUI icon items are content (not ported) -> paper (was manual edits #40, #41)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  call: "ic2.core.item.misc.IconItem#create(int)"
+replace: "new net.minecraft.item.ItemStack(net.minecraft.init.Items.paper)"
+preconditions: ["in-subtype-of:ic2.core.inventory.gui.components.simple.InventorySettingsComponent"]
+confidence: 0.9
+provenance: { source: manual, ref: "edits/manual-edits.yaml #40, #41" }
+tests:
+  - context: "extends ic2.core.inventory.gui.components.simple.InventorySettingsComponent; IconItem icons"
+    before: "Object s = icons.create(6);"
+    after: "Object s = new net.minecraft.item.ItemStack(net.minecraft.init.Items.paper);"
+---
+schemaVersion: 1
+id: r-closure-ic2c-decl-wrenchregistry-init-cut
+description: "vanilla wrench handler registrations (handlers cut from the closure) (was manual edit #43)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.api.blocks.IWrenchable$WrenchRegistry#init()"
+edit:
+  body: "\n            // porter:manual - vanilla wrench handlers are content and were cut from the closure\n        "
+confidence: 0.9
+provenance: { source: manual, ref: "edits/manual-edits.yaml #43" }
+tests:
+  - before: "public interface IWrenchable {\n    public static final class WrenchRegistry {\n        public void init() {\n            this.register(1);\n        }\n    }\n}"
+    after: "public interface IWrenchable {\n    public static final class WrenchRegistry {\n        public void init() {\n            // porter:manual - vanilla wrench handlers are content and were cut from the closure\n        }\n    }\n}"

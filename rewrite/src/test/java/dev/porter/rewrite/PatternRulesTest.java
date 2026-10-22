@@ -45,6 +45,25 @@ class PatternRulesTest {
         assertTrue(out.contains("int b = tag.m_128451_(\"other\");"), out);
     }
 
+    static Rule getInt(String id, String recv, String key, String replace) {
+        return new Rule(1, id, null, TestSupport.FROM, TestSupport.TO, Rule.Kind.MECHANICAL,
+                new Rule.Match("net.minecraft.nbt.CompoundTag#getInt(String)", null, null, null, null, null,
+                        new Rule.Bind(recv, List.of(key), null, null)),
+                replace, null, null, null, 5, 0.9, new Rule.Provenance("manual", null, null), List.of(new Rule.Test(null, null, "x", "x")));
+    }
+
+    /** Two packs with the same rewrite under different placeholder names agree; different rewrites stay ambiguous. */
+    @Test
+    void rulesThatWriteTheSameCodeAreNotAmbiguous() {
+        Rewriter.FileResult same = TestSupport.rewrite(List.of(getInt("r-a", "$t", "$k", "$t.getInteger($k)"),
+                getInt("r-b", "$tag", "$a0", "$tag.getInteger($a0)")), TestSupport.srgNames(), CODE);
+        assertTrue(same.text().contains("int a = tag.getInteger(\"energy\");"), same.text());
+        assertFalse(same.text().contains("ambiguous"), same.text());
+        Rewriter.FileResult diff = TestSupport.rewrite(List.of(getInt("r-a", "$t", "$k", "$t.getInteger($k)"),
+                getInt("r-b", "$t", "$k", "$t.getShort($k)")), TestSupport.srgNames(), CODE);
+        assertTrue(diff.text().contains("TODO(porter:ambiguous)"), diff.text());
+    }
+
     @Test
     void anExpressionPatternOwnsItsNodeAgainstACallRule() {
         Rule p = rule("r-test-energy", pattern("$t.getInt(\"energy\")"), "$t.getInteger(\"power\")", null, null, null);

@@ -1,0 +1,9 @@
+version: forge-1.19.2
+items:
+  "alias:redstone_x5": { id: "minecraft:redstone", count: 5 }
+  "alias:fuel_can_10000": { id: "ic2:fuel_can", nbt: { fuel: 10000, max_fuel: 10000 } }
+  "alias:cell_water_x8": { id: "ic2:cell_water", count: 8 }
+  "alias:wheat_x16": { id: "minecraft:wheat", count: 16 }
+  "alias:hops_x8": { id: "ic2:hops", count: 8 }
+  "alias:mug_x4": { id: "ic2:mug", count: 4 }
+  "alias:sugar_cane_x10": { id: "minecraft:sugar_cane", count: 10 }

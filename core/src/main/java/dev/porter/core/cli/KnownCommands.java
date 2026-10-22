@@ -21,7 +21,10 @@ public final class KnownCommands {
         m.put("test run", "Run scenarios on one version and write traces (testkit)");
         m.put("test roundtrip", "Round-trip test of a mod in its own version (testkit)");
         m.put("test diff", "Differential scenario test between two versions (testkit)");
+        m.put("test obtainable", "Survival check: items of a mod that nothing makes, build A vs build B (testkit)");
         m.put("port", "Run a whole port from a port config, resumable by stage (port)");
+        m.put("catalog", "Generate the table of ports in ports/README.md from ports/catalog.yaml (port)");
+        m.put("run", "One command for a player: check the original files, set everything up, run the port (port)");
         m.put("closure", "Dependency closure of seed classes: copy list, hub frontier, known-identical check (port)");
         m.put("coverage", "Share of a mod's distinct API symbols that existing rules resolve (port)");
         m.put("stubs", "Hub stubs: frontier classes reduced to the members the closure uses (port)");
@@ -29,7 +32,12 @@ public final class KnownCommands {
         m.put("castfix", "Error-driven fixes of decompiler cast/generic artefacts (port)");
         m.put("symbols", "Aggregate javac errors by distinct symbol (port)");
         m.put("obfcheck", "Reobf collision check of a built jar (port)");
+        m.put("inventory", "What a port profile ships and its token 8-gram overlap with the original (port)");
         m.put("drafts", "Export the loop's draft rules as issue-ready markdown (good first issues) (port)");
+        m.put("patch make", "Write unified diffs between two trees, also across paths (port)");
+        m.put("patch apply", "Apply unified diffs exactly, base tree -> target tree (port)");
+        m.put("decompile", "Decompile a jar with a pinned CFR and extract its resources, sha256-checked (port)");
+        m.put("select", "Select a subsystem from extracted IR (seeds, references, overlay) (port)");
         m.put("report", "Aggregate run metrics (core; planned)");
         PATHS = java.util.Collections.unmodifiableMap(m);
     }

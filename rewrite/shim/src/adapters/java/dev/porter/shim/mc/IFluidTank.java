@@ -7,4 +7,10 @@ public interface IFluidTank extends net.minecraftforge.fluids.IFluidTank {
     boolean isFluidValid(FluidStack stack);
 
     FluidStack drain(FluidStack resource, boolean execute);
+
+    @Override
+    default net.minecraftforge.fluids.FluidTankInfo getInfo() {
+        FluidStack f = getFluid();
+        return new net.minecraftforge.fluids.FluidTankInfo(f == null ? null : f.copy(), getCapacity());
+    }
 }

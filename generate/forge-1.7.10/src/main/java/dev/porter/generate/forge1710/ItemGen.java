@@ -35,7 +35,7 @@ final class ItemGen {
     void run() {
         Map<String, List<IrNode.Item>> byLogic = new java.util.TreeMap<>();
         for (IrNode.Item i : ctx.ir.all(IrNode.Item.class)) {
-            if (i.placesBlock() == null && i.logicClass() != null) {
+            if (i.placesBlock() == null && i.logicClass() != null && !plan.sourceConstructed(i)) {
                 byLogic.computeIfAbsent(i.logicClass(), k -> new java.util.ArrayList<>()).add(i);
             }
         }
@@ -43,6 +43,8 @@ final class ItemGen {
         for (IrNode.Item i : ctx.ir.all(IrNode.Item.class)) {
             if (i.placesBlock() != null) {
                 blockItem(i);
+            } else if (plan.sourceConstructed(i)) {
+                ctx.info("source-constructed", i.id(), "constructed like the source registry: " + plan.sourceNew(i, i.logicClass()));
             } else if (i.logicClass() != null && byLogic.get(i.logicClass()).size() > 1) {
                 if (sharedDone.add(i.logicClass())) {
                     emitShared(byLogic.get(i.logicClass()));
@@ -55,7 +57,7 @@ final class ItemGen {
 
     /** True when the item's logic class is shared with other items (one class, constructor gets the names). */
     static boolean shared(GenContext ctx, IrNode.Item i) {
-        return i.placesBlock() == null && i.logicClass() != null && ctx.ir.all(IrNode.Item.class).stream()
+        return i.placesBlock() == null && !(ctx.options.sourceConstructors() && i.logicClass() != null) && i.logicClass() != null && ctx.ir.all(IrNode.Item.class).stream()
                 .filter(o -> o.placesBlock() == null && i.logicClass().equals(o.logicClass())).count() > 1;
     }
 

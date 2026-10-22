@@ -1,0 +1,845 @@
+schemaVersion: 1
+id: r-pilot-mobeffects-confusion
+description: "MobEffects constant -> 1.7.10 Potion static field (javap net.minecraft.potion.Potion)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.effect.MobEffects#CONFUSION"
+replace: "Potion.confusion"
+imports: ["net.minecraft.potion.Potion"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - before: "Object e = MobEffects.CONFUSION;"
+    after: "Object e = Potion.confusion;"
+---
+schemaVersion: 1
+id: r-pilot-mobeffects-damage_boost
+description: "MobEffects constant -> 1.7.10 Potion static field (javap net.minecraft.potion.Potion)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.effect.MobEffects#DAMAGE_BOOST"
+replace: "Potion.damageBoost"
+imports: ["net.minecraft.potion.Potion"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - before: "Object e = MobEffects.DAMAGE_BOOST;"
+    after: "Object e = Potion.damageBoost;"
+---
+schemaVersion: 1
+id: r-pilot-mobeffects-damage_resistance
+description: "MobEffects constant -> 1.7.10 Potion static field (javap net.minecraft.potion.Potion)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.effect.MobEffects#DAMAGE_RESISTANCE"
+replace: "Potion.resistance"
+imports: ["net.minecraft.potion.Potion"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - before: "Object e = MobEffects.DAMAGE_RESISTANCE;"
+    after: "Object e = Potion.resistance;"
+---
+schemaVersion: 1
+id: r-pilot-mobeffects-dig_slowdown
+description: "MobEffects constant -> 1.7.10 Potion static field (javap net.minecraft.potion.Potion)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.effect.MobEffects#DIG_SLOWDOWN"
+replace: "Potion.digSlowdown"
+imports: ["net.minecraft.potion.Potion"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - before: "Object e = MobEffects.DIG_SLOWDOWN;"
+    after: "Object e = Potion.digSlowdown;"
+---
+schemaVersion: 1
+id: r-pilot-mobeffects-dig_speed
+description: "MobEffects constant -> 1.7.10 Potion static field (javap net.minecraft.potion.Potion)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.effect.MobEffects#DIG_SPEED"
+replace: "Potion.digSpeed"
+imports: ["net.minecraft.potion.Potion"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - before: "Object e = MobEffects.DIG_SPEED;"
+    after: "Object e = Potion.digSpeed;"
+---
+schemaVersion: 1
+id: r-pilot-mobeffects-fire_resistance
+description: "MobEffects constant -> 1.7.10 Potion static field (javap net.minecraft.potion.Potion)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.effect.MobEffects#FIRE_RESISTANCE"
+replace: "Potion.fireResistance"
+imports: ["net.minecraft.potion.Potion"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - before: "Object e = MobEffects.FIRE_RESISTANCE;"
+    after: "Object e = Potion.fireResistance;"
+---
+schemaVersion: 1
+id: r-pilot-mobeffects-harm
+description: "MobEffects constant -> 1.7.10 Potion static field (javap net.minecraft.potion.Potion)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.effect.MobEffects#HARM"
+replace: "Potion.harm"
+imports: ["net.minecraft.potion.Potion"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - before: "Object e = MobEffects.HARM;"
+    after: "Object e = Potion.harm;"
+---
+schemaVersion: 1
+id: r-pilot-mobeffects-heal
+description: "MobEffects constant -> 1.7.10 Potion static field (javap net.minecraft.potion.Potion)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.effect.MobEffects#HEAL"
+replace: "Potion.heal"
+imports: ["net.minecraft.potion.Potion"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - before: "Object e = MobEffects.HEAL;"
+    after: "Object e = Potion.heal;"
+---
+schemaVersion: 1
+id: r-pilot-mobeffects-hunger
+description: "MobEffects constant -> 1.7.10 Potion static field (javap net.minecraft.potion.Potion)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.effect.MobEffects#HUNGER"
+replace: "Potion.hunger"
+imports: ["net.minecraft.potion.Potion"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - before: "Object e = MobEffects.HUNGER;"
+    after: "Object e = Potion.hunger;"
+---
+schemaVersion: 1
+id: r-pilot-mobeffects-movement_slowdown
+description: "MobEffects constant -> 1.7.10 Potion static field (javap net.minecraft.potion.Potion)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.effect.MobEffects#MOVEMENT_SLOWDOWN"
+replace: "Potion.moveSlowdown"
+imports: ["net.minecraft.potion.Potion"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - before: "Object e = MobEffects.MOVEMENT_SLOWDOWN;"
+    after: "Object e = Potion.moveSlowdown;"
+---
+schemaVersion: 1
+id: r-pilot-mobeffects-movement_speed
+description: "MobEffects constant -> 1.7.10 Potion static field (javap net.minecraft.potion.Potion)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.effect.MobEffects#MOVEMENT_SPEED"
+replace: "Potion.moveSpeed"
+imports: ["net.minecraft.potion.Potion"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - before: "Object e = MobEffects.MOVEMENT_SPEED;"
+    after: "Object e = Potion.moveSpeed;"
+---
+schemaVersion: 1
+id: r-pilot-mobeffects-poison
+description: "MobEffects constant -> 1.7.10 Potion static field (javap net.minecraft.potion.Potion)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.effect.MobEffects#POISON"
+replace: "Potion.poison"
+imports: ["net.minecraft.potion.Potion"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - before: "Object e = MobEffects.POISON;"
+    after: "Object e = Potion.poison;"
+---
+schemaVersion: 1
+id: r-pilot-mobeffects-regeneration
+description: "MobEffects constant -> 1.7.10 Potion static field (javap net.minecraft.potion.Potion)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.effect.MobEffects#REGENERATION"
+replace: "Potion.regeneration"
+imports: ["net.minecraft.potion.Potion"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - before: "Object e = MobEffects.REGENERATION;"
+    after: "Object e = Potion.regeneration;"
+---
+schemaVersion: 1
+id: r-pilot-mobeffects-blindness
+description: "MobEffects constant -> 1.7.10 Potion static field (javap net.minecraft.potion.Potion)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.effect.MobEffects#BLINDNESS"
+replace: "Potion.blindness"
+imports: ["net.minecraft.potion.Potion"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - before: "Object e = MobEffects.BLINDNESS;"
+    after: "Object e = Potion.blindness;"
+---
+schemaVersion: 1
+id: r-pilot-mobeffects-absorption
+description: "MobEffects constant -> 1.7.10 Potion static field (javap net.minecraft.potion.Potion)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.effect.MobEffects#ABSORPTION"
+replace: "Potion.field_76444_x"
+imports: ["net.minecraft.potion.Potion"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - before: "Object e = MobEffects.ABSORPTION;"
+    after: "Object e = Potion.field_76444_x;"
+---
+schemaVersion: 1
+id: r-pilot-mobeffects-jump
+description: "MobEffects constant -> 1.7.10 Potion static field (javap net.minecraft.potion.Potion)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.effect.MobEffects#JUMP"
+replace: "Potion.jump"
+imports: ["net.minecraft.potion.Potion"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - before: "Object e = MobEffects.JUMP;"
+    after: "Object e = Potion.jump;"
+---
+schemaVersion: 1
+id: r-pilot-mobeffects-night_vision
+description: "MobEffects constant -> 1.7.10 Potion static field (javap net.minecraft.potion.Potion)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.effect.MobEffects#NIGHT_VISION"
+replace: "Potion.nightVision"
+imports: ["net.minecraft.potion.Potion"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - before: "Object e = MobEffects.NIGHT_VISION;"
+    after: "Object e = Potion.nightVision;"
+---
+schemaVersion: 1
+id: r-pilot-mobeffects-weakness
+description: "MobEffects constant -> 1.7.10 Potion static field (javap net.minecraft.potion.Potion)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.effect.MobEffects#WEAKNESS"
+replace: "Potion.weakness"
+imports: ["net.minecraft.potion.Potion"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - before: "Object e = MobEffects.WEAKNESS;"
+    after: "Object e = Potion.weakness;"
+---
+schemaVersion: 1
+id: r-pilot-mobeffects-wither
+description: "MobEffects constant -> 1.7.10 Potion static field (javap net.minecraft.potion.Potion)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.effect.MobEffects#WITHER"
+replace: "Potion.wither"
+imports: ["net.minecraft.potion.Potion"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - before: "Object e = MobEffects.WITHER;"
+    after: "Object e = Potion.wither;"
+---
+schemaVersion: 1
+id: r-pilot-mobeffects-water_breathing
+description: "MobEffects constant -> 1.7.10 Potion static field (javap net.minecraft.potion.Potion)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.effect.MobEffects#WATER_BREATHING"
+replace: "Potion.waterBreathing"
+imports: ["net.minecraft.potion.Potion"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - before: "Object e = MobEffects.WATER_BREATHING;"
+    after: "Object e = Potion.waterBreathing;"
+---
+schemaVersion: 1
+id: r-pilot-mobeffects-invisibility
+description: "MobEffects constant -> 1.7.10 Potion static field (javap net.minecraft.potion.Potion)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.effect.MobEffects#INVISIBILITY"
+replace: "Potion.invisibility"
+imports: ["net.minecraft.potion.Potion"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - before: "Object e = MobEffects.INVISIBILITY;"
+    after: "Object e = Potion.invisibility;"
+---
+schemaVersion: 1
+id: r-pilot-mobeffects-saturation
+description: "MobEffects constant -> 1.7.10 Potion static field (javap net.minecraft.potion.Potion)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.effect.MobEffects#SATURATION"
+replace: "Potion.field_76443_y"
+imports: ["net.minecraft.potion.Potion"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - before: "Object e = MobEffects.SATURATION;"
+    after: "Object e = Potion.field_76443_y;"
+---
+schemaVersion: 1
+id: r-pilot-mobeffects-health_boost
+description: "MobEffects constant -> 1.7.10 Potion static field (javap net.minecraft.potion.Potion)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.effect.MobEffects#HEALTH_BOOST"
+replace: "Potion.field_76434_w"
+imports: ["net.minecraft.potion.Potion"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - before: "Object e = MobEffects.HEALTH_BOOST;"
+    after: "Object e = Potion.field_76434_w;"
+---
+schemaVersion: 1
+id: r-pilot-type-mobeffect
+description: "pilot-curated"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: "net.minecraft.world.effect.MobEffect"
+replace: "net.minecraft.potion.Potion"
+confidence: 0.95
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - before: "import net.minecraft.world.effect.MobEffect;"
+    after: "import net.minecraft.potion.Potion;"
+---
+schemaVersion: 1
+id: r-pilot-type-dist
+description: "pilot-curated"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: "net.minecraftforge.api.distmarker.Dist"
+replace: "cpw.mods.fml.relauncher.Side"
+confidence: 1.0
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - before: "import net.minecraftforge.api.distmarker.Dist;"
+    after: "import cpw.mods.fml.relauncher.Side;"
+---
+schemaVersion: 1
+id: r-pilot-type-onlyin
+description: "pilot-curated"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: "net.minecraftforge.api.distmarker.OnlyIn"
+replace: "cpw.mods.fml.relauncher.SideOnly"
+confidence: 1.0
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - before: "import net.minecraftforge.api.distmarker.OnlyIn;"
+    after: "import cpw.mods.fml.relauncher.SideOnly;"
+---
+schemaVersion: 1
+id: r-pilot-dist-client
+description: "pilot-curated"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraftforge.api.distmarker.Dist#CLIENT"
+replace: "Side.CLIENT"
+imports: ["cpw.mods.fml.relauncher.Side"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - before: "Object s = Dist.CLIENT;"
+    after: "Object s = Side.CLIENT;"
+---
+schemaVersion: 1
+id: r-pilot-dist-server
+description: "pilot-curated"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraftforge.api.distmarker.Dist#DEDICATED_SERVER"
+replace: "Side.SERVER"
+imports: ["cpw.mods.fml.relauncher.Side"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - before: "Object s = Dist.DEDICATED_SERVER;"
+    after: "Object s = Side.SERVER;"
+---
+schemaVersion: 1
+id: r-pilot-type-fastutil-objectlist
+description: "fastutil (not shipped with MC 1.7.10) object collection -> java.util type with the same contract"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "it.unimi.dsi.fastutil.objects.ObjectList"
+replace: "java.util.List"
+confidence: 0.9
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - before: "import it.unimi.dsi.fastutil.objects.ObjectList;"
+    after: "import java.util.List;"
+---
+schemaVersion: 1
+id: r-pilot-type-fastutil-objectarraylist
+description: "fastutil (not shipped with MC 1.7.10) object collection -> java.util type with the same contract"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "it.unimi.dsi.fastutil.objects.ObjectArrayList"
+replace: "java.util.ArrayList"
+confidence: 0.9
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - before: "import it.unimi.dsi.fastutil.objects.ObjectArrayList;"
+    after: "import java.util.ArrayList;"
+---
+schemaVersion: 1
+id: r-pilot-type-fastutil-objectset
+description: "fastutil (not shipped with MC 1.7.10) object collection -> java.util type with the same contract"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "it.unimi.dsi.fastutil.objects.ObjectSet"
+replace: "java.util.Set"
+confidence: 0.9
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - before: "import it.unimi.dsi.fastutil.objects.ObjectSet;"
+    after: "import java.util.Set;"
+---
+schemaVersion: 1
+id: r-pilot-type-fastutil-objectlinkedopenhashset
+description: "fastutil (not shipped with MC 1.7.10) object collection -> java.util type with the same contract"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet"
+replace: "java.util.LinkedHashSet"
+confidence: 0.9
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - before: "import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;"
+    after: "import java.util.LinkedHashSet;"
+---
+schemaVersion: 1
+id: r-pilot-type-fastutil-object2objectmap
+description: "fastutil (not shipped with MC 1.7.10) object collection -> java.util type with the same contract"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "it.unimi.dsi.fastutil.objects.Object2ObjectMap"
+replace: "java.util.Map"
+confidence: 0.9
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - before: "import it.unimi.dsi.fastutil.objects.Object2ObjectMap;"
+    after: "import java.util.Map;"
+---
+schemaVersion: 1
+id: r-pilot-type-fastutil-object2objectlinkedopenhashmap
+description: "fastutil (not shipped with MC 1.7.10) object collection -> java.util type with the same contract"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap"
+replace: "java.util.LinkedHashMap"
+confidence: 0.9
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - before: "import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;"
+    after: "import java.util.LinkedHashMap;"
+---
+schemaVersion: 1
+id: r-pilot-type-fastutil-object2objectopenhashmap
+description: "fastutil (not shipped with MC 1.7.10) object collection -> java.util type with the same contract"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap"
+replace: "java.util.HashMap"
+confidence: 0.9
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - before: "import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;"
+    after: "import java.util.HashMap;"
+---
+schemaVersion: 1
+id: r-pilot-type-component
+description: "pilot-curated"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.network.chat.Component"
+replace: "net.minecraft.util.IChatComponent"
+confidence: 0.9
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - before: "import net.minecraft.network.chat.Component;"
+    after: "import net.minecraft.util.IChatComponent;"
+---
+schemaVersion: 1
+id: r-pilot-type-mutablecomponent
+description: "pilot-curated"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.network.chat.MutableComponent"
+replace: "net.minecraft.util.IChatComponent"
+confidence: 0.9
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - before: "import net.minecraft.network.chat.MutableComponent;"
+    after: "import net.minecraft.util.IChatComponent;"
+---
+schemaVersion: 1
+id: r-pilot-component-translatable
+description: "pilot-curated"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.network.chat.Component#translatable(java.lang.String)"
+  bind: { args: ["$a0"] }
+replace: "new ChatComponentTranslation($a0)"
+imports: ["net.minecraft.util.ChatComponentTranslation"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - context: "Component c; MutableComponent m; String s; Object[] a; ChatFormatting f; import net.minecraft.network.chat.Component; import net.minecraft.network.chat.MutableComponent; import net.minecraft.ChatFormatting"
+    before: "Object x = Component.translatable(s);"
+    after: "Object x = new ChatComponentTranslation(s);"
+---
+schemaVersion: 1
+id: r-pilot-component-translatable-args
+description: "pilot-curated"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.network.chat.Component#translatable(java.lang.String,java.lang.Object[])"
+  bind: { args: ["$a0", "$a1"] }
+replace: "new ChatComponentTranslation($a0, $a1)"
+imports: ["net.minecraft.util.ChatComponentTranslation"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - context: "Component c; MutableComponent m; String s; Object[] a; ChatFormatting f; import net.minecraft.network.chat.Component; import net.minecraft.network.chat.MutableComponent; import net.minecraft.ChatFormatting"
+    before: "Object x = Component.translatable(s, a);"
+    after: "Object x = new ChatComponentTranslation(s, a);"
+---
+schemaVersion: 1
+id: r-pilot-component-literal
+description: "pilot-curated"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.network.chat.Component#literal(java.lang.String)"
+  bind: { args: ["$a0"] }
+replace: "new ChatComponentText($a0)"
+imports: ["net.minecraft.util.ChatComponentText"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - context: "Component c; MutableComponent m; String s; Object[] a; ChatFormatting f; import net.minecraft.network.chat.Component; import net.minecraft.network.chat.MutableComponent; import net.minecraft.ChatFormatting"
+    before: "Object x = Component.literal(s);"
+    after: "Object x = new ChatComponentText(s);"
+---
+schemaVersion: 1
+id: r-pilot-component-empty
+description: "pilot-curated"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.network.chat.Component#empty()"
+replace: "new ChatComponentText(\"\")"
+imports: ["net.minecraft.util.ChatComponentText"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - context: "Component c; MutableComponent m; String s; Object[] a; ChatFormatting f; import net.minecraft.network.chat.Component; import net.minecraft.network.chat.MutableComponent; import net.minecraft.ChatFormatting"
+    before: "Object x = Component.empty();"
+    after: "Object x = new ChatComponentText(\"\");"
+---
+schemaVersion: 1
+id: r-pilot-mutablecomponent-append-component
+description: "pilot-curated"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.network.chat.MutableComponent#append(net.minecraft.network.chat.Component)"
+  bind: { recv: "$r", args: ["$a0"] }
+replace: "$r.appendSibling($a0)"
+confidence: 1.0
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - context: "Component c; MutableComponent m; String s; Object[] a; ChatFormatting f; import net.minecraft.network.chat.Component; import net.minecraft.network.chat.MutableComponent; import net.minecraft.ChatFormatting"
+    before: "Object x = m.append(c);"
+    after: "Object x = m.appendSibling(c);"
+---
+schemaVersion: 1
+id: r-pilot-mutablecomponent-append-string
+description: "pilot-curated"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.network.chat.MutableComponent#append(java.lang.String)"
+  bind: { recv: "$r", args: ["$a0"] }
+replace: "$r.appendText($a0)"
+confidence: 1.0
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - context: "Component c; MutableComponent m; String s; Object[] a; ChatFormatting f; import net.minecraft.network.chat.Component; import net.minecraft.network.chat.MutableComponent; import net.minecraft.ChatFormatting"
+    before: "Object x = m.append(s);"
+    after: "Object x = m.appendText(s);"
+---
+schemaVersion: 1
+id: r-pilot-mutablecomponent-withstyle
+description: "withStyle(colour) -> setChatStyle(new ChatStyle().setColor(c)); 1.19.2 merges into the existing style, 1.7.10 replaces it (differs only for components that already carry a style)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.network.chat.MutableComponent#withStyle(net.minecraft.ChatFormatting)"
+  bind: { recv: "$r", args: ["$a0"] }
+replace: "$r.setChatStyle(new ChatStyle().setColor($a0))"
+imports: ["net.minecraft.util.ChatStyle"]
+confidence: 0.8
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - context: "Component c; MutableComponent m; String s; Object[] a; ChatFormatting f; import net.minecraft.network.chat.Component; import net.minecraft.network.chat.MutableComponent; import net.minecraft.ChatFormatting"
+    before: "Object x = m.withStyle(f);"
+    after: "Object x = m.setChatStyle(new ChatStyle().setColor(f));"
+---
+schemaVersion: 1
+id: r-pilot-component-getstring
+description: "pilot-curated"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.network.chat.Component#getString()"
+  bind: { recv: "$r" }
+replace: "$r.getUnformattedText()"
+confidence: 1.0
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - context: "Component c; MutableComponent m; String s; Object[] a; ChatFormatting f; import net.minecraft.network.chat.Component; import net.minecraft.network.chat.MutableComponent; import net.minecraft.ChatFormatting"
+    before: "String x = c.getString();"
+    after: "String x = c.getUnformattedText();"
+---
+schemaVersion: 1
+id: r-pilot-itemstack-hascustomhovername
+description: "accepted from pilot candidate gethovername (javap ItemStack.hasDisplayName)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.world.item.ItemStack#hasCustomHoverName()"
+  bind: { recv: "$r" }
+replace: "$r.hasDisplayName()"
+confidence: 1.0
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - context: "ItemStack s; import net.minecraft.world.item.ItemStack"
+    before: "boolean b = s.hasCustomHoverName();"
+    after: "boolean b = s.hasDisplayName();"
+---
+schemaVersion: 1
+id: r-pilot-items-sugar-cane
+description: "pilot-curated"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#SUGAR_CANE"
+replace: "Items.reeds"
+imports: ["net.minecraft.init.Items"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - before: "Object i = Items.SUGAR_CANE;"
+    after: "Object i = Items.reeds;"
+---
+schemaVersion: 1
+id: r-pilot-mobeffect-applyinstantenouseffect
+description: "1.7.10 Potion.affectEntity(source, target, amplifier, health) has no indirect-source parameter (accepted from hand-port draft applyinstantenouseffect)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.effect.MobEffect#applyInstantenousEffect(net.minecraft.world.entity.Entity,net.minecraft.world.entity.Entity,net.minecraft.world.entity.LivingEntity,int,double)"
+  bind: { recv: "$r", args: ["$a0", "$a1", "$a2", "$a3", "$a4"] }
+replace: "$r.affectEntity((EntityLivingBase) $a0, $a2, $a3, $a4)"
+imports: ["net.minecraft.entity.EntityLivingBase"]
+preconditions: ["pure:$a1"]
+confidence: 0.9
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - context: "MobEffect m; Entity a; Entity b; LivingEntity t; int i; double d; import net.minecraft.world.effect.MobEffect; import net.minecraft.world.entity.Entity; import net.minecraft.world.entity.LivingEntity"
+    before: "m.applyInstantenousEffect(a, b, t, i, d);"
+    after: "m.affectEntity((EntityLivingBase) a, t, i, d);"
+---
+schemaVersion: 1
+id: r-pilot-mobeffectinstance-new-5
+description: "1.7.10 PotionEffect(id, duration, amplifier, ambient) has no particle-visibility flag (dropped)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  new: "net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffect, int, int, boolean, boolean)"
+  bind: { args: ["$m", "$d", "$a", "$b", "$v"] }
+replace: "new PotionEffect($m.id, $d, $a, $b)"
+imports: ["net.minecraft.potion.PotionEffect"]
+preconditions: ["pure:$m", "pure:$v"]
+confidence: 0.9
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - context: "MobEffect m; MobEffectInstance i; MobEffectInstance j; LivingEntity e; int d; int a; boolean b; boolean v; import net.minecraft.world.effect.MobEffect; import net.minecraft.world.effect.MobEffectInstance; import net.minecraft.world.entity.LivingEntity"
+    before: "Object x = new MobEffectInstance(m, d, a, b, v);"
+    after: "Object x = new PotionEffect(m.id, d, a, b);"
+---
+schemaVersion: 1
+id: r-pilot-mobeffectinstance-geteffect
+description: "1.7.10 PotionEffect stores the potion id; the Potion is looked up in Potion.potionTypes"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.effect.MobEffectInstance#getEffect()"
+  bind: { recv: "$r" }
+replace: "Potion.potionTypes[$r.getPotionID()]"
+imports: ["net.minecraft.potion.Potion"]
+preconditions: ["pure:$r"]
+confidence: 1.0
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - context: "MobEffect m; MobEffectInstance i; MobEffectInstance j; LivingEntity e; int d; int a; boolean b; boolean v; import net.minecraft.world.effect.MobEffect; import net.minecraft.world.effect.MobEffectInstance; import net.minecraft.world.entity.LivingEntity"
+    before: "Object x = i.getEffect();"
+    after: "Object x = Potion.potionTypes[i.getPotionID()];"
+---
+schemaVersion: 1
+id: r-pilot-mobeffectinstance-update
+description: "update(other) -> combine(other): same merge (longer duration / higher amplifier); the boolean result is unused"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.effect.MobEffectInstance#update(net.minecraft.world.effect.MobEffectInstance)"
+  bind: { recv: "$r", args: ["$a0"] }
+replace: "$r.combine($a0)"
+preconditions: ["statement"]
+confidence: 0.9
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - context: "MobEffect m; MobEffectInstance i; MobEffectInstance j; LivingEntity e; int d; int a; boolean b; boolean v; import net.minecraft.world.effect.MobEffect; import net.minecraft.world.effect.MobEffectInstance; import net.minecraft.world.entity.LivingEntity"
+    before: "i.update(j);"
+    after: "i.combine(j);"
+---
+schemaVersion: 1
+id: r-pilot-livingentity-removeeffectnoupdate
+description: "both remove the effect from the active map without the removal callbacks"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.entity.LivingEntity#removeEffectNoUpdate(net.minecraft.world.effect.MobEffect)"
+  bind: { recv: "$e", args: ["$a0"] }
+replace: "$e.removePotionEffectClient($a0.id)"
+preconditions: ["pure:$a0"]
+confidence: 0.9
+provenance: { source: agent, ref: "pilot p3 (barrels): curated from loop tasks / rewrite TODOs; target verified with javap on the RFG 1.7.10 MCP jar" }
+tests:
+  - context: "MobEffect m; MobEffectInstance i; MobEffectInstance j; LivingEntity e; int d; int a; boolean b; boolean v; import net.minecraft.world.effect.MobEffect; import net.minecraft.world.effect.MobEffectInstance; import net.minecraft.world.entity.LivingEntity"
+    before: "e.removeEffectNoUpdate(m);"
+    after: "e.removePotionEffectClient(m.id);"

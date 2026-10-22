@@ -1,0 +1,424 @@
+schemaVersion: 1
+id: steam-tunnel-stages
+# closure port: copy of private/scenarios/steam-tunnel-stages.scenario.yaml + forge-1.7.10 keyMap (ported IC2C tile field names)
+description: >-
+  scenarios.md "steam-tunnel-stages": >= 4096 mB steam/t -> 4 stages = 2048 EU/t (MFSU as consumer).
+world: flat-void
+maxTicks: 1000
+tolerance:
+  "*": { abs: 0, tickShift: 1 }
+  "field:[3,65,2]/energy": { rel: 0.05, tickShift: 2 }
+  "field:[1,65,0]/energy": { ignore: true }
+  "fluid:[1,65,0]": { ignore: true }
+keyMap:
+  forge-1.19.2:
+    "field:[1,65,0]/isValid": "field:[1,65,0]/formed"
+  forge-1.7.10:
+    "field:[1,65,0]/isValid": "field:[1,65,0]/formed"
+steps:
+  - build_multiblock: { id: "ic2:steam_tunnel", at: [0, 64, 0] }
+  - place_block: { at: [3, 65, 2], block: "ic2:mfsu", facing: east }
+  - tick: 20
+  - sample: { every: 1, what: ["field:[1,65,0]/formed", "field:[1,65,0]/energy", "fluid:[1,65,0]", "field:[3,65,2]/energy"] }
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - fill_fluid: { at: [1, 65, 0], fluid: "ic2:steam", amount: 5000 }
+  - tick: 1
+  - assert: { expr: "field:[1,65,0]/formed == true", message: "tunnel formed" }
+  - assert: { expr: "delta(field:[3,65,2]/energy, 70, 220) / 150 >= 1945 && delta(field:[3,65,2]/energy, 70, 220) / 150 <= 2150", message: "2048 EU/t reach the MFSU" }

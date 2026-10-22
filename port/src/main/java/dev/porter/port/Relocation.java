@@ -22,6 +22,25 @@ public record Relocation(String from, String to) {
         return fqn;
     }
 
+    /**
+     * Relocates every qualified name in a Java expression ({@code new a.b.C(a.b.D.X, "a.b.")}); string and character
+     * literals are left alone.
+     */
+    public static String applyInSource(List<Relocation> rs, String src) {
+        StringBuilder out = new StringBuilder();
+        java.util.regex.Matcher m = java.util.regex.Pattern
+                .compile("\"(?:\\\\.|[^\"\\\\])*\"|'(?:\\\\.|[^'\\\\])*'|[A-Za-z_$][A-Za-z0-9_$]*(?:\\.[A-Za-z_$][A-Za-z0-9_$]*)*")
+                .matcher(src);
+        int last = 0;
+        while (m.find()) {
+            out.append(src, last, m.start());
+            String t = m.group();
+            out.append(t.startsWith("\"") || t.startsWith("'") ? t : apply(rs, t));
+            last = m.end();
+        }
+        return out.append(src.substring(last)).toString();
+    }
+
     /** Source path ({@code a/b/C.java}) of a relocated top-level class. */
     public static String path(List<Relocation> rs, String fqn) {
         return apply(rs, fqn).replace('.', '/') + ".java";

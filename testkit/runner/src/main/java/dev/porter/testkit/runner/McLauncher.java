@@ -97,7 +97,7 @@ public final class McLauncher {
         return new Outcome(null, failure, dir, retries + 1);
     }
 
-    private int batchSeq;
+    private final java.util.concurrent.atomic.AtomicInteger batchSeq = new java.util.concurrent.atomic.AtomicInteger();
 
     /**
      * Several server scenarios of one version and mod set in ONE launch: the test mod runs the plans one after another
@@ -113,7 +113,8 @@ public final class McLauncher {
         }
         String failure = null;
         Path dir = null;
-        int seq = ++batchSeq;
+        java.util.Map<String, String> crashNote = new java.util.HashMap<>(); // scenario -> why it has no result
+        int seq = batchSeq.incrementAndGet();
         for (int attempt = 1; attempt <= retries + 1 && !pending.isEmpty(); attempt++) {
             dir = work.resolve("batch-" + version + "-" + seq).resolve("attempt-" + attempt);
             try {
@@ -132,6 +133,9 @@ public final class McLauncher {
                 var arr = batch.putArray("plans");
                 for (int i : pending) {
                     ObjectNode p = plans.get(i).deepCopy();
+                    if (attempt > 1) {
+                        p.remove("region"); // fallback after a failed launch: one scenario at a time
+                    }
                     p.put("out", dir.resolve("raw-" + i + ".json").toAbsolutePath().toString());
                     arr.add(p);
                 }
@@ -156,6 +160,17 @@ public final class McLauncher {
                 } else {
                     failure = "process exited with " + p.exitValue() + " before every scenario had a result (see " + dir.resolve("console.log") + ")";
                 }
+                String culprit = null;
+                Path crash = dir.resolve("crash.json");
+                if (Files.isRegularFile(crash)) {
+                    JsonNode c = Json.json().readTree(Files.readString(crash, StandardCharsets.UTF_8));
+                    culprit = c.path("culprit").asString(null);
+                    for (int i : pending) {
+                        String id = plans.get(i).path("scenario").asString();
+                        crashNote.put(id, id.equals(culprit) ? "CRASHED-THE-SERVER: " + c.path("exception").asString()
+                                : "not finished (server crash caused by " + (culprit == null ? "an unidentified scenario: " + c.path("exception").asString() : culprit) + ")");
+                    }
+                }
                 List<Integer> still = new ArrayList<>();
                 for (int i : pending) {
                     Path raw = dir.resolve("raw-" + i + ".json");
@@ -172,6 +187,14 @@ public final class McLauncher {
                 }
                 if (still.isEmpty()) {
                     failure = null;
+                } else if (culprit != null && still.size() > 1) {
+                    // the scenario that took the server down runs last on the next attempt
+                    for (int k = 0; k < still.size(); k++) {
+                        if (plans.get(still.get(k)).path("scenario").asString().equals(culprit)) {
+                            still.add(still.remove(k));
+                            break;
+                        }
+                    }
                 } else if (still.size() > 1 && still.size() < pending.size()) {
                     // the first scenario without a result is the likely culprit: run it last on the next attempt
                     still.add(still.remove(0));
@@ -191,7 +214,8 @@ public final class McLauncher {
         }
         List<Outcome> out = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            out.add(res[i] != null ? res[i] : new Outcome(null, failure == null ? "no result" : failure, dir, retries + 1));
+            String why = crashNote.get(plans.get(i).path("scenario").asString());
+            out.add(res[i] != null ? res[i] : new Outcome(null, why != null ? why : failure == null ? "no result" : failure, dir, retries + 1));
         }
         return out;
     }
@@ -270,7 +294,8 @@ public final class McLauncher {
     List<String> serverCommand(String version, Path dir, Path planFile, Path raw) throws IOException {
         Path server = Path.of(env.require(version + ".server"));
         Files.writeString(dir.resolve("eula.txt"), "eula=true\n", StandardCharsets.UTF_8);
-        int port = 25600 + (int) (ProcessHandle.current().pid() % 300);
+        // per process and per version: both sides of a diff may run at the same time (versions never share a port)
+        int port = 25600 + (int) (ProcessHandle.current().pid() % 150) * 2 + (version.equals("forge-1.7.10") ? 1 : 0);
         List<String> c = jvm(version, planFile, raw);
         switch (version) {
             case "forge-1.7.10" -> {

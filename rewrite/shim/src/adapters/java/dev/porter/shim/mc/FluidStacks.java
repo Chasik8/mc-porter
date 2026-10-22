@@ -22,4 +22,15 @@ public final class FluidStacks {
         if (isEmpty(s) || isEmpty(o)) return isEmpty(s) && isEmpty(o);
         return s.isFluidEqual(o);
     }
+
+    /** FluidStack.containsFluid(other): EMPTY contains only EMPTY (a recipe without a second input needs an empty tank). */
+    public static boolean containsFluid(FluidStack s, FluidStack o) {
+        if (isEmpty(s) || isEmpty(o)) return isEmpty(s) && isEmpty(o);
+        return s.containsFluid(o);
+    }
+
+    /** new FluidStack(stack, amount): a stack of the same fluid; EMPTY (null here) stays EMPTY. */
+    public static FluidStack withAmount(FluidStack s, int amount) {
+        return isEmpty(s) ? null : new FluidStack(s, amount);
+    }
 }

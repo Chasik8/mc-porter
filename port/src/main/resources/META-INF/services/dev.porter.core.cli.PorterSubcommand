@@ -7,3 +7,10 @@ dev.porter.port.ToolCommands$SymbolsCmd
 dev.porter.port.ToolCommands$ObfCheckCmd
 dev.porter.port.ToolCommands$CoverageCmd
 dev.porter.port.ToolCommands$DraftsCmd
+dev.porter.port.RunCommand
+dev.porter.port.CatalogCommand
+dev.porter.port.patch.PatchCommands$Make
+dev.porter.port.patch.PatchCommands$Apply
+dev.porter.port.DecompileCommand
+dev.porter.port.select.SelectCommand
+dev.porter.port.InventoryCommand

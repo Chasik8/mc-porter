@@ -1,0 +1,7 @@
+# Known harmless lines of the vanilla/Forge dedicated servers (extended regular expressions, one per line).
+# Add a line only for noise that appears with NO mod installed, and say why.
+# 1.7.10: the server tries to read ops.json/whitelist.json/banned-*.json that do not exist yet, and the Forge update checker needs a network.
+java\.io\.FileNotFoundException: \.[/\\](ops|whitelist|banned-ips|banned-players)\.json
+Forge Version Check
+JsonSyntaxException: java\.lang\.IllegalStateException: Expected BEGIN_OBJECT
+Caused by: java\.lang\.IllegalStateException: Expected BEGIN_OBJECT

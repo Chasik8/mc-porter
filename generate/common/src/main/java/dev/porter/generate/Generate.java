@@ -53,7 +53,7 @@ public final class Generate {
         String ver = o.modVersion() != null ? o.modVersion() : mod.map(IrNode.Mod::version).orElse("0.0.0");
         String channel = o.channel() != null ? o.channel() : modId.length() > 20 ? modId.substring(0, 20) : modId;
         return new GenOptions(o.version(), pkg, modId, name, ver, o.embed(), o.guiIds(), o.potionIds(), channel,
-                o.assetsDir(), o.assetNamespace(), o.legacyNames(), o.stubs(), o.idMap(), o.nei());
+                o.assetsDir(), o.assetNamespace(), o.legacyNames(), o.stubs(), o.idMap(), o.nei(), o.sourceConstructors(), o.guiDelegate());
     }
 
     /** Runs a generator in memory. */

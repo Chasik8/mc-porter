@@ -58,6 +58,14 @@ public final class PorterTestkit {
 
     @Mod.EventHandler
     public void serverStarted(FMLServerStartedEvent event) {
+        String dump = System.getProperty("porter.dumpObtainable");
+        if (dump != null) {
+            try {
+                ObtainableDump.write(new File(dump));
+            } catch (java.io.IOException e) {
+                throw new IllegalStateException("[porter-testkit] cannot write " + dump, e);
+            }
+        }
         if (plan == null) {
             return;
         }
@@ -67,38 +75,32 @@ public final class PorterTestkit {
         }
         Platform1710 platform = new Platform1710(server.worldServerForDimension(0), null);
         long wallLimit = Long.getLong("porter.wallSeconds", 600L) * 1000L;
-        boolean first = true;
-        // a batch plan holds several scenarios: one server launch, the world is reset between them
-        for (JsonObject sub : Executor.subPlans(plan)) {
-            Executor ex = new Executor(sub, platform, Executor.outFor(sub, out));
-            long t0 = System.currentTimeMillis();
-            try {
-                if (!first) {
-                    platform.reset();
-                    server.tick();
-                    server.tick();
-                    platform.reset();
-                }
-                first = false;
-                platform.prepare(sub);
-                server.tick(); // warm-up tick, as on 1.19.2 (same start state with and without a reset before)
-                ex.start();
-                while (!ex.isDone()) {
-                    // WorldServer stops ticking entities/tile entities 1200 ticks after the last player left
-                    for (net.minecraft.world.WorldServer w : server.worldServers) {
-                        w.resetUpdateEntityTick();
-                    }
-                    server.tick();
-                    ex.afterServerTick();
-                    if (System.currentTimeMillis() - t0 > wallLimit) {
-                        ex.finish("timeout", "wall-clock limit " + (wallLimit / 1000) + " s exceeded at tick " + ex.tick());
-                    }
-                }
-            } catch (Throwable t) {
-                t.printStackTrace();
-                ex.finish("error", "exception: " + t);
+        // a batch plan holds several scenarios: one launch; region scenarios run simultaneously, the rest one after another
+        final Platform1710 pf = platform;
+        final MinecraftServer srv = server;
+        dev.porter.testkit.mod.BatchDriver.run(Executor.subPlans(plan), platform, out, new dev.porter.testkit.mod.BatchDriver.Hooks() {
+            public void prepare(JsonObject p) {
+                pf.prepare(p);
             }
-        }
+
+            public void tick() {
+                srv.tick();
+            }
+
+            public void beforeRunTick() {
+                // WorldServer stops ticking entities/tile entities 1200 ticks after the last player left
+                for (net.minecraft.world.WorldServer w : srv.worldServers) {
+                    w.resetUpdateEntityTick();
+                }
+            }
+
+            public void reset() {
+                pf.reset();
+            }
+
+            public void settle() {
+            }
+        }, wallLimit, new File(out.getAbsoluteFile().getParentFile(), "crash.json"));
         server.initiateShutdown();
     }
 

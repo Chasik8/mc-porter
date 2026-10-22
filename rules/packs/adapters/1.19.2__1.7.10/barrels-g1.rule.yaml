@@ -1,0 +1,17 @@
+schemaVersion: 1
+id: r-1.19.2-1.7.10-call-iforgeregistry-register
+description: "call net.minecraftforge.registries.IForgeRegistry#register(net.minecraft.resources.ResourceLocation, java.lang.Object) -> RegistryOps.register($r, $n, $v)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraftforge.registries.IForgeRegistry#register(net.minecraft.resources.ResourceLocation, java.lang.Object)"
+  bind: { recv: "$r", args: ["$n", "$v"] }
+replace: "RegistryOps.register($r, $n, $v)"
+imports: ["dev.porter.shim.mc.RegistryOps"]
+confidence: 0.85
+provenance: { source: agent, ref: "closure port of the barrels addon: one rule per distinct javac symbol; source = Mojang 1.19.2 mappings / Forge 43.5.2, target = MCP 1.7.10 / adapter pack (rewrite/shim/src/adapters)" }
+tests:
+  - context: "IForgeRegistry<Object> r; ResourceLocation n; Object v; import net.minecraftforge.registries.IForgeRegistry; import net.minecraft.resources.ResourceLocation"
+    before: "r.register(n, v);"
+    after: "RegistryOps.register(r, n, v);"

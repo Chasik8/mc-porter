@@ -1,0 +1,8 @@
+---
+nodes:
+- file: "block"
+  id: "ic2:fuel_boiler_structure"
+  merge:
+    extensions:
+      porter:texturePackage: "ic2:block/electric/generator/fuel_boiler"
+      porter-extract:texturePackages: null

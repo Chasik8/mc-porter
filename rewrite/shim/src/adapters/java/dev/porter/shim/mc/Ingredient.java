@@ -16,6 +16,27 @@ public class Ingredient implements Predicate<ItemStack> {
 
     public static Ingredient of(ItemStack... stacks) { return new Ingredient(stacks); }
 
+    /** Ingredient.of(ItemLike...): items or blocks (or stacks) */
+    public static Ingredient of(Object... likes) {
+        List<ItemStack> l = new ArrayList<>();
+        for (Object o : likes) {
+            ItemStack s = o instanceof ItemStack ? (ItemStack) o : ItemLikes.stack(o);
+            if (s != null) l.add(s);
+        }
+        return new Ingredient(l.toArray(new ItemStack[0]));
+    }
+
+    /** Ingredient.of(TagKey): the tag's explicit members plus the ore dictionary entries of its ore name. */
+    public static Ingredient of(TagKey<?> tag) {
+        List<ItemStack> l = new ArrayList<>();
+        for (Object o : tag.members()) {
+            ItemStack s = o instanceof ItemStack ? (ItemStack) o : ItemLikes.stack(o);
+            if (s != null) l.add(s);
+        }
+        if (tag.oreName() != null) l.addAll(OreDictionary.getOres(tag.oreName()));
+        return new Ingredient(l.toArray(new ItemStack[0]));
+    }
+
     public static Ingredient ofOre(String ore) {
         List<ItemStack> l = new ArrayList<>(OreDictionary.getOres(ore));
         return new Ingredient(l.toArray(new ItemStack[0]));
