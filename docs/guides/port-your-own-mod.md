@@ -1,74 +1,103 @@
 # Port your own mod
 
-For a mod nobody has ported yet. Expect real work: porter does the mechanical part, you resolve what is left. Start with a
-cheap check of how big the job is.
+For a mod nobody has ported yet. Porter does the mechanical part; you resolve what is left, and every rule you add
+helps the next person. Read [How porter works](../ARCHITECTURE.md) first if you want the background. Commands below
+are shown for Linux (`run.sh`, `bin/porter`); on Windows use `run.bat` and `bin\porter.bat` with backslashes.
 
-You need the mod's **sources** (your own code, an open-licence mod, or a decompile of a jar you are allowed to decompile)
-for the version it is written for, and the porter release (see [Use a ready port](use-a-ready-port.md)).
+## 0. What you need
+
+- The mod's **1.19.2 sources**: your own code, an open-licence mod, or a mod whose licence or author allows you to
+  port it. If you only have a jar, porter can decompile it on your machine (a `setup` step, see step 3), but only port
+  mods you have the rights to port.
+- The porter release, unpacked as in [Use a ready port](use-a-ready-port.md), and **one ready port run once** (for
+  example `ports/torchmaster/run.sh`, 25 to 30 minutes the first time). That run does the one-time setup your port
+  reuses: Java 21, the symbol graph, Forge, the 1.7.10 build environment, all under `.porter/`.
+- To call `bin/porter` directly (step 1) you need Java 21 on `JAVA_HOME`. If porter downloaded its own, it is
+  `.porter/jdk-21/jdk-21.0.12.1+1` (Windows: `set JAVA_HOME=C:\porter-0.2.0\.porter\jdk-21\jdk-21.0.12.1+1`).
+  `run.sh` / `run.bat` find it by themselves.
 
 ## 1. Measure the coverage
+
+From the porter folder:
 
 ```
 bin/porter coverage --src <mod>/src/main/java --rules rules --graph .porter/cache/graph/out
 ```
 
-(run any ready port once first: it builds the symbol graph in `.porter/cache`). The result is the share of the mod's
-Minecraft/Forge API symbols that existing rules already resolve. High (above ~90%): a good candidate. Low: you will write
-many rules, and every one you share helps the next person.
+The result is the share of the mod's distinct Minecraft/Forge API symbols that existing rules already resolve, and the
+most frequent unresolved ones. High (above ~90%): a good candidate. Low: you will write many rules, and every one you
+share helps the next port.
 
 ## 2. Make a profile from the template
 
-```
-cp -r ports/_template ports/mymod        (Windows: copy the folder)
-```
+Copy the folder `ports/_template` to `ports/mymod` (any lower-case name). In `ports/mymod/mymod.port.yaml` change
+everything marked `CHANGE`:
 
-Edit `ports/mymod/mymod.port.yaml`:
+- `name`, `description`, `mode` (`full`: the mod does not exist on 1.7.10; `delta`: an addon over a base that does);
+- `closure.prefixes` (the mod's own packages) and `closure.seeds` (the classes the mod starts from: its `@Mod` class
+  and every class that something finds by annotation, such as event subscribers), and `closure.cut` for
+  registry-like hubs where the copy should stop;
+- the generator unit's `--modid`, `--mod-name`, `--package`, and `build.jar` / `build.obfcheckPrefix`.
 
-- `name`, `mode` (`full`: the mod does not exist on the target version; `delta`: it is an addon over a base that does),
-- `inputs`: where the sources come from (a source archive with a download page and its sha256, or `url` for an open-licence
-  mod),
-- `closure.prefixes` (the mod's own packages) and `closure.seeds` (the classes the mod starts from: its `@Mod` class and
-  every class something finds by annotation), `closure.cut` for registry-like hubs,
-- `prepare` (extract + assets steps, already in the template) and the generator unit's `--modid` and `--package`.
+The comments in the template explain every key; the full schema is `contracts/port-config.schema.json`, and
+`contracts/examples/port-config/valid/` and `ports/torchmaster/` are complete examples.
 
-The template's comments say what each key does; the schema is `contracts/port-config.schema.json`.
+## 3. Tell porter where the sources come from
 
-## 3. Run it
+The `inputs:` entry names the original file and pins its checksum, so every run starts from exactly the same files.
+
+- **Sources on GitHub (open licence):** use the archive of a commit, as `ports/torchmaster/torchmaster.port.yaml`
+  does: `page:` the commit page, `url:` `https://github.com/<owner>/<repo>/archive/<commit>.zip`, `file:` a name of
+  your choice.
+- **Your own sources:** zip your project folder, the one that contains `src/` (zip the folder itself, not just
+  `src/`: the template expects `src/main/java` and `src/main/resources` inside it). Put the zip into
+  `ports/mymod/inputs/` and set `file:` to its name.
+- **Only a jar:** declare it as an input with `kind: jar`, add a `setup` step that runs `porter decompile` on it, and
+  point `closure.source` and the `extract` step at the decompiled `java/` folder.
+  `contracts/examples/port-config/valid/delta-all-stages.port.yaml` and `contracts/rfc/009-profile-steps-and-patches.md`
+  show the steps.
+
+To get the checksum, leave the zeros in `sha256:` and run `ports/mymod/run.sh --check-inputs`. Porter answers that the
+file is not the expected one and prints `This file has: <sha256>`; copy that value into `sha256:`. A new zip has a new
+checksum, so repeat this whenever you change the sources.
+
+## 4. Run it
 
 ```
 ports/mymod/run.sh        (Windows: ports\mymod\run.bat)
 ```
 
-`porter run` checks the inputs, does the one-time setup and runs the port. The first run will most likely stop at the compile
-stage with errors: that is normal.
+`porter run` checks the inputs, runs the `prepare` steps (extract the declarative content, convert the textures) and
+the port. The first run will most likely stop at the compile stage with errors: that is normal.
 
-## 4. Read `port-report.md`
+## 5. Read the report
 
-It is at `.porter/runs/mymod/project/build/porter-port/port-report.md`. It has the stage results, the coverage and the
-**not-ported list**: every generator skip, dropped class, stubbed hub and unresolved symbol, each with a reason. Nothing is
-dropped silently.
+Porter prints the path of `port-report.md` (for a profile made from the template:
+`.porter/runs/mymod/project/build/porter-port/port-report.md`). It has the stage results, the coverage and the
+**not-ported list**: every generator skip, dropped class, stubbed hub and unresolved symbol, each with a reason.
 
-## 5. Resolve the distinct symbols
+## 6. Resolve the distinct symbols
 
 The compile stage writes `symbols.json` next to the report: the errors grouped by **distinct symbol** (one entry per API
-member, with a count). Resolve each symbol **once**:
+member, with a count, most frequent first). Resolve each symbol **once**:
 
-1. a **rule** (`rules/`, a before/after test is mandatory) when the mapping is general,
-2. an **adapter** (a small class in the shim) when the old API has no equivalent call,
+1. a **rule** (`rules/`, with a mandatory before/after test) when the mapping is general,
+2. an **adapter** (a small 1.7.10 class in the shim) when the old API has no equivalent call,
 3. a **counted edit** (`install.edits`) for a one-off in the mod's own code, with the reason.
 
-Then run the same command again: it resumes from the stage that changed (`--restart` starts over). Repeat until compile
-has 0 errors and the build passes. Details and the rule format: `CONTRIBUTING.md` and `rewrite/README.md`.
+Then run the same command again: it resumes from the first stage that has not finished (`--restart` starts over).
+Repeat until the compile stage has 0 errors and the build passes. The rule format is in
+[CONTRIBUTING.md](../../CONTRIBUTING.md#writing-rules) and `rewrite/README.md`.
 
-## 6. Write scenarios
+## 7. Write scenarios
 
-A scenario (`ports/mymod/scenarios/*.scenario.yaml`, schema `contracts/scenario.schema.json`) is a short list of steps
-("place this block, let 10 ticks pass, check the light level"). The same scenario runs on a real server of the original
-version and of the ported version and the traces are compared, so you learn whether the port behaves like the original.
-Start from `testkit/scenarios/` (the furnace one is the template) and keep each scenario to one behaviour. Run them with
-`porter test diff` (setup of the two test servers: `testkit/README.md`; `porter run --verify` uses the same setup).
+A scenario (`ports/mymod/scenarios/*.scenario.yaml`, schema `contracts/scenario.schema.json`) is a short list of steps:
+"place this block, let 10 ticks pass, check the light level". The same scenario runs on a real server of the original
+version and of the port, and the traces are compared, so you learn whether the port behaves like the original. Start
+from `testkit/scenarios/` (the furnace one is the template) and keep each scenario to one behaviour. Running them needs
+the two test servers (`testkit/README.md`); then use `porter test diff`, or `run.sh --verify` with the original jar.
 
-## 7. Play it
+## 8. Play it
 
-Copy the jar from `output/` into a 1.7.10 Forge instance and look at what the report lists as not ported. Then
+Copy the jar from `output/` into a 1.7.10 Forge instance and check what the report lists as not ported. Then
 [share your port](share-your-port.md).

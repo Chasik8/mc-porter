@@ -8,8 +8,15 @@ on 1.7.10, so every class is ported. It is porter's public demonstration: everyt
 |---|---|
 | Original author | **xalcon** |
 | Licence | MIT. The port keeps it and credits the author (`project/LICENSE`, `project/src/main/resources/mcmod.info`). It is not supported by the original author: do not report its bugs to them. |
-| Ported jar | may be shared (MIT), but you can also build it yourself in the time below |
+| Ported jar | not published here (see below): you build it yourself with one command |
 | Result | `output/torchmaster-0.1.0.jar` for Forge 10.13.4.1614 on Minecraft 1.7.10, no other mods needed |
+
+## Why there is no jar to download
+
+We do not publish the finished jars of ported mods: the code inside belongs to the original authors, and
+redistributing it would break their copyright. Instead each port ships a recipe, and porter builds the port on your
+computer. Torchmaster is MIT-licensed, so its port could legally be shared (you may share the jar you build if you keep
+the MIT licence and the credit), but this project keeps one rule for every port.
 
 ## What to download
 
@@ -24,14 +31,16 @@ Downloads folder, or pass `--input original=<path>`.
 
 ## Run it
 
+From the unpacked porter folder (full steps in the [README](../../README.md#get-a-ported-mod)):
+
 ```
+ports\torchmaster\run.bat       # Windows, in a Command Prompt
 ports/torchmaster/run.sh        # Linux, macOS
-ports\torchmaster\run.bat       # Windows
 ```
 
 It fetches a Java 21 for itself if you have none, downloads and builds everything else under `.porter/`, ports the mod
-and prints where the jar is. Mostly it is downloads and the Minecraft build; the port itself takes a few minutes. Later
-runs take about a minute.
+and prints where the jar is (`output/torchmaster-0.1.0.jar`). Put it into the `mods` folder of Minecraft 1.7.10 with
+Forge 10.13.4.1614; no other mods are needed.
 
 Measured on first runs from an empty folder (the 1.7.10 build environment is most of it):
 
@@ -41,7 +50,7 @@ Measured on first runs from an empty folder (the 1.7.10 build environment is mos
 | Linux, Ubuntu in WSL (includes fetching Java 21) | 30 min | about 1.2 GB (network counter) | 3.1 GB |
 
 Of that, about 6 min is the symbol graph, 1.5 min Forge, the rest Gradle fetching Minecraft 1.7.10 and its Java 8
-toolchain; the port itself (generate to build) is about 1.5 min. A second run takes seconds.
+toolchain; the port itself (generate to build) is about 1.5 min. A second run reuses all of it and takes about a minute.
 
 ## What was verified
 

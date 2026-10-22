@@ -143,7 +143,7 @@ Each step is an object with exactly one key: `place_block`, `build_multiblock`, 
 Sample keys look like `<probe>[:<target>][/<path>]` (`nbt:[1,65,0]/Progress`, `item:[0,64,0]#2`); the
 probe vocabulary and assert expression syntax are owned by testkit. Scenarios reference IR ids,
 never version-specific classes.
-GUI checks (RFC 003, proposed, additive): `open_gui{at|item, menu?, capture?, keepOpen?, check?}`,
+GUI checks (RFC 005, accepted, additive): `open_gui{at|item, menu?, capture?, keepOpen?, check?}`,
 `gui_input{click[x,y]|key|call{method, args}, button?, capture?, check?}`, `close_gui{}`; `check` =
 `{mode: diff|structural|absent, size[w,h], mask[[x,y,w,h]], textBoxes[[x,y,w,h]], texts[langKey],
 dynamicFrom, pixelThreshold, maxDiff}` (GUI pixels relative to the GUI's top-left corner).

@@ -8,3 +8,4 @@ build/
 /reports/runs/
 /scripts/publish-denylist.local.txt
 *.local.md
+ports/*/logs/

@@ -28,19 +28,46 @@ Two files, from the IC2 Classic page on CurseForge (the checksums must match; pa
 | `IC2Classic-1.19.2-2.1.3.4.jar` | https://www.curseforge.com/minecraft/mc-mods/ic2-classic/files/8545995 | `f0a99733ef33491eca418831d681a79902250d341650f652d06f8b88d3627f83` |
 | `IC2Classic-1.7.10-1.2.6.jar` | https://www.curseforge.com/minecraft/mc-mods/ic2-classic/files/8014397 | `05637e89c67d28a6248251158848ca42aa6ff830e84dd093ada56d637d57e5c4` |
 
+On each page click **Download** (not **Install**, which wants the CurseForge app); the jar downloads after a few
+seconds. Keep the file names as they are (a second copy saved as `... (1).jar` is not found).
+
 Everything else (Java, Minecraft and Forge build files, the decompiler, the NotEnoughItems and CodeChicken libraries
-for compiling) is downloaded automatically. You need about 3 GB of free disk space and an internet connection for the
-first run. Windows is the tested system. Optional: set `JAVA8_HOME` to a Java 8 to decompile with it (the decompiler output then matches the maintainer's byte for byte); without it porter's own Java is used.
+for compiling) is downloaded automatically. You need about 4 GB of free disk space and an internet connection for the
+first run. Windows is the tested system.
+
+## Why there is no jar to download
+
+IC2 Classic is All Rights Reserved, and this addon is built from its code. Publishing the finished jar would
+redistribute that code and break its authors' copyright. So this folder holds only a recipe, and porter builds the
+addon on your computer from the two jars you downloaded yourself. The result is for your own use, next to your own
+copy of IC2 Classic: do not upload or share it.
 
 ## The one command
 
+If both jars are in your Downloads folder, run the port's launcher with no arguments, from the unpacked porter folder
+(see the [README](../../README.md#get-a-ported-mod) for the full steps):
+
 ```
-ports\ic2c-steam\run.bat C:\Downloads\IC2Classic-1.19.2-2.1.3.4.jar C:\Downloads\IC2Classic-1.7.10-1.2.6.jar
-ports/ic2c-steam/run.sh  ~/Downloads/IC2Classic-1.19.2-2.1.3.4.jar ~/Downloads/IC2Classic-1.7.10-1.2.6.jar
+ports\ic2c-steam\run.bat        # Windows, in a Command Prompt
+ports/ic2c-steam/run.sh         # Linux
 ```
 
-It prints where the finished jar is (`ic2cextras-0.1.0.jar`). Put it into your `mods` folder next to IC2 Classic 1.2.6.
-You also need NotEnoughItems if you want the recipe pages.
+If they are somewhere else, give both paths, the 1.19.2 jar first:
+
+```
+ports\ic2c-steam\run.bat D:\mods\IC2Classic-1.19.2-2.1.3.4.jar D:\mods\IC2Classic-1.7.10-1.2.6.jar
+ports/ic2c-steam/run.sh  ~/mods/IC2Classic-1.19.2-2.1.3.4.jar ~/mods/IC2Classic-1.7.10-1.2.6.jar
+```
+
+It prints where the finished jar is (`output/ic2cextras-0.1.0.jar`). To play, the `mods` folder of your Minecraft
+1.7.10 with Forge 10.13.4.1614 needs:
+
+- `IC2Classic-1.7.10-1.2.6.jar` (the base mod: this is an addon to it),
+- the `ic2cextras-0.1.0.jar` you built,
+- optional, for the recipe pages: NotEnoughItems for 1.7.10 with CodeChickenCore.
+
+Maintainers: set `JAVA8_HOME` to a Java 8 to run the decompiler on it; the decompiled sources then match the
+maintainer's byte for byte. Without it porter's own Java is used.
 
 Time measured on a Windows 10 machine: the first run takes about **15 to 18 minutes** (the one-time setup is most of
 it: Java, Minecraft/Forge data, the symbol graph, decompiling both jars); a re-run takes about **4 minutes**.

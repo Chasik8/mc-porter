@@ -1,6 +1,6 @@
 # RFC 007: `inputs` and `prepare` in the port config; `porter run`
 
-- Status: accepted (implemented, release 20261021)
+- Status: accepted (implemented)
 - Author: porter maintainers
 - Contracts: port-config
 - schemaVersion: 1 -> 1 (additive: two new optional top-level keys)

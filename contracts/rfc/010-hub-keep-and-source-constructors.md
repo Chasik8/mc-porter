@@ -1,6 +1,6 @@
 # RFC 010: kept hub members, source constructors, registry holders
 
-- Status: accepted (implemented on p5/barrels)
+- Status: accepted (implemented, released in 0.2.0)
 - Contracts: port-config (additive: `install.stubs.keep`); IR: two extractor extensions (`porter-extract:*`, free-form
   by design, no schema change)
 

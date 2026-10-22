@@ -19,7 +19,7 @@ import picocli.CommandLine.Option;
  * Entry point of the single {@code porter} binary. Subcommands come from {@link PorterSubcommand} providers on the
  * classpath; every path of {@link KnownCommands#PATHS} without a provider is a stub ({@link StubCommand}).
  */
-@Command(name = "porter", mixinStandardHelpOptions = true, version = "porter 0.1.0",
+@Command(name = "porter", mixinStandardHelpOptions = true, version = "porter 0.2.0",
         description = "Ports Minecraft Forge mods between versions via IR, rewrite rules and automatic checks.")
 public final class PorterMain implements Runnable {
     @CommandLine.Spec

@@ -1,6 +1,6 @@
 # RFC 009: profile steps, patches, plugins and install passes in the port config
 
-- Status: proposed (implemented, not yet merged)
+- Status: accepted (implemented, released in 0.2.0)
 - Contracts: port-config
 - schemaVersion: 1 -> 1 (additive: optional keys only; every existing config stays valid)
 - Relation to RFC 007 (`inputs`, `prepare`, `porter run`): complementary. RFC 007 gets the player's files and the

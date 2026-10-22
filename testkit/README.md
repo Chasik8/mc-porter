@@ -68,7 +68,6 @@ porter test roundtrip --scenario <f|dir> --mod <original jar|trace> --roundtrip 
 - Exit code 0 only if every scenario passed on every side and (diff/roundtrip) the traces are equal.
 - `test roundtrip` compares an original mod with its rebuild on the same version; building the rebuild
   (extract -> generate -> compile) is the extract-generate-compile pipeline, so `--roundtrip` must be given (exit 3 otherwise).
-- Wrap every invocation that launches Minecraft in the machine queue (`mc-run.sh testkit porter test ...`).
 
 ## Sample keys (probe vocabulary)
 
@@ -186,10 +185,9 @@ The older IR-menu check still runs for `open_gui {menu}` (size + slots vs the IR
 the client driver. Env keys: `forge-1.19.2.client.dir`, `.client.versionId`, optional `.client.assets`,
 `<version>.client.window` (`offscreen` default, `normal`), `<version>.client.guiScale` (1).
 
-## Building the test mods (local Windows)
+## Building the test mods (Windows, Git Bash)
 
-Every Gradle/heavy job goes through the machine queue (`heavy-run.sh testkit ...`), every Minecraft launch through
-`mc-run.sh testkit ...` (at most one Minecraft on the machine).
+On Linux, `scripts/ci/testkit-setup.sh` does all of this; see also "Linux CI notes" below.
 
 1. Install the Forge servers once (shared cache `%PORTER_CACHE%`):
    `java17 -jar forge-1.19.2-43.5.2-installer.jar --installServer <cache>/forge-1.19.2-server`,
@@ -204,7 +202,7 @@ Every Gradle/heavy job goes through the machine queue (`heavy-run.sh testkit ...
    each build fails if any Minecraft member reference survived unmapped (NoSuchMethodError guard).
 4. Copy `testkit/env.example.properties` to `testkit/env.local.properties` and adjust paths.
 5. `gradlew :cli:installDist`, then e.g.
-   `mc-run.sh testkit cli/build/install/porter/bin/porter test diff --scenario testkit/scenarios/furnace-smelt.scenario.yaml`
+   `cli/build/install/porter/bin/porter test diff --scenario testkit/scenarios/furnace-smelt.scenario.yaml`
    and `... test run --version forge-1.7.10 --scenario testkit/scenarios/furnace-gui.scenario.yaml --ir testkit/ir`.
    The client opens a window for ~20 s (pause-on-lost-focus is disabled in its options.txt).
 

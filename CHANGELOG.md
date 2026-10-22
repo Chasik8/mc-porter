@@ -3,6 +3,15 @@
 All notable changes. Versions follow [Semantic Versioning](https://semver.org/); before 1.0 minor versions may
 break the CLI and the non-frozen formats.
 
+## [Unreleased]
+
+### Changed
+- Documentation consolidated: `README.md` (what porter is, a step-by-step quickstart for players on Windows and
+  Linux, why ported jars are never published), `docs/ARCHITECTURE.md` (pipeline, parts, profiles, version packs,
+  design decisions), the three guides, `CONTRIBUTING.md`, `ports/README.md` and each port's README. The GTNH template
+  docs that one port had copied into its `project/` folder were removed (the template itself still provides them).
+- `porter --version` prints the release version (it printed 0.1.0 in 0.2.0).
+
 ## [0.2.0] - 2026-10-22
 
 ### Added
@@ -82,4 +91,5 @@ First public release: one version pair (Forge 1.19.2 → Forge 1.7.10) end to en
   match inside `pattern` rules.
 - The adapter pack compiles only with a 1.7.10 MCP jar (`-Pporter.mc1710Jar`).
 
+[0.2.0]: https://github.com/Chasik8/mc-porter/releases/tag/v0.2.0
 [0.1.0]: https://github.com/Chasik8/mc-porter/releases/tag/v0.1.0

@@ -19,7 +19,7 @@ on:
         type: string
         required: true
       open:
-        description: "open licence + distributable in the catalog: only then the jar is uploaded as a workflow artifact"
+        description: "open licence + distributable in the catalog: only then failure logs are uploaded (never the built jar)"
         type: boolean
         default: false
 
@@ -107,23 +107,15 @@ jobs:
           jar="$(ls "$RUNNER_TEMP"/out/*.jar | head -1)"
           scripts/ci/run-scenarios.sh "${{ inputs.port }}" "$jar" "$PORTER_HOME/runs/${{ inputs.config-name }}" "${{ steps.inputs.outputs.original }}"
 
-      # Jars of open-licence ports only (catalog: licence + distributable), 2 days. A port that is not open is never uploaded.
-      - name: Built jar (open-licence ports only, 2 days)
-        if: success() && inputs.open
-        uses: actions/upload-artifact@v4
-        with:
-          name: port-${{ inputs.name }}
-          path: ${{ runner.temp }}/out/*.jar
-          retention-days: 2
-          if-no-files-found: error
+      # No built jar is ever uploaded (same rule as the repo: we publish recipes, not ported jars).
       - name: Reports and logs on failure (open-licence ports only, 3 days)
         if: failure() && inputs.open
         uses: actions/upload-artifact@v4
         with:
           name: port-${{ inputs.name }}-logs
           path: |
-            ${{ env.PORTER_HOME }}/runs/${{ inputs.config-name }}/port-report.md
-            ${{ env.PORTER_HOME }}/runs/${{ inputs.config-name }}/logs/
+            ${{ env.PORTER_HOME }}/runs/${{ inputs.config-name }}/**/port-report.md
+            ${{ env.PORTER_HOME }}/runs/${{ inputs.config-name }}/**/logs/
             ${{ runner.temp }}/tk/${{ inputs.name }}/**/console.log
             ${{ runner.temp }}/tk/${{ inputs.name }}/**/*.diff.json
           retention-days: 3
