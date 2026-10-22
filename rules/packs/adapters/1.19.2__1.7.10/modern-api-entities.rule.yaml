@@ -171,6 +171,7 @@ match:
   bind: { recv: "$e", args: ["$h"] }
 replace: "$e.renderBrokenItemStack($e.getHeldItem())"
 preconditions: ["pure:$e"]
+priority: -1
 confidence: 0.9
 provenance: { source: agent, ref: "demo port (TorchMaster): one rule per distinct javac symbol; source = Mojang 1.19.2 mappings / Forge 43.5.2, target = MCP 1.7.10 / adapter pack (rewrite/shim/src/adapters)" }
 tests:

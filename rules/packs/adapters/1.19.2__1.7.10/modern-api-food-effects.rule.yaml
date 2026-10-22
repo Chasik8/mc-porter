@@ -934,6 +934,7 @@ match:
   bind: { recv: "$s" }
 replace: "$s.getItem().hasContainerItem($s)"
 preconditions: ["pure:$s"]
+priority: -1
 confidence: 0.9
 provenance: { source: agent, ref: "closure port of food, drinks and potion brewing: one rule per distinct javac symbol; source = Mojang 1.19.2 mappings / Forge 43.5.2, target = MCP 1.7.10 / adapter pack (rewrite/shim/src/adapters)" }
 tests:
@@ -952,6 +953,7 @@ match:
   bind: { recv: "$s" }
 replace: "$s.getItem().getContainerItem($s)"
 preconditions: ["pure:$s"]
+priority: -1
 confidence: 0.9
 provenance: { source: agent, ref: "closure port of food, drinks and potion brewing: one rule per distinct javac symbol; source = Mojang 1.19.2 mappings / Forge 43.5.2, target = MCP 1.7.10 / adapter pack (rewrite/shim/src/adapters)" }
 tests:

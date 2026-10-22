@@ -197,7 +197,7 @@ def entities():
     R.call(LE + '#broadcastBreakEvent(' + MC + 'world.InteractionHand)', '$e.renderBrokenItemStack($e.getHeldItem())',
            ('LivingEntity e; InteractionHand h; import net.minecraft.world.entity.LivingEntity; import net.minecraft.world.InteractionHand',
             'e.broadcastBreakEvent(h);', 'e.renderBrokenItemStack(e.getHeldItem());'),
-           recv='$e', args=['$h'], pre=['pure:$e'], kind='mechanical')
+           recv='$e', args=['$h'], pre=['pure:$e'], kind='mechanical', prio=-1)  # the closure adapters (EntityExt.broadcastBreak) are exact and win
     EV = F + 'event.entity.living.'
     R.call(EV + 'LivingEvent#getEntity()', '$e.entityLiving',
            ('LivingEvent e; import net.minecraftforge.event.entity.living.LivingEvent', 'Object v = e.getEntity();', 'Object v = e.entityLiving;'),
@@ -455,10 +455,10 @@ def food_effects():
            recv='$s', args=['$k', '$t'], imports=[S + 'ItemStacks'])
     R.call(IS + '#hasCraftingRemainingItem()', '$s.getItem().hasContainerItem($s)',
            ('ItemStack s; import net.minecraft.world.item.ItemStack', 'boolean b = s.hasCraftingRemainingItem();', 'boolean b = s.getItem().hasContainerItem(s);'),
-           recv='$s', pre=['pure:$s'])
+           recv='$s', pre=['pure:$s'], prio=-1)
     R.call(IS + '#getCraftingRemainingItem()', '$s.getItem().getContainerItem($s)',
            ('ItemStack s; import net.minecraft.world.item.ItemStack', 'Object r = s.getCraftingRemainingItem();', 'Object r = s.getItem().getContainerItem(s);'),
-           recv='$s', pre=['pure:$s'])
+           recv='$s', pre=['pure:$s'], prio=-1)
     R.call(IS + '#is(' + MC + 'tags.TagKey)', '$t.contains($s)',
            ('ItemStack s; TagKey<Item> t; import net.minecraft.world.item.ItemStack; import net.minecraft.tags.TagKey; import net.minecraft.world.item.Item',
             'boolean b = s.is(t);', 'boolean b = t.contains(s);'),

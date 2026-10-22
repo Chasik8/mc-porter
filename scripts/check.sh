@@ -18,3 +18,6 @@ JAVA_BIN="${JAVA_HOME:+$JAVA_HOME/bin/}java"
 if python3 -c 'import yaml' 2>/dev/null; then python3 scripts/ci/ports.py catalog-check
 elif python -c 'import yaml' 2>/dev/null; then python scripts/ci/ports.py catalog-check
 else echo "skipped scripts/ci/ports.py catalog-check (PyYAML missing: pip install pyyaml); CI runs it"; fi
+
+# no two call rules that are ambiguous on the same site (the rewriter would leave it unrewritten; TorchMaster regression)
+if command -v python3 >/dev/null 2>&1; then python3 -I scripts/ci/rule-conflicts.py; else python -I scripts/ci/rule-conflicts.py; fi
