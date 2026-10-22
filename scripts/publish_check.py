@@ -13,6 +13,8 @@ import sys
 SKIP = {"gradle/wrapper/gradle-wrapper.jar", "scripts/publish-check.sh", "scripts/publish_check.py",
         "scripts/publish-denylist.txt", "scripts/publish-denylist.local.txt", "scripts/publish-allow.txt"}
 NAME_OK = ("ports/ic2c-steam/", "docs/release/", "ports/catalog.yaml", "ports/README.md")
+# files that may name an AI product on purpose (the porting guide quotes subscription costs)
+TRACE_OK = ("docs/guides/port-your-own-mod.md", "README.md")
 MAPPING_SUFFIXES = (".tiny", ".tsrg", ".tsrg2", ".srg", ".csrg", ".exc", "/fields.csv", "/methods.csv",
                     "/params.csv", "client.txt", "server.txt", ".proguard")
 
@@ -94,7 +96,7 @@ def main(argv):
                 problem(f, f"forbidden private-mod name ({m.group(0)})")
         if traces_re.search(f):
             problem(f, "path contains a development-process trace")
-        m = traces_re.search(text)
+        m = None if f in TRACE_OK else traces_re.search(text)
         if m:
             problem(f, f"development-process trace ({m.group(0)})")
         if any(fnmatch.fnmatchcase(f, g) for g in allow):

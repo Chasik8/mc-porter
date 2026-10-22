@@ -90,7 +90,9 @@ In short, to port a mod and send it to us:
 1. Copy `ports/_template` to `ports/<yourmod>` and fill in its `*.port.yaml`: the original mod's file name, version
    and download page. `porter run ports/<yourmod> --check-inputs` prints the sha256 to put next to them.
 2. Run `porter run ports/<yourmod>`. Open the `port-report.md` it writes: it lists what could not be converted.
-3. For each item, add a rule or an adapter (the guide shows how) and run again, until the build succeeds.
+3. For each item, add a rule or an adapter (the guide shows how) and run again, until the build succeeds. An AI
+   coding assistant such as Claude Code can do this step for you; the guide lists what it cost us (for a small mod,
+   about 40% of one 5-hour window on Claude Max 5x).
 4. Add a scenario test that compares your port with the original, or at least start the game with it.
 5. Fork the repository on GitHub, add your `ports/<yourmod>` folder and one entry in `ports/catalog.yaml`, and open
    a pull request. CI builds and tests your port automatically; a maintainer reviews it.

@@ -89,6 +89,24 @@ Then run the same command again: it resumes from the first stage that has not fi
 Repeat until the compile stage has 0 errors and the build passes. The rule format is in
 [CONTRIBUTING.md](../../CONTRIBUTING.md#writing-rules) and `rewrite/README.md`.
 
+### Let an AI assistant do this step
+
+Resolving symbols is the only step that needs thinking, and an AI coding assistant (for example Claude Code) does it
+well. Give it `symbols.json`, the use sites it lists and this guide, and ask it to write a rule or adapter with a test
+for each symbol. Everything else (copying, rewriting, building, testing) is done by porter and costs no AI at all.
+Symbols are independent, so you can split the list among several assistant sessions working in parallel.
+
+How much it cost us (rough, from our own two ports; your numbers depend on the mod and on how many of its symbols the
+existing rules already cover, which `porter coverage` tells you up front):
+
+| Port | Size | Symbols to resolve | AI tokens | Share of one 5-hour window, Claude Max 5x | Same, Claude Pro (about 3.5x less) |
+|---|---|---|---|---|---|
+| Torchmaster | 28 classes, 1.3k lines | 110 (70% of its API already covered) | about 0.8 M | about 40% | about 1.5 windows |
+| Barrels addon of the tech-mod port | +78 classes, 7.8k lines | 94 | about 2 M | about one full window | about 3.5 windows |
+
+A rule written once is reused by every later port: the second port above needed noticeably fewer new rules than the
+first. If you share your port back, the next person pays less.
+
 ## 7. Write scenarios
 
 A scenario (`ports/mymod/scenarios/*.scenario.yaml`, schema `contracts/scenario.schema.json`) is a short list of steps:
