@@ -1,0 +1,12 @@
+[
+  {
+    "modid": "bckinesisfix",
+    "name": "BuildCraft Kinesis Fix",
+    "description": "Unofficial bug fix for BuildCraft 7.1.23: kinesis pipes deliver power every tick instead of every other tick. Contains no BuildCraft code.",
+    "version": "1.0.0",
+    "mcversion": "1.7.10",
+    "url": "https://github.com/Chasik8/mc-porter/tree/main/fixes/buildcraft-kinesis",
+    "authorList": ["Chasik8"],
+    "dependencies": ["BuildCraft|Core"]
+  }
+]

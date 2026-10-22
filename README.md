@@ -113,6 +113,11 @@ In short, to port a mod and send it to us:
 - Tested on Windows 10 and Linux (Ubuntu). macOS should work but is untested.
 - Ports are not supported by the original mods' authors: report problems here, not to them.
 
+## Other
+
+- [BuildCraft 7.1.23 kinesis fix (not a port)](fixes/buildcraft-kinesis/): a small bug-fix coremod for the original
+  BuildCraft 7.1.23 on Minecraft 1.7.10 (kinesis pipes deliver power only every other tick).
+
 ## Licence
 
 Porter is licensed under the Apache License 2.0 (`LICENSE`, `NOTICE`), copyright the mc-porter contributors. That

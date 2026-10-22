@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+FMLCorePlugin: io.github.chasik8.bckinesisfix.KinesisFixPlugin
+Implementation-Title: BuildCraft Kinesis Fix
+Implementation-Version: 1.0.0
+
