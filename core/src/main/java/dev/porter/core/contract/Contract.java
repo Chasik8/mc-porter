@@ -16,7 +16,11 @@ public enum Contract {
     /** Per-port configuration of {@code porter port} (RFC 004, additive). */
     PORT_CONFIG("port-config", List.of(".port.yaml", ".port.yml", ".port.json")),
     /** Community catalog of ports ({@code ports/catalog.yaml}, RFC 004, additive). */
-    PORT_CATALOG("port-catalog", List.of(".catalog.yaml", ".catalog.yml", ".catalog.json"));
+    PORT_CATALOG("port-catalog", List.of(".catalog.yaml", ".catalog.yml", ".catalog.json")),
+    /** api-inventory of the upfront stage: platform symbols a mod references (RFC 011, additive). */
+    UPFRONT_INVENTORY("upfront-inventory", List.of(".api-inventory.json")),
+    /** The upfront match table: one plan per 1.19.2 symbol (RFC 011, additive). */
+    UPFRONT_MATCH_TABLE("upfront-match-table", List.of(".match-table.json"));
 
     /** schemaVersion that every document of every contract currently carries (IR: see {@link #IR_SCHEMA_VERSION}). */
     public static final int SCHEMA_VERSION = 1;

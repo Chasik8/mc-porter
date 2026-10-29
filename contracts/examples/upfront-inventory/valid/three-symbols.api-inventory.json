@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "from": "forge-1.19.2",
+  "scope": "addon",
+  "sources": {
+    "jar": "mod-1.19.2.jar",
+    "srcRoot": "src/main/java",
+    "classes": ["classes.txt"]
+  },
+  "symbols": [
+    {
+      "key": "type:net.minecraft.world.item.ItemStack",
+      "uses": 2,
+      "origin": ["bytecode", "source"],
+      "access": 1,
+      "declaredIn": "net.minecraft.world.item.ItemStack",
+      "refClasses": ["example.mod.Machine"]
+    },
+    {
+      "key": "method:net.minecraft.world.level.Level#getBlockEntity(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/entity/BlockEntity;",
+      "uses": 3,
+      "origin": ["bytecode"],
+      "access": 1,
+      "declaredIn": "net.minecraft.world.level.Level",
+      "refClasses": ["example.mod.Machine", "example.mod.Pipe"],
+      "signature": null
+    },
+    {
+      "key": "field:net.minecraft.world.entity.Entity#tickCount:I",
+      "uses": 1,
+      "origin": ["source"],
+      "access": -1,
+      "declaredIn": "net.minecraft.world.entity.Entity",
+      "refClasses": []
+    }
+  ],
+  "summary": {
+    "types": 1,
+    "members": 2,
+    "byOrigin": { "srg": 2, "forge": 0, "ctor": 0, "mcNonSrg": 0, "lib": 0 }
+  }
+}

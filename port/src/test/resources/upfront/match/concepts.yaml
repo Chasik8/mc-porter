@@ -1,0 +1,8 @@
+schemaVersion: 1
+concepts:
+  - type: a/src/Pos
+    plan: EXPAND
+    param: {desc: III, expand: ["$a.x()", "$a.y()", "$a.z()"]}
+  - type: a/src/Mirrored
+    plan: MIRROR
+    shim: dev.shim.Mirrored

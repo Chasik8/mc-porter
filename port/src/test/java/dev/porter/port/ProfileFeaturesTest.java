@@ -163,7 +163,10 @@ class ProfileFeaturesTest {
         IrSelect.Spec spec = IrSelect.readSpec(tmp.resolve("spec.yaml"), p -> tmp.resolve(p));
         IrSelect.Result r = IrSelect.select(in, spec);
         Map<String, ObjectNode> d = r.docs();
-        assertEquals(List.of("block", "blockEntity", "item", "menu", "recipe", "unknown", "mod"), List.copyOf(d.keySet()));
+        // every kind is in the result, also the empty ones (a profile can name <unit>.multiblock.ir.json for any seed)
+        assertEquals(List.of("block", "blockEntity", "item", "fluid", "effect", "menu", "packet", "sound", "multiblock", "recipe",
+                "unknown", "mod"), List.copyOf(d.keySet()));
+        assertEquals(0, d.get("multiblock").get("nodes").size());
         assertEquals(1, d.get("block").get("nodes").size());
         assertEquals("mine.barrel", d.get("block").get("nodes").get(0).path("extensions").path("porter:legacyName").asString());
         assertEquals(2, d.get("item").get("nodes").size()); // barrel (referenced) + mug; hops is the host's

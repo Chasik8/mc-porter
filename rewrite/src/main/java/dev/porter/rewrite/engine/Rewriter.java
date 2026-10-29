@@ -132,6 +132,15 @@ public final class Rewriter {
 
     private spoon.reflect.factory.Factory factory;
     private final Set<String> targetTypes = new HashSet<>();
+    private final Set<String> alsoPorted = new HashSet<>();
+
+    /**
+     * Source files that are not rewritten in this run but are part of the port (rewritten in another run of it): their
+     * types count as ported, like the rewritten ones (not as platform types without a rule).
+     */
+    public void alsoPorted(Set<String> sourcePaths) {
+        alsoPorted.addAll(sourcePaths);
+    }
     private final Map<String, TypeFacts.Supers> sourceSupers = new HashMap<>();
     private final Set<String> shimUsed = new TreeSet<>();
 
@@ -171,7 +180,7 @@ public final class Rewriter {
         }
         for (SourceFile f : sorted) {
             CtCompilationUnit cu = units.get(f);
-            if (f.target() && cu != null) {
+            if ((f.target() || alsoPorted.contains(f.path())) && cu != null) {
                 for (CtType<?> t : cu.getDeclaredTypes()) {
                     for (CtType<?> n : t.getElements(new TypeFilter<CtType<?>>(CtType.class))) {
                         targetTypes.add(n.getQualifiedName());
@@ -473,6 +482,10 @@ public final class Rewriter {
                     if (here(fa)) {
                         handleField(fa);
                     }
+                } else if (e instanceof spoon.reflect.code.CtVariableAccess<?> va
+                        && va.getVariable() instanceof spoon.reflect.reference.CtUnboundVariableReference<?> ub
+                        && ub.getSimpleName().matches("[A-Z][\\w$]*\\.[A-Za-z_$][\\w$]*") && here(va)) {
+                    handleUnboundStaticField(va, ub.getSimpleName());
                 } else if (e instanceof CtTypeReference<?> tr) {
                     if (here(tr) && !(tr instanceof CtArrayTypeReference) && !(tr instanceof CtTypeParameterReference)
                             && !(tr instanceof CtWildcardReference) && !(tr.getParent() instanceof CtImport)
@@ -844,39 +857,12 @@ public final class Rewriter {
                 if (match == null) {
                     match = p;
                     bindings = b;
-                } else if (!canonicalReplace(match).equals(canonicalReplace(p)) || !match.imports().equals(p.imports())) {
+                } else if (!RuleBook.canonicalReplace(match).equals(RuleBook.canonicalReplace(p)) || !match.imports().equals(p.imports())) {
                     return new Decision(null, null, List.of(new Failure("ambiguous",
                             "rules " + match.id() + " and " + p.id() + " both match with priority " + p.priority())));
                 }
             }
             return new Decision(match, bindings, match == null ? failures : List.of());
-        }
-
-        /**
-         * Replacement text with the bound placeholders renamed by position ({@code $s} of one rule and {@code $a0} of
-         * another, both bound to argument 0, are the same): two rules that write the same code are not ambiguous.
-         */
-        static String canonicalReplace(Prepared p) {
-            String t = p.replaceText();
-            Rule.Bind bind = p.rule().match().bind();
-            if (bind == null) {
-                return t;
-            }
-            Map<String, String> names = new LinkedHashMap<>();
-            if (bind.recv() != null) {
-                names.put(bind.recv(), "#porter-bind:recv");
-            }
-            if (bind.args() != null) {
-                for (int i = 0; i < bind.args().size(); i++) {
-                    names.putIfAbsent(bind.args().get(i), "#porter-bind:arg" + i);
-                }
-            }
-            List<String> keys = new ArrayList<>(names.keySet());
-            keys.sort((a, b) -> b.length() - a.length()); // $a10 before $a1
-            for (String k : keys) {
-                t = t.replace(k, names.get(k));
-            }
-            return t;
         }
 
         Map<String, Object> bindings(Prepared p, CtExpression<?> target, CtElement site, List<? extends CtElement> args,
@@ -1102,6 +1088,16 @@ public final class Rewriter {
             public boolean positioned(CtElement e) {
                 return here(e);
             }
+
+            @Override
+            public String typeText(spoon.reflect.reference.CtTypeReference<?> r) {
+                SourcePosition p = r.getPosition();
+                if (p == null || !p.isValidPosition() || p.getSourceEnd() < p.getSourceStart() || p.getSourceEnd() >= text.length()) {
+                    return null;
+                }
+                String t = text.substring(p.getSourceStart(), p.getSourceEnd() + 1).trim();
+                return t.isEmpty() ? null : t;
+            }
         };
 
         /** Bindings of a pattern match as placeholder values. */
@@ -1114,9 +1110,13 @@ public final class Rewriter {
                 } else if (pat.statementHole(en.getKey())) {
                     b.put(en.getKey(), new Bound(el, el.getPosition().getSourceStart(), statementEnd(el), null, false));
                 } else {
-                    int[] r = balanced(range(el));
+                    // a hole the pattern wrote casts on (e.g. "(T) $e") binds the expression without its casts
+                    int[] r = balanced(m.castFree().contains(en.getKey()) ? siteRange(el) : range(el));
                     b.put(en.getKey(), new Bound(el, r[0], r[1], null, false));
                 }
+            }
+            for (Map.Entry<String, String> en : m.types().entrySet()) {
+                b.put(en.getKey(), new Bound(null, 0, 0, en.getValue(), false));
             }
             return b;
         }
@@ -1188,7 +1188,9 @@ public final class Rewriter {
                 Failure f = checkPreconditions(p, b, ex, null, List.of());
                 return f != null ? f : b;
             });
-            int[] r = balanced(siteRange(ex));
+            // a pattern that writes the casts of its root, "(T) $e", consumes the target's casts
+            boolean consumesCasts = d.match() != null && !d.match().pattern().expression().getTypeCasts().isEmpty();
+            int[] r = balanced(consumesCasts ? range(ex) : siteRange(ex));
             Site site = new Site(ex, r[0], r[1]);
             if (d.match() != null) {
                 apply(d.match(), site, d.bindings());
@@ -1650,6 +1652,47 @@ public final class Rewriter {
             }
         }
 
+        /**
+         * "Type.NAME" that Spoon could not bind to a field and kept as one unbound variable "Type.NAME": it happens in
+         * a lambda whose target type is unresolved (the body is attributed without the lambda's context). The
+         * qualifier is a type imported by the file: handled like the static field access it is.
+         */
+        void handleUnboundStaticField(spoon.reflect.code.CtVariableAccess<?> va, String qualified) {
+            int dot = qualified.indexOf('.');
+            String qual = qualified.substring(0, dot);
+            String name = qualified.substring(dot + 1);
+            String owner = null;
+            for (CtImport imp : cu.getImports()) {
+                String ip = imp.toString().replaceAll("^import\\s+|;\\s*$", "");
+                if (ip.endsWith("." + qual) && !ip.contains("*")) {
+                    owner = ip;
+                    break;
+                }
+            }
+            if (owner == null) {
+                return;
+            }
+            final String recvType = owner;
+            int[] r = siteRange(va);
+            Site site = new Site(va, r[0], r[1]);
+            Decision d = decide(book.fields(nameKeys(name, "field")), p -> {
+                Selector sel = p.selector();
+                boolean alias = aliasHit(name, "field", sel);
+                if (!name.equals(sel.name()) && !alias) {
+                    return null;
+                }
+                if (subtype(recvType, sel.owner()) != Tri.YES) {
+                    return null;
+                }
+                Map<String, Object> b = bindings(p, null, va, List.of(), name, r);
+                Failure f = checkPreconditions(p, b, va, recvType, List.of());
+                return f != null ? f : b;
+            });
+            if (d.match() != null) {
+                apply(d.match(), site, d.bindings());
+            }
+        }
+
         void handleField(CtFieldAccess<?> fa) {
             CtFieldReference<?> ref = fa.getVariable();
             String name = ref.getSimpleName();
@@ -2009,7 +2052,7 @@ public final class Rewriter {
                 } else {
                     // "$e.member" with a non-primary binding ((T) x, a + b, c ? x : y): keep the member on the whole expression.
                     boolean wrap = i + 1 < parts.size() && parts.get(i + 1).literal() != null && parts.get(i + 1).literal().startsWith(".")
-                            && needsParens(b.element()) && !enclosed(b.start(), b.end());
+                            && needsParens(b.element(), castsStripped(b)) && !enclosed(b.start(), b.end());
                     if (wrap) {
                         pieces.add(new TextEdits.Lit("("));
                     }
@@ -2044,11 +2087,15 @@ public final class Rewriter {
             return false;
         }
 
-        private static boolean needsParens(CtElement el) {
+        private boolean castsStripped(Bound b) {
+            return b.element() instanceof CtExpression<?> ex && !ex.getTypeCasts().isEmpty() && b.start() > range(b.element())[0];
+        }
+
+        private static boolean needsParens(CtElement el, boolean castsStripped) {
             if (!(el instanceof CtExpression<?> ex)) {
                 return false;
             }
-            return !ex.getTypeCasts().isEmpty() || el instanceof spoon.reflect.code.CtBinaryOperator<?>
+            return (!castsStripped && !ex.getTypeCasts().isEmpty()) || el instanceof spoon.reflect.code.CtBinaryOperator<?>
                     || el instanceof spoon.reflect.code.CtUnaryOperator<?> || el instanceof spoon.reflect.code.CtConditional<?>
                     || el instanceof spoon.reflect.code.CtAssignment<?, ?> || el instanceof spoon.reflect.code.CtLambda<?>;
         }

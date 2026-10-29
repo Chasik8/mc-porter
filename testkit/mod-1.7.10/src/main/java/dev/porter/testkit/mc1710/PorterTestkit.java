@@ -44,6 +44,7 @@ public final class PorterTestkit {
         if (planPath == null) {
             return;
         }
+        TestTank.register();
         try {
             plan = Executor.readPlan(new File(planPath));
         } catch (Exception e) {

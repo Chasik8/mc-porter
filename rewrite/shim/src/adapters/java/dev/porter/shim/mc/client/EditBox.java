@@ -15,7 +15,20 @@ public class EditBox extends AbstractWidget {
         this.field = new GuiTextField(font.renderer(), x, y, w, h);
     }
 
+    /** 1.19.2 EditBox(Font, x, y, w, h, EditBox previous, Component message): the previous box only carried its text over. */
+    public EditBox(Font font, int x, int y, int w, int h, Object previous, IChatComponent message) {
+        this(font, x, y, w, h, message);
+        if (previous instanceof EditBox) {
+            field.setText(((EditBox) previous).field.getText());
+        }
+    }
+
     public void setResponder(Consumer<String> r) { this.responder = r; }
+
+    // the setValue/getValue -> setText/getText name mapping of the graph rules lands on these
+    public void setText(String s) { setValue(s); }
+
+    public String getText() { return getValue(); }
 
     public void setValue(String s) {
         field.setText(s);

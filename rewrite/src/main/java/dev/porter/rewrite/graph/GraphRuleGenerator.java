@@ -242,133 +242,40 @@ public final class GraphRuleGenerator {
 
     // ------------------------------------------------------------------------------------------------ rules
 
-    private Rule typeRule(Chain c, SymbolGraph.Ref t) {
-        String from = c.from().name();
-        String to = t.name();
-        return rule("type-" + from, c, new Rule.Match(null, null, null, from, null, null, null), Selector.canonical(to), null,
-                List.of(new Rule.Test(null, null, "import " + Selector.canonical(from) + ";", "import " + Selector.canonical(to) + ";")));
-    }
-
     private Map<String, String> classMap = Map.of();
 
     private boolean moved(SymbolGraph.Ref f, SymbolGraph.Ref t) {
         return !t.owner().equals(classMap.getOrDefault(f.owner(), f.owner()));
     }
 
+    private MechanicalRules.Meta meta(Chain c) {
+        return new MechanicalRules.Meta(fromVersion, toVersion, fromPlatform, toPlatform, "graph",
+                "Generated from the symbol graph: " + c.from().display() + " (" + c.status() + ")",
+                Math.round(c.confidence() * 1000) / 1000.0, c.ref());
+    }
+
+    private Rule typeRule(Chain c, SymbolGraph.Ref t) {
+        return MechanicalRules.typeRule(meta(c), c.from().name(), t.name());
+    }
+
     private Rule fieldRule(Chain c, SymbolGraph.Ref t, boolean isStatic) {
-        SymbolGraph.Ref f = c.from();
-        boolean moved = moved(f, t);
-        String replace = moved ? Selector.simple(t.owner()).replace('$', '.') + "." + t.name() : "$r." + t.name();
-        Rule.Match m = new Rule.Match(null, null, f.owner() + "#" + f.name(), null, null, null,
-                moved ? null : new Rule.Bind("$r", null, null, null));
-        String ownerS = Selector.simple(f.owner());
-        String before = isStatic ? "Object x = " + ownerS + "." + f.name() + ";" : "Object x = r." + f.name() + ";";
-        String after = "Object x = " + (moved ? replace : (isStatic ? ownerS : "r") + "." + t.name()) + ";";
-        return rule("field-" + f.owner() + "-" + f.name(), c, m, replace, moved ? List.of(Selector.canonical(t.owner())) : null,
-                List.of(new Rule.Test(null, isStatic ? null : ownerS + " r", before, after)));
+        return MechanicalRules.fieldRule(meta(c), c.from(), t, isStatic, moved(c.from(), t));
     }
 
     private Rule callRule(Chain c, SymbolGraph.Ref t, boolean isStatic) {
-        SymbolGraph.Ref f = c.from();
-        List<String> params = Descriptors.params(f.desc());
-        List<String> argNames = new ArrayList<>();
-        for (int i = 0; i < params.size(); i++) {
-            argNames.add("$a" + i);
-        }
-        boolean moved = moved(f, t);
-        String args = String.join(", ", argNames);
-        String replace = moved ? Selector.simple(t.owner()).replace('$', '.') + "." + t.name() + "(" + args + ")"
-                : "$r." + t.name() + "(" + args + ")";
-        Rule.Match m = new Rule.Match(f.owner() + "#" + f.name() + "(" + String.join(", ", params) + ")", null, null, null, null,
-                null, new Rule.Bind(moved ? null : "$r", argNames.isEmpty() ? null : argNames, null, null));
-        String ownerS = Selector.simple(f.owner());
-        String recv = isStatic ? ownerS : "r";
-        String plain = String.join(", ", argNames.stream().map(a -> a.substring(1)).toList());
-        String before = recv + "." + f.name() + "(" + plain + ");";
-        String after = (moved ? Selector.simple(t.owner()).replace('$', '.') : recv) + "." + t.name() + "(" + plain + ");";
-        return rule("call-" + f.owner() + "-" + f.name() + f.desc(), c, m, replace,
-                moved ? List.of(Selector.canonical(t.owner())) : null,
-                List.of(new Rule.Test(null, context(isStatic ? null : f.owner(), params), before, after)));
+        return MechanicalRules.callRule(meta(c), c.from(), t, isStatic, moved(c.from(), t));
     }
 
     private Rule overrideRule(Chain c, SymbolGraph.Ref t) {
-        SymbolGraph.Ref f = c.from();
-        List<String> params = Descriptors.params(f.desc());
-        String ret = Descriptors.returnType(f.desc());
-        List<String> decl = new ArrayList<>();
-        StringBuilder imports = new StringBuilder();
-        for (int i = 0; i < params.size(); i++) {
-            decl.add(Selector.simple(params.get(i)).replace('$', '.') + " a" + i);
-            imports.append(importLine(params.get(i)));
-        }
-        imports.append(importLine(ret));
-        String sig = "(" + String.join(", ", decl) + ") { throw new UnsupportedOperationException(); }";
-        String r = Selector.simple(ret).replace('$', '.');
-        Rule.Match m = new Rule.Match(null, null, null, null, f.owner() + "#" + f.name() + "(" + String.join(", ", params) + ")", null, null);
-        return rule("override-" + f.owner() + "-" + f.name() + f.desc(), c, m, t.name(), null,
-                List.of(new Rule.Test(null, imports.isEmpty() ? null : imports.toString(),
-                        "public " + r + " " + f.name() + sig, "public " + r + " " + t.name() + sig)));
+        return MechanicalRules.overrideRule(meta(c), c.from(), t);
     }
 
     private Rule ctorRule(Chain c, SymbolGraph.Ref t) {
-        SymbolGraph.Ref f = c.from();
-        List<String> params = Descriptors.params(f.desc());
-        List<String> argNames = new ArrayList<>();
-        for (int i = 0; i < params.size(); i++) {
-            argNames.add("$a" + i);
-        }
-        String newS = Selector.simple(t.owner()).replace('$', '.');
-        String replace = "new " + newS + "(" + String.join(", ", argNames) + ")";
-        Rule.Match m = new Rule.Match(null, f.owner() + "(" + String.join(", ", params) + ")", null, null, null, null,
-                argNames.isEmpty() ? null : new Rule.Bind(null, argNames, null, null));
-        String plain = String.join(", ", argNames.stream().map(a -> a.substring(1)).toList());
-        return rule("new-" + f.owner() + f.desc(), c, m, replace, List.of(Selector.canonical(t.owner())),
-                List.of(new Rule.Test(null, context(null, params), "Object x = new " + Selector.simple(f.owner()).replace('$', '.') + "(" + plain + ");",
-                        "Object x = new " + newS + "(" + plain + ");")));
-    }
-
-    private static String context(String recvOwner, List<String> params) {
-        StringBuilder sb = new StringBuilder();
-        if (recvOwner != null) {
-            sb.append(Selector.simple(recvOwner).replace('$', '.')).append(" r; ");
-        }
-        for (int i = 0; i < params.size(); i++) {
-            sb.append(Selector.simple(params.get(i)).replace('$', '.')).append(" a").append(i).append("; ");
-            sb.append(importLine(params.get(i)));
-        }
-        String s = sb.toString().trim();
-        return s.isEmpty() ? null : s;
-    }
-
-    private static String importLine(String type) {
-        String base = type.replace("[]", "");
-        if (!base.contains(".") || base.startsWith("java.lang.") && base.indexOf('.', 10) < 0) {
-            return "";
-        }
-        String top = base.contains("$") ? base.substring(0, base.indexOf('$')) : base;
-        return "import " + top + "; ";
-    }
-
-    private Rule rule(String slug, Chain c, Rule.Match match, String replace, List<String> imports, List<Rule.Test> tests) {
-        String id = "r-" + fromVersion + "-" + toVersion + "-graph-" + slugify(slug);
-        return new Rule(1, id, "Generated from the symbol graph: " + c.from().display() + " (" + c.status() + ")",
-                fromPlatform, toPlatform, Rule.Kind.MECHANICAL, match, replace, imports, null, null, -10,
-                Math.round(c.confidence() * 1000) / 1000.0, new Rule.Provenance("graph", c.ref(), null), tests);
+        return MechanicalRules.ctorRule(meta(c), c.from(), t);
     }
 
     static String slugify(String s) {
-        String kind = s.substring(0, s.indexOf('-'));
-        String base = s.substring(s.indexOf('-') + 1).replaceAll("\\(.*", "").toLowerCase(Locale.ROOT);
-        String readable = kind + "-" + base.replaceAll(".*\\.", "").replace('$', '-').replaceAll("[^a-z0-9._-]+", "-");
-        if (readable.length() > 60) {
-            readable = readable.substring(0, 60);
-        }
-        try {
-            byte[] h = MessageDigest.getInstance("SHA-1").digest(s.getBytes(StandardCharsets.UTF_8));
-            return readable + "-" + HexFormat.of().formatHex(h, 0, 4);
-        } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException(e);
-        }
+        return MechanicalRules.slugify(s);
     }
 
     /** For reports: number of rules per kind of selector. */

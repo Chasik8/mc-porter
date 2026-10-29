@@ -131,6 +131,29 @@
             "side": { "$ref": "#/$defs/facing" }
           }
         },
+        "insert_energy": {
+          "description": "Puts energy into the block entity at a position through its energy interface (1.7.10: EU sink injectEnergy, else RF receiveEnergy). The unit is that of the tile's own system.",
+          "type": "object",
+          "required": ["at", "amount"],
+          "additionalProperties": false,
+          "properties": {
+            "at": { "$ref": "#/$defs/pos" },
+            "amount": { "type": "number", "exclusiveMinimum": 0 },
+            "voltage": { "type": "number", "minimum": 0, "description": "EU packet voltage (default: 1 EU per packet at the tile's tier is not assumed: the amount is injected in one packet)." },
+            "side": { "$ref": "#/$defs/facing" }
+          }
+        },
+        "invoke_tile": {
+          "description": "Calls a public method of the block entity at a position by name (for behaviour a client would trigger with a packet, e.g. a GUI button). Arguments: numbers, booleans, strings; the string \"$player\" is the scenario's fake player; an object {\"$tile\": [x,y,z]} is the block entity there, {\"$new\": \"pkg.Class\", \"args\": [...]} a new object built with a public constructor (its arguments may be objects of the same two forms), e.g. to link two machines. The method is chosen by name and argument count.",
+          "type": "object",
+          "required": ["at", "method"],
+          "additionalProperties": false,
+          "properties": {
+            "at": { "$ref": "#/$defs/pos" },
+            "method": { "type": "string", "minLength": 1 },
+            "args": { "type": "array", "items": {} }
+          }
+        },
         "interact": {
           "description": "Fake player right-clicks a block, optionally holding an item.",
           "type": "object",
@@ -140,7 +163,32 @@
             "at": { "$ref": "#/$defs/pos" },
             "side": { "$ref": "#/$defs/facing" },
             "holding": { "$ref": "#/$defs/resourceId" },
-            "sneaking": { "type": "boolean" }
+            "sneaking": { "type": "boolean" },
+            "use": { "enum": ["finish"], "description": "1.7.10: right-click in the air with the held item (ignoring the block) and complete the use as if the button was held for its whole duration; food and drinks apply their effects (probe player:effects)." }
+          }
+        },
+        "break_block": {
+          "description": "Breaks the block at a position and lets its drops spawn. by = player (default): the scenario's fake player harvests it through the normal break path (break event, held tool, harvest rules, drops); by = world: removed by the world, with drops unless drops = false (no player, no break event).",
+          "type": "object",
+          "required": ["at"],
+          "additionalProperties": false,
+          "properties": {
+            "at": { "$ref": "#/$defs/pos" },
+            "by": { "enum": ["player", "world"], "default": "player" },
+            "holding": { "$ref": "#/$defs/resourceId", "description": "Tool held by the fake player (by = player)." },
+            "drops": { "type": "boolean", "default": true, "description": "by = world only: whether the block drops its items." }
+          }
+        },
+        "explode": {
+          "description": "Detonates an explosion centred on a block position (no source entity).",
+          "type": "object",
+          "required": ["at"],
+          "additionalProperties": false,
+          "properties": {
+            "at": { "$ref": "#/$defs/pos" },
+            "power": { "type": "number", "exclusiveMinimum": 0, "default": 4 },
+            "fire": { "type": "boolean", "default": false },
+            "destroy": { "type": "boolean", "default": true, "description": "false = damages entities only, blocks stay." }
           }
         },
         "open_gui": {
@@ -159,7 +207,7 @@
           }
         },
         "gui_input": {
-          "description": "RFC 005: input on the open screen (click, key or call), then an optional capture. Without input it only captures, e.g. after steps that changed the block's state.",
+          "description": "RFC 005: input on the open screen (click, key, call or press), then an optional capture. Without input it only captures, e.g. after steps that changed the block's state.",
           "type": "object",
           "additionalProperties": false,
           "properties": {
@@ -174,6 +222,19 @@
               "properties": {
                 "method": { "type": "string", "pattern": "^[A-Za-z_$][A-Za-z0-9_$]*$" },
                 "args": { "type": "array", "items": { "type": ["string", "integer", "boolean", "null"] } }
+              }
+            },
+            "press": {
+              "description": "Press a control of the open screen like a player: the screen's own handler runs, so the real client packet is sent. The control is chosen by `id` (GuiButton id, or the id a ported screen registered the widget under), `index` (position in the `buttons` list the open_gui capture dumps into the trace), `label`, `kind` (button|widget) - all given fields must match, the first control that does is used. A hidden or disabled control is an error. The screen may close on purpose (a teleport button). Wait with `tick` and assert server state afterwards.",
+              "type": "object",
+              "minProperties": 1,
+              "additionalProperties": false,
+              "properties": {
+                "id": { "type": "integer" },
+                "index": { "type": "integer", "minimum": 0 },
+                "label": { "type": "string" },
+                "kind": { "enum": ["button", "widget"] },
+                "via": { "enum": ["call", "click"], "description": "call = the screen's actionPerformed(GuiButton) (default for GuiButton); click = a mouse click on the control's centre (default for widgets)." }
               }
             },
             "capture": { "$ref": "#/$defs/captureName" },

@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "from": "forge-1.19.2",
+  "scope": "addon",
+  "symbols": [
+    {
+      "key": "method:net.minecraft.world.level.Level#getBlockEntity",
+      "uses": 1,
+      "origin": ["bytecode"],
+      "access": 1,
+      "declaredIn": "net.minecraft.world.level.Level"
+    }
+  ],
+  "summary": { "types": 0, "members": 1, "byOrigin": { "srg": 1 } }
+}

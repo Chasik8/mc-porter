@@ -52,6 +52,22 @@ class RulesAndCandidatesTest {
     }
 
     @Test
+    void qualifiedStaticFieldIsReplacedAsAWholeExpression() throws Exception {
+        Path rules = tmp.resolve("sf.rule.yaml");
+        Files.writeString(rules, String.join("\n",
+                "schemaVersion: 1", "id: r-test-blocks-fire", "from: forge-1.19.2", "to: forge-1.7.10", "kind: mechanical",
+                "match:", "  field: \"net.minecraft.world.level.block.Blocks#FIRE\"", "replace: \"Blocks.fire\"",
+                "confidence: 1.0", "provenance: { source: manual, ref: \"test\" }", "tests:",
+                "  - context: \"import net.minecraft.world.level.block.Blocks\"", "    before: \"Object x = Blocks.FIRE;\"", "    after: \"Object x = Blocks.fire;\"", ""));
+        TextRuleEngine r = TextRuleEngine.load(List.of(rules), "forge-1.19.2", "forge-1.7.10", true);
+        String text = "class A {\n    boolean f(Object b) { return b == Blocks.FIRE; }\n}\n";
+        FixAttempt a = r.fix(err(ErrorClass.MISSING_METHOD, 2, "field", "net.minecraft.world.level.block.Blocks", "FIRE", null,
+                "net.minecraft.world.level.block.Blocks#FIRE"), new RuleEngine.SourceText("A.java", text));
+        assertTrue(a.isApplied(), a.reason());
+        assertEquals("    boolean f(Object b) { return b == Blocks.fire; }", a.after());
+    }
+
+    @Test
     void notSuperKeepsSuperCalls() throws Exception {
         Path rules = tmp.resolve("r.rule.yaml");
         Files.writeString(rules, String.join("\n",

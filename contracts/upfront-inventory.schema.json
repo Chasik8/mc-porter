@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:porter:contract:upfront-inventory",
+  "title": "porter api-inventory",
+  "description": "api-inventory.json of the upfront stage (RFC 011): every distinct 1.19.2 platform symbol a mod references, with its owner, kind, descriptor, use count and declaring class. Keys use the SymbolKey text form (type:, method:, field:; mojmap dotted owners, JVM descriptors). Added by RFC 011 (additive).",
+  "type": "object",
+  "required": ["schemaVersion", "from", "scope", "symbols", "summary"],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "from": { "type": "string", "minLength": 1, "description": "Source version, e.g. forge-1.19.2." },
+    "scope": { "type": "string", "minLength": 1, "description": "What was scanned, e.g. addon or whole." },
+    "sources": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "jar": { "type": "string" },
+        "srcRoot": { "type": "string" },
+        "classes": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "symbols": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["key", "uses", "origin", "access", "declaredIn"],
+        "additionalProperties": false,
+        "properties": {
+          "key": { "$ref": "#/$defs/key" },
+          "uses": { "type": "integer", "minimum": 0 },
+          "origin": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": { "enum": ["bytecode", "source", "override"] }
+          },
+          "access": { "type": "integer", "minimum": -1, "description": "JVM access flags; -1 when unknown." },
+          "declaredIn": { "type": "string", "minLength": 1, "description": "Dotted name of the class that declares the member." },
+          "refClasses": { "type": "array", "items": { "type": "string" } },
+          "signature": { "type": ["string", "null"], "description": "Generic signature attribute, if available." }
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "required": ["types", "members", "byOrigin"],
+      "additionalProperties": false,
+      "properties": {
+        "types": { "type": "integer", "minimum": 0 },
+        "members": { "type": "integer", "minimum": 0 },
+        "byOrigin": {
+          "type": "object",
+          "additionalProperties": { "type": "integer", "minimum": 0 },
+          "description": "Counts per origin class: srg, forge, ctor, mcNonSrg, lib (open set, names are stable)."
+        }
+      }
+    }
+  },
+  "$defs": {
+    "key": {
+      "type": "string",
+      "pattern": "^(type:[^/#:\\s]+|method:[^/#:\\s]+#[^#:()\\s]+\\(.*\\).+|field:[^/#:\\s]+#[^#:()\\s]+:[^:\\s]+)$"
+    }
+  }
+}

@@ -12,10 +12,10 @@ You need an internet connection, about 4 GB of free disk space, 15 to 30 minutes
 Download `porter-<version>.zip` from the [releases page](https://github.com/Chasik8/mc-porter/releases/latest) and
 unpack it. You get a folder `porter-<version>` with `bin/`, `ports/`, `rules/` and a few others.
 
-- **Windows:** extract it to `C:\` (right-click, **Extract All...**), so you get `C:\porter-0.2.0\`. Keep the path
+- **Windows:** extract it to `C:\` (right-click, **Extract All...**), so you get `C:\porter-0.3.0\`. Keep the path
   short and **without spaces**: the Minecraft build tools porter runs break on long or spaced paths, and the
   Desktop, or any folder inside your Windows user folder, often has both.
-- **Linux / macOS:** `unzip porter-0.2.0.zip -d ~` gives `~/porter-0.2.0`. You need `curl` or `wget`, and `tar`.
+- **Linux / macOS:** `unzip porter-0.3.0.zip -d ~` gives `~/porter-0.3.0`. You need `curl` or `wget`, and `tar`.
 
 If your computer has no Java 21, porter downloads one (about 200 MB, checksum-verified) into its own folder the first
 time. It does not touch any Java you have installed.
@@ -56,7 +56,7 @@ The file torchmaster-19.2.93.jar is missing (Torchmaster 19.2.93).
 `run.bat`, for example:
 
 ```
-C:\porter-0.2.0\ports\torchmaster\run.bat
+C:\porter-0.3.0\ports\torchmaster\run.bat
 ```
 
 You can also double-click `run.bat`, but then the window closes as soon as porter finishes or fails, before you can
@@ -65,7 +65,7 @@ read what it said.
 **Linux / macOS:**
 
 ```
-~/porter-0.2.0/ports/torchmaster/run.sh
+~/porter-0.3.0/ports/torchmaster/run.sh
 ```
 
 The first run does all the one-time work: Java for porter, the symbol graph of the Minecraft versions, Forge's
@@ -80,7 +80,7 @@ again from the first step), `--check-inputs` (only check the downloaded files).
 ## 5. Put the jar into your mods folder
 
 At the end porter prints `Done. Your ported mod:` and the path of the jar, for example
-`C:\porter-0.2.0\output\torchmaster-0.1.0.jar`. Copy it into the `mods` folder of a **Minecraft 1.7.10 with Forge
+`C:\porter-0.3.0\output\torchmaster-0.1.0.jar`. Copy it into the `mods` folder of a **Minecraft 1.7.10 with Forge
 10.13.4.1614** (official launcher: `%APPDATA%\.minecraft\mods` on Windows, `~/.minecraft/mods` on Linux), together
 with anything else the port's README lists.
 

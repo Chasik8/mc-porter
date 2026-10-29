@@ -1,0 +1,1475 @@
+# generic-world-entity: generic Minecraft/Forge 1.19.2 -> 1.7.10 mappings promoted from a port profile (no mod names).
+---
+schemaVersion: 1
+id: r-gen-base-type-clicktype
+description: "type net.minecraft.world.inventory.ClickType -> compat.more.base.ClickType (enum of the 1.7.10 slotClick modes)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.world.inventory.ClickType"
+replace: "dev.porter.shim.mc.ClickType"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import net.minecraft.world.inventory.ClickType;"
+    after: "import dev.porter.shim.mc.ClickType;"
+---
+schemaVersion: 1
+id: r-gen-base-call-craftingcontainer-clearcontent
+description: "call CraftingContainer#clearContent() -> CraftingCompat.clear($c) (1.7.10 InventoryCrafting has no clearContent)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.inventory.CraftingContainer#clearContent()"
+  bind: { recv: "$c" }
+replace: "dev.porter.shim.mc.CraftingCompat.clear($c)"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "CraftingContainer grid; import net.minecraft.world.inventory.CraftingContainer"
+    before: "grid.clearContent();"
+    after: "dev.porter.shim.mc.CraftingCompat.clear(grid);"
+---
+schemaVersion: 1
+id: r-gen-base-new-fluidstack-fluid-amount
+description: "new FluidStack(Fluid, int) with a generated-content fluid stays the 1.7.10 constructor (not the FluidStack-copy adapter)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  new: "net.minecraftforge.fluids.FluidStack(net.minecraft.world.level.material.Fluid, int)"
+  bind: { args: ["$f", "$n"] }
+replace: "new net.minecraftforge.fluids.FluidStack($f, $n)"
+preconditions: ["arg-subtype:0:net.minecraft.world.level.material.Fluid"]
+priority: 8
+confidence: 0.8
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "Fluid f; import net.minecraftforge.fluids.FluidStack; import net.minecraft.world.level.material.Fluid"
+    before: "Object c = new FluidStack(f, 5);"
+    after: "Object c = new net.minecraftforge.fluids.FluidStack(f, 5);"
+---
+# Tests are synthetic (only the owner names are the mod's).
+schemaVersion: 1
+id: r-gen-dpipe-type-liquidblockcontainer
+description: "type LiquidBlockContainer -> dpipes.LiquidContainer (marker interface; ILavaLoggable keeps its default methods)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.world.level.block.LiquidBlockContainer"
+replace: "dev.porter.shim.mc.LiquidContainer"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import net.minecraft.world.level.block.LiquidBlockContainer;"
+    after: "import dev.porter.shim.mc.LiquidContainer;"
+---
+schemaVersion: 1
+id: r-gen-dpipe-type-bucketpickup
+description: "type BucketPickup -> dpipes.Pickup (marker INTERFACE; overrides r-more-heavyb-type-bucketpickup (Object), which breaks 'interface ILavaLoggable extends BucketPickup')"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.world.level.block.BucketPickup"
+replace: "dev.porter.shim.mc.Pickup"
+priority: 10
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import net.minecraft.world.level.block.BucketPickup;"
+    after: "import dev.porter.shim.mc.Pickup;"
+---
+schemaVersion: 1
+id: r-gen-dpipe-call-blockstate-cansurvive
+description: "call BlockStateBase#canSurvive(LevelReader, BlockPos) -> Survive.canSurvive($s, $w, $p) (Block.canBlockStay)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.level.block.state.BlockBehaviour$BlockStateBase#canSurvive(net.minecraft.world.level.LevelReader, net.minecraft.core.BlockPos)"
+  bind: { recv: "$s", args: ["$w", "$p"] }
+replace: "Survive.canSurvive($s, $w, $p)"
+imports: ["dev.porter.shim.mc.Survive"]
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.level.block.state.BlockState; import net.minecraft.world.level.LevelReader; import net.minecraft.core.BlockPos; BlockState s; LevelReader w; BlockPos p"
+    before: "boolean b = s.canSurvive(w, p);"
+    after: "boolean b = Survive.canSurvive(s, w, p);"
+---
+schemaVersion: 1
+id: r-gen-dpipe-type-booleanop
+description: "type BooleanOp -> dpipes.BooleanOp (enum with the Shapes.join operators)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.world.phys.shapes.BooleanOp"
+replace: "dev.porter.shim.mc.BooleanOp"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import net.minecraft.world.phys.shapes.BooleanOp;"
+    after: "import dev.porter.shim.mc.BooleanOp;"
+---
+schemaVersion: 1
+id: r-gen-dpipe-call-shapes-join
+description: "call Shapes.join(VoxelShape, VoxelShape, BooleanOp) -> PipeShapes.join(a, b, op) (single-box shapes: ONLY_SECOND = b)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.phys.shapes.Shapes#join(net.minecraft.world.phys.shapes.VoxelShape, net.minecraft.world.phys.shapes.VoxelShape, net.minecraft.world.phys.shapes.BooleanOp)"
+  bind: { args: ["$a", "$b", "$o"] }
+replace: "PipeShapes.join($a, $b, $o)"
+imports: ["dev.porter.shim.mc.PipeShapes"]
+confidence: 0.85
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.phys.shapes.Shapes; import net.minecraft.world.phys.shapes.VoxelShape; import net.minecraft.world.phys.shapes.BooleanOp; VoxelShape a; VoxelShape b; BooleanOp o"
+    before: "Object s = Shapes.join(a, b, o);"
+    after: "Object s = PipeShapes.join(a, b, o);"
+---
+schemaVersion: 1
+id: r-gen-dpipe-call-levelaccessor-scheduletick-fluid
+description: "call LevelAccessor#scheduleTick(BlockPos, Fluid, int) with a non-pure position -> PipeWorld.scheduleFluidTick (flowing water / lava)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.level.LevelAccessor#scheduleTick(net.minecraft.core.BlockPos, net.minecraft.world.level.material.Fluid, int)"
+  bind: { recv: "$w", args: ["$p", "$f", "$d"] }
+replace: "PipeWorld.scheduleFluidTick($w, $p, $f, $d)"
+imports: ["dev.porter.shim.mc.PipeWorld"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.level.Level; import net.minecraft.core.BlockPos; import net.minecraft.world.level.material.Fluid; Level level; BlockPos pos; Fluid fluid"
+    before: "level.scheduleTick(pos.above(), fluid, 5);"
+    after: "PipeWorld.scheduleFluidTick(level, pos.above(), fluid, 5);"
+---
+schemaVersion: 1
+id: r-gen-dpipe-field-level-nether
+description: "field Level#NETHER -> ResourceKey.dimension(-1)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "net.minecraft.world.level.Level#NETHER"
+replace: "ResourceKey.dimension(-1)"
+imports: ["dev.porter.shim.mc.ResourceKey"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.level.Level"
+    before: "Object k = Level.NETHER;"
+    after: "Object k = ResourceKey.dimension(-1);"
+---
+schemaVersion: 1
+id: r-gen-dpipe-call-levelreader-getmaxlocalrawbrightness
+description: "call LevelReader#getMaxLocalRawBrightness(BlockPos) -> PipeWorld.maxLocalRawBrightness($w, $p) (World.getBlockLightValue)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.level.LevelReader#getMaxLocalRawBrightness(net.minecraft.core.BlockPos)"
+  bind: { recv: "$w", args: ["$p"] }
+replace: "PipeWorld.maxLocalRawBrightness($w, $p)"
+imports: ["dev.porter.shim.mc.PipeWorld"]
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.level.LevelReader; import net.minecraft.core.BlockPos; LevelReader w; BlockPos p"
+    before: "int l = w.getMaxLocalRawBrightness(p);"
+    after: "int l = PipeWorld.maxLocalRawBrightness(w, p);"
+---
+schemaVersion: 1
+id: r-gen-dpipe-type-containerdata
+description: "type net.minecraft.world.inventory.ContainerData -> dpipes.ContainerData (get/set/getCount interface)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.world.inventory.ContainerData"
+replace: "dev.porter.shim.mc.ContainerData"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import net.minecraft.world.inventory.ContainerData;"
+    after: "import dev.porter.shim.mc.ContainerData;"
+---
+schemaVersion: 1
+id: r-gen-energy-type-biome
+description: "type net.minecraft.world.level.biome.Biome -> BiomeGenBase"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: "net.minecraft.world.level.biome.Biome"
+replace: "net.minecraft.world.biome.BiomeGenBase"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import net.minecraft.world.level.biome.Biome;"
+    after: "import net.minecraft.world.biome.BiomeGenBase;"
+---
+schemaVersion: 1
+id: r-gen-energy-call-levelreader-canseeskyfrombelowwater
+description: "call LevelReader#canSeeSkyFromBelowWater(BlockPos) -> EnergyWorld.canSeeSkyFromBelowWater($w, $p)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.level.LevelReader#canSeeSkyFromBelowWater(net.minecraft.core.BlockPos)"
+  bind: { recv: "$w", args: ["$p"] }
+replace: "EnergyWorld.canSeeSkyFromBelowWater($w, $p)"
+imports: ["dev.porter.shim.mc.EnergyWorld"]
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.level.Level; import net.minecraft.core.BlockPos; Level level; BlockPos pos"
+    before: "boolean s = level.canSeeSkyFromBelowWater(pos);"
+    after: "boolean s = EnergyWorld.canSeeSkyFromBelowWater(level, pos);"
+---
+schemaVersion: 1
+id: r-gen-energy-call-level-getfluidstate
+description: "call Level#getFluidState(BlockPos) -> FluidState.of(Levels.getBlockState($w, $p))"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.level.Level#getFluidState(net.minecraft.core.BlockPos)"
+  bind: { recv: "$w", args: ["$p"] }
+replace: "FluidState.of(Levels.getBlockState($w, $p))"
+imports: ["dev.porter.shim.mc.FluidState", "dev.porter.shim.mc.Levels"]
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.level.Level; import net.minecraft.core.BlockPos; Level level; BlockPos pos"
+    before: "Object f = level.getFluidState(pos);"
+    after: "Object f = FluidState.of(Levels.getBlockState(level, pos));"
+---
+schemaVersion: 1
+id: r-gen-energy-call-fluid-gettickdelay
+description: "call Fluid#getTickDelay(LevelReader) -> 5 (water tick rate; no fluid tick delay on 1.7.10)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.level.material.Fluid#getTickDelay(net.minecraft.world.level.LevelReader)"
+  bind: { recv: "$f", args: ["$r"] }
+replace: "5"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.level.material.Fluid; import net.minecraft.world.level.LevelReader; Fluid fluid; LevelReader reader"
+    before: "int d = fluid.getTickDelay(reader);"
+    after: "int d = 5;"
+---
+schemaVersion: 1
+id: r-gen-energy-field-fluids-flowing-lava
+description: "field Fluids#FLOWING_LAVA -> MoreFluids.FLOWING_LAVA (sentinel: 1.7.10 has no flowing fluid)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "net.minecraft.world.level.material.Fluids#FLOWING_LAVA"
+replace: "MoreFluids.FLOWING_LAVA"
+imports: ["dev.porter.shim.mc.MoreFluids"]
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.level.material.Fluids"
+    before: "Object f = Fluids.FLOWING_LAVA;"
+    after: "Object f = MoreFluids.FLOWING_LAVA;"
+---
+schemaVersion: 1
+id: r-gen-energy-field-fluids-flowing-water
+description: "field Fluids#FLOWING_WATER -> MoreFluids.FLOWING_WATER (sentinel: 1.7.10 has no flowing fluid)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "net.minecraft.world.level.material.Fluids#FLOWING_WATER"
+replace: "MoreFluids.FLOWING_WATER"
+imports: ["dev.porter.shim.mc.MoreFluids"]
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.level.material.Fluids"
+    before: "Object f = Fluids.FLOWING_WATER;"
+    after: "Object f = MoreFluids.FLOWING_WATER;"
+---
+schemaVersion: 1
+id: r-gen-energy-type-simplewaterloggedblock
+description: "type SimpleWaterloggedBlock -> compat.more.energy.Waterlogged (marker, no waterlogging on 1.7.10)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.world.level.block.SimpleWaterloggedBlock"
+replace: "dev.porter.shim.mc.Waterlogged"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import net.minecraft.world.level.block.SimpleWaterloggedBlock;"
+    after: "import dev.porter.shim.mc.Waterlogged;"
+---
+schemaVersion: 1
+id: r-gen-energy-field-inventory-armor
+description: "field Inventory#armor -> PlayerInv.armor($i) (write-through view of armorInventory)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "net.minecraft.world.entity.player.Inventory#armor"
+  bind: { recv: "$i" }
+replace: "PlayerInv.armor($i)"
+imports: ["dev.porter.shim.mc.PlayerInv"]
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.entity.player.Inventory; Inventory inv"
+    before: "Object a = inv.armor;"
+    after: "Object a = PlayerInv.armor(inv);"
+---
+schemaVersion: 1
+id: r-gen-energy-field-inventory-items
+description: "field Inventory#items -> PlayerInv.items($i) (write-through view of mainInventory)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "net.minecraft.world.entity.player.Inventory#items"
+  bind: { recv: "$i" }
+replace: "PlayerInv.items($i)"
+imports: ["dev.porter.shim.mc.PlayerInv"]
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.entity.player.Inventory; Inventory inv"
+    before: "Object a = inv.items;"
+    after: "Object a = PlayerInv.items(inv);"
+---
+schemaVersion: 1
+id: r-gen-energy-field-inventory-offhand
+description: "field Inventory#offhand -> PlayerInv.offhand($i) (no offhand on 1.7.10: detached empty slot)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "net.minecraft.world.entity.player.Inventory#offhand"
+  bind: { recv: "$i" }
+replace: "PlayerInv.offhand($i)"
+imports: ["dev.porter.shim.mc.PlayerInv"]
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.entity.player.Inventory; Inventory inv"
+    before: "Object a = inv.offhand;"
+    after: "Object a = PlayerInv.offhand(inv);"
+---
+schemaVersion: 1
+id: r-gen-energy-call-itemstack-canequip
+description: "call ItemStack#canEquip(EquipmentSlot, Entity) -> MoreEquip.canEquip($s, $slot, $e)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.item.ItemStack#canEquip(net.minecraft.world.entity.EquipmentSlot, net.minecraft.world.entity.Entity)"
+  bind: { recv: "$s", args: ["$slot", "$e"] }
+replace: "MoreEquip.canEquip($s, $slot, $e)"
+imports: ["dev.porter.shim.mc.MoreEquip"]
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.ItemStack; import net.minecraft.world.entity.EquipmentSlot; ItemStack stack; EquipmentSlot slot"
+    before: "boolean b = stack.canEquip(slot, null);"
+    after: "boolean b = MoreEquip.canEquip(stack, slot, null);"
+---
+schemaVersion: 1
+id: r-gen-energy-type-itemlike-extends
+description: "interface X extends ItemLike -> extends compat.more.energy.ItemLikeMarker (an interface cannot extend Object)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.world.level.ItemLike"
+replace: "dev.porter.shim.mc.ItemLikeMarker"
+preconditions: ["position:implements"]
+priority: 10
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.level.ItemLike"
+    before: "interface Repairable extends ItemLike { }"
+    after: "interface Repairable extends ItemLikeMarker { }"
+---
+schemaVersion: 1
+id: r-gen-world-type-levelentitygetter
+description: "type net.minecraft.world.level.entity.LevelEntityGetter -> adapter EntityGetter"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.world.level.entity.LevelEntityGetter"
+replace: "dev.porter.shim.mc.EntityGetter"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import net.minecraft.world.level.entity.LevelEntityGetter;"
+    after: "import dev.porter.shim.mc.EntityGetter;"
+---
+schemaVersion: 1
+id: r-gen-world-call-holder-value
+description: "call Holder#value() -> $h (a Biome Holder is a BiomeGenBase on 1.7.10; see r-more-world-call-levelreader-getbiome)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.core.Holder#value()"
+  bind: { recv: "$h" }
+replace: "$h"
+confidence: 0.8
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "Holder<Object> h; import net.minecraft.core.Holder"
+    before: "Object v = h.value();"
+    after: "Object v = h;"
+---
+schemaVersion: 1
+id: r-gen-world-call-levelreader-getminbuildheight
+description: "call LevelReader#getMinBuildHeight() -> 0"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.level.LevelReader#getMinBuildHeight()"
+  bind: { recv: "$w" }
+replace: "0"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "LevelReader w; import net.minecraft.world.level.LevelReader"
+    before: "int y = w.getMinBuildHeight();"
+    after: "int y = 0;"
+---
+schemaVersion: 1
+id: r-gen-world-call-levelreader-getmaxbuildheight
+description: "call LevelReader#getMaxBuildHeight() -> 256"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.level.LevelReader#getMaxBuildHeight()"
+  bind: { recv: "$w" }
+replace: "256"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "LevelReader w; import net.minecraft.world.level.LevelReader"
+    before: "int y = w.getMaxBuildHeight();"
+    after: "int y = 256;"
+---
+schemaVersion: 1
+id: r-gen-heavya-type-villager
+description: "type net.minecraft.world.entity.npc.Villager -> net.minecraft.entity.passive.EntityVillager"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: "net.minecraft.world.entity.npc.Villager"
+replace: "net.minecraft.entity.passive.EntityVillager"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import net.minecraft.world.entity.npc.Villager;"
+    after: "import net.minecraft.entity.passive.EntityVillager;"
+---
+schemaVersion: 1
+id: r-gen-heavya-type-villagerprofession
+description: "type net.minecraft.world.entity.npc.VillagerProfession -> adapter heavya.VillagerProfession (the 1.7.10 numeric profession id)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.world.entity.npc.VillagerProfession"
+replace: "dev.porter.shim.mc.VillagerProfession"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import net.minecraft.world.entity.npc.VillagerProfession;"
+    after: "import dev.porter.shim.mc.VillagerProfession;"
+---
+schemaVersion: 1
+id: r-gen-heavya-type-craftingrecipe
+description: "type net.minecraft.world.item.crafting.CraftingRecipe -> the opaque compat.more.recipes.Recipe marker (batch 07a maps Recipe the same way; HeavyA.recipeFor returns a CraftingRecipeBox)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.world.item.crafting.CraftingRecipe"
+replace: "dev.porter.shim.mc.Recipe"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import net.minecraft.world.item.crafting.CraftingRecipe;"
+    after: "import dev.porter.shim.mc.Recipe;"
+---
+schemaVersion: 1
+id: r-gen-heavya-type-emptyfluidhandler
+description: "type net.minecraftforge.fluids.capability.templates.EmptyFluidHandler -> adapter heavya.EmptyFluidHandler"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraftforge.fluids.capability.templates.EmptyFluidHandler"
+replace: "dev.porter.shim.mc.EmptyFluidHandler"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import net.minecraftforge.fluids.capability.templates.EmptyFluidHandler;"
+    after: "import dev.porter.shim.mc.EmptyFluidHandler;"
+---
+schemaVersion: 1
+id: r-gen-heavya-call-forgeeventfactory-fireplayercraftingevent
+description: "call ForgeEventFactory.firePlayerCraftingEvent(player, stack, container) -> FMLCommonHandler.instance().firePlayerCraftingEvent(...)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraftforge.event.ForgeEventFactory#firePlayerCraftingEvent(net.minecraft.world.entity.player.Player, net.minecraft.world.item.ItemStack, net.minecraft.world.Container)"
+  bind: { args: ["$p", "$s", "$c"] }
+replace: "FMLCommonHandler.instance().firePlayerCraftingEvent($p, $s, $c)"
+imports: ["cpw.mods.fml.common.FMLCommonHandler"]
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "Player p; ItemStack s; Container c; import net.minecraftforge.event.ForgeEventFactory; import net.minecraft.world.entity.player.Player; import net.minecraft.world.item.ItemStack; import net.minecraft.world.Container"
+    before: "ForgeEventFactory.firePlayerCraftingEvent(p, s, c);"
+    after: "FMLCommonHandler.instance().firePlayerCraftingEvent(p, s, c);"
+---
+schemaVersion: 1
+id: r-gen-heavya-new-containersetslotpacket
+description: "new ClientboundContainerSetSlotPacket(containerId, stateId, slot, item) -> new S2FPacketSetSlot(containerId, slot, item) (no state ids on 1.7.10)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  new: "net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket(int, int, int, net.minecraft.world.item.ItemStack)"
+  bind: { args: ["$c", "$st", "$s", "$i"] }
+replace: "new S2FPacketSetSlot($c, $s, $i)"
+imports: ["net.minecraft.network.play.server.S2FPacketSetSlot"]
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "int c; int st; int s; ItemStack i; import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket; import net.minecraft.world.item.ItemStack"
+    before: "Object p = new ClientboundContainerSetSlotPacket(c, st, s, i);"
+    after: "Object p = new S2FPacketSetSlot(c, s, i);"
+---
+schemaVersion: 1
+id: r-gen-heavya-type-dataslot
+description: "type net.minecraft.world.inventory.DataSlot -> adapter heavya.DataSlot (plain int holder)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.world.inventory.DataSlot"
+replace: "dev.porter.shim.mc.DataSlot"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import net.minecraft.world.inventory.DataSlot;"
+    after: "import dev.porter.shim.mc.DataSlot;"
+---
+schemaVersion: 1
+id: r-gen-heavya-type-loottable
+description: "type net.minecraft.world.level.storage.loot.LootTable -> java.lang.Object (the Electric Fisher rolls HeavyA.fishingLoot instead)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: "net.minecraft.world.level.storage.loot.LootTable"
+replace: "java.lang.Object"
+confidence: 0.8
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import net.minecraft.world.level.storage.loot.LootTable;"
+    after: "import java.lang.Object;"
+---
+schemaVersion: 1
+id: r-gen-heavya-type-lootcontextparamsets
+description: "type net.minecraft.world.level.storage.loot.parameters.LootContextParamSets -> java.lang.Object (the Electric Fisher rolls HeavyA.fishingLoot instead)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: "net.minecraft.world.level.storage.loot.parameters.LootContextParamSets"
+replace: "java.lang.Object"
+confidence: 0.8
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;"
+    after: "import java.lang.Object;"
+---
+schemaVersion: 1
+id: r-gen-heavya-call-entitygetter-getentitiesofclass
+description: "call Level#getEntitiesOfClass(Class, AABB) -> World#getEntitiesWithinAABB(Class, AxisAlignedBB)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.world.level.EntityGetter#getEntitiesOfClass(java.lang.Class, net.minecraft.world.phys.AABB)"
+  bind: { recv: "$w", args: ["$c", "$b"] }
+replace: "$w.getEntitiesWithinAABB($c, $b)"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "Level w; Class c; AABB b; import net.minecraft.world.level.Level; import net.minecraft.world.phys.AABB"
+    before: "Object l = w.getEntitiesOfClass(c, b);"
+    after: "Object l = w.getEntitiesWithinAABB(c, b);"
+---
+schemaVersion: 1
+id: r-gen-heavyb-call-bucketpickup-pickupblock
+description: "call BucketPickup#pickupBlock(LevelAccessor, BlockPos, BlockState) -> Pumps.pickupBlock($b, $w, $p, $s) (drains the BlockLiquid / IFluidBlock)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.level.block.BucketPickup#pickupBlock(net.minecraft.world.level.LevelAccessor, net.minecraft.core.BlockPos, net.minecraft.world.level.block.state.BlockState)"
+  bind: { recv: "$b", args: ["$w", "$p", "$s"] }
+replace: "Pumps.pickupBlock($b, $w, $p, $s)"
+imports: ["dev.porter.shim.mc.Pumps"]
+priority: 10
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "BucketPickup b; LevelAccessor w; BlockPos p; BlockState s; import net.minecraft.world.level.block.BucketPickup; import net.minecraft.world.level.LevelAccessor; import net.minecraft.core.BlockPos; import net.minecraft.world.level.block.state.BlockState"
+    before: "b.pickupBlock(w, p, s);"
+    after: "Pumps.pickupBlock(b, w, p, s);"
+---
+schemaVersion: 1
+id: r-gen-heavyb-type-liquidblock
+description: "type LiquidBlock -> net.minecraft.block.BlockLiquid (imports left after the instanceof rule)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.world.level.block.LiquidBlock"
+replace: "net.minecraft.block.BlockLiquid"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import net.minecraft.world.level.block.LiquidBlock;"
+    after: "import net.minecraft.block.BlockLiquid;"
+---
+schemaVersion: 1
+id: r-gen-heavyb-type-bubblecolumnblock
+description: "type BubbleColumnBlock -> java.lang.Object (only an import is left after the instanceof rule)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.world.level.block.BubbleColumnBlock"
+replace: "java.lang.Object"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import net.minecraft.world.level.block.BubbleColumnBlock;"
+    after: "import java.lang.Object;"
+---
+schemaVersion: 1
+id: r-gen-heavyb-call-levelticks-cleararea
+description: "call LevelTicks#clearArea(BoundingBox) -> Pumps.clearFluidTicks() (no separate fluid tick list on 1.7.10; getFluidTicks and BoundingBox.fromCorners go with it)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.ticks.LevelTicks#clearArea(net.minecraft.world.level.levelgen.structure.BoundingBox)"
+  bind: { recv: "$t", args: ["$b"] }
+replace: "Pumps.clearFluidTicks()"
+imports: ["dev.porter.shim.mc.Pumps"]
+priority: 10
+confidence: 0.8
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "LevelTicks t; BoundingBox b; import net.minecraft.world.ticks.LevelTicks; import net.minecraft.world.level.levelgen.structure.BoundingBox"
+    before: "t.clearArea(b);"
+    after: "Pumps.clearFluidTicks();"
+---
+schemaVersion: 1
+id: r-gen-heavyb-call-serverlevel-sendparticles
+description: "call ServerLevel#sendParticles(options, x, y, z, count, dx, dy, dz, speed) -> HeavyB.sendParticles (WorldServer.func_147487_a)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.server.level.ServerLevel#sendParticles(net.minecraft.core.particles.ParticleOptions, double, double, double, int, double, double, double, double)"
+  bind: { recv: "$w", args: ["$p", "$x", "$y", "$z", "$n", "$dx", "$dy", "$dz", "$s"] }
+replace: "HeavyB.sendParticles($w, $p, $x, $y, $z, $n, $dx, $dy, $dz, $s)"
+imports: ["dev.porter.shim.mc.HeavyB"]
+priority: 10
+confidence: 0.85
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "ServerLevel w; ParticleOptions p; import net.minecraft.server.level.ServerLevel; import net.minecraft.core.particles.ParticleOptions"
+    before: "w.sendParticles(p, 1.0, 2.0, 3.0, 5, 0.1, 0.2, 0.3, 0.4);"
+    after: "HeavyB.sendParticles(w, p, 1.0, 2.0, 3.0, 5, 0.1, 0.2, 0.3, 0.4);"
+---
+schemaVersion: 1
+id: r-gen-heavyb-new-dustparticleoptions
+description: "new DustParticleOptions(Vector3f, float) -> ParticleTypes.REDSTONE (the 1.7.10 reddust particle name; color and scale are not carried)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  new: "net.minecraft.core.particles.DustParticleOptions(com.mojang.math.Vector3f, float)"
+  bind: { args: ["$c", "$s"] }
+replace: "ParticleTypes.REDSTONE"
+imports: ["dev.porter.shim.mc.ParticleTypes"]
+priority: 10
+confidence: 0.8
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "Vector3f c; import net.minecraft.core.particles.DustParticleOptions; import com.mojang.math.Vector3f"
+    before: "Object o = new DustParticleOptions(c, 1.0f);"
+    after: "Object o = ParticleTypes.REDSTONE;"
+---
+schemaVersion: 1
+id: r-gen-heavyb-type-dustparticleoptions
+description: "type DustParticleOptions -> java.lang.Object (only an import is left after the new-rule)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.core.particles.DustParticleOptions"
+replace: "java.lang.Object"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import net.minecraft.core.particles.DustParticleOptions;"
+    after: "import java.lang.Object;"
+---
+schemaVersion: 1
+id: r-gen-heavyb-new-aabb-blockpos-blockpos
+description: "new AABB(BlockPos, BlockPos) -> HeavyB.aabb($a, $b)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  new: "net.minecraft.world.phys.AABB(net.minecraft.core.BlockPos, net.minecraft.core.BlockPos)"
+  bind: { args: ["$a", "$b"] }
+replace: "HeavyB.aabb($a, $b)"
+imports: ["dev.porter.shim.mc.HeavyB"]
+priority: 10
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "BlockPos p; BlockPos q; import net.minecraft.world.phys.AABB; import net.minecraft.core.BlockPos"
+    before: "Object o = new AABB(p, q);"
+    after: "Object o = HeavyB.aabb(p, q);"
+---
+schemaVersion: 1
+id: r-gen-heavyb-call-aabb-deflate
+description: "call AABB#deflate(double) -> HeavyB.deflate($a, $d) (expand by -d)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.phys.AABB#deflate(double)"
+  bind: { recv: "$a", args: ["$d"] }
+replace: "HeavyB.deflate($a, $d)"
+imports: ["dev.porter.shim.mc.HeavyB"]
+priority: 10
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "AABB a; import net.minecraft.world.phys.AABB"
+    before: "Object o = a.deflate(1.0);"
+    after: "Object o = HeavyB.deflate(a, 1.0);"
+---
+schemaVersion: 1
+id: r-gen-heavyb-call-blockentity-savewithoutmetadata
+description: "call BlockEntity#saveWithoutMetadata() -> HeavyB.saveWithoutMetadata($t) (writeToNBT without id and position)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.level.block.entity.BlockEntity#saveWithoutMetadata()"
+  bind: { recv: "$t" }
+replace: "HeavyB.saveWithoutMetadata($t)"
+imports: ["dev.porter.shim.mc.HeavyB"]
+priority: 10
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "BlockEntity t; import net.minecraft.world.level.block.entity.BlockEntity"
+    before: "Object n = t.saveWithoutMetadata();"
+    after: "Object n = HeavyB.saveWithoutMetadata(t);"
+---
+schemaVersion: 1
+id: r-gen-heavyb-call-entity-remove
+description: "call Entity#remove(RemovalReason) -> $e.setDead()"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.entity.Entity#remove(net.minecraft.world.entity.Entity$RemovalReason)"
+  bind: { recv: "$e", args: ["$r"] }
+replace: "$e.setDead()"
+priority: 10
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "Entity e; Entity.RemovalReason r; import net.minecraft.world.entity.Entity"
+    before: "e.remove(r);"
+    after: "e.setDead();"
+---
+schemaVersion: 1
+id: r-gen-heavyb-call-entity-move
+description: "call Entity#move(MoverType, Vec3) -> HeavyB.move($e, $v) (Entity.moveEntity)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.entity.Entity#move(net.minecraft.world.entity.MoverType, net.minecraft.world.phys.Vec3)"
+  bind: { recv: "$e", args: ["$t", "$v"] }
+replace: "HeavyB.move($e, $v)"
+imports: ["dev.porter.shim.mc.HeavyB"]
+priority: 10
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "Entity e; MoverType t; Vec3 v; import net.minecraft.world.entity.Entity; import net.minecraft.world.entity.MoverType; import net.minecraft.world.phys.Vec3"
+    before: "e.move(t, v);"
+    after: "HeavyB.move(e, v);"
+---
+schemaVersion: 1
+id: r-gen-heavyb-type-movertype
+description: "type MoverType -> java.lang.Object (only an import is left after the Entity#move rule)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.world.entity.MoverType"
+replace: "java.lang.Object"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import net.minecraft.world.entity.MoverType;"
+    after: "import java.lang.Object;"
+---
+schemaVersion: 1
+id: r-gen-heavyb-field-entity-verticalcollisionbelow
+description: "field Entity#verticalCollisionBelow -> $e.isCollidedVertically"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "net.minecraft.world.entity.Entity#verticalCollisionBelow"
+  bind: { recv: "$e" }
+replace: "$e.isCollidedVertically"
+priority: 10
+confidence: 0.85
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "Entity e; import net.minecraft.world.entity.Entity"
+    before: "boolean b = e.verticalCollisionBelow;"
+    after: "boolean b = e.isCollidedVertically;"
+---
+schemaVersion: 1
+id: r-gen-heavyb-call-levelheightaccessor-getmaxbuildheight
+description: "call LevelHeightAccessor#getMaxBuildHeight() -> 256"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.level.LevelHeightAccessor#getMaxBuildHeight()"
+  bind: { recv: "$w" }
+replace: "256"
+priority: 10
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "LevelHeightAccessor w; import net.minecraft.world.level.LevelHeightAccessor"
+    before: "int y = w.getMaxBuildHeight();"
+    after: "int y = 256;"
+---
+schemaVersion: 1
+id: r-gen-heavyb-type-synched-entity-data
+description: "type net.minecraft.network.syncher.SynchedEntityData -> java.lang.Object (the mining rocket's data bodies are replaced)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.network.syncher.SynchedEntityData"
+replace: "java.lang.Object"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import net.minecraft.network.syncher.SynchedEntityData;"
+    after: "import java.lang.Object;"
+---
+schemaVersion: 1
+id: r-gen-heavyb-type-entitydataaccessor
+description: "type net.minecraft.network.syncher.EntityDataAccessor -> java.lang.Object (import only)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.network.syncher.EntityDataAccessor"
+replace: "java.lang.Object"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import net.minecraft.network.syncher.EntityDataAccessor;"
+    after: "import java.lang.Object;"
+---
+schemaVersion: 1
+id: r-gen-heavyb-type-entitydataserializer
+description: "type net.minecraft.network.syncher.EntityDataSerializer -> java.lang.Object (import only)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.network.syncher.EntityDataSerializer"
+replace: "java.lang.Object"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import net.minecraft.network.syncher.EntityDataSerializer;"
+    after: "import java.lang.Object;"
+---
+schemaVersion: 1
+id: r-gen-heavyb-type-entitydataserializers
+description: "type net.minecraft.network.syncher.EntityDataSerializers -> java.lang.Object (import only)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.network.syncher.EntityDataSerializers"
+replace: "java.lang.Object"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import net.minecraft.network.syncher.EntityDataSerializers;"
+    after: "import java.lang.Object;"
+---
+schemaVersion: 1
+id: r-gen-heavyb-type-networkhooks
+description: "type net.minecraftforge.network.NetworkHooks -> java.lang.Object (import only; the spawn packet override is removed, 1.7.10 sends the registered entity itself)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraftforge.network.NetworkHooks"
+replace: "java.lang.Object"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import net.minecraftforge.network.NetworkHooks;"
+    after: "import java.lang.Object;"
+---
+schemaVersion: 1
+id: r-gen-lead-level-playlocalsound
+description: "Level#playLocalSound(x, y, z, sound, source, volume, pitch, distanceDelay) -> World.playSound(x, y, z, name, volume, pitch, distanceDelay)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.level.Level#playLocalSound(double,double,double,net.minecraft.sounds.SoundEvent,net.minecraft.sounds.SoundSource,float,float,boolean)"
+  bind: { recv: "$w", args: ["$x", "$y", "$z", "$s", "$c", "$v", "$p", "$d"] }
+replace: "$w.playSound($x, $y, $z, String.valueOf($s), $v, $p, $d)"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "Level w; SoundEvent s; SoundSource c; import net.minecraft.world.level.Level; import net.minecraft.sounds.SoundEvent; import net.minecraft.sounds.SoundSource"
+    before: "w.playLocalSound(1.0, 2.0, 3.0, s, c, 1.0f, 1.0f, false);"
+    after: "w.playSound(1.0, 2.0, 3.0, String.valueOf(s), 1.0f, 1.0f, false);"
+---
+# One rule per distinct javac symbol; the helpers are overlays/adapters/.../compat/more/miner/ScannerCompat.java.
+schemaVersion: 1
+id: r-gen-scanner-type-iforgeitem
+description: "type IForgeItem -> an empty marker interface (no Forge item extensions on 1.7.10)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraftforge.common.extensions.IForgeItem"
+replace: "dev.porter.shim.mc.ForgeItemMarker"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import net.minecraftforge.common.extensions.IForgeItem;"
+    after: "import dev.porter.shim.mc.ForgeItemMarker;"
+---
+schemaVersion: 1
+id: r-gen-scanner-field-enchantmentcategory-breakable
+description: "field EnchantmentCategory#BREAKABLE -> EnumEnchantmentType.breakable"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "net.minecraft.world.item.enchantment.EnchantmentCategory#BREAKABLE"
+replace: "net.minecraft.enchantment.EnumEnchantmentType.breakable"
+priority: 6
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "Object e = EnchantmentCategory.BREAKABLE;"
+    after: "Object e = net.minecraft.enchantment.EnumEnchantmentType.breakable;"
+---
+# Vanilla item/block/sound constants live in more-recipes-vanilla.rule.yaml (07b).
+schemaVersion: 1
+id: r-gen-recipes-type-recipetype
+description: "type net.minecraft.world.item.crafting.RecipeType -> dev.porter.shim.mc.RecipeType (1.7.10 has no recipe types)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.world.item.crafting.RecipeType"
+replace: "dev.porter.shim.mc.RecipeType"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import net.minecraft.world.item.crafting.RecipeType;"
+    after: "import dev.porter.shim.mc.RecipeType;"
+---
+schemaVersion: 1
+id: r-gen-recipes-type-recipe
+description: "type net.minecraft.world.item.crafting.Recipe -> dev.porter.shim.mc.Recipe (opaque generic marker, IRecipe has no type parameter on 1.7.10)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.world.item.crafting.Recipe"
+replace: "dev.porter.shim.mc.Recipe"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import net.minecraft.world.item.crafting.Recipe;"
+    after: "import dev.porter.shim.mc.Recipe;"
+---
+schemaVersion: 1
+id: r-gen-recipes-type-craftinghelper
+description: "type net.minecraftforge.common.crafting.CraftingHelper -> dev.porter.shim.mc.CraftingHelper (getItem on the 1.7.10 item registry)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraftforge.common.crafting.CraftingHelper"
+replace: "dev.porter.shim.mc.CraftingHelper"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import net.minecraftforge.common.crafting.CraftingHelper;"
+    after: "import dev.porter.shim.mc.CraftingHelper;"
+---
+schemaVersion: 1
+id: r-gen-recipes-ingredient-fromjson
+description: "call Ingredient#fromJson(JsonElement) -> IngredientIo.fromJson (explicit stack list / ore name)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.item.crafting.Ingredient#fromJson(com.google.gson.JsonElement)"
+  bind: { args: ["$j"] }
+replace: "dev.porter.shim.mc.IngredientIo.fromJson($j)"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "com.google.gson.JsonElement j; import net.minecraft.world.item.crafting.Ingredient"
+    before: "Object x = Ingredient.fromJson(j);"
+    after: "Object x = dev.porter.shim.mc.IngredientIo.fromJson(j);"
+---
+schemaVersion: 1
+id: r-gen-recipes-ingredient-fromnetwork
+description: "call Ingredient#fromNetwork(FriendlyByteBuf) -> IngredientIo.fromNetwork"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.item.crafting.Ingredient#fromNetwork(net.minecraft.network.FriendlyByteBuf)"
+  bind: { args: ["$b"] }
+replace: "dev.porter.shim.mc.IngredientIo.fromNetwork($b)"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "net.minecraft.network.FriendlyByteBuf b; import net.minecraft.world.item.crafting.Ingredient"
+    before: "Object x = Ingredient.fromNetwork(b);"
+    after: "Object x = dev.porter.shim.mc.IngredientIo.fromNetwork(b);"
+---
+schemaVersion: 1
+id: r-gen-recipes-ingredient-tonetwork
+description: "call Ingredient#toNetwork(FriendlyByteBuf) -> IngredientIo.toNetwork($i, $b)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.item.crafting.Ingredient#toNetwork(net.minecraft.network.FriendlyByteBuf)"
+  bind: { recv: "$i", args: ["$b"] }
+replace: "dev.porter.shim.mc.IngredientIo.toNetwork($i, $b)"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "Ingredient i; net.minecraft.network.FriendlyByteBuf b; import net.minecraft.world.item.crafting.Ingredient"
+    before: "i.toNetwork(b);"
+    after: "dev.porter.shim.mc.IngredientIo.toNetwork(i, b);"
+---
+schemaVersion: 1
+id: r-gen-recipes-ingredient-tojson
+description: "call Ingredient#toJson() -> IngredientIo.toJson($i)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.item.crafting.Ingredient#toJson()"
+  bind: { recv: "$i" }
+replace: "dev.porter.shim.mc.IngredientIo.toJson($i)"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "Ingredient i; import net.minecraft.world.item.crafting.Ingredient"
+    before: "Object x = i.toJson();"
+    after: "Object x = dev.porter.shim.mc.IngredientIo.toJson(i);"
+---
+schemaVersion: 1
+id: r-gen-recipes-server-overworld
+description: "call MinecraftServer#overworld() -> worldServerForDimension(0)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.server.MinecraftServer#overworld()"
+  bind: { recv: "$s" }
+replace: "$s.worldServerForDimension(0)"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "net.minecraft.server.MinecraftServer s; import net.minecraft.server.MinecraftServer"
+    before: "Object x = s.overworld();"
+    after: "Object x = s.worldServerForDimension(0);"
+---
+schemaVersion: 1
+id: r-gen-recipes-item-isedible
+description: "call Item#isEdible() -> FoodProps.isEdible (ItemFood)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.item.Item#isEdible()"
+  bind: { recv: "$i" }
+replace: "dev.porter.shim.mc.FoodProps.isEdible($i)"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "Item i; import net.minecraft.world.item.Item"
+    before: "boolean x = i.isEdible();"
+    after: "boolean x = dev.porter.shim.mc.FoodProps.isEdible(i);"
+---
+schemaVersion: 1
+id: r-gen-recipes-item-getfoodproperties
+description: "call Item#getFoodProperties() -> FoodProps.of (getNutrition = ItemFood heal amount)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.item.Item#getFoodProperties()"
+  bind: { recv: "$i" }
+replace: "dev.porter.shim.mc.FoodProps.of($i)"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "Item i; import net.minecraft.world.item.Item"
+    before: "Object x = i.getFoodProperties();"
+    after: "Object x = dev.porter.shim.mc.FoodProps.of(i);"
+---
+schemaVersion: 1
+id: r-gen-recipes-foodproperties-getnutrition
+description: "call FoodProperties#getNutrition() stays getNutrition (the FoodProps adapter keeps the 1.19.2 name)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.food.FoodProperties#getNutrition()"
+  bind: { recv: "$f" }
+replace: "$f.getNutrition()"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "FoodProperties f; import net.minecraft.world.food.FoodProperties"
+    before: "int x = f.getNutrition();"
+    after: "int x = f.getNutrition();"
+---
+schemaVersion: 1
+id: r-gen-tele-type-portalinfo
+description: "type net.minecraft.world.level.portal.PortalInfo -> compat.more.tele.PortalInfo"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.world.level.portal.PortalInfo"
+replace: "dev.porter.shim.mc.PortalInfo"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import net.minecraft.world.level.portal.PortalInfo;"
+    after: "import dev.porter.shim.mc.PortalInfo;"
+---
+schemaVersion: 1
+id: r-gen-tele-type-saveddata
+description: "type net.minecraft.world.level.saveddata.SavedData -> compat.more.tele.SavedDataBase (1.7.10 WorldSavedData with the 1.19 ctor/save shape)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.world.level.saveddata.SavedData"
+replace: "dev.porter.shim.mc.SavedDataBase"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import net.minecraft.world.level.saveddata.SavedData;"
+    after: "import dev.porter.shim.mc.SavedDataBase;"
+---
+schemaVersion: 1
+id: r-gen-tele-call-serverlevel-getdatastorage
+description: "call ServerLevel#getDataStorage() -> SavedDataBase.storage($w) (its computeIfAbsent mirrors DimensionDataStorage)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.server.level.ServerLevel#getDataStorage()"
+  bind: { recv: "$w" }
+replace: "SavedDataBase.storage($w)"
+imports: ["dev.porter.shim.mc.SavedDataBase"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "ServerLevel w; import net.minecraft.server.level.ServerLevel"
+    before: "Object s = w.getDataStorage();"
+    after: "Object s = SavedDataBase.storage(w);"
+---
+schemaVersion: 1
+id: r-gen-tele-call-dimensiondatastorage-computeifabsent
+description: "call DimensionDataStorage#computeIfAbsent(Function, Supplier, String) -> $d.computeIfAbsent(...) on the SavedDataBase.Storage that getDataStorage() now yields"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.world.level.storage.DimensionDataStorage#computeIfAbsent(java.util.function.Function, java.util.function.Supplier, java.lang.String)"
+  bind: { recv: "$d", args: ["$l", "$c", "$n"] }
+replace: "$d.computeIfAbsent($l, $c, $n)"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "DimensionDataStorage d; Function l; Supplier c; import net.minecraft.world.level.storage.DimensionDataStorage; import java.util.function.Function; import java.util.function.Supplier"
+    before: "Object s = d.computeIfAbsent(l, c, \"name\");"
+    after: "Object s = d.computeIfAbsent(l, c, \"name\");"
+---
+schemaVersion: 1
+id: r-gen-tele-call-minecraftserver-overworld
+description: "call MinecraftServer#overworld() -> $s.worldServerForDimension(0)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.server.MinecraftServer#overworld()"
+  bind: { recv: "$s" }
+replace: "$s.worldServerForDimension(0)"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "MinecraftServer s; import net.minecraft.server.MinecraftServer"
+    before: "Object w = s.overworld();"
+    after: "Object w = s.worldServerForDimension(0);"
+---
+schemaVersion: 1
+id: r-gen-tele-field-level-overworld
+description: "field Level#OVERWORLD -> ResourceKey.dimension(0)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  field: "net.minecraft.world.level.Level#OVERWORLD"
+replace: "ResourceKey.dimension(0)"
+imports: ["dev.porter.shim.mc.ResourceKey"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.level.Level"
+    before: "Object k = Level.OVERWORLD;"
+    after: "Object k = ResourceKey.dimension(0);"
+---
+schemaVersion: 1
+id: r-gen-tele-call-level-getblockentity
+description: "call Level#getBlockEntity(BlockPos) with a non-pure position (the priority-10 rule needs a pure one; the two fallbacks tie) -> Levels.getBlockEntity($w, $p)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.level.Level#getBlockEntity(net.minecraft.core.BlockPos)"
+  bind: { recv: "$w", args: ["$p"] }
+replace: "Levels.getBlockEntity($w, $p)"
+imports: ["dev.porter.shim.mc.Levels"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "Level w; BlockPos p; Direction d; import net.minecraft.world.level.Level; import net.minecraft.core.Direction"
+    before: "Object t = w.getBlockEntity(p.relative(d));"
+    after: "Object t = Levels.getBlockEntity(w, p.relative(d));"
+---
+schemaVersion: 1
+id: r-gen-tele-call-entity-unride
+description: "call Entity#unRide() -> $e.mountEntity(null)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.world.entity.Entity#unRide()"
+  bind: { recv: "$e" }
+replace: "$e.mountEntity(null)"
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "Entity e; import net.minecraft.world.entity.Entity"
+    before: "e.unRide();"
+    after: "e.mountEntity(null);"
+---
+schemaVersion: 1
+id: r-gen-widgets-nbt-bytetag-valueof
+description: "call net.minecraft.nbt.ByteTag#valueOf(byte) -> new NBTTagByte($b)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.nbt.ByteTag#valueOf(byte)"
+  bind: { args: ["$b"] }
+replace: "new NBTTagByte($b)"
+imports: ["net.minecraft.nbt.NBTTagByte"]
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.nbt.ByteTag"
+    before: "Object t = ByteTag.valueOf((byte) 2);"
+    after: "Object t = new NBTTagByte((byte) 2);"
+---
+schemaVersion: 1
+id: r-gen-widgets-nbt-floattag-valueof
+description: "call net.minecraft.nbt.FloatTag#valueOf(float) -> new NBTTagFloat($f)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.nbt.FloatTag#valueOf(float)"
+  bind: { args: ["$f"] }
+replace: "new NBTTagFloat($f)"
+imports: ["net.minecraft.nbt.NBTTagFloat"]
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.nbt.FloatTag"
+    before: "Object t = FloatTag.valueOf((float) 1.5f);"
+    after: "Object t = new NBTTagFloat((float) 1.5f);"
+---
+schemaVersion: 1
+id: r-gen-widgets-serverlifecycle-type
+description: "type net.minecraftforge.server.ServerLifecycleHooks -> net.minecraft.server.MinecraftServer (1.7.10 has the current server as MinecraftServer.getServer())"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: "net.minecraftforge.server.ServerLifecycleHooks"
+replace: "net.minecraft.server.MinecraftServer"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import net.minecraftforge.server.ServerLifecycleHooks;"
+    after: "import net.minecraft.server.MinecraftServer;"
+---
+schemaVersion: 1
+id: r-gen-widgets-dist-isdedicatedserver
+description: "call net.minecraftforge.api.distmarker.Dist#isDedicatedServer() -> ($d == Side.SERVER) (1.7.10 Side enum)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraftforge.api.distmarker.Dist#isDedicatedServer()"
+  bind: { recv: "$d" }
+replace: "($d == Side.SERVER)"
+imports: ["cpw.mods.fml.relauncher.Side"]
+confidence: 0.85
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "Dist d; import net.minecraftforge.api.distmarker.Dist"
+    before: "boolean s = d.isDedicatedServer();"
+    after: "boolean s = (d == Side.SERVER);"
+---
+schemaVersion: 1
+id: r-gen-widgets-component-withstyle
+description: "call net.minecraft.network.chat.MutableComponent#withStyle(net.minecraft.network.chat.Style) -> Texts.withStyle($c, $s)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.network.chat.MutableComponent#withStyle(net.minecraft.network.chat.Style)"
+  bind: { recv: "$c", args: ["$s"] }
+replace: "Texts.withStyle($c, $s)"
+imports: ["dev.porter.shim.mc.Texts"]
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "MutableComponent c; Style s; import net.minecraft.network.chat.MutableComponent; import net.minecraft.network.chat.Style"
+    before: "Object x = c.withStyle(s);"
+    after: "Object x = Texts.withStyle(c, s);"
+---
+# guifix closure rules (private rules/closure batch9) not in the public packs. Priority 6: the public
+# r-1.19.2-1.7.10-call-item-getdescriptionid (PropItem.descriptionId, TorchMaster demo) would otherwise be ambiguous;
+# the installed build used these.
+schemaVersion: 1
+id: r-gen-mc-call-block-getdescriptionid
+description: "call net.minecraft.world.level.block.Block#getDescriptionId() -> ($b.getUnlocalizedName() + \".name\")"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.level.block.Block#getDescriptionId()"
+  bind: { recv: "$b" }
+replace: "($b.getUnlocalizedName() + \".name\")"
+priority: 6
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "Block b; import net.minecraft.world.level.block.Block"
+    before: "String k = b.getDescriptionId();"
+    after: "String k = (b.getUnlocalizedName() + \".name\");"
+---
+schemaVersion: 1
+id: r-gen-mc-call-item-getdescriptionid
+description: "call net.minecraft.world.item.Item#getDescriptionId() -> ($i.getUnlocalizedName() + \".name\")"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.item.Item#getDescriptionId()"
+  bind: { recv: "$i" }
+replace: "($i.getUnlocalizedName() + \".name\")"
+priority: 6
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "Item i; import net.minecraft.world.item.Item"
+    before: "String k = i.getDescriptionId();"
+    after: "String k = (i.getUnlocalizedName() + \".name\");"

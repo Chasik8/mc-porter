@@ -67,6 +67,31 @@ final class ItemGen {
                 : plan.iconNs(dev.porter.generate.Names.namespace(i.id())) + ":" + plan.registryName(i.id());
     }
 
+    /**
+     * With {@code --assets}: warns when the item's 1.7.10 icon has no texture there (textures/items/&lt;name&gt;.png under
+     * the source or the icon namespace). Typical cause: a 1.19.2 item without a model json whose sprite is chosen in
+     * code (per stack, from a base path + variant); its logic class has to register the icons (e.g. through the
+     * ItemSprites adapter), no texture name is set then (a name without a texture
+     * only adds a missing-texture error).
+     */
+    boolean checkIcon(IrNode.Item i) {
+        if (ctx.options.assetsDir() == null) {
+            return true;
+        }
+        String icon = icon(i);
+        String name = dev.porter.generate.Names.path(icon);
+        for (String ns : new String[] {dev.porter.generate.Names.namespace(i.id()), dev.porter.generate.Names.namespace(icon)}) {
+            java.nio.file.Path base = ctx.options.assetsDir().resolve("assets/" + ns + "/textures/");
+            if (java.nio.file.Files.isRegularFile(base.resolve("items/" + name + ".png"))
+                    || java.nio.file.Files.isRegularFile(base.resolve("blocks/" + name + ".png"))) {
+                return true;
+            }
+        }
+        ctx.warn("item-icon-missing", i.id(), "icon " + icon + " has no texture in the assets (sprite chosen in code? "
+                + "the logic class must register its icons); no texture name set");
+        return false;
+    }
+
     /** Base class of a logic class shared by several items. */
     ClassName sharedBase(String logicClass) {
         return ClassName.get(plan.pkg + ".item", Plan.cls(logicClass).simpleName() + "SharedItemBase");

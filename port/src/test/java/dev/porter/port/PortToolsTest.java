@@ -77,6 +77,25 @@ class PortToolsTest {
     }
 
     @Test
+    void hubStubInertBodyIgnoresDecompilerBlockComments() {
+        assertEquals("// porter:hub-stub inert", HubStubs.inertBody("private /* synthetic */ void ", false));
+        assertEquals("return 0; // porter:hub-stub inert", HubStubs.inertBody("public /* bridge */ int ", false));
+    }
+
+    @Test
+    void recordWithAnotherConstructorStillGetsItsCanonicalConstructor() {
+        Path d = tmp.resolve("j8rec");
+        src(d, "a.T", "public record T(String a, int b) {\n    public T(String a) {\n        this(a, 0);\n    }\n}\n");
+        src(d, "a.U", "public record U(String a) {\n    public U(String a) {\n        this.a = a.trim();\n    }\n}\n");
+        SourcePasses.java8(d);
+        String t = Text.read(d.resolve("a/T.java"));
+        assertTrue(t.contains("public T(String a, int b) { this.a = a; this.b = b; }"), t);
+        assertTrue(t.contains("public T(String a) {"), t);
+        String u = Text.read(d.resolve("a/U.java"));
+        assertFalse(u.contains("public U(String a) { this.a = a; }"), "an explicit canonical constructor is kept: " + u);
+    }
+
+    @Test
     void hubStubKeepsOnlyReferencedMembersWithInertBodies() {
         Path rw = tmp.resolve("rw");
         src(rw, "my.ported.machine.Grinder", "import my.ported.registry.Registry;\npublic class Grinder { int x = Registry.count(); Registry r = new Registry(); }\n");
@@ -94,6 +113,36 @@ class PortToolsTest {
         assertTrue(stub.contains("public Registry() {\n        // porter:hub-stub inert"), stub);
         assertFalse(stub.contains("unused"), stub);
         assertFalse(stub.contains("Level"), "invalid target type dropped: " + stub);
+    }
+
+    @Test
+    void hubStubKeepsAUsedConstructorWhoseParameterTypeIsInvalidHere() {
+        Path rw = tmp.resolve("rwc");
+        src(rw, "my.ported.machine.User", "import my.ported.registry.Cab;\npublic class User { Object c = new Cab(\"n\", null, 1); }\n");
+        src(rw, "my.ported.registry.Cab", "import net.minecraft.world.level.Level;\n"
+                + "public class Cab extends my.ported.registry.Base {\n    public Cab(String n, java.util.List<Level> l, int k) { super(n); }\n}\n");
+        src(rw, "my.ported.registry.Base", "public class Base {\n    public Base(String n) { }\n}\n");
+        List<Relocation> rel = List.of(Relocation.parse("com.example.mod.=my.ported."));
+        List<String> fr = List.of("com.example.mod.registry.Cab", "com.example.mod.registry.Base");
+        HubStubs hs = new HubStubs(rw, List.of("com.example.mod.machine.User"), fr, Set.of(), new HubStubs.Options(rel, "my.", List.of("my.ported.registry."), "// stub\n"));
+        hs.write(rw, fr, tmp.resolve("outc"), null);
+        String stub = Text.read(tmp.resolve("outc/my/ported/registry/Cab.java"));
+        assertTrue(stub.contains("public Cab(String n, java.util.List<Object> l, int k)"), stub);
+        assertFalse(stub.contains("Level"), "the invalid type is opened to Object: " + stub);
+    }
+
+    @Test
+    void hubStubReadsDollarNamesWholeSoSyntheticVoidMethodsStayVoid() {
+        Path rw = tmp.resolve("rwd");
+        src(rw, "my.ported.machine.Comp", "import my.ported.registry.Hub;\npublic class Comp { void f(Hub h) { h.cfr$lambda$init$6(1); } }\n");
+        src(rw, "my.ported.registry.Hub", "public class Hub {\n    private /* synthetic */ void cfr$lambda$init$6(int x) {\n        System.out.println(x);\n    }\n}\n");
+        List<Relocation> rel = List.of(Relocation.parse("com.example.mod.=my.ported."));
+        List<String> fr = List.of("com.example.mod.registry.Hub");
+        HubStubs hs = new HubStubs(rw, List.of("com.example.mod.machine.Comp"), fr, Set.of(), new HubStubs.Options(rel, "my.", List.of("my.ported.registry."), "// stub\n"));
+        hs.write(rw, fr, tmp.resolve("outd"), null);
+        String stub = Text.read(tmp.resolve("outd/my/ported/registry/Hub.java"));
+        assertTrue(stub.contains("void cfr$lambda$init$6(int x) {\n        // porter:hub-stub inert"), stub);
+        assertFalse(stub.contains("return null"), stub);
     }
 
     @Test

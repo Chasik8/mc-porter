@@ -1,0 +1,532 @@
+key: "field:net.minecraft.world.level.block.SoundType#METAL:Lnet/minecraft/world/level/block/SoundType;"
+body: |-
+  return net.minecraft.block.Block.soundTypeMetal;
+imports: []
+verified: compile
+---
+key: "field:net.minecraft.world.level.block.SoundType#SAND:Lnet/minecraft/world/level/block/SoundType;"
+body: |-
+  return net.minecraft.block.Block.soundTypeSand;
+imports: []
+verified: compile
+---
+key: "field:net.minecraft.world.level.block.SoundType#STONE:Lnet/minecraft/world/level/block/SoundType;"
+body: |-
+  return net.minecraft.block.Block.soundTypeStone;
+imports: []
+verified: compile
+---
+key: "field:net.minecraft.world.level.block.SoundType#WOOD:Lnet/minecraft/world/level/block/SoundType;"
+body: |-
+  return net.minecraft.block.Block.soundTypeWood;
+imports: []
+verified: compile
+---
+key: "field:net.minecraft.world.level.block.SoundType#WOOL:Lnet/minecraft/world/level/block/SoundType;"
+body: |-
+  return net.minecraft.block.Block.soundTypeCloth;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.entity.EntityType$Builder#clientTrackingRange(I)Lnet/minecraft/world/entity/EntityType$Builder;"
+body: |-
+  return this;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.entity.EntityType$Builder#fireImmune()Lnet/minecraft/world/entity/EntityType$Builder;"
+body: |-
+  return this;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.entity.EntityType$Builder#noSummon()Lnet/minecraft/world/entity/EntityType$Builder;"
+body: |-
+  return this;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.entity.EntityType$Builder#of(Lnet/minecraft/world/entity/EntityType$EntityFactory;Lnet/minecraft/world/entity/MobCategory;)Lnet/minecraft/world/entity/EntityType$Builder;"
+body: |-
+  return new dev.porter.shim.gen.world.entity.EntityType.Builder();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.entity.EntityType$Builder#setTrackingRange(I)Lnet/minecraft/world/entity/EntityType$Builder;"
+body: |-
+  return this;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.entity.EntityType$Builder#setUpdateInterval(I)Lnet/minecraft/world/entity/EntityType$Builder;"
+body: |-
+  return this;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.entity.EntityType$Builder#sized(FF)Lnet/minecraft/world/entity/EntityType$Builder;"
+body: |-
+  return this;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.item.crafting.AbstractCookingRecipe#assemble(Lnet/minecraft/world/Container;)Lnet/minecraft/world/item/ItemStack;"
+body: |-
+  net.minecraft.item.ItemStack result = getRecipeOutput();
+  return result == null ? null : result.copy();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.item.crafting.AbstractCookingRecipe#getExperience()F"
+body: |-
+  return 0.0F;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.item.crafting.AbstractCookingRecipe#getId()Lnet/minecraft/resources/ResourceLocation;"
+body: |-
+  return null;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.item.crafting.AbstractCookingRecipe#getIngredients()Lnet/minecraft/core/NonNullList;"
+body: |-
+  return dev.porter.shim.mc.NonNullList.create();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.item.crafting.AbstractCookingRecipe#getType()Lnet/minecraft/world/item/crafting/RecipeType;"
+body: |-
+  return dev.porter.shim.gen.world.item.crafting.RecipeType.SMELTING;
+imports: []
+verified: compile
+---
+key: "method:com.mojang.authlib.GameProfile#<init>(Ljava/util/UUID;Ljava/lang/String;)V"
+body: |-
+  dev.porter.shim.gen.helpers.DdState.put(this, "id", uUID);
+  dev.porter.shim.gen.helpers.DdState.put(this, "name", string);
+imports: []
+verified: compile
+---
+key: "method:com.mojang.authlib.GameProfile#getId()Ljava/util/UUID;"
+body: |-
+  return (java.util.UUID) dev.porter.shim.gen.helpers.DdState.get(this, "id");
+imports: []
+verified: compile
+---
+key: "method:com.mojang.authlib.GameProfile#getName()Ljava/lang/String;"
+body: |-
+  return (String) dev.porter.shim.gen.helpers.DdState.get(this, "name");
+imports: []
+verified: compile
+---
+key: "method:com.mojang.datafixers.util.Pair#of(Ljava/lang/Object;Ljava/lang/Object;)Lcom/mojang/datafixers/util/Pair;"
+body: |-
+  return dev.porter.shim.mc.Pair.of(object, object2);
+imports: []
+verified: compile
+---
+key: "method:com.mojang.realmsclient.RealmsMainScreen#charTyped(CI)Z"
+body: |-
+  return false;
+imports: []
+verified: compile
+---
+key: "method:com.mojang.realmsclient.RealmsMainScreen$CloseButton#renderButton(Lcom/mojang/blaze3d/vertex/PoseStack;IIF)V"
+body: |-
+  return;
+imports: []
+verified: compile
+---
+key: "method:com.mojang.util.UUIDTypeAdapter#fromString(Ljava/lang/String;)Ljava/util/UUID;"
+body: |-
+  String compact = string;
+  if (compact.indexOf('-') < 0 && compact.length() == 32) {
+      compact = compact.substring(0, 8) + "-" + compact.substring(8, 12) + "-" + compact.substring(12, 16) + "-" + compact.substring(16, 20) + "-" + compact.substring(20);
+  }
+  return java.util.UUID.fromString(compact);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.ResourceLocationException#<init>(Ljava/lang/String;)V"
+body: |-
+  super(string);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.Util#getPropertyName(Lnet/minecraft/world/level/block/state/properties/Property;Ljava/lang/Object;)Ljava/lang/String;"
+body: |-
+  return dev.porter.shim.mc.Chat.propertyName(property, object);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.Camera#getPosition()Lnet/minecraft/world/phys/Vec3;"
+body: |-
+  net.minecraft.entity.EntityLivingBase view = net.minecraft.client.Minecraft.getMinecraft().renderViewEntity;
+  if (view == null) {
+      return net.minecraft.util.Vec3.createVectorHelper(0.0D, 0.0D, 0.0D);
+  }
+  return net.minecraft.util.Vec3.createVectorHelper(view.posX, view.posY + view.getEyeHeight(), view.posZ);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.Camera#isInitialized()Z"
+body: |-
+  return net.minecraft.client.Minecraft.getMinecraft().renderViewEntity != null;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.KeyboardHandler#setSendRepeatsToGui(Z)V"
+body: |-
+  org.lwjgl.input.Keyboard.enableRepeatEvents(flag);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.Options#particles()Lnet/minecraft/client/OptionInstance;"
+body: |-
+  return new dev.porter.shim.gen.client.OptionInstance();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.StringSplitter#componentStyleAtWidth(Lnet/minecraft/util/FormattedCharSequence;I)Lnet/minecraft/network/chat/Style;"
+body: |-
+  return null;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.StringSplitter$LineBreakFinder#accept(ILnet/minecraft/network/chat/Style;I)Z"
+body: |-
+  return true;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.multiplayer.ClientLevel#destroyBlockProgress(ILnet/minecraft/core/BlockPos;I)V"
+body: |-
+  net.minecraft.client.multiplayer.WorldClient world = net.minecraft.client.Minecraft.getMinecraft().theWorld;
+  if (world != null) {
+      world.destroyBlockInWorldPartially(i, blockPos.getX(), blockPos.getY(), blockPos.getZ(), i2);
+  }
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.multiplayer.ClientLevel#getEntities()Lnet/minecraft/world/level/entity/LevelEntityGetter;"
+body: |-
+  return new dev.porter.shim.gen.world.level.entity.LevelEntityGetter() {
+  };
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.multiplayer.ClientLevel#playLocalSound(DDDLnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FFZ)V"
+body: |-
+  net.minecraft.client.multiplayer.WorldClient world = net.minecraft.client.Minecraft.getMinecraft().theWorld;
+  if (world == null || soundEvent == null || soundEvent.getLocation() == null) {
+      return;
+  }
+  net.minecraft.util.ResourceLocation id = soundEvent.getLocation();
+  String name = "minecraft".equals(id.getResourceDomain()) ? id.getResourcePath() : id.toString();
+  world.playSound(d, d2, d3, name, f, f2, flag);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.commands.Commands#argument(Ljava/lang/String;Lcom/mojang/brigadier/arguments/ArgumentType;)Lcom/mojang/brigadier/builder/RequiredArgumentBuilder;"
+body: |-
+  dev.porter.shim.gen.com.mojang.brigadier.builder.RequiredArgumentBuilder builder = new dev.porter.shim.gen.com.mojang.brigadier.builder.RequiredArgumentBuilder();
+  dev.porter.shim.gen.helpers.DdState.put(builder, "name", string);
+  dev.porter.shim.gen.helpers.DdState.put(builder, "type", argumentType);
+  return builder;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.commands.arguments.coordinates.BlockPosArgument#blockPos()Lnet/minecraft/commands/arguments/coordinates/BlockPosArgument;"
+body: |-
+  return new dev.porter.shim.gen.commands.arguments.coordinates.BlockPosArgument();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.commands.arguments.coordinates.Coordinates#getBlockPos(Lnet/minecraft/commands/CommandSourceStack;)Lnet/minecraft/core/BlockPos;"
+body: |-
+  net.minecraft.entity.Entity entity = commandSourceStack == null ? null : commandSourceStack.getEntity();
+  if (entity == null) {
+      return dev.porter.shim.BlockPos.ZERO;
+  }
+  return new dev.porter.shim.BlockPos((int) Math.floor(entity.posX), (int) Math.floor(entity.posY), (int) Math.floor(entity.posZ));
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.core.cauldron.CauldronInteraction#interact(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/InteractionHand;Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/world/InteractionResult;"
+body: |-
+  return dev.porter.shim.mc.InteractionResult.PASS;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.core.particles.BlockParticleOption#<init>(Lnet/minecraft/core/particles/ParticleType;Lnet/minecraft/world/level/block/state/BlockState;)V"
+body: |-
+  dev.porter.shim.gen.helpers.DdState.put(this, "state", blockState);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.core.particles.BlockParticleOption#setPos(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/core/particles/BlockParticleOption;"
+body: |-
+  dev.porter.shim.gen.helpers.DdState.put(this, "pos", blockPos);
+  return this;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.core.particles.DustParticleOptions#<init>(Lcom/mojang/math/Vector3f;F)V"
+body: |-
+  dev.porter.shim.gen.helpers.DdState.put(this, "color", vector3f);
+  dev.porter.shim.gen.helpers.DdState.put(this, "scale", Float.valueOf(f));
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.server.MinecraftServer#getLootTables()Lnet/minecraft/world/level/storage/loot/LootTables;"
+body: |-
+  return new dev.porter.shim.gen.world.level.storage.loot.LootTables();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.server.MinecraftServer#getRecipeManager()Lnet/minecraft/world/item/crafting/RecipeManager;"
+body: |-
+  return new dev.porter.shim.gen.world.item.crafting.RecipeManager();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.InteractionResult#values()[Lnet/minecraft/world/InteractionResult;"
+body: |-
+  return dev.porter.shim.mc.InteractionResult.values();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.InteractionResultHolder#fail(Ljava/lang/Object;)Lnet/minecraft/world/InteractionResultHolder;"
+body: |-
+  return dev.porter.shim.mc.InteractionResultHolder.fail(object);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.InteractionResultHolder#pass(Ljava/lang/Object;)Lnet/minecraft/world/InteractionResultHolder;"
+body: |-
+  return dev.porter.shim.mc.InteractionResultHolder.pass(object);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.InteractionResultHolder#success(Ljava/lang/Object;)Lnet/minecraft/world/InteractionResultHolder;"
+body: |-
+  return dev.porter.shim.mc.InteractionResultHolder.success(object);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.food.FoodProperties$Builder#<init>()V"
+body: |-
+  return;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.food.FoodProperties$Builder#alwaysEat()Lnet/minecraft/world/food/FoodProperties$Builder;"
+body: |-
+  dev.porter.shim.gen.helpers.DdState.<dev.porter.shim.mc.FoodProperties.Builder>lazy(this, "b", dev.porter.shim.mc.FoodProperties.Builder::new).alwaysEat();
+  return this;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.food.FoodProperties$Builder#build()Lnet/minecraft/world/food/FoodProperties;"
+body: |-
+  return dev.porter.shim.gen.helpers.DdState.<dev.porter.shim.mc.FoodProperties.Builder>lazy(this, "b", dev.porter.shim.mc.FoodProperties.Builder::new).build();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.food.FoodProperties$Builder#effect(Ljava/util/function/Supplier;F)Lnet/minecraft/world/food/FoodProperties$Builder;"
+body: |-
+  dev.porter.shim.gen.helpers.DdState.<dev.porter.shim.mc.FoodProperties.Builder>lazy(this, "b", dev.porter.shim.mc.FoodProperties.Builder::new).effect((java.util.function.Supplier) supplier, f);
+  return this;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.food.FoodProperties$Builder#fast()Lnet/minecraft/world/food/FoodProperties$Builder;"
+body: |-
+  dev.porter.shim.gen.helpers.DdState.<dev.porter.shim.mc.FoodProperties.Builder>lazy(this, "b", dev.porter.shim.mc.FoodProperties.Builder::new).fast();
+  return this;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.food.FoodProperties$Builder#nutrition(I)Lnet/minecraft/world/food/FoodProperties$Builder;"
+body: |-
+  dev.porter.shim.gen.helpers.DdState.<dev.porter.shim.mc.FoodProperties.Builder>lazy(this, "b", dev.porter.shim.mc.FoodProperties.Builder::new).nutrition(i);
+  return this;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.food.FoodProperties$Builder#saturationMod(F)Lnet/minecraft/world/food/FoodProperties$Builder;"
+body: |-
+  dev.porter.shim.gen.helpers.DdState.<dev.porter.shim.mc.FoodProperties.Builder>lazy(this, "b", dev.porter.shim.mc.FoodProperties.Builder::new).saturationMod(f);
+  return this;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.ChunkPos#<init>(Lnet/minecraft/core/BlockPos;)V"
+body: |-
+  return new net.minecraft.world.ChunkCoordIntPair(blockPos.getX() >> 4, blockPos.getZ() >> 4);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.ChunkPos#getX(J)I"
+body: |-
+  return (int) (l & 4294967295L);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.ChunkPos#getZ(J)I"
+body: |-
+  return (int) (l >> 32 & 4294967295L);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.ChunkPos#toLong()J"
+body: |-
+  return (long) self.chunkXPos & 4294967295L | ((long) self.chunkZPos & 4294967295L) << 32;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.dimension.DimensionType#coordinateScale()D"
+body: |-
+  return coordinateScale > 0.0D ? coordinateScale : 1.0D;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.dimension.DimensionType#hasSkyLight()Z"
+body: |-
+  return hasSkyLight;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.material.EmptyFluid#getTickDelay(Lnet/minecraft/world/level/LevelReader;)I"
+body: |-
+  return 0;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.material.EmptyFluid#isSource(Lnet/minecraft/world/level/material/FluidState;)Z"
+body: |-
+  return false;
+imports: []
+verified: compile
+---
+key: "method:com.mojang.math.Matrix3f#setIdentity()V"
+body: |-
+  return;
+imports: []
+verified: compile
+---
+key: "method:com.mojang.math.OctahedralGroup#getSerializedName()Ljava/lang/String;"
+body: |-
+  return toString();
+imports: []
+verified: compile
+---
+key: "method:com.mojang.math.Quaternion#<init>(FFFZ)V"
+body: |-
+  return;
+imports: []
+verified: compile
+---
+key: "method:com.mojang.math.Transformation#getMatrix()Lcom/mojang/math/Matrix4f;"
+body: |-
+  return dev.porter.shim.mc.client.Matrix4f.IDENTITY;
+imports: []
+verified: compile
+---
+key: "method:com.mojang.math.Vector3f#<init>(FFF)V"
+body: |-
+  return;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.core.Direction#rotate(Lcom/mojang/math/Matrix4f;Lnet/minecraft/core/Direction;)Lnet/minecraft/core/Direction;"
+body: |-
+  return direction;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.core.Direction$Axis#isHorizontal()Z"
+body: |-
+  return this != Y;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.core.Direction$Axis#isVertical()Z"
+body: |-
+  return this == Y;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.core.Direction$Axis#ordinal()I"
+body: |-
+  return this == X ? 0 : (this == Y ? 1 : 2);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.core.Direction$Axis#test(Lnet/minecraft/core/Direction;)Z"
+body: |-
+  return direction != null && direction.getAxis().ordinal() == ordinal();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.core.Direction$Axis#values()[Lnet/minecraft/core/Direction$Axis;"
+body: |-
+  return new Axis[] {X, Y, Z};
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.phys.AABB#<init>(Lnet/minecraft/core/BlockPos;)V"
+body: |-
+  return net.minecraft.util.AxisAlignedBB.getBoundingBox(blockPos.getX(), blockPos.getY(), blockPos.getZ(), blockPos.getX() + 1, blockPos.getY() + 1, blockPos.getZ() + 1);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.phys.AABB#<init>(Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/BlockPos;)V"
+body: |-
+  return net.minecraft.util.AxisAlignedBB.getBoundingBox(Math.min(blockPos.getX(), blockPos2.getX()), Math.min(blockPos.getY(), blockPos2.getY()), Math.min(blockPos.getZ(), blockPos2.getZ()), Math.max(blockPos.getX(), blockPos2.getX()), Math.max(blockPos.getY(), blockPos2.getY()), Math.max(blockPos.getZ(), blockPos2.getZ()));
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.phys.AABB#clip(Lnet/minecraft/world/phys/Vec3;Lnet/minecraft/world/phys/Vec3;)Ljava/util/Optional;"
+body: |-
+  net.minecraft.util.MovingObjectPosition hit = self.calculateIntercept(vec3, vec32);
+  return java.util.Optional.ofNullable(hit == null ? null : hit.hitVec);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.phys.AABB#deflate(D)Lnet/minecraft/world/phys/AABB;"
+body: |-
+  return self.expand(-d, -d, -d);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.phys.AABB#move(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/phys/AABB;"
+body: |-
+  return self.getOffsetBoundingBox(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+imports: []
+verified: compile
+---
+key: "field:net.minecraft.world.phys.Vec3#ZERO:Lnet/minecraft/world/phys/Vec3;"
+body: |-
+  return net.minecraft.util.Vec3.createVectorHelper(0.0D, 0.0D, 0.0D);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.phys.Vec3#atCenterOf(Lnet/minecraft/core/Vec3i;)Lnet/minecraft/world/phys/Vec3;"
+body: |-
+  return net.minecraft.util.Vec3.createVectorHelper(blockPos.getX() + 0.5D, blockPos.getY() + 0.5D, blockPos.getZ() + 0.5D);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.phys.Vec3#atLowerCornerOf(Lnet/minecraft/core/Vec3i;)Lnet/minecraft/world/phys/Vec3;"
+body: |-
+  return net.minecraft.util.Vec3.createVectorHelper(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.phys.Vec3#z()D"
+body: |-
+  return self.zCoord;
+imports: []
+verified: compile

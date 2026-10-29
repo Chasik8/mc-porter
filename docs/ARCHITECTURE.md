@@ -33,6 +33,7 @@ mod (version A)
 |---|---|
 | `generate` | `porter generate` per unit, from the extracted IR; installs the generated files without overwriting hand edits |
 | `closure` | dependency closure of the seed classes: unknown classes are copied recursively, hub prefixes are cut (the members the closure uses become stubs), classes known on the target side with an identical API are left alone; reports **coverage** |
+| `upfront` | optional (`upfront:` section): `porter upfront` on the closure classes. Emitted rules join the rewrite rule set, generated shim sources are installed with the adapter pack, the TODO batch is written for the fill workers. [guides/upfront.md](guides/upfront.md) |
 | `rewrite` | `porter rewrite` of closure + hubs with the rule packs, relocated into the mod's package |
 | `install` | hub stubs, source passes (SRG → Mojang names, Java 9+ → 8 syntax, tile-entity constructors, counted edits, unused imports), the adapter pack, overlays → the target project |
 | `loop` | `porter loop`: compile, classify errors, apply rules, write tasks for the rest |
@@ -44,6 +45,8 @@ After every stage porter writes `port-report.md` / `.json` in the work directory
 `<project>/build/porter-port/`): stage metrics, coverage, and an explicit **not-ported** list: every generator skip
 (something the IR cannot express, such as a fluid in a crafting grid), every dropped class, every hub whose feature is
 stubbed out, every unresolved symbol, each with a reason. Nothing is dropped silently.
+
+It also lists every call site in kept code that targets an inert hub-stub member (`inertHubCalls` and `inertHubCallCount` in the json, a section in the md, a WARNING summary at the end of the `install` stage; raw list in `inert-hub-calls.json`), so a silently missing feature (sounds, item icons) shows up at build time.
 
 Two modes: **`full`**, the mod does not exist on the target version and is ported whole; **`delta`**, an addon over a
 base that exists on the target version (for example features of a newer version backported as an addon to the old
@@ -68,6 +71,10 @@ template), runs the profile's `setup`/`prepare` steps, then the port, and copies
 | **Adapters** | `rewrite/shim` | ~140 small 1.7.10 classes that give ported code the 1.19.2 API it still calls (block states, block entities, menus and screens, capabilities, fluids, NBT, configs, deferred registers, commands...). Added one distinct symbol at a time, when a real port needs it; copied into the mod's own package by `install.adapters: bundled`. |
 | **Loop** | `loop` | Compile, classify javac errors, apply rules; every manual fix is logged as a candidate, and recurring fixes become draft rules (`porter drafts` turns them into issue text). |
 | **Testkit** | `testkit` | Runs version-independent scenarios (place blocks, tick, insert items, open GUIs, sample values, assert) on real dedicated servers or clients of both versions, records traces and compares them. Many scenarios share one Minecraft launch. [testkit/README.md](../testkit/README.md) |
+| **Upfront layer** | `port` (`upfront/`), `rules/upfront/` | Translation prepared before the first compile, as data: inventory of every platform symbol a mod uses (bytecode + source), version-lineage index, a scored matcher driven by `match-tables.yaml`, concept adapters (`concepts.yaml`), the registry-constant / sound table, emitted rules, shim skeletons and a bodies DB filled once, in parallel, and compiled in one javac. `porter upfront`, optional `upfront:` stage of `port`. [docs/guides/upfront.md](guides/upfront.md) |
+| **Precheck** | `port` | About one minute instead of a full run: rule validation (schema, duplicate ids, same-priority conflicts), then rewrite + passes + javac of only the classes a change touches. Normalised error classes for counting recurring errors. `porter precheck`. |
+| **Generators of checks and content** | `testkit/scengen`, the `cropgen` folder of the steam-and-barrels port | `scengen` writes "machine processes recipe" / storage / generator scenarios from recipe and menu IR; `cropgen` emits target-version crop cards from extracted crop data by family templates. |
+| **Networking bridge** | `rewrite/shim` (`SimpleChannel`, `PacketDistributor`, `NetworkEvent`) | The 1.19.2 channel API on top of one 1.7.10 `SimpleNetworkWrapper` per channel; every message travels in one generic message (id + bytes). Rule pack `modern-api-networking.rule.yaml`. |
 | **Contracts** | `contracts/` | JSON schemas for every file porter exchanges: IR, rules, symbol graph, scenarios, traces, candidates, port configs, the port catalog. `porter validate` checks them. [contracts/README.md](../contracts/README.md) |
 
 ## Port profiles
@@ -138,6 +145,8 @@ configs: `contracts/examples/port-config/valid/`, `ports/torchmaster/torchmaster
 | `port` | the whole port from a config, resumable by stage |
 | `closure`, `stubs`, `passes`, `castfix`, `symbols`, `obfcheck` | the building blocks of `port`, usable alone |
 | `coverage` | share of a mod's distinct API symbols that the existing rules already resolve |
+| `precheck` | fast check of a change before a full `port` run |
+| `upfront`, `api-inventory`, `api-index`, `match`, `flattening`, `emit-rules`, `shimgen`, `todo-batch`, `bodies check` | the upfront layer as one command or its stages |
 | `extract`, `select`, `generate`, `assets` | IR from 1.19.2 sources, one unit's IR from a whole-mod extract, code and assets from IR |
 | `decompile`, `patch` | pinned CFR decompile of a jar; unified diffs between trees (`--blind`: no text of the base) |
 | `rewrite`, `loop`, `drafts` | rule engine; compile/classify/fix loop; draft rules as issue text |
@@ -165,6 +174,27 @@ is 15 to 30 minutes, mostly downloads; a port of a few hundred classes then take
 deterministic pipeline uses no AI. **Human or AI time** scales with the number of distinct unresolved symbols, not with
 lines of code: on the 610-symbol closure above it was about 4.4 hours of AI model time (~0.33M tokens). `porter
 coverage` tells you your starting point before you spend anything.
+
+## Runtime checks after a clean compile
+
+A port that compiles can still be dead in game. In the second private port, 0 javac errors still left blocks
+unregistered, GUIs returning null and network ticks never called. A port is checked in four layers, cheapest first:
+
+1. **Icons.** `scripts/ci/icon-check.py` lists every icon the jar asks for that has no texture.
+2. **Block smoke.** `scripts/ci/gen-block-smoke.py` writes one scenario per registered block of the mod. Each scenario
+   places the block, checks that its tile exists, ticks, right-clicks it and opens the container server-side. The
+   flags add more checks: `--client` opens the GUI screen in a real client, and `--recipes` fails a block that has no
+   craft recipe.
+3. **Behaviour scenarios.** One per machine family, for example energy in, a machine processing input, fluid moving
+   through pipes, or a multiblock forming. The testkit steps `insert_energy` and `invoke_tile`, the probes `tile:`,
+   `player:container`, `player:pos`, `recipes:` and `entity_new:`, and a test tank fixture cover most machines without
+   any mod-specific code.
+4. **Regression and a real save.** The previous port's scenarios run again. A copy of a real world, with the full mod
+   pack, loads on a headless server, ticks for about two minutes and saves. Tile counts are then compared before and
+   after.
+
+Registry names are compared against the previously installed jar, so an update never drops a block or item from
+existing saves.
 
 ## Current limits
 

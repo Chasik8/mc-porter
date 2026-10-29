@@ -1,0 +1,112 @@
+# Tables of `porter match` (1.19.2 -> 1.7.10). General facts only: a synonym, a concept owner, a registry class;
+# never the answer for one symbol. A wrong decision is fixed here, not in code.
+schemaVersion: 1
+weights: {name: 0.45, arity: 0.15, ret: 0.20, params: 0.20}
+accept: 0.62          # min candidate score
+margin: 0.08          # best - second best
+lineageMin: 0.30      # min composed lineage confidence
+accessorPenalty: 0.05 # getter/setter -> field candidates
+synonyms:             # source name token -> target name tokens
+  level: [world]
+  blockentity: [tileentity]
+  block_entity: [tile_entity]
+  entity: [entity]
+  component: [chat, ichatcomponent]
+  compound: [nbttagcompound]
+  tag: [nbt, nbttag]
+  menu: [container]
+  screen: [gui]
+  player: [player]
+  mob: [living]
+  living: [living, entityliving]
+  save: [write]
+  load: [read]
+  additional: [nbt, to]
+  tick: [update]
+  remove: [invalidate]
+  item: [item]
+  stack: [stack]
+  count: [size]
+  damage: [damage]
+  hover: [display]
+  fluid: [fluid]
+  amount: [amount]
+  set: [set]
+  get: [get]
+  is: [is]
+  client: [remote]
+  side: [remote]
+  server: [server]
+  chunk: [chunk]
+  sound: [sound]
+  resource: [resource]
+  location: [location]
+  container: [inventory, iinventory]
+  size: [size, sizeinventory]
+  loaded: [exists]
+  style: [chatstyle, style]
+  copy: [copy]
+  inflate: [expand]
+  unride: [mount]
+  neighbor: [indirect, neighbor]
+  signal: [power, powered]
+  x: [x]
+  y: [y]
+  z: [z]
+  xrot: [pitch]
+  yrot: [yaw]
+  rot: [rotation]
+constantPrefixes: [soundtype]
+conceptOwners:         # source class without lineage -> target class carrying its members
+  'net.minecraft.network.chat.Component': net.minecraft.util.IChatComponent
+  'net.minecraft.network.chat.MutableComponent': net.minecraft.util.IChatComponent
+  'net.minecraft.network.chat.Style': net.minecraft.util.ChatStyle
+  'net.minecraft.world.level.LevelAccessor': net.minecraft.world.World
+  'net.minecraft.world.level.LevelReader': net.minecraft.world.World
+  'net.minecraft.world.level.LevelWriter': net.minecraft.world.World
+  'net.minecraft.world.level.CommonLevelAccessor': net.minecraft.world.World
+  'net.minecraft.world.level.BlockGetter': net.minecraft.world.IBlockAccess
+  'net.minecraft.world.level.block.state.BlockState': net.minecraft.block.Block
+  'net.minecraft.world.level.block.state.BlockBehaviour$BlockStateBase': net.minecraft.block.Block
+  'net.minecraft.world.level.block.state.BlockBehaviour': net.minecraft.block.Block
+  'net.minecraft.world.item.Items': net.minecraft.init.Items
+  'net.minecraft.world.level.block.Blocks': net.minecraft.init.Blocks
+  'net.minecraft.world.level.block.SoundType': net.minecraft.block.Block
+  'net.minecraft.world.item.enchantment.Enchantments': net.minecraft.enchantment.Enchantment
+  'net.minecraft.world.effect.MobEffect': net.minecraft.potion.Potion
+  'net.minecraft.world.effect.MobEffects': net.minecraft.potion.Potion
+  'net.minecraft.world.level.chunk.ChunkAccess': net.minecraft.world.chunk.Chunk
+  'net.minecraft.world.level.chunk.LevelChunk': net.minecraft.world.chunk.Chunk
+  'net.minecraft.world.Nameable': net.minecraft.command.ICommandSender
+  'net.minecraft.world.Clearable': net.minecraft.inventory.IInventory
+  'net.minecraft.world.level.material.FluidState': net.minecraft.block.Block
+registryOwners:
+  - net.minecraft.world.item.Items
+  - net.minecraft.world.level.block.Blocks
+  - net.minecraft.sounds.SoundEvents
+  - net.minecraft.world.item.enchantment.Enchantments
+  - net.minecraft.world.effect.MobEffects
+  - net.minecraft.world.level.material.Fluids
+  - net.minecraft.world.entity.EntityType
+  - net.minecraft.world.level.block.entity.BlockEntityType
+areas:                 # first match wins
+  - {area: blockstate, regex: 'net\.minecraft\.world\.level\.block\.state\.(?!BlockBehaviour\$Properties)|\.StateDefinition|\.properties\.'}
+  - {area: block-props, regex: 'BlockBehaviour\$Properties|\.material\.Material|SoundType'}
+  - {area: pos-dir, regex: 'net\.minecraft\.core\.(BlockPos|Vec3i|Direction|SectionPos|Position|AxisCycle|FrontAndTop)|\.phys\.(AABB|Vec3|BlockHitResult|HitResult|shapes)|com\.mojang\.math\.'}
+  - {area: holder-registry, regex: 'net\.minecraft\.core\.(Holder|Registry|HolderSet|IdMap|DefaultedRegistry|MappedRegistry|NonNullList)|\.resources\.|\.tags\.|ForgeRegistries|RegistryObject|DeferredRegister|IForgeRegistry|registries\.'}
+  - {area: component-text, regex: '\.network\.chat\.|ChatFormatting|\.locale\.'}
+  - {area: itemstack, regex: 'net\.minecraft\.world\.item\.(ItemStack|ItemLike|Item$|Item\$|Items|BlockItem|CreativeModeTab|Rarity|enchantment)|\.level\.ItemLike|\.world\.item\.'}
+  - {area: capabilities, regex: '\.common\.capabilities\.|\.common\.util\.LazyOptional|\.items\.(IItemHandler|ItemStackHandler|wrapper|CapabilityItemHandler)|\.energy\.|\.fluids\.capability'}
+  - {area: fluids, regex: '\.material\.(Fluid|FlowingFluid|Fluids)|net\.minecraftforge\.fluids\.'}
+  - {area: menus, regex: '\.world\.inventory\.|MenuType|\.world\.Container|\.world\.(SimpleContainer|WorldlyContainer|MenuProvider)|network\.IContainerFactory|NetworkHooks'}
+  - {area: client-gui, regex: '\.client\.gui\.|\.client\.Minecraft|\.client\.player|KeyMapping|InputConstants'}
+  - {area: rendering, regex: 'com\.mojang\.blaze3d\.|\.client\.renderer\.|\.client\.model\.|\.client\.resources\.|\.client\.particle|RenderType|\.client\.color'}
+  - {area: nbt, regex: 'net\.minecraft\.nbt\.'}
+  - {area: network, regex: '\.network\.(FriendlyByteBuf|protocol|syncher)|net\.minecraftforge\.network\.'}
+  - {area: level-world, regex: '\.world\.level\.(Level|LevelAccessor|BlockGetter|LevelReader|ServerLevelAccessor|chunk|ClipContext|Explosion|GameRules|LevelWriter|CommonLevelAccessor|biome|levelgen|saveddata|storage)|\.server\.level\.|\.world\.level\.(block\.entity\.)'}
+  - {area: block, regex: '\.world\.level\.block\.'}
+  - {area: entity, regex: '\.world\.entity\.|\.world\.damagesource|\.world\.effect'}
+  - {area: recipes-data, regex: '\.world\.item\.crafting|\.advancements|\.data\.|\.stats\.|loot|\.common\.crafting'}
+  - {area: events-loading, regex: 'net\.minecraftforge\.(event|eventbus|fml|common\.MinecraftForge|common\.ForgeHooks|client\.event)'}
+  - {area: sound, regex: '\.sounds\.'}
+  - {area: other, regex: '.'}

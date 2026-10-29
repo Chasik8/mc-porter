@@ -83,6 +83,13 @@ final class Plan {
      * ({@code forge:ingots/copper} → {@code ingotCopper}), else the tag id itself (reported).
      */
     String oreName(String tagId, String subject) {
+        String mappedOre = ctx.options.idMap().get("#" + tagId);
+        if (mappedOre != null) {
+            if (oreDictManifest.putIfAbsent(tagId, mappedOre) == null) {
+                ctx.info("oredict-derived", tagId, "tag -> OreDictionary " + mappedOre + " (--id-map tags)");
+            }
+            return mappedOre;
+        }
         Optional<IrNode.Tag> tag = ctx.ir.get(IrNode.Tag.class, tagId);
         if (tag.isPresent() && tag.get().oreDict() != null && !tag.get().oreDict().isEmpty()) {
             return tag.get().oreDict().get(0);

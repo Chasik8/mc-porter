@@ -1,0 +1,2 @@
+# registry dump of the synthetic host
+demomod:ore

@@ -23,7 +23,10 @@ application {
     applicationName = "porter"
     mainClass.set("dev.porter.cli.PorterMain")
     // Spoon needs a deep stack on large decompiled classes; heap: override with PORTER_OPTS=-Xmx...
-    applicationDefaultJvmArgs = listOf("-Xss16m", "-Xmx2g", "-Djdk.attach.allowAttachSelf=true")
+    // Free-ratio flags: the heap shrinks after the full GC porter runs before starting a child JVM (Proc.releaseHeap),
+    // so `porter port` does not hold its peak heap while rewrite/decompile/Gradle run (one run stays near 2 GB, not 3).
+    applicationDefaultJvmArgs = listOf("-Xss16m", "-Xmx2g", "-XX:MinHeapFreeRatio=10", "-XX:MaxHeapFreeRatio=30",
+            "-Djdk.attach.allowAttachSelf=true")
 }
 
 // porter-<version>.zip / install dir: launchers (bin/porter, bin/porter.bat), jars, plus the public rule packs,

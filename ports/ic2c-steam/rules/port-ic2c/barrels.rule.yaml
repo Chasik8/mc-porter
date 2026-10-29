@@ -69,3 +69,19 @@ tests:
   - before: "public class BarrelItem {\n    int a;\n}"
     after: "public class BarrelItem {\n    int a;\n\n    @Override\n    public boolean replacesClicked(net.minecraft.world.World w, int x, int y, int z, net.minecraft.item.ItemStack s) {\n        return w.getBlock(x, y, z) == net.minecraft.block.Block.getBlockFromItem(ic2.core.Ic2Items.scaffold.getItem());\n    }\n}"
 
+---
+schemaVersion: 1
+id: r-ic2c-barrels-drink-item-model-icons
+description: "IC2C IC2Drink (glass, mug; IItemModel): no model json, the sprite is picked per stack in code (getBasePath + drink texture, e.g. whisky by age). 1.7.10 icons come from getModelTypes/getSprite through the generic ItemSprites adapter instead of the registry-name icon"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  declaration: "ic2.core.item.food_and_drink.IC2Drink"
+edit:
+  appendMembers: "\n\n    // 1.7.10 icons from the 1.19.2 item model (getModelTypes + getSprite): ItemSprites adapter\n    @Override\n    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)\n    public void registerIcons(net.minecraft.client.renderer.texture.IIconRegister reg) {\n        this.itemIcon = dev.porter.shim.mc.client.ItemSprites.register(reg, this::getModelTypes, this::getSprite, this.getIconString());\n    }\n\n    @Override\n    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)\n    public net.minecraft.util.IIcon getIconIndex(net.minecraft.item.ItemStack stack) {\n        return dev.porter.shim.mc.client.ItemSprites.icon(stack, this::getSprite, this.itemIcon);\n    }\n\n    @Override\n    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)\n    public net.minecraft.util.IIcon getIcon(net.minecraft.item.ItemStack stack, int pass) {\n        return this.getIconIndex(stack);\n    }"
+confidence: 0.9
+provenance: { source: agent, ref: "p5/drinktex: glass/mug missing textures (37) in game" }
+tests:
+  - before: "public abstract class IC2Drink {\n    int a;\n}"
+    after: "public abstract class IC2Drink {\n    int a;\n\n    // 1.7.10 icons from the 1.19.2 item model (getModelTypes + getSprite): ItemSprites adapter\n    @Override\n    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)\n    public void registerIcons(net.minecraft.client.renderer.texture.IIconRegister reg) {\n        this.itemIcon = dev.porter.shim.mc.client.ItemSprites.register(reg, this::getModelTypes, this::getSprite, this.getIconString());\n    }\n\n    @Override\n    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)\n    public net.minecraft.util.IIcon getIconIndex(net.minecraft.item.ItemStack stack) {\n        return dev.porter.shim.mc.client.ItemSprites.icon(stack, this::getSprite, this.itemIcon);\n    }\n\n    @Override\n    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)\n    public net.minecraft.util.IIcon getIcon(net.minecraft.item.ItemStack stack, int pass) {\n        return this.getIconIndex(stack);\n    }\n}"

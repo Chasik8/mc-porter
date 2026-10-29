@@ -320,7 +320,13 @@ public final class TextRuleEngine implements RuleEngine {
                 values.put(recvName, recv);
             }
         } else if (recv != null) {
-            spanStart = hit; // rule does not talk about the receiver: keep it, replace only the member part
+            // The rule does not talk about the receiver: keep it, replace only the member part. Except for a static
+            // member written as Type.NAME whose replacement is a whole expression (Blocks.fire, Item.of(Blocks.x)):
+            // replacing only NAME would give Blocks.Blocks.fire.
+            boolean typeQualifier = s.owner() != null && recv.equals(simpleSource(s.owner())) && replace.matches("[\\w$.]*[.(].*");
+            if (!typeQualifier) {
+                spanStart = hit;
+            }
         }
         if (bind != null && bind.result() != null) {
             return FixAttempt.none("not-applicable:result-binding");

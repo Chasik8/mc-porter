@@ -37,7 +37,10 @@ public final class ClientFluids {
 
     public static ResourceLocation missingLocation() { return MISSING; }
 
-    /** Minecraft.getTextureAtlas(atlas): location -> sprite on the block atlas (fluid tokens -> fluid icons). */
+    /**
+     * Minecraft.getTextureAtlas(atlas): location -> sprite on the block atlas (fluid tokens -> fluid icons; "ns:item/x"
+     * -> the item atlas; inside ItemSprites.register the location is registered instead).
+     */
     public static Function<ResourceLocation, TextureAtlasSprite> atlas(Minecraft mc, ResourceLocation atlas) {
         return loc -> {
             TextureMap map = (TextureMap) mc.getTextureManager().getTexture(TextureMap.locationBlocksTexture);
@@ -46,6 +49,22 @@ public final class ClientFluids {
                 Fluid f = FluidRegistry.getFluid(p.substring(0, p.lastIndexOf('/')));
                 IIcon i = f == null ? null : p.endsWith("/flowing") ? f.getFlowingIcon() : f.getStillIcon();
                 if (i instanceof TextureAtlasSprite) return (TextureAtlasSprite) i;
+            }
+            // an item registering its 1.19.2 model sprites (ItemSprites.register): register the location on that atlas
+            TextureMap reg = ItemSprites.registering();
+            if (reg != null && loc != null && !MISSING.equals(loc)) {
+                String p = loc.getResourcePath();
+                p = p.startsWith("item/") ? "items/" + p.substring(5) : p.startsWith("block/") ? "blocks/" + p.substring(6) : p;
+                return AtlasSprites.register(reg, loc.getResourceDomain(), p);
+            }
+            // 1.19.2 item sprites ("ns:item/x") live on the 1.7.10 item atlas as "ns:x"
+            if (loc != null && loc.getResourcePath().startsWith("item/")) {
+                TextureMap items = (TextureMap) mc.getTextureManager().getTexture(TextureMap.locationItemsTexture);
+                if (items != null) {
+                    String n = loc.getResourceDomain() + ":" + loc.getResourcePath().substring(5);
+                    TextureAtlasSprite s = items.getTextureExtry(n);
+                    return s != null ? s : items.getAtlasSprite(n);
+                }
             }
             if (map == null) return null;
             if (loc == null || MISSING.equals(loc)) return map.getAtlasSprite("missingno");

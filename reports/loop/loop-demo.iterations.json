@@ -1,0 +1,87 @@
+{
+  "project" : "loop-demo",
+  "status" : "needs-agent",
+  "maxIter" : 10,
+  "compiles" : 2,
+  "rules" : 7,
+  "totals" : {
+    "errorsInitial" : 7,
+    "errorsInitialByClass" : {
+      "missing_class" : 5,
+      "missing_method" : 1,
+      "no_override" : 1
+    },
+    "errorsFinal" : 2,
+    "fixesApplied" : 3,
+    "fixesVerified" : 3,
+    "fixesPersisted" : 0,
+    "appliedByRule" : {
+      "r-1.19.2-1.7.10-demo-getint" : 1,
+      "r-1.19.2-1.7.10-demo-isclientside" : 1,
+      "r-1.19.2-1.7.10-demo-override-tick" : 1
+    },
+    "tasks" : 2,
+    "closedByRulesShare" : 0.714
+  },
+  "iterations" : [ {
+    "iteration" : 1,
+    "exitCode" : 1,
+    "errors" : 7,
+    "byClass" : {
+      "missing_class" : 5,
+      "missing_method" : 1,
+      "no_override" : 1
+    },
+    "fixesVerified" : 0,
+    "fixesPersisted" : [ ],
+    "fixesApplied" : [ {
+      "rule" : "r-1.19.2-1.7.10-demo-getint",
+      "file" : "src/main/java/com/example/demo/Machine.java",
+      "line" : 3,
+      "errorClass" : "missing_class",
+      "symbol" : "net.minecraft.nbt.CompoundTag"
+    }, {
+      "rule" : "r-1.19.2-1.7.10-demo-override-tick",
+      "file" : "src/main/java/com/example/demo/Machine.java",
+      "line" : 11,
+      "errorClass" : "no_override",
+      "symbol" : "net.minecraft.tileentity.TileEntity#tick()"
+    }, {
+      "rule" : "r-1.19.2-1.7.10-demo-isclientside",
+      "file" : "src/main/java/com/example/demo/Machine.java",
+      "line" : 13,
+      "errorClass" : "missing_method",
+      "symbol" : "World#isClientSide"
+    } ],
+    "deferred" : 0,
+    "notApplied" : {
+      "no-rule" : 2
+    }
+  }, {
+    "iteration" : 2,
+    "exitCode" : 1,
+    "errors" : 2,
+    "byClass" : {
+      "missing_class" : 2
+    },
+    "fixesVerified" : 3,
+    "fixesPersisted" : [ ],
+    "fixesApplied" : [ ],
+    "deferred" : 0,
+    "notApplied" : {
+      "no-rule" : 2
+    }
+  } ],
+  "tasks" : [ {
+    "reason" : "no-rule",
+    "id" : "t-62c311adba5b"
+  }, {
+    "reason" : "no-rule",
+    "id" : "t-59b2a7502b09"
+  } ],
+  "candidates" : {
+    "candidates" : 9,
+    "groups" : 6,
+    "drafts" : [ "r-1.19.2-1.7.10-draft-getx-175cac01", "r-1.19.2-1.7.10-draft-relative-77515bd3" ]
+  }
+}

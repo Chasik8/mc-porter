@@ -1,0 +1,93 @@
+# generic-client-gui: generic Minecraft/Forge 1.19.2 -> 1.7.10 mappings promoted from a port profile (no mod names).
+---
+schemaVersion: 1
+id: r-gen-tele-call-textureatlassprite-getname
+description: "call TextureAtlasSprite#getName() (a ResourceLocation) -> new ResourceLocation($s.getIconName())"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.client.renderer.texture.TextureAtlasSprite#getName()"
+  bind: { recv: "$s" }
+replace: "new ResourceLocation($s.getIconName())"
+imports: ["net.minecraft.util.ResourceLocation"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "TextureAtlasSprite s; import net.minecraft.client.renderer.texture.TextureAtlasSprite"
+    before: "Object n = s.getName();"
+    after: "Object n = new ResourceLocation(s.getIconName());"
+---
+schemaVersion: 1
+id: r-gen-widgets-abstractwidget-changefocus
+description: "call net.minecraft.client.gui.components.AbstractWidget#changeFocus(boolean) -> Widgets.changeFocus($w, $f)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.client.gui.components.AbstractWidget#changeFocus(boolean)"
+  bind: { recv: "$w", args: ["$f"] }
+replace: "Widgets.changeFocus($w, $f)"
+imports: ["dev.porter.shim.mc.Widgets"]
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "AbstractWidget w"
+    before: "w.changeFocus(false);"
+    after: "Widgets.changeFocus(w, false);"
+---
+schemaVersion: 1
+id: r-gen-widgets-screen-getfocused
+description: "call net.minecraft.client.gui.components.AbstractSelectionList#getFocused() -> Widgets.getFocused($g)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.client.gui.components.AbstractSelectionList#getFocused()"
+  bind: { recv: "$g" }
+replace: "Widgets.getFocused($g)"
+imports: ["dev.porter.shim.mc.Widgets"]
+confidence: 0.85
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "AbstractSelectionList g; import net.minecraft.client.gui.components.AbstractSelectionList"
+    before: "Object f = g.getFocused();"
+    after: "Object f = Widgets.getFocused(g);"
+---
+schemaVersion: 1
+id: r-gen-widgets-screen-setinitialfocus
+description: "call net.minecraft.client.gui.components.events.ContainerEventHandler#setInitialFocus(GuiEventListener) -> Widgets.setInitialFocus($g, $w)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.client.gui.components.events.ContainerEventHandler#setInitialFocus(net.minecraft.client.gui.components.events.GuiEventListener)"
+  bind: { recv: "$g", args: ["$w"] }
+replace: "Widgets.setInitialFocus($g, $w)"
+imports: ["dev.porter.shim.mc.Widgets"]
+confidence: 0.85
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "ContainerEventHandler g; GuiEventListener w; import net.minecraft.client.gui.components.events.ContainerEventHandler; import net.minecraft.client.gui.components.events.GuiEventListener"
+    before: "g.setInitialFocus(w);"
+    after: "Widgets.setInitialFocus(g, w);"
+---
+schemaVersion: 1
+id: r-gen-mc-call-texturemanager-gettexture
+description: "call net.minecraft.client.renderer.texture.TextureManager#getTexture(net.minecraft.resources.ResourceLocation) -> Textures.get($m, $a)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.client.renderer.texture.TextureManager#getTexture(net.minecraft.resources.ResourceLocation)"
+  bind: { recv: "$m", args: ["$a"] }
+replace: "Textures.get($m, $a)"
+imports: ["dev.porter.shim.mc.client.Textures"]
+priority: 6
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "TextureManager m; ResourceLocation a; import net.minecraft.client.renderer.texture.TextureManager; import net.minecraft.resources.ResourceLocation"
+    before: "Object t = m.getTexture(a);"
+    after: "Object t = Textures.get(m, a);"

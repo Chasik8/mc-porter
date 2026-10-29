@@ -59,6 +59,10 @@ closure:
   drop: [host.compat.]
   stubExtra: [host.api.IHeatSource]
   known: [../host-1.7.10-src/java]
+upfront:
+  jar: ../host-1.19.2.jar
+  data: ../porter/rules/upfront/1.19.2__1.7.10
+  workers: 4
 rewrite:
   rules: [../porter/rules/composite, ../porter/rules/packs/adapters, private-rules]
   graph: ["${CACHE}/graph/out"]

@@ -5277,3 +5277,39 @@ tests:
   - context: "FluidStack s; FluidStack o; import net.minecraftforge.fluids.FluidStack"
     before: "boolean b = s.isFluidEqual(o);"
     after: "boolean b = FluidStacks.isFluidEqual(s, o);"
+---
+schemaVersion: 1
+id: r-closure-mc-call-itemstack-getmaxdamage
+description: "call ItemStack#getMaxDamage() stays getMaxDamage() (the graph maps it to getMaxDurability, which does not exist in 1.7.10)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.item.ItemStack#getMaxDamage()"
+  bind: { recv: "$s" }
+replace: "$s.getMaxDamage()"
+priority: 10
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: graph edge 1.12.2 -> 1.7.10 pairs getMaxDamage with a non-existent getMaxDurability; pinned to the real MCP 1.7.10 name" }
+tests:
+  - context: "ItemStack s; import net.minecraft.world.item.ItemStack"
+    before: "int m = s.getMaxDamage();"
+    after: "int m = s.getMaxDamage();"
+---
+schemaVersion: 1
+id: r-closure-mc-call-item-getmaxdamage
+description: "call Item#getMaxDamage() stays getMaxDamage() (same wrong graph edge as ItemStack)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.item.Item#getMaxDamage()"
+  bind: { recv: "$i" }
+replace: "$i.getMaxDamage()"
+priority: 10
+confidence: 0.9
+provenance: { source: agent, ref: "porter closure port: graph edge 1.12.2 -> 1.7.10 pairs getMaxDamage with a non-existent getMaxDurability; pinned to the real MCP 1.7.10 name" }
+tests:
+  - context: "Item i; import net.minecraft.world.item.Item"
+    before: "int m = i.getMaxDamage();"
+    after: "int m = i.getMaxDamage();"

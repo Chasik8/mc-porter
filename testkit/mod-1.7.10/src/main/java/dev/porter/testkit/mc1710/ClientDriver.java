@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
@@ -55,6 +56,22 @@ final class ClientDriver extends GuiDriver {
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(h);
     }
 
+    /**
+     * Never touch the user's real mouse: vanilla {@code ungrabMouseCursor} warps the OS cursor to the window centre every time
+     * a GUI opens (FML's {@code -Dfml.noGrab} guards only the grab half), and the grab itself would capture it.
+     */
+    static final class NoGrabMouse extends net.minecraft.util.MouseHelper {
+        @Override
+        public void grabMouseCursor() {
+            deltaX = 0;
+            deltaY = 0;
+        }
+
+        @Override
+        public void ungrabMouseCursor() {
+        }
+    }
+
     public static final class Handler {
         @SubscribeEvent
         public void onClientTick(TickEvent.ClientTickEvent event) {
@@ -62,6 +79,9 @@ final class ClientDriver extends GuiDriver {
                 return;
             }
             Minecraft mc = Minecraft.getMinecraft();
+            if (!(mc.mouseHelper instanceof NoGrabMouse)) {
+                mc.mouseHelper = new NoGrabMouse();
+            }
             if (!launched) {
                 if (mc.currentScreen instanceof GuiMainMenu && ++menuTicks > 20) {
                     launched = true;
@@ -109,6 +129,12 @@ final class ClientDriver extends GuiDriver {
                 INSTANCE.renderEnd();
             }
         }
+    }
+
+    /** The block entity of the client world at a position (probe client_field), null when absent. */
+    static Object clientTile(int[] p) {
+        Minecraft mc = mc();
+        return mc.theWorld == null || p == null ? null : mc.theWorld.getTileEntity(p[0], p[1], p[2]);
     }
 
     private static Minecraft mc() {
@@ -164,6 +190,138 @@ final class ClientDriver extends GuiDriver {
                 .invoke(s, Integer.valueOf(x), Integer.valueOf(y), Integer.valueOf(button));
         ReflectionHelper.findMethod(GuiScreen.class, s, new String[] {"func_146286_b", "mouseMovedOrUp"}, int.class, int.class, int.class)
                 .invoke(s, Integer.valueOf(x), Integer.valueOf(y), Integer.valueOf(button));
+    }
+
+    @SuppressWarnings("unchecked")
+    private static List<Object> buttonList(GuiScreen gs) {
+        return ReflectionHelper.<List<Object>, GuiScreen>getPrivateValue(GuiScreen.class, gs, "field_146292_n", "buttonList");
+    }
+
+    private static Object field(Object o, String name) {
+        try {
+            return o.getClass().getField(name).get(o);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private static Object method(Object o, String name) {
+        try {
+            return o.getClass().getMethod(name).invoke(o);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private static int num(Object v, int dflt) {
+        return v instanceof Number ? ((Number) v).intValue() : dflt;
+    }
+
+    /**
+     * Pressable controls: the 1.7.10 {@code GuiScreen.buttonList} (kind "button", id = GuiButton.id) first, then the
+     * 1.19.2-style widgets of a ported screen (public list {@code renderables}; kind "widget"; id from the screen's public
+     * {@code getWidgets()} id -> widget map, when it has one).
+     */
+    @Override
+    protected JsonArray buttons(Object screen) {
+        JsonArray out = new JsonArray();
+        if (!(screen instanceof GuiScreen)) {
+            return out;
+        }
+        GuiScreen gs = (GuiScreen) screen;
+        for (Object o : buttonList(gs)) {
+            GuiButton b = (GuiButton) o;
+            JsonObject j = new JsonObject();
+            j.addProperty("index", Integer.valueOf(out.size()));
+            j.addProperty("kind", "button");
+            j.addProperty("id", Integer.valueOf(b.id));
+            j.addProperty("class", b.getClass().getName());
+            j.addProperty("label", b.displayString);
+            j.addProperty("x", Integer.valueOf(b.xPosition));
+            j.addProperty("y", Integer.valueOf(b.yPosition));
+            j.addProperty("width", Integer.valueOf(b.width));
+            j.addProperty("height", Integer.valueOf(b.height));
+            j.addProperty("active", Boolean.valueOf(b.enabled));
+            j.addProperty("visible", Boolean.valueOf(b.visible));
+            out.add(j);
+        }
+        java.util.IdentityHashMap<Object, Integer> ids = new java.util.IdentityHashMap<Object, Integer>();
+        Object map = method(screen, "getWidgets");
+        if (map instanceof java.util.Map) {
+            for (java.util.Map.Entry<?, ?> e : ((java.util.Map<?, ?>) map).entrySet()) {
+                if (e.getKey() instanceof Number) {
+                    ids.put(e.getValue(), Integer.valueOf(((Number) e.getKey()).intValue()));
+                }
+            }
+        }
+        Object list = field(screen, "renderables");
+        if (list instanceof List) {
+            for (Object w : (List<?>) list) {
+                if (w == null || field(w, "x") == null || method(w, "getWidth") == null) {
+                    continue;
+                }
+                JsonObject j = new JsonObject();
+                j.addProperty("index", Integer.valueOf(out.size()));
+                j.addProperty("kind", "widget");
+                if (ids.containsKey(w)) {
+                    j.addProperty("id", ids.get(w));
+                }
+                j.addProperty("class", w.getClass().getName());
+                Object msg = method(w, "getMessage");
+                if (msg instanceof net.minecraft.util.IChatComponent) {
+                    j.addProperty("label", ((net.minecraft.util.IChatComponent) msg).getUnformattedText());
+                }
+                j.addProperty("x", Integer.valueOf(num(field(w, "x"), 0)));
+                j.addProperty("y", Integer.valueOf(num(field(w, "y"), 0)));
+                j.addProperty("width", Integer.valueOf(num(method(w, "getWidth"), 0)));
+                j.addProperty("height", Integer.valueOf(num(method(w, "getHeight"), 0)));
+                j.addProperty("active", Boolean.valueOf(!Boolean.FALSE.equals(field(w, "active"))));
+                j.addProperty("visible", Boolean.valueOf(!Boolean.FALSE.equals(field(w, "visible"))));
+                out.add(j);
+            }
+        }
+        return out;
+    }
+
+    @Override
+    protected String press(Object screen, JsonObject sel) throws Exception {
+        JsonArray list = buttons(screen);
+        int at = selectButton(list, sel);
+        if (at < 0) {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < list.size(); i++) {
+                JsonObject b = list.get(i).getAsJsonObject();
+                sb.append(" [").append(b.get("index").getAsInt()).append(' ').append(b.get("kind").getAsString());
+                if (b.has("id")) {
+                    sb.append(" id=").append(b.get("id").getAsInt());
+                }
+                if (b.has("label")) {
+                    sb.append(" \"").append(b.get("label").getAsString()).append('"');
+                }
+                sb.append(']');
+            }
+            throw new IllegalStateException("no control matches " + sel + " on " + screen.getClass().getName() + "; it has "
+                    + list.size() + ":" + sb);
+        }
+        JsonObject b = list.get(at).getAsJsonObject();
+        if (!b.get("visible").getAsBoolean() || !b.get("active").getAsBoolean()) {
+            throw new IllegalStateException("control " + b + " is " + (b.get("visible").getAsBoolean() ? "disabled" : "hidden"));
+        }
+        boolean isButton = b.get("kind").getAsString().equals("button");
+        String via = Executor.str(sel, "via", isButton ? "call" : "click");
+        if (via.equals("call")) {
+            if (!isButton) {
+                throw new IllegalStateException("via: call needs a GuiButton (buttonList); use via: click for widgets");
+            }
+            GuiScreen gs = (GuiScreen) screen;
+            ReflectionHelper.findMethod(GuiScreen.class, gs, new String[] {"func_146284_a", "actionPerformed"}, GuiButton.class)
+                    .invoke(gs, buttonList(gs).get(at));
+        } else {
+            int cx = b.get("x").getAsInt() + b.get("width").getAsInt() / 2;
+            int cy = b.get("y").getAsInt() + b.get("height").getAsInt() / 2;
+            click(screen, cx, cy, 0);
+        }
+        return "press " + via + " " + b;
     }
 
     @Override

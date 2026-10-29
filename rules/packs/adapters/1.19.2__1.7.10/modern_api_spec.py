@@ -536,8 +536,82 @@ def fluid_tanks():
     return R
 
 
+def networking():
+    R = Rules('networking', 'Forge 1.19.2 networking (SimpleChannel, PacketDistributor, NetworkEvent.Context) -> SimpleChannel & co.: one\n'
+              '1.7.10 SimpleNetworkWrapper per channel, every message is wrapped in one generic IMessage (id + encoded bytes).\n'
+              'The adapters keep the 1.19.2 member shape: type rules plus an identity rule per member (registerMessage, send,\n'
+              'sendToServer, reply, PLAYER/ALL/SERVER/DIMENSION/TRACKING_CHUNK/TRACKING_ENTITY(_AND_SELF)/NEAR, with/noArg,\n'
+              'TargetPoint, getSender, enqueueWork, setPacketHandled).')
+    R.type(F + 'network.simple.SimpleChannel', S + 'SimpleChannel')
+    R.type(F + 'network.NetworkRegistry', S + 'NetworkRegistry')
+    R.type(F + 'network.NetworkDirection', S + 'NetworkDirection')
+    R.type(F + 'network.PacketDistributor', S + 'PacketDistributor')
+    for n in ('PacketTarget', 'TargetPoint'):
+        R.type(F + 'network.PacketDistributor$' + n, S + 'PacketDistributor.' + n,
+               test=(None, 'import net.minecraftforge.network.PacketDistributor.' + n + ';', 'import dev.porter.shim.mc.PacketDistributor.' + n + ';'))
+    R.type(F + 'network.NetworkEvent', S + 'NetworkEvent')
+    R.type(F + 'network.NetworkEvent$Context', S + 'NetworkEvent.Context',
+           test=(None, 'import net.minecraftforge.network.NetworkEvent.Context;', 'import dev.porter.shim.mc.NetworkEvent.Context;'))
+    # Members: the adapters have the 1.19.2 member shape, but the engine reports a member of a platform type
+    # without a rule (TODO no-rule), so every member the channel code uses gets an identity rule onto the adapter.
+    N = F + 'network.'
+    SC, PD, NE, TP = N + 'simple.SimpleChannel', N + 'PacketDistributor', N + 'NetworkEvent$Context', N + 'PacketDistributor$TargetPoint'
+    sc_ctx = 'SimpleChannel c; import net.minecraftforge.network.simple.SimpleChannel'
+    R.call(N + 'NetworkRegistry#newSimpleChannel(' + MC + 'resources.ResourceLocation, java.util.function.Supplier, java.util.function.Predicate, java.util.function.Predicate)',
+           'NetworkRegistry.newSimpleChannel($n, $v, $a, $b)',
+           ('ResourceLocation n; java.util.function.Supplier<String> v; java.util.function.Predicate<String> a; import net.minecraftforge.network.NetworkRegistry; import net.minecraft.resources.ResourceLocation',
+            'Object c = NetworkRegistry.newSimpleChannel(n, v, a, a);', 'Object c = NetworkRegistry.newSimpleChannel(n, v, a, a);'),
+           args=['$n', '$v', '$a', '$b'], imports=[S + 'NetworkRegistry'])
+    ARGS5 = ['$i', '$t', '$e', '$d', '$h']
+    reg = 'java.util.function.BiConsumer, java.util.function.Function, java.util.function.BiConsumer'
+    rctx = sc_ctx + '; java.util.function.BiConsumer e; java.util.function.Function d; java.util.function.BiConsumer h'
+    R.call(SC + '#registerMessage(int, java.lang.Class, ' + reg + ')', '$c.registerMessage($i, $t, $e, $d, $h)',
+           (rctx, 'c.registerMessage(1, String.class, e, d, h);', 'c.registerMessage(1, String.class, e, d, h);'),
+           recv='$c', args=ARGS5)
+    R.call(SC + '#registerMessage(int, java.lang.Class, ' + reg + ', java.util.Optional)', '$c.registerMessage($i, $t, $e, $d, $h, $o)',
+           (rctx + '; java.util.Optional o', 'c.registerMessage(1, String.class, e, d, h, o);', 'c.registerMessage(1, String.class, e, d, h, o);'),
+           recv='$c', args=ARGS5 + ['$o'], slug='call-SimpleChannel-registerMessage-direction')
+    R.call(SC + '#send(' + PD + '$PacketTarget, java.lang.Object)', '$c.send($t, $m)',
+           (sc_ctx + '; PacketTarget t; import net.minecraftforge.network.PacketDistributor.PacketTarget', 'c.send(t, "x");', 'c.send(t, "x");'),
+           recv='$c', args=['$t', '$m'])
+    R.call(SC + '#sendToServer(java.lang.Object)', '$c.sendToServer($m)',
+           (sc_ctx, 'c.sendToServer("x");', 'c.sendToServer("x");'), recv='$c', args=['$m'])
+    R.call(SC + '#reply(java.lang.Object, ' + NE + ')', '$c.reply($m, $x)',
+           (sc_ctx + '; Context x; import net.minecraftforge.network.NetworkEvent.Context', 'c.reply("x", x);', 'c.reply("x", x);'),
+           recv='$c', args=['$m', '$x'])
+    for k in ('PLAYER', 'ALL', 'SERVER', 'DIMENSION', 'TRACKING_CHUNK', 'TRACKING_ENTITY', 'TRACKING_ENTITY_AND_SELF', 'NEAR'):
+        R.field(PD + '#' + k, 'PacketDistributor.' + k,
+                ('import net.minecraftforge.network.PacketDistributor', 'Object d = PacketDistributor.' + k + ';', 'Object d = PacketDistributor.' + k + ';'),
+                imports=[S + 'PacketDistributor'])
+    pd_ctx = 'PacketDistributor d; java.util.function.Supplier s; import net.minecraftforge.network.PacketDistributor'
+    R.call(PD + '#with(java.util.function.Supplier)', '$d.with($s)', (pd_ctx, 'Object t = d.with(s);', 'Object t = d.with(s);'),
+           recv='$d', args=['$s'])
+    R.call(PD + '#noArg()', '$d.noArg()', (pd_ctx, 'Object t = d.noArg();', 'Object t = d.noArg();'), recv='$d')
+    R.new(TP + '(double, double, double, double, ' + MC + 'resources.ResourceKey)', 'new PacketDistributor.TargetPoint($x, $y, $z, $r, $k)',
+          ('ResourceKey k; import net.minecraftforge.network.PacketDistributor; import net.minecraft.resources.ResourceKey',
+           'Object t = new PacketDistributor.TargetPoint(1.0, 2.0, 3.0, 4.0, k);', 'Object t = new PacketDistributor.TargetPoint(1.0, 2.0, 3.0, 4.0, k);'),
+          args=['$x', '$y', '$z', '$r', '$k'], imports=[S + 'PacketDistributor'], slug='new-TargetPoint-5')
+    R.new(TP + '(' + MC + 'server.level.ServerPlayer, double, double, double, double, ' + MC + 'resources.ResourceKey)',
+          'new PacketDistributor.TargetPoint($p, $x, $y, $z, $r, $k)',
+          ('ResourceKey k; ServerPlayer p; import net.minecraftforge.network.PacketDistributor; import net.minecraft.resources.ResourceKey; import net.minecraft.server.level.ServerPlayer',
+           'Object t = new PacketDistributor.TargetPoint(p, 1.0, 2.0, 3.0, 4.0, k);', 'Object t = new PacketDistributor.TargetPoint(p, 1.0, 2.0, 3.0, 4.0, k);'),
+          args=['$p', '$x', '$y', '$z', '$r', '$k'], imports=[S + 'PacketDistributor'], slug='new-TargetPoint-6')
+    R.call(TP + '#p(double, double, double, double, ' + MC + 'resources.ResourceKey)', 'PacketDistributor.TargetPoint.p($x, $y, $z, $r, $k)',
+           ('ResourceKey k; import net.minecraftforge.network.PacketDistributor; import net.minecraft.resources.ResourceKey',
+            'Object t = PacketDistributor.TargetPoint.p(1.0, 2.0, 3.0, 4.0, k);', 'Object t = PacketDistributor.TargetPoint.p(1.0, 2.0, 3.0, 4.0, k);'),
+           args=['$x', '$y', '$z', '$r', '$k'], imports=[S + 'PacketDistributor'])
+    ctx = 'Context x; import net.minecraftforge.network.NetworkEvent.Context'
+    R.call(NE + '#getSender()', '$x.getSender()', (ctx, 'Object p = x.getSender();', 'Object p = x.getSender();'), recv='$x')
+    R.call(NE + '#getDirection()', '$x.getDirection()', (ctx, 'Object p = x.getDirection();', 'Object p = x.getDirection();'), recv='$x')
+    R.call(NE + '#enqueueWork(java.lang.Runnable)', '$x.enqueueWork($r)', (ctx + '; Runnable r', 'Object f = x.enqueueWork(r);', 'Object f = x.enqueueWork(r);'),
+           recv='$x', args=['$r'])
+    R.call(NE + '#setPacketHandled(boolean)', '$x.setPacketHandled($b)', (ctx, 'x.setPacketHandled(true);', 'x.setPacketHandled(true);'), recv='$x', args=['$b'])
+    R.call(NE + '#getPacketHandled()', '$x.getPacketHandled()', (ctx, 'boolean h = x.getPacketHandled();', 'boolean h = x.getPacketHandled();'), recv='$x')
+    return R
+
+
 if __name__ == '__main__':
     n = 0
-    for f in (modloading, capabilities, entities, commands, items_blocks, world, chat_sides, food_effects, fluid_tanks):
+    for f in (modloading, capabilities, entities, commands, items_blocks, world, chat_sides, food_effects, fluid_tanks, networking):
         n += f().write()
     print(f'total {n} rules')

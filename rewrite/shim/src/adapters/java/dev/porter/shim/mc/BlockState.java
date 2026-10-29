@@ -36,6 +36,10 @@ public final class BlockState {
     /** the canonical state of any 1.7.10 block + metadata. */
     public static BlockState of(Block b, int meta) {
         if (b == null) b = Blocks.air;
+        if (b instanceof MetaBlock) {
+            meta = ((MetaBlock) b).meta;
+            b = ((MetaBlock) b).host;
+        }
         if (b instanceof IStateBlock) {
             IStateBlock sb = (IStateBlock) b;
             return sb.getStateDefinition().fromMeta(meta, sb.defaultBlockState());
@@ -60,7 +64,7 @@ public final class BlockState {
     /** 1.7.10 metadata of this state. */
     public int getMeta() { return def != null ? def.toMeta(this) : legacyMeta; }
 
-    public boolean is(Block b) { return getBlock() == b; }
+    public boolean is(Block b) { return MetaBlock.matches(b, getBlock(), getMeta()); }
 
     public boolean is(TagKey<?> tag) { return tag != null && tag.contains(getBlock()); }
 

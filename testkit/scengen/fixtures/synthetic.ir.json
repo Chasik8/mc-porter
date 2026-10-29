@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "source": "synthetic",
+  "nodes": [
+    {"kind": "menu", "id": "demo:press", "size": {"width": 176, "height": 166},
+     "slots": [{"index": 0, "x": 56, "y": 53, "role": "battery"}, {"index": 1, "x": 56, "y": 17}, {"index": 2, "x": 116, "y": 35}, {"index": 3, "x": 152, "y": 8, "role": "upgrade"}],
+     "bars": [{"id": "progress", "x": 79, "y": 34, "width": 24, "height": 16, "value": "progress"}]},
+    {"kind": "recipe", "id": "demo:press_a", "recipeType": "custom", "customType": "demo:pressing", "ingredients": [{"item": "demo:ore_a"}], "results": [{"item": "demo:plate_a"}]},
+    {"kind": "recipe", "id": "demo:press_b", "recipeType": "custom", "customType": "demo:pressing", "ingredients": [{"item": "demo:ore_b", "count": 2}], "results": [{"item": "demo:plate_b"}]},
+    {"kind": "recipe", "id": "demo:press_c", "recipeType": "custom", "customType": "demo:pressing", "ingredients": [{"tag": "forge:ores/c"}], "results": [{"item": "demo:plate_c"}]},
+    {"kind": "recipe", "id": "demo:press_d", "recipeType": "custom", "customType": "demo:pressing", "ingredients": [{"tag": "forge:ores/unknown"}], "results": [{"item": "demo:plate_d"}]},
+    {"kind": "recipe", "id": "demo:press_e", "recipeType": "custom", "customType": "demo:pressing", "ingredients": [{"item": "demo:ore_a"}, {"item": "demo:ore_b"}], "results": [{"item": "demo:plate_e"}]},
+    {"kind": "recipe", "id": "demo:press_f", "recipeType": "custom", "customType": "demo:pressing", "ingredients": [{"item": "demo:missing"}], "results": [{"item": "demo:plate_f"}]},
+    {"kind": "recipe", "id": "demo:smelt_a", "recipeType": "blasting", "ingredients": [{"item": "demo:ore_a"}], "result": {"item": "demo:ingot_a"}, "cookingTime": 100},
+    {"kind": "recipe", "id": "demo:wash_a", "recipeType": "custom", "customType": "demo:refining", "machines": ["demo:washer"], "ingredients": [{"item": "demo:ore_a"}], "results": [{"item": "demo:clean_a"}], "fluidIngredients": [{"fluid": "minecraft:water", "amount": 100}]},
+    {"kind": "recipe", "id": "demo:still_a", "recipeType": "custom", "customType": "demo:refining", "machines": ["demo:still"], "ingredients": [{"item": "demo:ore_b"}], "fluidResults": [{"fluid": "demo:spirit", "amount": 50}], "fluidIngredients": [{"fluid": "minecraft:water", "amount": 100}]}
+  ]
+}

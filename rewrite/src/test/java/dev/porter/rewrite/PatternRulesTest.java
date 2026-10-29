@@ -126,4 +126,48 @@ class PatternRulesTest {
         String out = plain.rewrite(List.of(new Rewriter.SourceFile("old/api/Tile.java", code, true))).files().get(0).text();
         assertTrue(out.contains("extends Location, old.api.Tile {") && out.indexOf('') < 0, out);
     }
+
+    static final String CASTS = """
+            package p;
+
+            public class B {
+                Object block;
+                Object state;
+                void run(Object state, Object block) {
+                    Pickup bucket = (Pickup) block;
+                    Pumps.pickupBlock(((Pickup) state.getBlock()), 1, 2);
+                    int n = ((Pickup) state.getBlock()).count();
+                    Other o = (Other) block;
+                }
+            }
+            """;
+
+    @Test
+    void castPatternsConsumeTheCastAndBindTypes() {
+        Rule decl = rule("r-test-cast-decl", pattern("Pickup $v = (Pickup) $e;"), "Object $v = $e;", null, null, null);
+        Rule arg = rule("r-test-cast-arg", pattern("Pumps.pickupBlock((Pickup) $e, $a, $b)"), "Pumps.pickupBlock($e, $a, $b)", null, null, null);
+        Rule recv = rule("r-test-cast-recv", pattern("((Pickup) $e).count()"), "Counts.of($e)", null, null, null);
+        String out = TestSupport.rewrite(List.of(decl, arg, recv), TestSupport.srgNames(), CASTS).text();
+        assertTrue(out.contains("Object bucket = block;"), out);
+        assertTrue(out.contains("Pumps.pickupBlock(state.getBlock(), 1, 2);"), out);
+        assertTrue(out.contains("int n = Counts.of(state.getBlock());"), out);
+        assertTrue(out.contains("Other o = (Other) block;"), out);
+    }
+
+    @Test
+    void typeMetavariablesMatchAnyTypeConsistently() {
+        Rule r = rule("r-test-cast-meta", pattern("$T $v = ($T) $e;"), "Object $v = $e; // was $T", null, null, null);
+        String out = TestSupport.rewrite(List.of(r), TestSupport.srgNames(), CASTS).text();
+        assertTrue(out.contains("Object bucket = block; // was Pickup"), out);
+        assertTrue(out.contains("Object o = block; // was Other"), out);
+        String mixed = CASTS.replace("Other o = (Other) block;", "Other o = (Pickup) block;");
+        assertTrue(TestSupport.rewrite(List.of(r), TestSupport.srgNames(), mixed).text().contains("Other o = (Pickup) block;"));
+    }
+
+    @Test
+    void aCastlessPatternStillIgnoresTargetCasts() {
+        Rule r = rule("r-test-nocast", pattern("Pumps.pickupBlock($e, $a, $b)"), "Pumps.take($e, $a, $b)", null, null, null);
+        String out = TestSupport.rewrite(List.of(r), TestSupport.srgNames(), CASTS).text();
+        assertTrue(out.contains("Pumps.take(((Pickup) state.getBlock()), 1, 2);") || out.contains("Pumps.take((Pickup) state.getBlock(), 1, 2);"), out);
+    }
 }

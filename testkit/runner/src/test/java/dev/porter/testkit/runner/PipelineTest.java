@@ -32,6 +32,40 @@ class PipelineTest {
     final IdMap ids1710 = IdMap.read(res("ids-1.7.10.yaml"));
 
     @Test
+    void breakBlockAndExplodeStepsCompileToOps() {
+        Scenario sc2 = Scenario.read(res("break.scenario.yaml")).get(0);
+        ObjectNode plan = new PlanCompiler(sc2, "forge-1.7.10", ids1710, ir).compile();
+        JsonNode player = plan.path("ops").get(1);
+        assertEquals("break", player.path("op").asString());
+        assertEquals("player", player.path("by").asString());
+        assertEquals(true, player.has("holding"));
+        assertEquals(true, player.path("drops").asBoolean());
+        JsonNode world = plan.path("ops").get(3);
+        assertEquals("world", world.path("by").asString());
+        assertEquals(false, world.path("drops").asBoolean());
+        JsonNode boom = plan.path("ops").get(4);
+        assertEquals("explode", boom.path("op").asString());
+        assertEquals(3.0, boom.path("power").asDouble());
+        assertEquals(true, boom.path("fire").asBoolean());
+        assertEquals(true, boom.path("destroy").asBoolean());
+    }
+
+    @Test
+    void insertEnergyStepCompilesToAnEnergyOp() {
+        Scenario energy = Scenario.read(res("energy.scenario.yaml")).get(0);
+        ObjectNode plan = new PlanCompiler(energy, "forge-1.7.10", ids1710, ir).compile();
+        JsonNode op = plan.path("ops").get(1);
+        assertEquals("energy", op.path("op").asString());
+        assertEquals(128.5, op.path("amount").asDouble());
+        assertEquals(32.0, op.path("voltage").asDouble());
+        assertEquals("up", op.path("side").asString());
+        JsonNode call = plan.path("ops").get(3);
+        assertEquals("invoke", call.path("op").asString());
+        assertEquals("onClientDataReceived", call.path("method").asString());
+        assertEquals("$player", call.path("args").get(0).asString());
+    }
+
+    @Test
     void compilesPlanWithRotatedMultiblockIdsAndImplicitSamples() {
         ObjectNode plan = new PlanCompiler(sc, "forge-1.7.10", ids1710, ir).compile();
         JsonNode ops = plan.path("ops");

@@ -1,0 +1,14 @@
+class	net.minecraft.dst.Box	java.lang.Object		1
+class	net.minecraft.dst.Plain	java.lang.Object		1
+class	net.minecraft.dst.Zed	java.lang.Object		1
+class	b.other.Zed	java.lang.Object		1
+class	a.src.Same	java.lang.Object		1
+member	net.minecraft.dst.Box	method	size	()I	1
+member	net.minecraft.dst.Box	method	put	(III)V	1
+member	net.minecraft.dst.Box	method	fill	(I)V	1
+member	net.minecraft.dst.Box	method	hidden	()V	2
+member	net.minecraft.dst.Box	method	visible	()V	1
+member	net.minecraft.dst.Box	method	expand	()V	1
+member	net.minecraft.dst.Box	method	extend	()V	1
+member	net.minecraft.dst.Box	field	full	Z	1
+member	net.minecraft.dst.Box	method	<init>	()V	1

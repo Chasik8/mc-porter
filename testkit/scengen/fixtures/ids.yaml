@@ -1,0 +1,15 @@
+version: forge-1.7.10
+blocks:
+  demo:press: "demomod:press"
+items:
+  demo:ore_a: "demomod:ore@0"
+  demo:ore_b: "demomod:ore@1"
+  demo:ore_c: "demomod:ore@2"
+  demo:plate_a: "demomod:plate@0"
+  demo:plate_b: "demomod:plate@1"
+  demo:plate_c: "demomod:plate@2"
+  demo:plate_e: "demomod:plate@4"
+  demo:ingot_a: "demomod:ingot@0"
+  demo:clean_a: "demomod:clean@0"
+fluids:
+  demo:spirit: "spirit"

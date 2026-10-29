@@ -375,6 +375,43 @@ final class Platform1192 implements Executor.Platform {
     }
 
     @Override
+    public String breakBlock(JsonObject op) {
+        int[] p = Executor.pos(op, "at");
+        BlockPos pos = bp(p);
+        boolean drops = !op.has("drops") || op.get("drops").getAsBoolean();
+        String by = Executor.str(op, "by", "player");
+        boolean ok;
+        if (by.equals("world")) {
+            ok = !level.isEmptyBlock(pos);
+            level.destroyBlock(pos, drops);
+        } else {
+            FakePlayer pl = player();
+            pl.setPos(p[0] + 0.5, p[1] + 1.5, p[2] + 0.5);
+            stashHand(pl);
+            if (op.has("holding")) {
+                JsonObject h = op.getAsJsonObject("holding");
+                pl.setItemInHand(InteractionHand.MAIN_HAND, stack(h, Executor.integer(h, "count", 1)));
+            } else {
+                pl.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+            }
+            ok = pl.gameMode.destroyBlock(pos);
+            stashHand(pl);
+        }
+        return "break " + by + " " + ok;
+    }
+
+    @Override
+    public String explode(JsonObject op) {
+        int[] p = Executor.pos(op, "at");
+        float power = op.has("power") ? op.get("power").getAsFloat() : 4.0f;
+        boolean fire = op.has("fire") && op.get("fire").getAsBoolean();
+        boolean destroy = !op.has("destroy") || op.get("destroy").getAsBoolean();
+        level.explode(null, p[0] + 0.5, p[1] + 0.5, p[2] + 0.5, power, fire,
+                destroy ? net.minecraft.world.level.Explosion.BlockInteraction.DESTROY : net.minecraft.world.level.Explosion.BlockInteraction.NONE);
+        return "explode power " + power;
+    }
+
+    @Override
     public String interact(JsonObject op) {
         int[] p = Executor.pos(op, "at");
         BlockPos pos = bp(p);

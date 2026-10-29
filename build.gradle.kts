@@ -7,7 +7,7 @@ allprojects {
     // Distinct coordinates for same-named projects (extract:forge-1.19.2 vs generate:forge-1.19.2),
     // otherwise Gradle treats them as one module and drops one from the CLI distribution.
     group = if (parent == null || parent == rootProject) "dev.porter" else "dev.porter.${parent!!.name}"
-    version = "0.2.0"
+    version = "0.3.0"
 }
 
 subprojects {

@@ -15,6 +15,14 @@ status=0
 mapfile -t logs < <(find "$work" -name console.log 2>/dev/null | sort)
 if [ "${#logs[@]}" -eq 0 ]; then echo "smoke-log-check: no console.log under $work (the server did not run?)"; exit 1; fi
 for log in "${logs[@]}"; do
+  # the scenario player has no network channel: an opened GUI / sent packet ends in an NPE inside FML's outbound handler
+  # (environment, not the mod): drop those two-line blocks before scanning
+  filtered="$(mktemp)"
+  awk '{ if (skip) { if ($0 ~ /[ 	]at [A-Za-z]/) next; skip = 0 }
+         if (held != "") { if ($0 ~ /FMLOutboundHandler/) { held = ""; skip = 1; next } print held; held = "" }
+         if ($0 ~ /java\.lang\.NullPointerException$/) { held = $0; next } print }
+       END { if (held != "") print held }' "$log" > "$filtered"
+  scan="$log"; log="$filtered"
   hits="$(grep -E "$fatal" "$log" | grep -Evf "$here/smoke-log-allow.txt" || true)"
   for p in "${prefixes[@]}"; do
     [ -n "$p" ] || continue
@@ -23,11 +31,11 @@ for log in "${logs[@]}"; do
   done
   hits="$(printf '%s\n' "$hits" | sed '/^$/d' | head -20)"
   if [ -n "$hits" ]; then
-    echo "::error::exceptions in the server log $log"
+    echo "::error::exceptions in the server log $scan"
     printf '%s\n' "$hits" | sed 's/^/    /'
     status=1
   else
-    echo "ok: no exceptions in $log"
+    echo "ok: no exceptions in $scan"
   fi
 done
 exit $status

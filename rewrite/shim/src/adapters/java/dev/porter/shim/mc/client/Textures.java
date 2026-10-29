@@ -12,6 +12,9 @@ public final class Textures {
 
     /** The texture object of a location, loaded on first use (a missing file becomes the missing texture). */
     public static ITextureObject get(TextureManager tm, ResourceLocation loc) {
+        if (loc == null) {
+            loc = net.minecraft.client.renderer.texture.TextureMap.locationBlocksTexture; // a GUI without a texture draws nothing
+        }
         ITextureObject t = tm.getTexture(loc);
         if (t == null) {
             t = new SimpleTexture(loc);

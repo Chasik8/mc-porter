@@ -13,7 +13,7 @@ are shown for Linux (`run.sh`, `bin/porter`); on Windows use `run.bat` and `bin\
   example `ports/torchmaster/run.sh`, 25 to 30 minutes the first time). That run does the one-time setup your port
   reuses: Java 21, the symbol graph, Forge, the 1.7.10 build environment, all under `.porter/`.
 - To call `bin/porter` directly (step 1) you need Java 21 on `JAVA_HOME`. If porter downloaded its own, it is
-  `.porter/jdk-21/jdk-21.0.12.1+1` (Windows: `set JAVA_HOME=C:\porter-0.2.0\.porter\jdk-21\jdk-21.0.12.1+1`).
+  `.porter/jdk-21/jdk-21.0.12.1+1` (Windows: `set JAVA_HOME=C:\porter-0.3.0\.porter\jdk-21\jdk-21.0.12.1+1`).
   `run.sh` / `run.bat` find it by themselves.
 
 ## 1. Measure the coverage
@@ -106,6 +106,24 @@ existing rules already cover, which `porter coverage` tells you up front):
 
 A rule written once is reused by every later port: the second port above needed noticeably fewer new rules than the
 first. If you share your port back, the next person pays less.
+
+### Check before you run
+
+A full `porter port` run takes minutes and a third of the runs fail at compile. After one full run, run
+`porter precheck --config port.yaml` after every change of a rule, overlay or edit and before the next full run:
+
+```
+porter precheck --config port.yaml            # changes found against the last full run (work/precheck/baseline.json)
+porter precheck --config port.yaml --changed rules/mymod/blocks.rule.yaml,overlays/Foo.java
+porter precheck --config port.yaml --class com.example.Foo   # also check this closure class
+porter precheck --config port.yaml --rules-only              # rule files only, seconds
+porter precheck --config port.yaml --baseline                # mark the current rules/overlays/edits as built
+```
+
+It validates the rule files (schema, duplicate ids, same-priority conflicts), rewrites only the affected classes, applies
+the install passes and the loop, and compiles them against the last build. Exit code 1 and the same stage lines as a full
+run on failure; the normalised error classes are in `work/precheck/error-classes.tsv`. It does not see classes that only
+use a changed class, hub stubs or the build stage: a green precheck still ends with a full run.
 
 ## 7. Write scenarios
 

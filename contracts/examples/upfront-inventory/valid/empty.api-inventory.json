@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "from": "forge-1.19.2",
+  "scope": "whole",
+  "symbols": [],
+  "summary": {
+    "types": 0,
+    "members": 0,
+    "byOrigin": {}
+  }
+}

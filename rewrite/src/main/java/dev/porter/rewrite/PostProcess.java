@@ -62,9 +62,15 @@ public final class PostProcess {
 
     /** FQN → new FQN of every top-level class in the rewritten files that a relocation applies to. */
     public static Map<String, String> relocationTable(List<Rewriter.FileResult> files, List<Relocation> relocs) {
+        return relocationTable(files, relocs, List.of());
+    }
+
+    /** As above; {@code known}: further classes (dotted names) that are rewritten elsewhere (another run of the same port) and relocate too. */
+    public static Map<String, String> relocationTable(List<Rewriter.FileResult> files, List<Relocation> relocs, List<String> known) {
         Map<String, String> t = new TreeMap<>();
-        for (Rewriter.FileResult f : files) {
-            String fqn = fqnOf(f.path());
+        List<String> fqns = new java.util.ArrayList<>(files.stream().map(f -> fqnOf(f.path())).toList());
+        fqns.addAll(known);
+        for (String fqn : fqns) {
             for (Relocation r : relocs) {
                 String n = r.apply(fqn);
                 if (n != null) {

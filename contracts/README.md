@@ -139,12 +139,13 @@ Required: `schemaVersion`, `id`, `world` (`flat-void`, `flat`, …), `steps[]`. 
 `description`, `side` (server\|client), `maxTicks`, `tolerance{key-or-prefix|*: {abs, rel, tickShift,
 ignore}}`, `keyMap{platformVersion: {key: canonicalKey}}`.
 Each step is an object with exactly one key: `place_block`, `build_multiblock`, `fill_fluid`,
-`insert_item`, `interact`, `open_gui`, `tick: N`, `sample{every?, what[]}`, `assert{expr, message?}`.
+`insert_item`, `interact`, `break_block{at, by: player|world, holding?, drops?}`,
+`explode{at, power?, fire?, destroy?}`, `open_gui`, `tick: N`, `sample{every?, what[]}`, `assert{expr, message?}`.
 Sample keys look like `<probe>[:<target>][/<path>]` (`nbt:[1,65,0]/Progress`, `item:[0,64,0]#2`); the
 probe vocabulary and assert expression syntax are owned by testkit. Scenarios reference IR ids,
 never version-specific classes.
 GUI checks (RFC 005, accepted, additive): `open_gui{at|item, menu?, capture?, keepOpen?, check?}`,
-`gui_input{click[x,y]|key|call{method, args}, button?, capture?, check?}`, `close_gui{}`; `check` =
+`gui_input{click[x,y]|key|call{method, args}|press{id|index|label|kind, via?}, button?, capture?, check?}`, `close_gui{}`; `check` =
 `{mode: diff|structural|absent, size[w,h], mask[[x,y,w,h]], textBoxes[[x,y,w,h]], texts[langKey],
 dynamicFrom, pixelThreshold, maxDiff}` (GUI pixels relative to the GUI's top-left corner).
 

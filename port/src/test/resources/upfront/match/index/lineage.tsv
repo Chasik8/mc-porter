@@ -1,0 +1,9 @@
+class	a.src.Holder			net.minecraft.dst.Box			renamed	0.900	
+class	a.src.Same						same	1.000	removed@x
+method	a.src.Holder	getCount	()I	net.minecraft.dst.Box	size	()I	renamed	0.900	
+method	a.src.Holder	put	(La/src/Pos;)V	net.minecraft.dst.Box	put	(III)V	signature_changed	0.800	
+method	a.src.Holder	fill	(La/src/Pos;La/src/Mode;)V	net.minecraft.dst.Box	fill	(I)V	signature_changed	0.800	
+method	a.src.Holder	hidden	()V	net.minecraft.dst.Box	hidden	()V	same	0.900	
+method	a.src.Holder	gone	()V	net.minecraft.dst.Box	missing	()V	renamed	0.900	
+method	a.src.Holder	lost	()V				removed	0.700	removed@y
+method	a.src.Sub	getCount	()I	net.minecraft.dst.Box	size	()I	renamed	0.900	

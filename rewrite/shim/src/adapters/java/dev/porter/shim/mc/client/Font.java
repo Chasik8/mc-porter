@@ -59,6 +59,11 @@ public final class Font {
         return out;
     }
 
+    /** 1.19.2 Font#drawWordWrap(text, x, y, width, color): wrapped text drawn at (x, y). */
+    public void drawWordWrap(IChatComponent c, int x, int y, int width, int color) {
+        r().drawSplitString(c.getFormattedText(), x, y, Math.max(1, width), color);
+    }
+
     public String plainSubstrByWidth(String s, int width) { return r().trimStringToWidth(s, width); }
 
     public int wordWrapHeight(String s, int width) { return r().splitStringWidth(s, width); }

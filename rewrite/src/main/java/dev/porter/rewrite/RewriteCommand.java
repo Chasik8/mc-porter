@@ -86,6 +86,9 @@ public final class RewriteCommand implements PorterSubcommand, Callable<Integer>
     @Option(names = "--stub-contract", paramLabel = "<porter-generate.json>", description = "Apply the generated stubs' contract to the rewritten classes that replace them: stub superclass, stub constructor.")
     Path stubContract;
 
+    @Option(names = "--relocate-known", paramLabel = "<file>", description = "Classes (dotted names, whitespace separated) that count as rewritten for --relocate although they are not --include d: a partial rerun of a port relocates references to the rest of it.")
+    Path relocateKnown;
+
     @Option(names = "--check-rules", description = "Only run the before/after tests of the loaded rules.")
     boolean checkRules;
 
@@ -184,6 +187,7 @@ public final class RewriteCommand implements PorterSubcommand, Callable<Integer>
         }
         List<Rewriter.SourceFile> files = readSources();
         Rewriter rw = new Rewriter(all, names, facts, gen.diagnostics(), rewriteOpts);
+        rw.alsoPorted(knownClasses().stream().map(c -> c.replace('.', '/') + ".java").collect(java.util.stream.Collectors.toSet()));
         Rewriter.Result res = rw.rewrite(files);
         Map<String, Object> rep = writeOutput(res, all, rw);
         report.put("totals", rep.get("totals"));
@@ -194,6 +198,17 @@ public final class RewriteCommand implements PorterSubcommand, Callable<Integer>
         System.out.println("rewrote " + totals.get("files") + " files: " + totals.get("applied") + " rewrites, "
                 + totals.get("todos") + " TODOs -> " + out.resolve("porter-rewrite.json"));
         return ExitCodes.OK;
+    }
+
+    private List<String> knownClasses() {
+        if (relocateKnown == null) {
+            return List.of();
+        }
+        try {
+            return java.util.Arrays.stream(Files.readString(relocateKnown, StandardCharsets.UTF_8).split("[ \t\r\n]+")).filter(s -> !s.isBlank()).toList();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     private List<String> platformPrefixes() {
@@ -233,7 +248,7 @@ public final class RewriteCommand implements PorterSubcommand, Callable<Integer>
             List<Object> fileRows = new ArrayList<>();
             List<Object> todoRows = new ArrayList<>();
             List<PostProcess.Relocation> relocs = relocate.stream().map(PostProcess.Relocation::parse).toList();
-            Map<String, String> table = PostProcess.relocationTable(res.files(), relocs);
+            Map<String, String> table = PostProcess.relocationTable(res.files(), relocs, knownClasses());
             Map<String, PostProcess.Stub> stubs = stubContract == null ? Map.of() : PostProcess.loadStubs(stubContract);
             List<Rewriter.FileResult> post = new ArrayList<>();
             for (Rewriter.FileResult f0 : res.files()) {

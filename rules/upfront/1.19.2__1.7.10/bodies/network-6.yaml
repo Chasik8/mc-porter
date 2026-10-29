@@ -1,0 +1,574 @@
+key: "method:net.minecraft.client.gui.components.AbstractWidget#changeFocus(Z)Z"
+body: |-
+  return false;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.components.AbstractWidget#getYImage(Z)I"
+body: |-
+  return flag ? 2 : 1;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.components.AbstractWidget#renderBg(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/Minecraft;II)V"
+body: |-
+  // the shim widget has no background layer by default
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.material.Fluid#defaultFluidState()Lnet/minecraft/world/level/material/FluidState;"
+body: |-
+  return dev.porter.shim.mc.FluidState.ofFluid(self);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.material.Fluid#getFluidType()Lnet/minecraftforge/fluids/FluidType;"
+body: |-
+  Object t = dev.porter.shim.gen.helpers.fc.CSlots.get(self, "fluidType");
+  if (t == null) {
+      t = new dev.porter.shim.gen.fluids.FluidType();
+      dev.porter.shim.gen.helpers.fc.CSlots.put(t, "fluid", self);
+      dev.porter.shim.gen.helpers.fc.CSlots.put(self, "fluidType", t);
+  }
+  return (dev.porter.shim.gen.fluids.FluidType) t;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.material.Fluid#getTickDelay(Lnet/minecraft/world/level/LevelReader;)I"
+body: |-
+  return self == net.minecraftforge.fluids.FluidRegistry.LAVA ? 30 : 5;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.material.Fluid#is(Lnet/minecraft/tags/TagKey;)Z"
+body: |-
+  return tagKey != null && tagKey.contains(self);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.material.Fluid#isSource(Lnet/minecraft/world/level/material/FluidState;)Z"
+body: |-
+  return fluidState != null && fluidState.isSource();
+imports: []
+verified: compile
+---
+key: "field:net.minecraftforge.fluids.FluidStack#EMPTY:Lnet/minecraftforge/fluids/FluidStack;"
+body: |-
+  return null;
+imports: []
+verified: compile
+---
+key: "method:net.minecraftforge.fluids.FluidStack#<init>(Lnet/minecraft/world/level/material/Fluid;I)V"
+body: |-
+  return new net.minecraftforge.fluids.FluidStack(fluid, i);
+imports: []
+verified: compile
+---
+key: "method:net.minecraftforge.fluids.FluidStack#<init>(Lnet/minecraft/world/level/material/Fluid;ILnet/minecraft/nbt/CompoundTag;)V"
+body: |-
+  return new net.minecraftforge.fluids.FluidStack(fluid, i, nBTTagCompound);
+imports: []
+verified: compile
+---
+key: "method:net.minecraftforge.fluids.FluidStack#<init>(Lnet/minecraftforge/fluids/FluidStack;I)V"
+body: |-
+  return new net.minecraftforge.fluids.FluidStack(fluidStack, i);
+imports: []
+verified: compile
+---
+key: "method:net.minecraftforge.fluids.FluidStack#getDisplayName()Lnet/minecraft/network/chat/Component;"
+body: |-
+  return dev.porter.shim.gen.network.chat.Component.literal(self == null || self.getFluid() == null ? "" : self.getFluid().getLocalizedName(self));
+imports: []
+verified: compile
+---
+key: "method:net.minecraftforge.fluids.FluidStack#getFluid()Lnet/minecraft/world/level/material/Fluid;"
+body: |-
+  return self.getFluid();
+imports: []
+verified: compile
+---
+key: "method:net.minecraftforge.fluids.FluidStack#grow(I)V"
+body: |-
+  self.amount += i;
+imports: []
+verified: compile
+---
+key: "method:net.minecraftforge.fluids.FluidStack#hasTag()Z"
+body: |-
+  return self.tag != null;
+imports: []
+verified: compile
+---
+key: "method:net.minecraftforge.fluids.FluidStack#isEmpty()Z"
+body: |-
+  return dev.porter.shim.mc.FluidStacks.isEmpty(self);
+imports: []
+verified: compile
+---
+key: "method:net.minecraftforge.fluids.FluidStack#shrink(I)V"
+body: |-
+  self.amount -= i;
+imports: []
+verified: compile
+---
+key: "method:net.minecraftforge.fluids.FluidType#getDescription(Lnet/minecraftforge/fluids/FluidStack;)Lnet/minecraft/network/chat/Component;"
+body: |-
+  return dev.porter.shim.gen.network.chat.Component.literal(fluidStack == null || fluidStack.getFluid() == null ? "" : fluidStack.getFluid().getLocalizedName(fluidStack));
+imports: []
+verified: compile
+---
+key: "method:net.minecraftforge.fluids.FluidType$Properties#create()Lnet/minecraftforge/fluids/FluidType$Properties;"
+body: |-
+  return new dev.porter.shim.gen.fluids.FluidType.Properties();
+imports: []
+verified: compile
+---
+key: "method:net.minecraftforge.fluids.FluidType$Properties#density(I)Lnet/minecraftforge/fluids/FluidType$Properties;"
+body: |-
+  dev.porter.shim.gen.helpers.fc.CSlots.put(this, "density", Integer.valueOf(i));
+  return this;
+imports: []
+verified: compile
+---
+key: "method:net.minecraftforge.fluids.FluidType$Properties#descriptionId(Ljava/lang/String;)Lnet/minecraftforge/fluids/FluidType$Properties;"
+body: |-
+  dev.porter.shim.gen.helpers.fc.CSlots.put(this, "descriptionId", string);
+  return this;
+imports: []
+verified: compile
+---
+key: "method:net.minecraftforge.fluids.FluidType$Properties#temperature(I)Lnet/minecraftforge/fluids/FluidType$Properties;"
+body: |-
+  dev.porter.shim.gen.helpers.fc.CSlots.put(this, "temperature", Integer.valueOf(i));
+  return this;
+imports: []
+verified: compile
+---
+key: "method:net.minecraftforge.fluids.FluidType$Properties#viscosity(I)Lnet/minecraftforge/fluids/FluidType$Properties;"
+body: |-
+  dev.porter.shim.gen.helpers.fc.CSlots.put(this, "viscosity", Integer.valueOf(i));
+  return this;
+imports: []
+verified: compile
+---
+key: "field:net.minecraft.world.level.Level#NETHER:Lnet/minecraft/resources/ResourceKey;"
+body: |-
+  return dev.porter.shim.mc.ResourceKey.dimension(-1);
+imports: []
+verified: compile
+---
+key: "field:net.minecraft.world.level.Level#OVERWORLD:Lnet/minecraft/resources/ResourceKey;"
+body: |-
+  return dev.porter.shim.mc.ResourceKey.dimension(0);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.Level#dimension()Lnet/minecraft/resources/ResourceKey;"
+body: |-
+  return dev.porter.shim.mc.ResourceKey.dimension(self);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.Level#dimensionType()Lnet/minecraft/world/level/dimension/DimensionType;"
+body: |-
+  dev.porter.shim.gen.world.level.dimension.DimensionType t = new dev.porter.shim.gen.world.level.dimension.DimensionType();
+  t.coordinateScale = self.provider.getMovementFactor();
+  t.hasSkyLight = !self.provider.hasNoSky;
+  return t;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.Level#getBestNeighborSignal(Lnet/minecraft/core/BlockPos;)I"
+body: |-
+  return self.getStrongestIndirectPower(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.Level#getBlockState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;"
+body: |-
+  return dev.porter.shim.mc.Levels.getBlockState(self, blockPos);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.Level#getChunkAt(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/chunk/LevelChunk;"
+body: |-
+  return dev.porter.shim.mc.Levels.getChunkAt(self, blockPos);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.Level#getEntities(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/phys/AABB;Ljava/util/function/Predicate;)Ljava/util/List;"
+body: |-
+  final java.util.function.Predicate p = predicate;
+  return self.getEntitiesWithinAABBExcludingEntity(entity, axisAlignedBB, new net.minecraft.command.IEntitySelector() {
+      public boolean isEntityApplicable(net.minecraft.entity.Entity e) { return p == null || p.test(e); }
+  });
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.Level#getFluidState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/material/FluidState;"
+body: |-
+  return dev.porter.shim.mc.FluidState.of(dev.porter.shim.mc.Levels.getBlockState(self, blockPos));
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.Level#getRandom()Lnet/minecraft/util/RandomSource;"
+body: |-
+  final java.util.Random r = self.rand;
+  return new dev.porter.shim.gen.util.RandomSource() {
+      public boolean nextBoolean() { return r.nextBoolean(); }
+      public double nextDouble() { return r.nextDouble(); }
+      public float nextFloat() { return r.nextFloat(); }
+      public int nextInt() { return r.nextInt(); }
+      public int nextInt(int bound) { return r.nextInt(bound); }
+  };
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.Level#getServer()Lnet/minecraft/server/MinecraftServer;"
+body: |-
+  return net.minecraft.server.MinecraftServer.getServer();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.Level#getSignal(Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction;)I"
+body: |-
+  return dev.porter.shim.mc.Levels.getSignal(self, blockPos, direction);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.Level#hasNeighborSignal(Lnet/minecraft/core/BlockPos;)Z"
+body: |-
+  return self.isBlockIndirectlyGettingPowered(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.Level#isLoaded(Lnet/minecraft/core/BlockPos;)Z"
+body: |-
+  return self.blockExists(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.Level#neighborChanged(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/Block;Lnet/minecraft/core/BlockPos;)V"
+body: |-
+  dev.porter.shim.mc.Levels.neighborChanged(self, blockPos, block, blockPos2);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.Level#playLocalSound(DDDLnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FFZ)V"
+body: |-
+  net.minecraft.util.ResourceLocation loc = soundEvent.getLocation();
+  String name = "minecraft".equals(loc.getResourceDomain()) ? loc.getResourcePath() : loc.toString();
+  self.playSound(d, d2, d3, name, f, f2, flag);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.Level#removeBlock(Lnet/minecraft/core/BlockPos;Z)Z"
+body: |-
+  return dev.porter.shim.mc.Levels.removeBlock(self, blockPos, flag);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.Level#setBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;I)Z"
+body: |-
+  return dev.porter.shim.mc.Levels.setBlock(self, blockPos, blockState, i);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.Level#setBlockAndUpdate(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)Z"
+body: |-
+  return dev.porter.shim.mc.Levels.setBlockAndUpdate(self, blockPos, blockState);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.Level#updateNeighbourForOutputSignal(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/Block;)V"
+body: |-
+  dev.porter.shim.mc.Levels.updateNeighbourForOutputSignal(self, blockPos, block);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.MenuProvider#getDisplayName()Lnet/minecraft/network/chat/Component;"
+body: |-
+  Object o = this;
+  return dev.porter.shim.gen.network.chat.Component.literal(o instanceof net.minecraft.inventory.IInventory ? ((net.minecraft.inventory.IInventory) o).getInventoryName() : "");
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.SimpleContainer#<init>(I)V"
+body: |-
+  return new net.minecraft.inventory.InventoryBasic("container", false, i);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.WorldlyContainer#getSlotsForFace(Lnet/minecraft/core/Direction;)[I"
+body: |-
+  return self.getAccessibleSlotsFromSide(direction.get3DDataValue());
+imports: []
+verified: compile
+---
+key: "field:net.minecraft.world.inventory.AbstractContainerMenu#slots:Lnet/minecraft/core/NonNullList;"
+body: |-
+  if (!(self.inventorySlots instanceof dev.porter.shim.mc.NonNullList)) {
+      dev.porter.shim.mc.NonNullList nn = dev.porter.shim.mc.NonNullList.create();
+      nn.addAll(self.inventorySlots);
+      self.inventorySlots = nn;
+  }
+  return (dev.porter.shim.mc.NonNullList) self.inventorySlots;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.inventory.AbstractContainerMenu#<init>(Lnet/minecraft/world/inventory/MenuType;I)V"
+body: |-
+  net.minecraft.inventory.Container c = new net.minecraft.inventory.Container() {
+      public boolean canInteractWith(net.minecraft.entity.player.EntityPlayer p) { return true; }
+  };
+  c.windowId = i;
+  return c;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.inventory.AbstractContainerMenu#clicked(IILnet/minecraft/world/inventory/ClickType;Lnet/minecraft/world/entity/player/Player;)V"
+body: |-
+  int mode = clickType == dev.porter.shim.gen.world.inventory.ClickType.THROW ? 4 : 0;
+  self.slotClick(i, i2, mode, entityPlayer);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.inventory.ContainerData#get(I)I"
+body: |-
+  return 0;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.inventory.ContainerData#getCount()I"
+body: |-
+  return 0;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.inventory.ContainerData#set(II)V"
+body: |-
+  // read-only by default; implementers override
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.inventory.CraftingContainer#clearContent()V"
+body: |-
+  for (int k = 0; k < self.getSizeInventory(); k++) self.setInventorySlotContents(k, null);
+imports: []
+verified: compile
+---
+key: "field:net.minecraft.world.inventory.InventoryMenu#BLOCK_ATLAS:Lnet/minecraft/resources/ResourceLocation;"
+body: |-
+  return net.minecraft.client.renderer.texture.TextureMap.locationBlocksTexture;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.network.FriendlyByteBuf#readByteArray()[B"
+body: |-
+  return dev.porter.shim.mc.Bufs.readByteArray(self);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.network.FriendlyByteBuf#readFluidStack()Lnet/minecraftforge/fluids/FluidStack;"
+body: |-
+  return dev.porter.shim.mc.Bufs.readFluidStack(self);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.network.FriendlyByteBuf#readRegistryIdUnsafe(Lnet/minecraftforge/registries/IForgeRegistry;)Ljava/lang/Object;"
+body: |-
+  return dev.porter.shim.mc.Bufs.readRegistryId(self, iForgeRegistry);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.network.FriendlyByteBuf#readResourceLocation()Lnet/minecraft/resources/ResourceLocation;"
+body: |-
+  return dev.porter.shim.mc.Bufs.readResourceLocation(self);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.network.FriendlyByteBuf#readUUID()Ljava/util/UUID;"
+body: |-
+  return dev.porter.shim.mc.Bufs.readUUID(self);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.network.FriendlyByteBuf#readUtf()Ljava/lang/String;"
+body: |-
+  return dev.porter.shim.mc.Bufs.readUtf(self);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.network.FriendlyByteBuf#writeByteArray([B)Lnet/minecraft/network/FriendlyByteBuf;"
+body: |-
+  return dev.porter.shim.mc.Bufs.writeByteArray(self, bytes);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.network.FriendlyByteBuf#writeFluidStack(Lnet/minecraftforge/fluids/FluidStack;)V"
+body: |-
+  dev.porter.shim.mc.Bufs.writeFluidStack(self, fluidStack);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.network.FriendlyByteBuf#writeItem(Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/network/FriendlyByteBuf;"
+body: |-
+  return dev.porter.shim.mc.Bufs.writeItem(self, itemStack);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.network.FriendlyByteBuf#writeItemStack(Lnet/minecraft/world/item/ItemStack;Z)Lnet/minecraft/network/FriendlyByteBuf;"
+body: |-
+  return dev.porter.shim.mc.Bufs.writeItem(self, itemStack);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.network.FriendlyByteBuf#writeNbt(Lnet/minecraft/nbt/CompoundTag;)Lnet/minecraft/network/FriendlyByteBuf;"
+body: |-
+  return dev.porter.shim.mc.Bufs.writeNbt(self, nBTTagCompound);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.network.FriendlyByteBuf#writeRegistryIdUnsafe(Lnet/minecraftforge/registries/IForgeRegistry;Ljava/lang/Object;)V"
+body: |-
+  dev.porter.shim.mc.Bufs.writeRegistryId(self, iForgeRegistry, object);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.network.FriendlyByteBuf#writeResourceLocation(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/network/FriendlyByteBuf;"
+body: |-
+  return dev.porter.shim.mc.Bufs.writeResourceLocation(self, resourceLocation);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.network.FriendlyByteBuf#writeUUID(Ljava/util/UUID;)Lnet/minecraft/network/FriendlyByteBuf;"
+body: |-
+  return dev.porter.shim.mc.Bufs.writeUUID(self, uUID);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.network.FriendlyByteBuf#writeUtf(Ljava/lang/String;)Lnet/minecraft/network/FriendlyByteBuf;"
+body: |-
+  return dev.porter.shim.mc.Bufs.writeUtf(self, string);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.network.FriendlyByteBuf#writeUtf(Ljava/lang/String;I)Lnet/minecraft/network/FriendlyByteBuf;"
+body: |-
+  if (string != null && string.length() > i) throw new RuntimeException("String too big (was " + string.length() + " characters, max " + i + ")");
+  return dev.porter.shim.mc.Bufs.writeUtf(self, string);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.network.FriendlyByteBuf#writeVarInt(I)Lnet/minecraft/network/FriendlyByteBuf;"
+body: |-
+  return dev.porter.shim.mc.Bufs.writeVarInt(self, i);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.network.syncher.SynchedEntityData#define(Lnet/minecraft/network/syncher/EntityDataAccessor;Ljava/lang/Object;)V"
+body: |-
+  dev.porter.shim.gen.helpers.fc.CSlots.map(this, "data").put(entityDataAccessor, object);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.network.syncher.SynchedEntityData#defineId(Ljava/lang/Class;Lnet/minecraft/network/syncher/EntityDataSerializer;)Lnet/minecraft/network/syncher/EntityDataAccessor;"
+body: |-
+  return new dev.porter.shim.gen.network.syncher.EntityDataAccessor();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.network.syncher.SynchedEntityData#get(Lnet/minecraft/network/syncher/EntityDataAccessor;)Ljava/lang/Object;"
+body: |-
+  return dev.porter.shim.gen.helpers.fc.CSlots.map(this, "data").get(entityDataAccessor);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.network.syncher.SynchedEntityData#set(Lnet/minecraft/network/syncher/EntityDataAccessor;Ljava/lang/Object;)V"
+body: |-
+  dev.porter.shim.gen.helpers.fc.CSlots.map(this, "data").put(entityDataAccessor, object);
+imports: []
+verified: compile
+---
+key: "method:net.minecraftforge.network.NetworkEvent$Context#enqueueWork(Ljava/lang/Runnable;)Ljava/util/concurrent/CompletableFuture;"
+body: |-
+  java.util.concurrent.CompletableFuture f = new java.util.concurrent.CompletableFuture();
+  try {
+      runnable.run();
+      f.complete(null);
+  } catch (Throwable t) {
+      f.completeExceptionally(t);
+  }
+  return f;
+imports: []
+verified: compile
+---
+key: "method:net.minecraftforge.network.NetworkEvent$Context#getSender()Lnet/minecraft/server/level/ServerPlayer;"
+body: |-
+  Object s = dev.porter.shim.gen.helpers.fc.CSlots.get(this, "sender");
+  return s instanceof net.minecraft.entity.player.EntityPlayerMP ? (net.minecraft.entity.player.EntityPlayerMP) s : null;
+imports: []
+verified: compile
+---
+key: "method:net.minecraftforge.network.NetworkEvent$Context#setPacketHandled(Z)V"
+body: |-
+  dev.porter.shim.gen.helpers.fc.CSlots.put(this, "handled", Boolean.valueOf(flag));
+imports: []
+verified: compile
+---
+key: "method:net.minecraftforge.network.PacketDistributor$TargetPoint#<init>(DDDDLnet/minecraft/resources/ResourceKey;)V"
+body: |-
+  return new cpw.mods.fml.common.network.NetworkRegistry.TargetPoint(resourceKey.dimensionId(), d, d2, d3, d4);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.phys.HitResult#getLocation()Lnet/minecraft/world/phys/Vec3;"
+body: |-
+  return self.hitVec;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.advancements.CriteriaTriggers#register(Lnet/minecraft/advancements/CriterionTrigger;)Lnet/minecraft/advancements/CriterionTrigger;"
+body: |-
+  return criterionTrigger;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.advancements.DisplayInfo#<init>(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/Component;Lnet/minecraft/resources/ResourceLocation;Lnet/minecraft/advancements/FrameType;ZZZ)V"
+body: |-
+  // advancements do not exist on 1.7.10: the display info carries nothing
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.advancements.critereon.InventoryChangeTrigger$TriggerInstance#hasItems([Lnet/minecraft/world/level/ItemLike;)Lnet/minecraft/advancements/critereon/InventoryChangeTrigger$TriggerInstance;"
+body: |-
+  return new dev.porter.shim.gen.advancements.critereon.InventoryChangeTrigger.TriggerInstance();
+imports: []
+verified: compile
+---
+key: "method:net.minecraftforge.common.crafting.CraftingHelper#getItem(Ljava/lang/String;Z)Lnet/minecraft/world/item/Item;"
+body: |-
+  net.minecraft.item.Item item = (net.minecraft.item.Item) net.minecraft.item.Item.itemRegistry.getObject(string);
+  if (item == null) throw new com.google.gson.JsonSyntaxException("Unknown item '" + string + "'");
+  return item;
+imports: []
+verified: compile
+---
+key: "method:net.minecraftforge.common.crafting.CraftingHelper#getItemStack(Lcom/google/gson/JsonObject;Z)Lnet/minecraft/world/item/ItemStack;"
+body: |-
+  return dev.porter.shim.mc.Bufs.itemFromJson(jsonObject);
+imports: []
+verified: compile
+---
+key: "method:com.mojang.blaze3d.platform.Lighting#setupFor3DItems()V"
+body: |-
+  net.minecraft.client.renderer.RenderHelper.enableGUIStandardItemLighting();
+imports: []
+verified: compile
+---
+key: "method:com.mojang.blaze3d.platform.Lighting#setupForFlatItems()V"
+body: |-
+  net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
+imports: []
+verified: compile

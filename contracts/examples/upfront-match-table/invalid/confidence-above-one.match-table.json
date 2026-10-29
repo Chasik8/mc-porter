@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "rows": [
+    {
+      "key": "type:net.minecraft.world.item.ItemStack",
+      "uses": 1,
+      "resolvedBy": "none",
+      "plan": "MIRROR",
+      "method": "mirror",
+      "confidence": 1.5
+    }
+  ]
+}

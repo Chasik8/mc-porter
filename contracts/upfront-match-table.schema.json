@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:porter:contract:upfront-match-table",
+  "title": "porter upfront match table",
+  "description": "The upfront match table (RFC 011): for every 1.19.2 symbol the mod references, what it becomes on the target (plan, target member, confidence, method, shim, rule). The TSV form has the same rows without features and alternatives; the JSON nests the target. Added by RFC 011 (additive).",
+  "type": "object",
+  "required": ["schemaVersion", "rows"],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "rows": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/row" }
+    }
+  },
+  "$defs": {
+    "key": {
+      "type": "string",
+      "pattern": "^(type:[^/#:\\s]+|method:[^/#:\\s]+#[^#:()\\s]+\\(.*\\).+|field:[^/#:\\s]+#[^#:()\\s]+:[^:\\s]+)$"
+    },
+    "text": { "type": ["string", "null"] },
+    "target": {
+      "type": "object",
+      "required": ["owner", "name", "desc", "isStatic"],
+      "additionalProperties": false,
+      "properties": {
+        "owner": { "type": "string", "minLength": 1 },
+        "name": { "type": "string" },
+        "desc": { "type": "string" },
+        "isStatic": { "type": "boolean" }
+      }
+    },
+    "row": {
+      "type": "object",
+      "required": ["key", "uses", "resolvedBy", "plan", "method", "confidence"],
+      "additionalProperties": false,
+      "properties": {
+        "key": { "$ref": "#/$defs/key" },
+        "uses": { "type": "integer", "minimum": 0 },
+        "area": { "$ref": "#/$defs/text" },
+        "resolvedBy": { "enum": ["rule", "graph", "none"] },
+        "plan": { "enum": ["MAP", "EXPAND", "MIRROR", "REGISTRY", "HINT", "TODO"] },
+        "method": {
+          "type": "string",
+          "pattern": "^(lineage|lineage-concept|lineage-sig|scored:.+|same-fqn|simple-name|registry|mirror|none:.+)$"
+        },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+        "target": { "oneOf": [{ "$ref": "#/$defs/target" }, { "type": "null" }] },
+        "shim": { "$ref": "#/$defs/text" },
+        "ruleId": { "$ref": "#/$defs/text" },
+        "note": { "$ref": "#/$defs/text" },
+        "features": {
+          "type": "object",
+          "additionalProperties": { "type": "number" }
+        },
+        "alternatives": {
+          "type": "array",
+          "maxItems": 3,
+          "items": {
+            "type": "object",
+            "required": ["owner", "name", "desc", "score"],
+            "additionalProperties": false,
+            "properties": {
+              "owner": { "type": "string", "minLength": 1 },
+              "name": { "type": "string" },
+              "desc": { "type": "string" },
+              "score": { "type": "number" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

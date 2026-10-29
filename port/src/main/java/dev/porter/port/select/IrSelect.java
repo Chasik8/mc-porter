@@ -275,9 +275,9 @@ public final class IrSelect {
                 }
                 lst.add(n);
             }
-            if (!lst.isEmpty()) {
-                out.put(k, doc(mod, lst));
-            }
+            // every kind is written, also when empty: the file set of a unit is fixed, so a profile can list
+            // <unit>.<kind>.ir.json for all kinds whatever the seed selects (an empty multiblock file, not a missing one)
+            out.put(k, doc(mod, lst));
         }
         ArrayNode rs = Json.json().createArrayNode();
         recipes.forEach(r -> rs.add(r.deepCopy()));
@@ -315,7 +315,7 @@ public final class IrSelect {
         return d;
     }
 
-    /** Writes {@code <unit>.<kind>.ir.json} (other *.ir.json in the directory are removed) and select-report.json. */
+    /** Writes {@code <unit>.<kind>.ir.json} for every kind, empty ones included (other *.ir.json in the directory are removed) and select-report.json. */
     public static void write(Result r, String unit, Path out) {
         try {
             Files.createDirectories(out);

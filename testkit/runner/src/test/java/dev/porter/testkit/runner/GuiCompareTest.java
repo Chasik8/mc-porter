@@ -117,6 +117,8 @@ class GuiCompareTest {
         assertEquals("ok", GuiCompare.structural(cap("b", gui(0, 0), s), NO_LANG).verdict());
         String overflow = s.replace("\"x\":2,\"y\":2,\"width\":25", "\"x\":20,\"y\":2,\"width\":25");
         assertEquals("broken", GuiCompare.structural(cap("b", gui(0, 0), overflow), NO_LANG).verdict());
+        String iconTab = s.replace("\"text\":\"Hello\",\"x\":2,\"y\":2,\"width\":25", "\"text\":\"\",\"x\":20,\"y\":-12,\"width\":0");
+        assertEquals("ok", GuiCompare.structural(cap("b", gui(0, 0), iconTab), NO_LANG).verdict());
         String rawKey = s.replace("Hello", "guide.examplemod.press.title");
         assertTrue(GuiCompare.structural(cap("b", gui(0, 0), rawKey), NO_LANG).findings().toString().contains("untranslated"));
         BufferedImage magenta = gui(0, 0);
@@ -159,6 +161,36 @@ class GuiCompareTest {
         assertEquals("RIGHT", ops.get(1).path("key").asString());
         assertEquals(2, ops.get(2).path("call").path("args").get(1).asInt());
         assertEquals("close_gui", ops.get(3).path("op").asString());
+    }
+
+    @Test
+    void compilesPressStep(@TempDir Path tmp) throws Exception {
+        Path f = tmp.resolve("p.scenario.yaml");
+        Files.writeString(f, String.join("\n", "schemaVersion: 1", "id: p", "world: flat-void", "side: client", "steps:",
+                "  - place_block: { at: [0, 64, 0], block: \"examplemod:press\" }",
+                "  - open_gui: { at: [0, 64, 0], capture: g, keepOpen: true, check: { mode: structural } }",
+                "  - gui_input: { press: { id: 3 } }",
+                "  - gui_input: { press: { label: \"Next\", kind: widget, via: click }, capture: after }",
+                "  - tick: 5",
+                "  - invoke_tile: { at: [0, 64, 0], method: setTarget, args: [{ \"$new\": \"pkg.Target\", args: [{ \"$tile\": [2, 64, 0] }] }] }",
+                "  - sample: { what: [\"real_player:pos\"] }",
+                "  - assert: { expr: \"real_player:pos[0] == 2\" }", ""), StandardCharsets.UTF_8);
+        Scenario sc = Scenario.read(f).get(0);
+        IdMap ids = IdMap.read(PipelineTest.res("ids-1.7.10.yaml"));
+        JsonNode ops = new PlanCompiler(sc, "forge-1.7.10", ids, IrIndex.read(List.of())).compile().path("ops");
+        JsonNode first = ops.get(2);
+        assertEquals("gui_input", first.path("op").asString());
+        assertEquals(3, first.path("press").path("id").asInt());
+        assertTrue(!first.has("capture"));
+        JsonNode second = ops.get(3);
+        assertEquals("Next", second.path("press").path("label").asString());
+        assertEquals("widget", second.path("press").path("kind").asString());
+        assertEquals("click", second.path("press").path("via").asString());
+        assertEquals("after", second.path("capture").asString());
+        assertEquals("invoke", ops.get(5).path("op").asString());
+        assertEquals("pkg.Target", ops.get(5).path("args").get(0).path("$new").asString());
+        assertEquals(2, ops.get(5).path("args").get(0).path("args").get(0).path("$tile").get(0).asInt());
+        assertEquals("real_player:pos", ops.get(6).path("keys").get(0).asString());
     }
 
     @Test

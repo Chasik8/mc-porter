@@ -296,6 +296,57 @@
         }
       }
     },
+    "upfront": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "jar"
+      ],
+      "description": "Optional stage before rewrite (RFC 011): `porter upfront` on the closure classes. Its emitted rules join the rewrite rule set, its generated shim sources are installed with the adapter pack, its TODO batch is written to <work>/upfront/batches.",
+      "properties": {
+        "jar": {
+          "type": "string",
+          "description": "The mod jar built for the source version (bytecode is the first source of the symbol inventory)."
+        },
+        "tables": {
+          "type": "string",
+          "description": "match-tables.yaml (default: <data>/match-tables.yaml)."
+        },
+        "concepts": {
+          "type": "string",
+          "description": "concepts.yaml (default: <data>/concepts.yaml)."
+        },
+        "bodies": {
+          "type": "string",
+          "description": "Bodies DB directory (default: <data>/bodies)."
+        },
+        "data": {
+          "type": "string",
+          "description": "Per version pair data directory holding the three above (default: rules/upfront/1.19.2__1.7.10 of the working directory)."
+        },
+        "emitRules": {
+          "type": "boolean",
+          "description": "Add the emitted rules to the rewrite rule set (default true)."
+        },
+        "shimgen": {
+          "type": "boolean",
+          "description": "Install the generated shim sources with the adapter pack (default true)."
+        },
+        "sounds": {
+          "type": "string",
+          "description": "The 1.7.10 sounds.json (sound-name table for SoundEvents)."
+        },
+        "workers": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Number of TODO batches (default 8)."
+        },
+        "args": {
+          "$ref": "#/$defs/strings",
+          "description": "More `porter upfront` arguments."
+        }
+      }
+    },
     "rewrite": {
       "type": "object",
       "additionalProperties": false,

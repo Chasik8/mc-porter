@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -105,6 +106,33 @@ public final class RuleBook {
         expressionPatterns.sort(ORDER);
         statementPatterns.sort(ORDER);
         declarations.sort(ORDER);
+    }
+
+    /**
+     * Replacement text with the bound placeholders renamed by position ({@code $s} of one rule and {@code $a0} of
+     * another, both bound to argument 0, are the same): two rules that write the same code are not ambiguous.
+     */
+    public static String canonicalReplace(Prepared p) {
+        String t = p.replaceText();
+        Rule.Bind bind = p.rule().match().bind();
+        if (bind == null) {
+            return t;
+        }
+        Map<String, String> names = new LinkedHashMap<>();
+        if (bind.recv() != null) {
+            names.put(bind.recv(), "#porter-bind:recv");
+        }
+        if (bind.args() != null) {
+            for (int i = 0; i < bind.args().size(); i++) {
+                names.putIfAbsent(bind.args().get(i), "#porter-bind:arg" + i);
+            }
+        }
+        List<String> keys = new ArrayList<>(names.keySet());
+        keys.sort((a, b) -> b.length() - a.length()); // $a10 before $a1
+        for (String k : keys) {
+            t = t.replace(k, names.get(k));
+        }
+        return t;
     }
 
     static String relocate(String s, String shimPackage) {

@@ -66,10 +66,10 @@ class LoopCommandTest {
             }
         }
         var runner = new dev.porter.loop.run.GradleCompileRunner(new dev.porter.loop.run.GradleCompileRunner.Config(tmp, "compileJava",
-                "/x/heavy-run.sh", "loop", null, "2g", List.of("--offline"), tmp.resolve("w"), 5));
+                "/x/queue.sh", "loop", null, "2g", List.of("--offline"), tmp.resolve("w"), 5));
         List<String> cmd = runner.command();
         assertTrue(cmd.get(0).endsWith("bash") || cmd.get(0).endsWith("bash.exe"), cmd.toString());
-        assertEquals(List.of("/x/heavy-run.sh", "loop"), cmd.subList(1, 3));
+        assertEquals(List.of("/x/queue.sh", "loop"), cmd.subList(1, 3));
         assertTrue(cmd.get(3).endsWith("/gradlew"), cmd.toString());
         assertTrue(cmd.containsAll(List.of("compileJava", "--no-daemon", "--console=plain", "-Dorg.gradle.jvmargs=-Xmx2g", "--offline")), cmd.toString());
         assertTrue(Files.readString(tmp.resolve("w/porter-loop-init.gradle")).contains("-Xmaxerrs"));

@@ -52,6 +52,33 @@ class RewriterTest {
     }
 
     @Test
+    void staticFieldRuleFiresInsideALambdaPassedToAnUnresolvedCall() {
+        Rule nether = PatternRulesTest.rule("t-nether", new Rule.Match(null, null, "net.minecraft.world.level.Level#NETHER", null, null, null, null),
+                "Dims.NETHER", List.of(), null, null);
+        NameTable names = NameTable.of(dev.porter.rewrite.graph.SymbolGraph.load(List.of(TestSupport.resource("graphs/srg-static-field-1.19.2.graph.json"))), "1.19.2");
+        String code = """
+                package p;
+
+                import net.minecraft.world.level.Level;
+
+                public class A {
+                    Object plain = Level.f_46429_;
+
+                    void f(Hub hub) {
+                        hub.addWorldCallback(this, world -> {
+                            if (world.m_46472_().equals((Object) Level.f_46429_)) {
+                                world.touch();
+                            }
+                        });
+                    }
+                }
+                """;
+        String out = TestSupport.rewrite(List.of(nether), names, code).text();
+        assertFalse(out.contains("f_46429_"), "both uses are rewritten, also the one in the lambda: " + out);
+        assertEquals(2, out.split("Dims\\.NETHER", -1).length - 1, out);
+    }
+
+    @Test
     void srgNamesAreMatchedThroughTheSymbolGraph() {
         Rewriter.FileResult r = TestSupport.rewrite(TestSupport.publicRules(), TestSupport.srgNames(), DECOMPILED);
         String out = r.text();

@@ -82,6 +82,9 @@ public final class Generate {
             copyAssets(ctx);
         }
         gen.generate(ctx);
+        ctx.out.sharedStubs().forEach((cls, roles) -> ctx.warn("shared-stub", cls, "logic class " + cls + " is used by "
+                + roles.size() + " IR nodes that need different stubs (" + String.join(", ", roles) + "): no stub written,"
+                + " the port (closure/rewrite) must provide the class"));
         Map<String, Object> manifest = new LinkedHashMap<>();
         manifest.put("generator", gen.platform());
         manifest.put("modId", o.modId());

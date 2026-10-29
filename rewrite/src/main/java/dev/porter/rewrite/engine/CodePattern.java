@@ -62,6 +62,9 @@ public final class CodePattern {
             Matcher m = STMT_PH.matcher(code);
             StringBuilder sb = new StringBuilder();
             while (m.find()) {
+                if (")".equals(m.group(1)) && !closesControlHeader(code, m.start(1))) {
+                    continue; // "(T) $e;" is a cast of an expression, not a statement after "if (c)"
+                }
                 stmtHoles.add(m.group(3));
                 m.appendReplacement(sb, Matcher.quoteReplacement(m.group(1) + m.group(2) + m.group(3) + "();"));
             }
@@ -114,6 +117,35 @@ public final class CodePattern {
             throw new IllegalArgumentException("pattern is not one expression: " + text);
         }
         return new CodePattern(text, false, List.of(), lv.getDefaultExpression(), stmtHoles, locals, exprHoles);
+    }
+
+    /** The ')' at {@code close} ends the header of if/while/for/switch/synchronized (so a statement follows). */
+    private static boolean closesControlHeader(String code, int close) {
+        int depth = 0;
+        int i = close;
+        for (; i >= 0; i--) {
+            char c = code.charAt(i);
+            if (c == ')') {
+                depth++;
+            } else if (c == '(' && --depth == 0) {
+                break;
+            }
+        }
+        if (i < 0) {
+            return false;
+        }
+        int e = i;
+        while (e > 0 && Character.isWhitespace(code.charAt(e - 1))) {
+            e--;
+        }
+        int s = e;
+        while (s > 0 && Character.isLetter(code.charAt(s - 1))) {
+            s--;
+        }
+        return switch (code.substring(s, e)) {
+            case "if", "while", "for", "switch", "synchronized" -> true;
+            default -> false;
+        };
     }
 
     public String source() {

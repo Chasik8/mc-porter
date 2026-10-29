@@ -1,0 +1,67 @@
+# Example data file for cropgen (no mod data): one crop per template kind, vanilla items only.
+# Texture paths are relative to the --assets root given on the command line.
+format: porter-cropgen/1
+package: example.crops
+modid: examplecrops
+iconPrefix: "examplecrops:crops/"
+textureDir: crops
+idBase: 3000
+test:
+  cropBlock: "ic2:crop"          # id used in the scenarios (mapped by the generated ids-forge-1.7.10.yaml)
+  cropBlockName: "IC2:crop"      # registry name of the host's crop block
+  soil: "minecraft:farmland"
+crops:
+  - id: sample_flower
+    name: Sample Flower
+    family: flower                # light >= 12, drops a dye
+    discoveredBy: Alice
+    tier: 2
+    stats: [1, 1, 0, 5, 1]        # chemistry, consumable, defensive, colorful, weed (the host's stat(0..4))
+    attributes: [Flower, Red]
+    maxSize: 4
+    afterHarvest: 3
+    drops: ["minecraft:dye@1"]
+    baseSeeds:                    # right-clicking crop sticks with this item plants the crop
+      - {item: "minecraft:red_flower@0", count: 4, size: 4, growth: 1, gain: 1, resistance: 1}
+    lang: {ru_RU: "Пример цветка"}
+    textures:
+      - {size: 1, src: flower/0.png}
+      - {size: 2, src: flower/1.png}
+      - {size: 3, src: flower/2.png}
+      - {size: 4, src: flower/3.png}
+  - id: sample_ore
+    name: Sample Ore
+    family: ore                   # last step needs an ore dictionary block within 3 blocks below
+    tier: 6
+    stats: [2, 0, 0, 1, 0]
+    attributes: [Gray, Leaves, Ores]
+    maxSize: 4
+    afterHarvest: 2
+    duration: 800
+    rules: [{min: 3, max: 3, ticks: 2000}]
+    dropChance: {mul: 0.5}
+    familyArgs: {oreNames: [oreIron, blockIron], needFromSize: 3}
+    drops: ["minecraft:iron_ingot"]
+    textures:
+      - {size: 1, src: ore/0.png}
+      - {size: 2, src: ore/1.png}
+      - {size: 3, src: ore/2.png}
+      - {size: 4, src: ore/3.png}
+  - id: sample_moss
+    name: Sample Moss
+    family: condition             # a single crop: any list of gates
+    tier: 3
+    stats: [0, 2, 0, 0, 1]
+    attributes: [Green]
+    maxSize: 3
+    weights: [1.2, 1.0, 0.8]
+    gates: [{humidityMin: 4}, {neighbor: "minecraft:glowstone", fromSize: 2}]
+    drops: ["minecraft:vine"]
+    textures:
+      - {size: 1, src: moss/0.png}
+      - {size: 2, src: moss/1.png}
+      - {size: 3, src: moss/2.png}
+  - id: sample_water_thing
+    name: Sample Water Thing
+    status: skip                  # listed in the report, nothing generated
+    reason: "water-only crop; the host has no water crops"

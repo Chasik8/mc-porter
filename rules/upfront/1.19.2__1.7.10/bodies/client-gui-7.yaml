@@ -1,0 +1,670 @@
+key: "method:net.minecraft.world.level.block.Block#<init>(Lnet/minecraft/world/level/block/state/BlockBehaviour$Properties;)V"
+body: |-
+  return new net.minecraft.block.Block(net.minecraft.block.material.Material.rock) {
+  };
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.Block#animateTick(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/util/RandomSource;)V"
+body: |-
+  self.randomDisplayTick(world, blockPos.getX(), blockPos.getY(), blockPos.getZ(), new java.util.Random());
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.Block#appendHoverText(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/level/BlockGetter;Ljava/util/List;Lnet/minecraft/world/item/TooltipFlag;)V"
+body: |-
+  // 1.7.10 blocks have no hover text of their own; the ItemBlock tooltip comes from Item.addInformation
+  return;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.Block#asItem()Lnet/minecraft/world/item/Item;"
+body: |-
+  return net.minecraft.item.Item.getItemFromBlock(self);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.Block#box(DDDDDD)Lnet/minecraft/world/phys/shapes/VoxelShape;"
+body: |-
+  return dev.porter.shim.mc.VoxelShape.box(d, d2, d3, d4, d5, d6);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.Block#createBlockStateDefinition(Lnet/minecraft/world/level/block/state/StateDefinition$Builder;)V"
+body: |-
+  // 1.7.10 blocks have no state definition; a StateBlock builds its own in the constructor
+  return;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.Block#fillItemCategory(Lnet/minecraft/world/item/CreativeModeTab;Lnet/minecraft/core/NonNullList;)V"
+body: |-
+  if (self instanceof dev.porter.shim.mc.StateBlock) {
+      ((dev.porter.shim.mc.StateBlock) self).fillItemCategory(creativeTabs, nonNullList);
+  } else if (nonNullList != null) {
+      nonNullList.add(new net.minecraft.item.ItemStack(self));
+  }
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.Block#getCloneItemStack(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/phys/HitResult;Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/entity/player/Player;)Lnet/minecraft/world/item/ItemStack;"
+body: |-
+  net.minecraft.item.Item item = net.minecraft.item.Item.getItemFromBlock(self);
+  if (item == null) {
+      return null;
+  }
+  return new net.minecraft.item.ItemStack(item, 1, blockState == null ? 0 : self.damageDropped(blockState.getMeta()));
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.Block#getDrops(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/entity/BlockEntity;)Ljava/util/List;"
+body: |-
+  return dev.porter.shim.gen.helpers.DdBlocks.drops(blockState);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.Block#getDrops(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/entity/BlockEntity;Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/item/ItemStack;)Ljava/util/List;"
+body: |-
+  return dev.porter.shim.gen.helpers.DdBlocks.drops(blockState);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.Block#getName()Lnet/minecraft/network/chat/MutableComponent;"
+body: |-
+  return dev.porter.shim.gen.network.chat.Component.translatable(self.getUnlocalizedName() + ".name");
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.Block#getStateDefinition()Lnet/minecraft/world/level/block/state/StateDefinition;"
+body: |-
+  if (self instanceof dev.porter.shim.mc.StateBlock) {
+      return ((dev.porter.shim.mc.StateBlock) self).getStateDefinition();
+  }
+  return new dev.porter.shim.mc.StateDefinition.Builder(self).create();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.Block#getStateForPlacement(Lnet/minecraft/world/item/context/BlockPlaceContext;)Lnet/minecraft/world/level/block/state/BlockState;"
+body: |-
+  if (self instanceof dev.porter.shim.mc.StateBlock) {
+      return ((dev.porter.shim.mc.StateBlock) self).getStateForPlacement(blockPlaceContext);
+  }
+  return dev.porter.shim.mc.BlockState.of(self);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.Block#initializeClient(Ljava/util/function/Consumer;)V"
+body: |-
+  // client-only block rendering extensions do not exist on 1.7.10
+  return;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.Block#playerWillDestroy(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/entity/player/Player;)V"
+body: |-
+  self.onBlockHarvested(world, blockPos.getX(), blockPos.getY(), blockPos.getZ(), blockState == null ? 0 : blockState.getMeta(), entityPlayer);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.Block#popResource(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/item/ItemStack;)V"
+body: |-
+  if (world == null || world.isRemote || itemStack == null || !world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
+      return;
+  }
+  net.minecraft.entity.item.EntityItem drop = new net.minecraft.entity.item.EntityItem(world, blockPos.getX() + 0.5D, blockPos.getY() + 0.5D, blockPos.getZ() + 0.5D, itemStack);
+  drop.delayBeforeCanPickup = 10;
+  world.spawnEntityInWorld(drop);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.Block#propagatesSkylightDown(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)Z"
+body: |-
+  return self.getLightOpacity() == 0 && !self.isOpaqueCube();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.Block#registerDefaultState(Lnet/minecraft/world/level/block/state/BlockState;)V"
+body: |-
+  // the default state of a StateBlock is registered by its own constructor; plain 1.7.10 blocks have none
+  return;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.Block#setPlacedBy(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/item/ItemStack;)V"
+body: |-
+  self.onBlockPlacedBy(world, blockPos.getX(), blockPos.getY(), blockPos.getZ(), entityLivingBase, itemStack);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.Block#shouldRenderFace(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction;Lnet/minecraft/core/BlockPos;)Z"
+body: |-
+  return true;
+imports: []
+verified: compile
+---
+key: "method:net.minecraftforge.energy.IEnergyStorage#canReceive()Z"
+body: |-
+  return false;
+imports: []
+verified: compile
+---
+key: "method:net.minecraftforge.energy.IEnergyStorage#getEnergyStored()I"
+body: |-
+  return 0;
+imports: []
+verified: compile
+---
+key: "method:net.minecraftforge.energy.IEnergyStorage#getMaxEnergyStored()I"
+body: |-
+  return 0;
+imports: []
+verified: compile
+---
+key: "method:net.minecraftforge.energy.IEnergyStorage#receiveEnergy(IZ)I"
+body: |-
+  return 0;
+imports: []
+verified: compile
+---
+key: "method:net.minecraftforge.fluids.capability.IFluidHandler#drain(ILnet/minecraftforge/fluids/capability/IFluidHandler$FluidAction;)Lnet/minecraftforge/fluids/FluidStack;"
+body: |-
+  return null;
+imports: []
+verified: compile
+---
+key: "method:net.minecraftforge.fluids.capability.IFluidHandler#drain(Lnet/minecraftforge/fluids/FluidStack;Lnet/minecraftforge/fluids/capability/IFluidHandler$FluidAction;)Lnet/minecraftforge/fluids/FluidStack;"
+body: |-
+  return null;
+imports: []
+verified: compile
+---
+key: "method:net.minecraftforge.fluids.capability.IFluidHandler#fill(Lnet/minecraftforge/fluids/FluidStack;Lnet/minecraftforge/fluids/capability/IFluidHandler$FluidAction;)I"
+body: |-
+  return 0;
+imports: []
+verified: compile
+---
+key: "method:net.minecraftforge.fluids.capability.IFluidHandler$FluidAction#execute()Z"
+body: |-
+  return this != SIMULATE;
+imports: []
+verified: compile
+---
+key: "method:net.minecraftforge.fluids.capability.IFluidHandler$FluidAction#simulate()Z"
+body: |-
+  return this == SIMULATE;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.KeyMapping#getKey()Lcom/mojang/blaze3d/platform/InputConstants$Key;"
+body: |-
+  return dev.porter.shim.mc.client.Keys.key(self);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.Font#draw(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/network/chat/Component;FFI)I"
+body: |-
+  return self.drawString(dev.porter.shim.gen.helpers.DdText.text(component), (int) f, (int) f2, i);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.Font#draw(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/util/FormattedCharSequence;FFI)I"
+body: |-
+  return self.drawString(dev.porter.shim.gen.helpers.DdText.text(formattedCharSequence), (int) f, (int) f2, i);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.Font#drawInBatch(Ljava/lang/String;FFIZLcom/mojang/math/Matrix4f;Lnet/minecraft/client/renderer/MultiBufferSource;ZII)I"
+body: |-
+  return self.drawString(string, (int) f, (int) f2, i, flag);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.Font#getSplitter()Lnet/minecraft/client/StringSplitter;"
+body: |-
+  return new dev.porter.shim.gen.client.StringSplitter();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.Font#split(Lnet/minecraft/network/chat/FormattedText;I)Ljava/util/List;"
+body: |-
+  java.util.List lines = new java.util.ArrayList();
+  for (Object line : self.listFormattedStringToWidth(dev.porter.shim.gen.helpers.DdText.text(formattedText), Math.max(1, i))) {
+      lines.add(dev.porter.shim.gen.helpers.DdText.seq(String.valueOf(line)));
+  }
+  return lines;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.Font#substrByWidth(Lnet/minecraft/network/chat/FormattedText;I)Lnet/minecraft/network/chat/FormattedText;"
+body: |-
+  return dev.porter.shim.gen.helpers.DdText.formatted(self.trimStringToWidth(dev.porter.shim.gen.helpers.DdText.text(formattedText), i));
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.Font#width(Lnet/minecraft/network/chat/FormattedText;)I"
+body: |-
+  return self.getStringWidth(dev.porter.shim.gen.helpers.DdText.text(formattedText));
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.Font#width(Lnet/minecraft/util/FormattedCharSequence;)I"
+body: |-
+  return self.getStringWidth(dev.porter.shim.gen.helpers.DdText.text(formattedCharSequence));
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.GuiComponent#blit(Lcom/mojang/blaze3d/vertex/PoseStack;IIIIILnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V"
+body: |-
+  dev.porter.shim.mc.client.GuiComponent.blit(poseStack, i, i2, i3, i4, i5, textureAtlasSprite);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.components.AbstractButton#onPress()V"
+body: |-
+  return;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.components.AbstractScrollWidget#mouseDragged(DDIDD)Z"
+body: |-
+  return false;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.components.AbstractScrollWidget#mouseReleased(DDI)Z"
+body: |-
+  return false;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.components.AbstractScrollWidget#mouseScrolled(DDD)Z"
+body: |-
+  return false;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.components.AbstractSelectionList#children()Ljava/util/List;"
+body: |-
+  return java.util.Collections.emptyList();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.components.AbstractSelectionList#getFocused()Lnet/minecraft/client/gui/components/AbstractSelectionList$Entry;"
+body: |-
+  return null;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.components.AbstractSelectionList#isMouseOver(DD)Z"
+body: |-
+  return false;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.components.AbstractSliderButton#getYImage(Z)I"
+body: |-
+  return flag ? 2 : 1;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.components.AbstractSliderButton#renderBg(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/Minecraft;II)V"
+body: |-
+  return;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.components.Button$OnPress#onPress(Lnet/minecraft/client/gui/components/Button;)V"
+body: |-
+  return;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.components.EditBox#<init>(Lnet/minecraft/client/gui/Font;IIIILnet/minecraft/client/gui/components/EditBox;Lnet/minecraft/network/chat/Component;)V"
+body: |-
+  net.minecraft.client.gui.GuiTextField field = new net.minecraft.client.gui.GuiTextField(fontRenderer, i, i2, i3, i4);
+  if (guiTextField != null) {
+      field.setText(guiTextField.getText());
+  }
+  return field;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.components.EditBox#<init>(Lnet/minecraft/client/gui/Font;IIIILnet/minecraft/network/chat/Component;)V"
+body: |-
+  return new net.minecraft.client.gui.GuiTextField(fontRenderer, i, i2, i3, i4);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.components.EditBox#setResponder(Ljava/util/function/Consumer;)V"
+body: |-
+  // GuiTextField has no change hook; the responder is only remembered
+  dev.porter.shim.gen.helpers.DdState.put(self, "responder", consumer);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.components.events.AbstractContainerEventHandler#getFocused()Lnet/minecraft/client/gui/components/events/GuiEventListener;"
+body: |-
+  return null;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.components.events.ContainerEventHandler#charTyped(CI)Z"
+body: |-
+  return false;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.components.events.ContainerEventHandler#mouseScrolled(DDD)Z"
+body: |-
+  return false;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.components.events.ContainerEventHandler#setInitialFocus(Lnet/minecraft/client/gui/components/events/GuiEventListener;)V"
+body: |-
+  return;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.screens.DemoIntroScreen#renderBackground(Lcom/mojang/blaze3d/vertex/PoseStack;)V"
+body: |-
+  return;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.screens.Screen#addRenderableWidget(Lnet/minecraft/client/gui/components/events/GuiEventListener;)Lnet/minecraft/client/gui/components/events/GuiEventListener;"
+body: |-
+  if (renderables == null) {
+      renderables = new java.util.ArrayList();
+  }
+  renderables.add(guiEventListener);
+  return guiEventListener;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.screens.Screen#children()Ljava/util/List;"
+body: |-
+  if (renderables == null) {
+      return java.util.Collections.emptyList();
+  }
+  return renderables;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.screens.Screen#clearWidgets()V"
+body: |-
+  if (renderables != null) {
+      renderables.clear();
+  }
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.screens.Screen#getMinecraft()Lnet/minecraft/client/Minecraft;"
+body: |-
+  return minecraft != null ? minecraft : net.minecraft.client.Minecraft.getMinecraft();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.screens.Screen#getTitle()Lnet/minecraft/network/chat/Component;"
+body: |-
+  return dev.porter.shim.gen.network.chat.Component.empty();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.screens.Screen#getTooltipFromItem(Lnet/minecraft/world/item/ItemStack;)Ljava/util/List;"
+body: |-
+  if (itemStack == null) {
+      return new java.util.ArrayList();
+  }
+  net.minecraft.client.Minecraft mc = net.minecraft.client.Minecraft.getMinecraft();
+  return itemStack.getTooltip(mc.thePlayer, mc.gameSettings.advancedItemTooltips);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.screens.Screen#hasAltDown()Z"
+body: |-
+  return org.lwjgl.input.Keyboard.isKeyDown(org.lwjgl.input.Keyboard.KEY_LMENU) || org.lwjgl.input.Keyboard.isKeyDown(org.lwjgl.input.Keyboard.KEY_RMENU);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.screens.Screen#hasControlDown()Z"
+body: |-
+  return net.minecraft.client.gui.GuiScreen.isCtrlKeyDown();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.screens.Screen#renderBackground(Lcom/mojang/blaze3d/vertex/PoseStack;)V"
+body: |-
+  net.minecraft.client.Minecraft mc = net.minecraft.client.Minecraft.getMinecraft();
+  net.minecraft.client.gui.ScaledResolution sr = new net.minecraft.client.gui.ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
+  net.minecraft.client.gui.Gui.drawRect(0, 0, sr.getScaledWidth(), sr.getScaledHeight(), 0xC0101010);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.screens.Screen#renderComponentHoverEffect(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/network/chat/Style;II)V"
+body: |-
+  // 1.7.10 draws hover events itself in GuiScreen.func_146285_a; nothing to add here
+  return;
+imports: []
+verified: compile
+---
+key: "field:net.minecraft.client.gui.screens.inventory.AbstractContainerScreen#isQuickCrafting:Z"
+body: |-
+  Object v = dev.porter.shim.gen.helpers.DdReflect.field(self, "field_147007_t");
+  return v instanceof Boolean && ((Boolean) v).booleanValue();
+imports: []
+verified: compile
+---
+key: "field:net.minecraft.client.gui.screens.inventory.AbstractContainerScreen#playerInventoryTitle:Lnet/minecraft/network/chat/Component;"
+body: |-
+  return dev.porter.shim.gen.network.chat.Component.translatable("container.inventory");
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.screens.inventory.AbstractContainerScreen#<init>(Lnet/minecraft/world/inventory/AbstractContainerMenu;Lnet/minecraft/world/entity/player/Inventory;Lnet/minecraft/network/chat/Component;)V"
+body: |-
+  return new net.minecraft.client.gui.inventory.GuiContainer(container) {
+      @Override
+      protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+      }
+  };
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.screens.inventory.AbstractContainerScreen#getMenu()Lnet/minecraft/world/inventory/AbstractContainerMenu;"
+body: |-
+  return self.inventorySlots;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.screens.inventory.AbstractContainerScreen#getSlotColor(I)I"
+body: |-
+  return -2130706433;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.screens.inventory.AbstractContainerScreen#getSlotUnderMouse()Lnet/minecraft/world/inventory/Slot;"
+body: |-
+  Object v = dev.porter.shim.gen.helpers.DdReflect.field(self, "theSlot", "field_147006_u");
+  return v instanceof net.minecraft.inventory.Slot ? (net.minecraft.inventory.Slot) v : null;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.screens.inventory.AbstractContainerScreen#hasClickedOutside(DDIII)Z"
+body: |-
+  int width = dev.porter.shim.gen.helpers.DdReflect.intField(self, 176, "xSize");
+  int height = dev.porter.shim.gen.helpers.DdReflect.intField(self, 166, "ySize");
+  return d < i || d2 < i2 || d >= i + width || d2 >= i2 + height;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.screens.inventory.AbstractContainerScreen#isHovering(IIIIDD)Z"
+body: |-
+  double x = d - dev.porter.shim.gen.helpers.DdReflect.intField(self, 0, "guiLeft");
+  double y = d2 - dev.porter.shim.gen.helpers.DdReflect.intField(self, 0, "guiTop");
+  return x >= i - 1 && x < i + i3 + 1 && y >= i2 - 1 && y < i2 + i4 + 1;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.screens.inventory.AbstractContainerScreen#keyPressed(III)Z"
+body: |-
+  return false;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.screens.inventory.AbstractContainerScreen#mouseClicked(DDI)Z"
+body: |-
+  dev.porter.shim.gen.helpers.DdReflect.invoke(self, "mouseClicked", new Class<?>[] {int.class, int.class, int.class}, (int) d, (int) d2, i);
+  return true;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.screens.inventory.AbstractContainerScreen#mouseDragged(DDIDD)Z"
+body: |-
+  return false;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.screens.inventory.AbstractContainerScreen#mouseReleased(DDI)Z"
+body: |-
+  dev.porter.shim.gen.helpers.DdReflect.invoke(self, "mouseMovedOrUp", new Class<?>[] {int.class, int.class, int.class}, (int) d, (int) d2, i);
+  return true;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.screens.inventory.AbstractContainerScreen#render(Lcom/mojang/blaze3d/vertex/PoseStack;IIF)V"
+body: |-
+  self.drawScreen(i, i2, f);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.screens.inventory.AbstractContainerScreen#renderBg(Lcom/mojang/blaze3d/vertex/PoseStack;FII)V"
+body: |-
+  dev.porter.shim.gen.helpers.DdReflect.invoke(self, "drawGuiContainerBackgroundLayer", new Class<?>[] {float.class, int.class, int.class}, f, i, i2);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.screens.inventory.AbstractContainerScreen#renderLabels(Lcom/mojang/blaze3d/vertex/PoseStack;II)V"
+body: |-
+  dev.porter.shim.gen.helpers.DdReflect.invoke(self, "drawGuiContainerForegroundLayer", new Class<?>[] {int.class, int.class}, i, i2);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen$CustomCreativeSlot#mayPickup(Lnet/minecraft/world/entity/player/Player;)Z"
+body: |-
+  return true;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen$ItemPickerMenu#getCarried()Lnet/minecraft/world/item/ItemStack;"
+body: |-
+  net.minecraft.client.entity.EntityClientPlayerMP player = net.minecraft.client.Minecraft.getMinecraft().thePlayer;
+  return player == null ? null : player.inventory.getItemStack();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen$ItemPickerMenu#setCarried(Lnet/minecraft/world/item/ItemStack;)V"
+body: |-
+  net.minecraft.client.entity.EntityClientPlayerMP player = net.minecraft.client.Minecraft.getMinecraft().thePlayer;
+  if (player != null) {
+      player.inventory.setItemStack(itemStack);
+  }
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen$SlotWrapper#getMaxStackSize(Lnet/minecraft/world/item/ItemStack;)I"
+body: |-
+  return itemStack == null ? 64 : itemStack.getMaxStackSize();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen$SlotWrapper#getNoItemIcon()Lcom/mojang/datafixers/util/Pair;"
+body: |-
+  return null;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen$SlotWrapper#isActive()Z"
+body: |-
+  return true;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.player.AbstractClientPlayer#isCreative()Z"
+body: |-
+  net.minecraft.client.entity.EntityClientPlayerMP player = net.minecraft.client.Minecraft.getMinecraft().thePlayer;
+  return player != null && player.capabilities.isCreativeMode;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.player.LocalPlayer#displayClientMessage(Lnet/minecraft/network/chat/Component;Z)V"
+body: |-
+  self.addChatMessage(new net.minecraft.util.ChatComponentText(dev.porter.shim.gen.helpers.DdText.text(component)));
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.player.LocalPlayer#move(Lnet/minecraft/world/entity/MoverType;Lnet/minecraft/world/phys/Vec3;)V"
+body: |-
+  self.moveEntity(vec3.xCoord, vec3.yCoord, vec3.zCoord);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.player.LocalPlayer#startUsingItem(Lnet/minecraft/world/InteractionHand;)V"
+body: |-
+  net.minecraft.item.ItemStack held = self.getHeldItem();
+  if (held != null) {
+      self.setItemInUse(held, held.getMaxItemUseDuration());
+  }
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.player.LocalPlayer#tick()V"
+body: |-
+  self.onUpdate();
+imports: []
+verified: compile
+---
+key: "method:net.minecraftforge.client.gui.ScreenUtils#blitWithBorder(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/resources/ResourceLocation;IIIIIIIIIIIIF)V"
+body: |-
+  dev.porter.shim.mc.client.ScreenUtils.blitWithBorder(poseStack, resourceLocation, i, i2, i3, i4, i5, i6, i7, i8, i9, i10, i11, i12, f);
+imports: []
+verified: compile
+---
+key: "method:net.minecraftforge.registries.GameData#checkPrefix(Ljava/lang/String;Z)Lnet/minecraft/resources/ResourceLocation;"
+body: |-
+  cpw.mods.fml.common.ModContainer active = cpw.mods.fml.common.Loader.instance().activeModContainer();
+  String prefix = active == null ? "minecraft" : active.getModId().toLowerCase(java.util.Locale.ROOT);
+  return new net.minecraft.util.ResourceLocation(string.indexOf(':') >= 0 ? string : prefix + ":" + string);
+imports: []
+verified: compile
+---
+key: "method:net.minecraftforge.registries.tags.ITag#iterator()Ljava/util/Iterator;"
+body: |-
+  return java.util.Collections.emptyIterator();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.advancements.AdvancementRewards$Builder#<init>()V"
+body: |-
+  return;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.advancements.AdvancementRewards$Builder#addRecipe(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/advancements/AdvancementRewards$Builder;"
+body: |-
+  return this;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.advancements.AdvancementRewards$Builder#build()Lnet/minecraft/advancements/AdvancementRewards;"
+body: |-
+  return new dev.porter.shim.gen.advancements.AdvancementRewards();
+imports: []
+verified: compile
+---
+key: "method:net.minecraftforge.common.util.LazyOptional#of(Lnet/minecraftforge/common/util/NonNullSupplier;)Lnet/minecraftforge/common/util/LazyOptional;"
+body: |-
+  return dev.porter.shim.mc.LazyOptional.of(dev.porter.shim.gen.helpers.DdState.supplier(nonNullSupplier));
+imports: []
+verified: compile

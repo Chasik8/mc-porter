@@ -196,6 +196,54 @@ public final class SourcePasses {
         return s;
     }
 
+    /**
+     * True when the record body declares the canonical constructor: {@code Name(<n params>) {} or the compact
+     * {@code Name {}. The record's other constructors (another parameter count, they call this(...)) do not count.
+     */
+    static boolean hasCanonicalConstructor(String body, String name, int components) {
+        if (Text.re("(?<!new )(?<![\\w.])" + name + "\\s*\\{").matcher(body).find()) {
+            return true;
+        }
+        Matcher m = Text.re("(?<!new )(?<![\\w.])" + name + "\\s*\\(").matcher(body);
+        while (m.find()) {
+            int depth = 0;
+            int angle = 0;
+            int commas = 0;
+            boolean any = false;
+            int i = m.end() - 1;
+            for (; i < body.length(); i++) {
+                char ch = body.charAt(i);
+                if (ch == '(') {
+                    depth++;
+                } else if (ch == ')') {
+                    if (--depth == 0) {
+                        break;
+                    }
+                } else if (ch == '<') {
+                    angle++;
+                } else if (ch == '>') {
+                    angle--;
+                } else if (ch == ',' && depth == 1 && angle == 0) {
+                    commas++;
+                } else if (!Character.isWhitespace(ch)) {
+                    any = true;
+                }
+            }
+            if (i >= body.length()) {
+                continue;
+            }
+            int n = any ? commas + 1 : 0;
+            int j = i + 1;
+            while (j < body.length() && Character.isWhitespace(body.charAt(j))) {
+                j++;
+            }
+            if (j < body.length() && body.charAt(j) == '{' && n == components) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private static String fixRecords(String s, int[] c) {
         while (true) {
             Matcher m = RECORD.matcher(s);
@@ -221,7 +269,7 @@ public final class SourcePasses {
             for (String[] f : fields) {
                 out.append("\n    private final ").append(f[0]).append(' ').append(f[1]).append(';');
             }
-            if (!Text.re("(?<!new )(?<![\\w.])" + name + "\\s*\\([^)]*\\)\\s*\\{").matcher(body).find()) {
+            if (!hasCanonicalConstructor(body, name, fields.size())) {
                 out.append("\n    public ").append(name).append('(');
                 for (int i = 0; i < fields.size(); i++) {
                     out.append(i > 0 ? ", " : "").append(fields.get(i)[0]).append(' ').append(fields.get(i)[1]);

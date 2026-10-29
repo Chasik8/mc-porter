@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "from": "forge-1.19.2",
+  "scope": "addon",
+  "symbols": [
+    {
+      "key": "type:net.minecraft.world.item.ItemStack",
+      "uses": 1,
+      "origin": ["dynamic"],
+      "access": 1,
+      "declaredIn": "net.minecraft.world.item.ItemStack"
+    }
+  ],
+  "summary": { "types": 1, "members": 0, "byOrigin": {} }
+}

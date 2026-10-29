@@ -91,7 +91,7 @@
       "required": ["source"],
       "additionalProperties": false,
       "properties": {
-        "source": { "enum": ["graph", "manual", "agent", "mined"] },
+        "source": { "enum": ["graph", "manual", "agent", "mined", "upfront"] },
         "ref": { "type": "string", "description": "Graph edge, candidate ids, commit URL, etc." },
         "chain": {
           "description": "For composite rules: ids of the adjacent-pair rules this was composed from, in order.",

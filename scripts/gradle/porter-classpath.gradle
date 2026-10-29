@@ -1,6 +1,9 @@
 // Gradle init script: adds the task `porterClasspath`, which writes build/porter-cp.txt (the main compile classpath,
 // one entry per line) for `porter port` (classpath.file), after building the classpath's own outputs, and copies the
 // annotation processors (javac plugins such as Jabel) into build/porter-processor/ for porter's own javac runs.
+// It also writes build/porter-javac.args, a javac argfile for compiling single files by hand against the same classpath
+// (`javac @build/porter-javac.args -d <out> Foo.java`): the classpath is joined with the platform separator, the Jabel
+// plugin (it crashes a plain javac) is left out and annotation processing is off.
 // Use it without editing the project's build files:
 //   ./gradlew -I <porter>/scripts/gradle/porter-classpath.gradle porterClasspath
 allprojects {
@@ -17,11 +20,13 @@ allprojects {
                     def f = out.get().asFile
                     f.parentFile.mkdirs()
                     f.text = cp.files.collect { it.absolutePath }.join('\n') + '\n'
+                    def jar = cp.files.findAll { !it.name.toLowerCase().contains('jabel') }.collect { it.absolutePath.replace('\\', '/') }
+                    new File(f.parentFile, 'porter-javac.args').text = '-proc:none\n-cp\n"' + jar.join(File.pathSeparator) + '"\n'
                     def d = apDir.get().asFile
                     d.deleteDir()
                     d.mkdirs()
                     if (ap != null) {
-                        ap.files.each { jar -> java.nio.file.Files.copy(jar.toPath(), new File(d, jar.name).toPath()) }
+                        ap.files.each { proc -> java.nio.file.Files.copy(proc.toPath(), new File(d, proc.name).toPath()) }
                     }
                 }
             }

@@ -1,0 +1,458 @@
+key: "method:net.minecraft.world.level.block.AbstractFurnaceBlock#getAnalogOutputSignal(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)I"
+body: |-
+  net.minecraft.tileentity.TileEntity te = world.getTileEntity(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+  return te instanceof net.minecraft.inventory.IInventory ? net.minecraft.inventory.Container.calcRedstoneFromInventory((net.minecraft.inventory.IInventory) te) : 0;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.AbstractFurnaceBlock#getRenderShape(Lnet/minecraft/world/level/block/state/BlockState;)Lnet/minecraft/world/level/block/RenderShape;"
+body: |-
+  return dev.porter.shim.mc.RenderShape.MODEL;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.AbstractFurnaceBlock#mirror(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/Mirror;)Lnet/minecraft/world/level/block/state/BlockState;"
+body: |-
+  return blockState == null ? null : blockState.mirror(mirror);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.AbstractFurnaceBlock#rotate(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/Rotation;)Lnet/minecraft/world/level/block/state/BlockState;"
+body: |-
+  return blockState == null ? null : blockState.rotate(rotation);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.state.BlockBehaviour#attack(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/entity/player/Player;)V"
+body: |-
+  blockState.attack(world, blockPos, entityPlayer);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.state.BlockBehaviour#canBeReplaced(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/item/context/BlockPlaceContext;)Z"
+body: |-
+  dev.porter.shim.BlockPos p = blockPlaceContext.getClickedPos();
+  return blockState.getBlock().isReplaceable(blockPlaceContext.getLevel(), p.getX(), p.getY(), p.getZ());
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.state.BlockBehaviour#canSurvive(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/LevelReader;Lnet/minecraft/core/BlockPos;)Z"
+body: |-
+  Object g = levelReader;
+  if (!(g instanceof net.minecraft.world.World)) return true;
+  return blockState.getBlock().canBlockStay((net.minecraft.world.World) g, blockPos.getX(), blockPos.getY(), blockPos.getZ());
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.state.BlockBehaviour#defaultMaterialColor()Lnet/minecraft/world/level/material/MaterialColor;"
+body: |-
+  return net.minecraft.block.material.MapColor.stoneColor;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.state.BlockBehaviour#entityInside(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/entity/Entity;)V"
+body: |-
+  blockState.getBlock().onEntityCollidedWithBlock(world, blockPos.getX(), blockPos.getY(), blockPos.getZ(), entity);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.state.BlockBehaviour#getAnalogOutputSignal(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)I"
+body: |-
+  return blockState.getBlock().getComparatorInputOverride(world, blockPos.getX(), blockPos.getY(), blockPos.getZ(), 0);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.state.BlockBehaviour#getCollisionShape(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/phys/shapes/CollisionContext;)Lnet/minecraft/world/phys/shapes/VoxelShape;"
+body: |-
+  net.minecraft.block.Block b = blockState.getBlock();
+  Object g = blockGetter;
+  if (!(g instanceof net.minecraft.world.IBlockAccess)) return dev.porter.shim.mc.VoxelShape.block();
+  net.minecraft.world.IBlockAccess w = (net.minecraft.world.IBlockAccess) g;
+  if (b instanceof dev.porter.shim.mc.StateBlock) return ((dev.porter.shim.mc.StateBlock) b).getCollisionShape(blockState, w, blockPos, collisionContext);
+  if (w instanceof net.minecraft.world.World && b.getCollisionBoundingBoxFromPool((net.minecraft.world.World) w, blockPos.getX(), blockPos.getY(), blockPos.getZ()) == null) return dev.porter.shim.mc.VoxelShape.empty();
+  b.setBlockBoundsBasedOnState(w, blockPos.getX(), blockPos.getY(), blockPos.getZ());
+  return dev.porter.shim.mc.VoxelShape.create(b.getBlockBoundsMinX(), b.getBlockBoundsMinY(), b.getBlockBoundsMinZ(), b.getBlockBoundsMaxX(), b.getBlockBoundsMaxY(), b.getBlockBoundsMaxZ());
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.state.BlockBehaviour#getDirectSignal(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction;)I"
+body: |-
+  net.minecraft.block.Block b = blockState.getBlock();
+  Object g = blockGetter;
+  if (!(g instanceof net.minecraft.world.IBlockAccess)) return 0;
+  net.minecraft.world.IBlockAccess w = (net.minecraft.world.IBlockAccess) g;
+  if (b instanceof dev.porter.shim.mc.StateBlock) return ((dev.porter.shim.mc.StateBlock) b).getDirectSignal(blockState, w, blockPos, direction);
+  return b.isProvidingStrongPower(w, blockPos.getX(), blockPos.getY(), blockPos.getZ(), direction.get3DDataValue());
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.state.BlockBehaviour#getDrops(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/storage/loot/LootContext$Builder;)Ljava/util/List;"
+body: |-
+  java.util.List drops = new java.util.ArrayList();
+  net.minecraft.block.Block b = blockState.getBlock();
+  net.minecraft.item.Item item = net.minecraft.item.Item.getItemFromBlock(b);
+  if (item != null) drops.add(new net.minecraft.item.ItemStack(item, 1, b.damageDropped(blockState.getMeta())));
+  return drops;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.state.BlockBehaviour#getFluidState(Lnet/minecraft/world/level/block/state/BlockState;)Lnet/minecraft/world/level/material/FluidState;"
+body: |-
+  return blockState.getFluidState();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.state.BlockBehaviour#getLightBlock(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)I"
+body: |-
+  return blockState.getBlock().getLightOpacity();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.state.BlockBehaviour#getShape(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/phys/shapes/CollisionContext;)Lnet/minecraft/world/phys/shapes/VoxelShape;"
+body: |-
+  net.minecraft.block.Block b = blockState.getBlock();
+  Object g = blockGetter;
+  if (!(g instanceof net.minecraft.world.IBlockAccess)) return dev.porter.shim.mc.VoxelShape.block();
+  net.minecraft.world.IBlockAccess w = (net.minecraft.world.IBlockAccess) g;
+  if (b instanceof dev.porter.shim.mc.StateBlock) return ((dev.porter.shim.mc.StateBlock) b).getShape(blockState, w, blockPos, collisionContext);
+  b.setBlockBoundsBasedOnState(w, blockPos.getX(), blockPos.getY(), blockPos.getZ());
+  return dev.porter.shim.mc.VoxelShape.create(b.getBlockBoundsMinX(), b.getBlockBoundsMinY(), b.getBlockBoundsMinZ(), b.getBlockBoundsMaxX(), b.getBlockBoundsMaxY(), b.getBlockBoundsMaxZ());
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.state.BlockBehaviour#getSignal(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction;)I"
+body: |-
+  net.minecraft.block.Block b = blockState.getBlock();
+  Object g = blockGetter;
+  if (!(g instanceof net.minecraft.world.IBlockAccess)) return 0;
+  net.minecraft.world.IBlockAccess w = (net.minecraft.world.IBlockAccess) g;
+  if (b instanceof dev.porter.shim.mc.StateBlock) return ((dev.porter.shim.mc.StateBlock) b).getSignal(blockState, w, blockPos, direction);
+  return b.isProvidingWeakPower(w, blockPos.getX(), blockPos.getY(), blockPos.getZ(), direction.get3DDataValue());
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.state.BlockBehaviour#hasAnalogOutputSignal(Lnet/minecraft/world/level/block/state/BlockState;)Z"
+body: |-
+  return blockState.getBlock().hasComparatorInputOverride();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.state.BlockBehaviour#mirror(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/Mirror;)Lnet/minecraft/world/level/block/state/BlockState;"
+body: |-
+  return blockState == null ? null : blockState.mirror(mirror);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.state.BlockBehaviour#neighborChanged(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/Block;Lnet/minecraft/core/BlockPos;Z)V"
+body: |-
+  net.minecraft.block.Block b = blockState.getBlock();
+  if (b instanceof dev.porter.shim.mc.StateBlock) ((dev.porter.shim.mc.StateBlock) b).neighborChanged(blockState, world, blockPos, block, blockPos2, flag);
+  else b.onNeighborBlockChange(world, blockPos.getX(), blockPos.getY(), blockPos.getZ(), block);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.state.BlockBehaviour#rotate(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/Rotation;)Lnet/minecraft/world/level/block/state/BlockState;"
+body: |-
+  return blockState == null ? null : blockState.rotate(rotation);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.state.BlockBehaviour#use(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/InteractionHand;Lnet/minecraft/world/phys/BlockHitResult;)Lnet/minecraft/world/InteractionResult;"
+body: |-
+  return blockState.use(world, entityPlayer, interactionHand, blockHitResult);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.state.properties.EnumProperty#create(Ljava/lang/String;Ljava/lang/Class;)Lnet/minecraft/world/level/block/state/properties/EnumProperty;"
+body: |-
+  return dev.porter.shim.mc.EnumProperty.create(string, clazz);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.item.AirItem#getDescriptionId()Ljava/lang/String;"
+body: |-
+  return getUnlocalizedName();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.inventory.Slot#getMaxStackSize(Lnet/minecraft/world/item/ItemStack;)I"
+body: |-
+  return self.getSlotStackLimit();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.inventory.Slot#getNoItemIcon()Lcom/mojang/datafixers/util/Pair;"
+body: |-
+  net.minecraft.util.IIcon icon = self.getBackgroundIconIndex();
+  if (icon == null) return null;
+  return dev.porter.shim.mc.Pair.of(net.minecraft.client.renderer.texture.TextureMap.locationBlocksTexture, new net.minecraft.util.ResourceLocation(icon.getIconName()));
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.inventory.Slot#initialize(Lnet/minecraft/world/item/ItemStack;)V"
+body: |-
+  self.inventory.setInventorySlotContents(self.getSlotIndex(), itemStack);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.inventory.Slot#isActive()Z"
+body: |-
+  return true;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.inventory.Slot#isSameInventory(Lnet/minecraft/world/inventory/Slot;)Z"
+body: |-
+  return slot != null && self.inventory == slot.inventory;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.inventory.Slot#setBackground(Lnet/minecraft/resources/ResourceLocation;Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/world/inventory/Slot;"
+body: |-
+  self.setBackgroundIconTexture(resourceLocation2);
+  return self;
+imports: []
+verified: compile
+---
+key: "method:com.mojang.blaze3d.platform.WindowEventHandler#resizeDisplay()V"
+body: |-
+  // 1.7.10 has no window-resize event hook: nothing to do
+imports: []
+verified: compile
+---
+key: "method:com.mojang.blaze3d.systems.RenderSystem#blendFunc(Lcom/mojang/blaze3d/platform/GlStateManager$SourceFactor;Lcom/mojang/blaze3d/platform/GlStateManager$DestFactor;)V"
+body: |-
+  dev.porter.shim.mc.client.RenderSystem.defaultBlendFunc();
+imports: []
+verified: compile
+---
+key: "method:com.mojang.blaze3d.vertex.BufferBuilder#begin(Lcom/mojang/blaze3d/vertex/VertexFormat$Mode;Lcom/mojang/blaze3d/vertex/VertexFormat;)V"
+body: |-
+  int gl = 7;
+  if (mode != null && mode == dev.porter.shim.gen.com.mojang.blaze3d.vertex.VertexFormat.Mode.LINES) gl = 1;
+  else if (mode != null && mode == dev.porter.shim.gen.com.mojang.blaze3d.vertex.VertexFormat.Mode.TRIANGLES) gl = 4;
+  net.minecraft.client.renderer.Tessellator.instance.startDrawing(gl);
+imports: []
+verified: compile
+---
+key: "method:com.mojang.blaze3d.vertex.BufferBuilder#color(IIII)Lcom/mojang/blaze3d/vertex/VertexConsumer;"
+body: |-
+  net.minecraft.client.renderer.Tessellator.instance.setColorRGBA(i, i2, i3, i4);
+  return this;
+imports: []
+verified: compile
+---
+key: "method:com.mojang.blaze3d.vertex.BufferBuilder#endVertex()V"
+body: |-
+  // the shim vertex builder keeps position/colour/uv and emits the vertex
+  dev.porter.shim.mc.client.Tesselator.getInstance().getBuilder().endVertex();
+imports: []
+verified: compile
+---
+key: "method:com.mojang.blaze3d.vertex.BufferVertexConsumer#uv(FF)Lcom/mojang/blaze3d/vertex/VertexConsumer;"
+body: |-
+  dev.porter.shim.mc.client.Tesselator.getInstance().getBuilder().uv(f, f2);
+  return this;
+imports: []
+verified: compile
+---
+key: "method:com.mojang.blaze3d.vertex.PoseStack$Pose#pose()Lcom/mojang/math/Matrix4f;"
+body: |-
+  return dev.porter.shim.mc.client.Matrix4f.IDENTITY;
+imports: []
+verified: compile
+---
+key: "method:com.mojang.blaze3d.vertex.VertexConsumer#color(I)Lcom/mojang/blaze3d/vertex/VertexConsumer;"
+body: |-
+  dev.porter.shim.mc.client.Tesselator.getInstance().getBuilder().color(i);
+  return this;
+imports: []
+verified: compile
+---
+key: "method:com.mojang.blaze3d.vertex.VertexConsumer#color(IIII)Lcom/mojang/blaze3d/vertex/VertexConsumer;"
+body: |-
+  dev.porter.shim.mc.client.Tesselator.getInstance().getBuilder().color(i, i2, i3, i4);
+  return this;
+imports: []
+verified: compile
+---
+key: "method:com.mojang.blaze3d.vertex.VertexConsumer#endVertex()V"
+body: |-
+  dev.porter.shim.mc.client.Tesselator.getInstance().getBuilder().endVertex();
+imports: []
+verified: compile
+---
+key: "method:com.mojang.blaze3d.vertex.VertexConsumer#uv(FF)Lcom/mojang/blaze3d/vertex/VertexConsumer;"
+body: |-
+  dev.porter.shim.mc.client.Tesselator.getInstance().getBuilder().uv(f, f2);
+  return this;
+imports: []
+verified: compile
+---
+key: "method:com.mojang.blaze3d.vertex.VertexConsumer#vertex(Lcom/mojang/math/Matrix4f;FFF)Lcom/mojang/blaze3d/vertex/VertexConsumer;"
+body: |-
+  dev.porter.shim.mc.client.Tesselator.getInstance().getBuilder().vertex(matrix4f, f, f2, f3);
+  return this;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.renderer.MultiBufferSource#immediate(Lcom/mojang/blaze3d/vertex/BufferBuilder;)Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;"
+body: |-
+  return new dev.porter.shim.gen.client.renderer.MultiBufferSource.BufferSource() {};
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.renderer.MultiBufferSource$BufferSource#endBatch()V"
+body: |-
+  dev.porter.shim.mc.client.Tesselator.getInstance().end();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.renderer.RenderBuffers#bufferSource()Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;"
+body: |-
+  return new dev.porter.shim.gen.client.renderer.MultiBufferSource.BufferSource() {};
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.renderer.RenderType#tripwire()Lnet/minecraft/client/renderer/RenderType;"
+body: |-
+  return dev.porter.shim.mc.client.RenderType.translucent();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.renderer.block.BlockRenderDispatcher#getBlockModelShaper()Lnet/minecraft/client/renderer/block/BlockModelShaper;"
+body: |-
+  return new dev.porter.shim.gen.client.renderer.block.BlockModelShaper();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.renderer.block.model.BlockElementFace#<init>(Lnet/minecraft/core/Direction;ILjava/lang/String;Lnet/minecraft/client/renderer/block/model/BlockFaceUV;)V"
+body: |-
+  this.uv = blockFaceUV;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.renderer.block.model.BlockFaceUV#<init>([FI)V"
+body: |-
+  this.uvs = floats;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.renderer.block.model.ItemOverrides#<init>()V"
+body: |-
+  // no item override table on 1.7.10
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.renderer.chunk.RenderChunkRegion#getBlockEntity(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/entity/BlockEntity;"
+body: |-
+  Object o = this;
+  return o instanceof net.minecraft.world.IBlockAccess ? dev.porter.shim.mc.Levels.getBlockEntity((net.minecraft.world.IBlockAccess) o, blockPos) : null;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.renderer.chunk.RenderChunkRegion#getBlockState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;"
+body: |-
+  Object o = this;
+  return o instanceof net.minecraft.world.IBlockAccess ? dev.porter.shim.mc.Levels.getBlockState((net.minecraft.world.IBlockAccess) o, blockPos) : null;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.renderer.chunk.RenderChunkRegion#getFluidState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/material/FluidState;"
+body: |-
+  Object o = this;
+  if (!(o instanceof net.minecraft.world.IBlockAccess)) return dev.porter.shim.mc.FluidState.EMPTY;
+  return dev.porter.shim.mc.FluidState.of(dev.porter.shim.mc.Levels.getBlockState((net.minecraft.world.IBlockAccess) o, blockPos));
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.renderer.culling.Frustum#<init>(Lcom/mojang/math/Matrix4f;Lcom/mojang/math/Matrix4f;)V"
+body: |-
+  return net.minecraft.client.renderer.culling.ClippingHelperImpl.getInstance();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.renderer.culling.Frustum#isVisible(Lnet/minecraft/world/phys/AABB;)Z"
+body: |-
+  return self.isBoxInFrustum(axisAlignedBB.minX, axisAlignedBB.minY, axisAlignedBB.minZ, axisAlignedBB.maxX, axisAlignedBB.maxY, axisAlignedBB.maxZ);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.renderer.entity.ItemRenderer#renderAndDecorateItem(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/item/ItemStack;III)V"
+body: |-
+  net.minecraft.client.renderer.entity.RenderItem ri = net.minecraft.client.renderer.entity.RenderItem.getInstance();
+  net.minecraft.client.Minecraft mc = net.minecraft.client.Minecraft.getMinecraft();
+  ri.renderItemAndEffectIntoGUI(mc.fontRenderer, mc.getTextureManager(), itemStack, i, i2);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.renderer.entity.ItemRenderer#renderGuiItemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V"
+body: |-
+  net.minecraft.client.renderer.entity.RenderItem ri = net.minecraft.client.renderer.entity.RenderItem.getInstance();
+  ri.renderItemOverlayIntoGUI(fontRenderer, net.minecraft.client.Minecraft.getMinecraft().getTextureManager(), itemStack, i, i2, string);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.renderer.texture.MissingTextureAtlasSprite#getLocation()Lnet/minecraft/resources/ResourceLocation;"
+body: |-
+  return new net.minecraft.util.ResourceLocation("minecraft", "missingno");
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.renderer.texture.TextureAtlas#location()Lnet/minecraft/resources/ResourceLocation;"
+body: |-
+  return self.getTextureType() == 0 ? net.minecraft.client.renderer.texture.TextureMap.locationBlocksTexture : net.minecraft.client.renderer.texture.TextureMap.locationItemsTexture;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.client.renderer.texture.TextureManager#getTexture(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/client/renderer/texture/AbstractTexture;"
+body: |-
+  net.minecraft.client.renderer.texture.ITextureObject t = self.getTexture(resourceLocation);
+  return t instanceof net.minecraft.client.renderer.texture.AbstractTexture ? (net.minecraft.client.renderer.texture.AbstractTexture) t : null;
+imports: []
+verified: compile
+---
+key: "method:net.minecraftforge.client.ChunkRenderTypeSet#iterator()Ljava/util/Iterator;"
+body: |-
+  return java.util.Collections.emptyIterator();
+imports: []
+verified: compile
+---
+key: "method:net.minecraftforge.client.ChunkRenderTypeSet#of([Lnet/minecraft/client/renderer/RenderType;)Lnet/minecraftforge/client/ChunkRenderTypeSet;"
+body: |-
+  final java.util.List l = java.util.Arrays.asList(renderTypes);
+  return new dev.porter.shim.gen.client.ChunkRenderTypeSet() {
+      public java.util.Iterator iterator() { return l.iterator(); }
+  };
+imports: []
+verified: compile
+---
+key: "method:net.minecraftforge.client.model.data.ModelData$Builder#build()Lnet/minecraftforge/client/model/data/ModelData;"
+body: |-
+  java.util.Map m = dev.porter.shim.gen.helpers.fc.CSlots.map(this, "props");
+  dev.porter.shim.mc.client.ModelData.Builder b = dev.porter.shim.mc.client.ModelData.builder();
+  for (java.util.Iterator it = m.entrySet().iterator(); it.hasNext();) {
+      java.util.Map.Entry e = (java.util.Map.Entry) it.next();
+      b.with((dev.porter.shim.mc.client.ModelData.ModelProperty) e.getKey(), e.getValue());
+  }
+  return b.build();
+imports: []
+verified: compile
+---
+key: "method:net.minecraftforge.client.model.data.ModelData$Builder#with(Lnet/minecraftforge/client/model/data/ModelProperty;Ljava/lang/Object;)Lnet/minecraftforge/client/model/data/ModelData$Builder;"
+body: |-
+  Object sp = dev.porter.shim.gen.helpers.fc.CSlots.get(modelProperty, "shim");
+  if (sp == null) {
+      sp = new dev.porter.shim.mc.client.ModelData.ModelProperty();
+      dev.porter.shim.gen.helpers.fc.CSlots.put(modelProperty, "shim", sp);
+  }
+  dev.porter.shim.gen.helpers.fc.CSlots.map(this, "props").put(sp, object);
+  return this;
+imports: []
+verified: compile
+---
+key: "method:net.minecraftforge.client.model.data.ModelProperty#<init>()V"
+body: |-
+  // property identity is the instance; no state needed
+imports: []
+verified: compile

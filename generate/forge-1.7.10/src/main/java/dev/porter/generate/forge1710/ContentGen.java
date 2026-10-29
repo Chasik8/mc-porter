@@ -202,14 +202,17 @@ final class ContentGen {
             }
             String field = itemField(i.id());
             t.addField(FieldSpec.builder(T.ITEM, field, Modifier.PUBLIC, Modifier.STATIC).build());
+            boolean hasIcon = new ItemGen(plan).checkIcon(i);
             if (plan.sourceConstructed(i)) {
                 it.addStatement("$L = $L", field, plan.sourceNew(i, i.logicClass()));
                 it.addStatement("$L.setUnlocalizedName($S)", field, plan.legacyName(i.id(), i.extensions()));
-                it.addStatement("$L.setTextureName($S)", field, new ItemGen(plan).icon(i));
+                if (hasIcon) {
+                    it.addStatement("$L.setTextureName($S)", field, new ItemGen(plan).icon(i));
+                }
             } else if (ItemGen.shared(ctx, i)) {
                 if (i.textures() == null || i.textures().get("layer0") == null) ctx.warn("item-no-texture", i.id(), "no layer0 texture; icon " + new ItemGen(plan).icon(i) + " assumed");
                 it.addStatement("$L = new $T($S, $S, $S)", field, plan.itemClass(i), plan.registryName(i.id()),
-                        plan.legacyName(i.id(), i.extensions()), new ItemGen(plan).icon(i));
+                        plan.legacyName(i.id(), i.extensions()), hasIcon ? new ItemGen(plan).icon(i) : null);
             } else {
                 it.addStatement("$L = new $T()", field, plan.itemClass(i));
             }

@@ -5,7 +5,7 @@ Porter takes a Minecraft Forge mod made for one game version and rebuilds it for
 profile"). With one command, porter reads your own copy of the original mod, converts it and builds a jar you can
 drop into your `mods` folder.
 
-> Status: **v0.2.0, early.** Two ports are available. Ports are unofficial: the original authors do not make or
+> Status: **v0.3.0, early.** Two ports are available. Ports are unofficial: the original authors do not make or
 > support them. See [Status and limits](#status-and-limits).
 
 ## Get a ported mod
@@ -21,8 +21,8 @@ You do **not** need to install Java: porter downloads its own copy the first tim
 
 ### Windows
 
-1. Download `porter-0.2.0.zip` from the [releases page](https://github.com/Chasik8/mc-porter/releases/latest).
-2. Right-click it, choose **Extract All...**, and extract it to `C:\`. You now have `C:\porter-0.2.0\`.
+1. Download `porter-0.3.0.zip` from the [releases page](https://github.com/Chasik8/mc-porter/releases/latest).
+2. Right-click it, choose **Extract All...**, and extract it to `C:\`. You now have `C:\porter-0.3.0\`.
    Use a short folder **without spaces** in its name (not your Desktop, not a folder like `C:\My Mods`): long or
    spaced paths break parts of the Minecraft build tools.
 3. Open the [list of ports](ports/README.md), click your mod and read its page. It says which files to download
@@ -30,11 +30,11 @@ You do **not** need to install Java: porter downloads its own copy the first tim
 4. Open a Command Prompt (press <kbd>Win</kbd>+<kbd>R</kbd>, type `cmd`, press Enter) and run the port's
    `run.bat`. For Torchmaster:
    ```
-   C:\porter-0.2.0\ports\torchmaster\run.bat
+   C:\porter-0.3.0\ports\torchmaster\run.bat
    ```
    Use a Command Prompt rather than double-clicking the file: the window then stays open and you can read the result.
 5. Wait. At the end porter prints `Done. Your ported mod:` and the path of the jar, for example
-   `C:\porter-0.2.0\output\torchmaster-0.1.0.jar`.
+   `C:\porter-0.3.0\output\torchmaster-0.1.0.jar`.
 6. Copy that jar into the `mods` folder of your Minecraft 1.7.10 Forge instance (official launcher:
    `%APPDATA%\.minecraft\mods`), together with anything else the port's page lists (for example the base mod of an
    addon). Start the game.
@@ -42,15 +42,15 @@ You do **not** need to install Java: porter downloads its own copy the first tim
 ### Linux (macOS should work too, but is untested)
 
 ```sh
-curl -fLO https://github.com/Chasik8/mc-porter/releases/download/v0.2.0/porter-0.2.0.zip
-unzip porter-0.2.0.zip -d ~ && cd ~/porter-0.2.0
+curl -fLO https://github.com/Chasik8/mc-porter/releases/download/v0.3.0/porter-0.3.0.zip
+unzip porter-0.3.0.zip -d ~ && cd ~/porter-0.3.0
 # save the files the port's page asks for (if any) in ~/Downloads, then:
 ports/torchmaster/run.sh
 cp output/*.jar ~/.minecraft/mods/        # or the mods folder of your launcher's 1.7.10 instance
 ```
 
 You need `curl` (or `wget`), `unzip` and `tar`. Everything porter downloads or builds goes into the `.porter` folder
-inside `porter-0.2.0`; delete that folder and nothing is left behind.
+inside `porter-0.3.0`; delete that folder and nothing is left behind.
 
 ### If something goes wrong
 

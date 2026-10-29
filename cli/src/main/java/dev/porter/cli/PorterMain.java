@@ -19,7 +19,7 @@ import picocli.CommandLine.Option;
  * Entry point of the single {@code porter} binary. Subcommands come from {@link PorterSubcommand} providers on the
  * classpath; every path of {@link KnownCommands#PATHS} without a provider is a stub ({@link StubCommand}).
  */
-@Command(name = "porter", mixinStandardHelpOptions = true, version = "porter 0.2.0",
+@Command(name = "porter", mixinStandardHelpOptions = true, version = "porter 0.3.0",
         description = "Ports Minecraft Forge mods between versions via IR, rewrite rules and automatic checks.")
 public final class PorterMain implements Runnable {
     @CommandLine.Spec
@@ -115,7 +115,7 @@ public final class PorterMain implements Runnable {
                 }
             } else {
                 words.add(x);
-                if (!x.equals("test") && !x.equals("graph") && !x.equals("patch")) {
+                if (!x.equals("test") && !x.equals("graph") && !x.equals("patch") && !x.equals("bodies")) {
                     break;
                 }
             }
@@ -213,7 +213,8 @@ public final class PorterMain implements Runnable {
     private static final Map<String, String> GROUPS = Map.of(
             "graph", "Symbol graph across Minecraft versions (graph)",
             "test", "Round-trip and differential scenario tests (testkit)",
-            "patch", "Unified diffs between trees (port)");
+            "patch", "Unified diffs between trees (port)",
+            "bodies", "Bodies DB of the upfront layer (port)");
 
     /** Parent of nested commands ({@code graph}, {@code test}); prints usage. */
     @Command

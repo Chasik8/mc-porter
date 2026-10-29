@@ -1,0 +1,972 @@
+# generic-vanilla-constants: generic Minecraft/Forge 1.19.2 -> 1.7.10 mappings promoted from a port profile (no mod names).
+---
+schemaVersion: 1
+id: r-gen-recipes-blocks-magma-block
+description: "field net.minecraft.world.level.block.Blocks#MAGMA_BLOCK -> ModernItems.ABSENT_BLOCK"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.level.block.Blocks#MAGMA_BLOCK"
+replace: "ModernItems.ABSENT_BLOCK"
+imports: ["dev.porter.shim.mc.ModernItems"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.level.block.Blocks"
+    before: "Object o = Blocks.MAGMA_BLOCK;"
+    after: "Object o = ModernItems.ABSENT_BLOCK;"
+---
+schemaVersion: 1
+id: r-gen-recipes-blocks-chain
+description: "field net.minecraft.world.level.block.Blocks#CHAIN -> ModernItems.ABSENT_BLOCK"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.level.block.Blocks#CHAIN"
+replace: "ModernItems.ABSENT_BLOCK"
+imports: ["dev.porter.shim.mc.ModernItems"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.level.block.Blocks"
+    before: "Object o = Blocks.CHAIN;"
+    after: "Object o = ModernItems.ABSENT_BLOCK;"
+---
+schemaVersion: 1
+id: r-gen-recipes-blocks-fire
+description: "field net.minecraft.world.level.block.Blocks#FIRE -> Blocks.fire"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.level.block.Blocks#FIRE"
+replace: "Blocks.fire"
+imports: ["net.minecraft.init.Blocks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.level.block.Blocks"
+    before: "Object o = Blocks.FIRE;"
+    after: "Object o = Blocks.fire;"
+---
+schemaVersion: 1
+id: r-gen-recipes-blocks-lava
+description: "field net.minecraft.world.level.block.Blocks#LAVA -> Blocks.lava"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.level.block.Blocks#LAVA"
+replace: "Blocks.lava"
+imports: ["net.minecraft.init.Blocks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.level.block.Blocks"
+    before: "Object o = Blocks.LAVA;"
+    after: "Object o = Blocks.lava;"
+---
+schemaVersion: 1
+id: r-gen-recipes-blocks-water
+description: "field net.minecraft.world.level.block.Blocks#WATER -> Blocks.water"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.level.block.Blocks#WATER"
+replace: "Blocks.water"
+imports: ["net.minecraft.init.Blocks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.level.block.Blocks"
+    before: "Object o = Blocks.WATER;"
+    after: "Object o = Blocks.water;"
+---
+schemaVersion: 1
+id: r-gen-recipes-blocks-obsidian
+description: "field net.minecraft.world.level.block.Blocks#OBSIDIAN -> Blocks.obsidian"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.level.block.Blocks#OBSIDIAN"
+replace: "Blocks.obsidian"
+imports: ["net.minecraft.init.Blocks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.level.block.Blocks"
+    before: "Object o = Blocks.OBSIDIAN;"
+    after: "Object o = Blocks.obsidian;"
+---
+schemaVersion: 1
+id: r-gen-recipes-blocks-stone
+description: "field net.minecraft.world.level.block.Blocks#STONE -> Blocks.stone"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.level.block.Blocks#STONE"
+replace: "Blocks.stone"
+imports: ["net.minecraft.init.Blocks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.level.block.Blocks"
+    before: "Object o = Blocks.STONE;"
+    after: "Object o = Blocks.stone;"
+---
+schemaVersion: 1
+id: r-gen-recipes-blocks-snow
+description: "field net.minecraft.world.level.block.Blocks#SNOW -> Blocks.snow"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.level.block.Blocks#SNOW"
+replace: "Blocks.snow"
+imports: ["net.minecraft.init.Blocks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.level.block.Blocks"
+    before: "Object o = Blocks.SNOW;"
+    after: "Object o = Blocks.snow;"
+---
+schemaVersion: 1
+id: r-gen-recipes-blocks-ice
+description: "field net.minecraft.world.level.block.Blocks#ICE -> Blocks.ice"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.level.block.Blocks#ICE"
+replace: "Blocks.ice"
+imports: ["net.minecraft.init.Blocks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.level.block.Blocks"
+    before: "Object o = Blocks.ICE;"
+    after: "Object o = Blocks.ice;"
+---
+schemaVersion: 1
+id: r-gen-recipes-blocks-oak-planks
+description: "field net.minecraft.world.level.block.Blocks#OAK_PLANKS -> Blocks.planks"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.level.block.Blocks#OAK_PLANKS"
+replace: "Blocks.planks"
+imports: ["net.minecraft.init.Blocks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.level.block.Blocks"
+    before: "Object o = Blocks.OAK_PLANKS;"
+    after: "Object o = Blocks.planks;"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-charcoal
+description: "field net.minecraft.world.item.Items#CHARCOAL -> Items.coal"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#CHARCOAL"
+replace: "Items.coal"
+imports: ["net.minecraft.init.Items"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.CHARCOAL;"
+    after: "Object o = Items.coal;"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-hopper
+description: "field net.minecraft.world.item.Items#HOPPER -> Item.getItemFromBlock(Blocks.hopper)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#HOPPER"
+replace: "Item.getItemFromBlock(Blocks.hopper)"
+imports: ["net.minecraft.item.Item", "net.minecraft.init.Blocks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.HOPPER;"
+    after: "Object o = Item.getItemFromBlock(Blocks.hopper);"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-crafting-table
+description: "field net.minecraft.world.item.Items#CRAFTING_TABLE -> Item.getItemFromBlock(Blocks.crafting_table)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#CRAFTING_TABLE"
+replace: "Item.getItemFromBlock(Blocks.crafting_table)"
+imports: ["net.minecraft.item.Item", "net.minecraft.init.Blocks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.CRAFTING_TABLE;"
+    after: "Object o = Item.getItemFromBlock(Blocks.crafting_table);"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-netherrack
+description: "field net.minecraft.world.item.Items#NETHERRACK -> Item.getItemFromBlock(Blocks.netherrack)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#NETHERRACK"
+replace: "Item.getItemFromBlock(Blocks.netherrack)"
+imports: ["net.minecraft.item.Item", "net.minecraft.init.Blocks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.NETHERRACK;"
+    after: "Object o = Item.getItemFromBlock(Blocks.netherrack);"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-cobblestone
+description: "field net.minecraft.world.item.Items#COBBLESTONE -> Item.getItemFromBlock(Blocks.cobblestone)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#COBBLESTONE"
+replace: "Item.getItemFromBlock(Blocks.cobblestone)"
+imports: ["net.minecraft.item.Item", "net.minecraft.init.Blocks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.COBBLESTONE;"
+    after: "Object o = Item.getItemFromBlock(Blocks.cobblestone);"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-stone
+description: "field net.minecraft.world.item.Items#STONE -> Item.getItemFromBlock(Blocks.stone)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#STONE"
+replace: "Item.getItemFromBlock(Blocks.stone)"
+imports: ["net.minecraft.item.Item", "net.minecraft.init.Blocks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.STONE;"
+    after: "Object o = Item.getItemFromBlock(Blocks.stone);"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-mycelium
+description: "field net.minecraft.world.item.Items#MYCELIUM -> Item.getItemFromBlock(Blocks.mycelium)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#MYCELIUM"
+replace: "Item.getItemFromBlock(Blocks.mycelium)"
+imports: ["net.minecraft.item.Item", "net.minecraft.init.Blocks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.MYCELIUM;"
+    after: "Object o = Item.getItemFromBlock(Blocks.mycelium);"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-obsidian
+description: "field net.minecraft.world.item.Items#OBSIDIAN -> Item.getItemFromBlock(Blocks.obsidian)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#OBSIDIAN"
+replace: "Item.getItemFromBlock(Blocks.obsidian)"
+imports: ["net.minecraft.item.Item", "net.minecraft.init.Blocks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.OBSIDIAN;"
+    after: "Object o = Item.getItemFromBlock(Blocks.obsidian);"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-soul-sand
+description: "field net.minecraft.world.item.Items#SOUL_SAND -> Item.getItemFromBlock(Blocks.soul_sand)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#SOUL_SAND"
+replace: "Item.getItemFromBlock(Blocks.soul_sand)"
+imports: ["net.minecraft.item.Item", "net.minecraft.init.Blocks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.SOUL_SAND;"
+    after: "Object o = Item.getItemFromBlock(Blocks.soul_sand);"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-bow
+description: "field net.minecraft.world.item.Items#BOW -> Items.bow"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#BOW"
+replace: "Items.bow"
+imports: ["net.minecraft.init.Items"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.BOW;"
+    after: "Object o = Items.bow;"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-fishing-rod
+description: "field net.minecraft.world.item.Items#FISHING_ROD -> Items.fishing_rod"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#FISHING_ROD"
+replace: "Items.fishing_rod"
+imports: ["net.minecraft.init.Items"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.FISHING_ROD;"
+    after: "Object o = Items.fishing_rod;"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-cake
+description: "field net.minecraft.world.item.Items#CAKE -> Items.cake"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#CAKE"
+replace: "Items.cake"
+imports: ["net.minecraft.init.Items"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.CAKE;"
+    after: "Object o = Items.cake;"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-melon
+description: "field net.minecraft.world.item.Items#MELON (the melon block item in 1.19.2) -> Item.getItemFromBlock(Blocks.melon_block)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#MELON"
+replace: "Item.getItemFromBlock(Blocks.melon_block)"
+imports: ["net.minecraft.item.Item", "net.minecraft.init.Blocks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile; r15: MELON is the block item, MELON_SLICE is the 1.7.10 Items.melon" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.MELON;"
+    after: "Object o = Item.getItemFromBlock(Blocks.melon_block);"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-melon-slice
+description: "field net.minecraft.world.item.Items#MELON_SLICE -> Items.melon"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#MELON_SLICE"
+replace: "Items.melon"
+imports: ["net.minecraft.init.Items"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "r15: the slice is Items.melon in 1.7.10" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.MELON_SLICE;"
+    after: "Object o = Items.melon;"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-granite
+description: "field net.minecraft.world.item.Items#GRANITE -> new ItemStack(Blocks.stone, 1, 1)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#GRANITE"
+replace: "new ItemStack(Blocks.stone, 1, 1)"
+imports: ["net.minecraft.item.ItemStack", "net.minecraft.init.Blocks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.GRANITE;"
+    after: "Object o = new ItemStack(Blocks.stone, 1, 1);"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-diorite
+description: "field net.minecraft.world.item.Items#DIORITE -> new ItemStack(Blocks.stone, 1, 3)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#DIORITE"
+replace: "new ItemStack(Blocks.stone, 1, 3)"
+imports: ["net.minecraft.item.ItemStack", "net.minecraft.init.Blocks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.DIORITE;"
+    after: "Object o = new ItemStack(Blocks.stone, 1, 3);"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-andesite
+description: "field net.minecraft.world.item.Items#ANDESITE -> new ItemStack(Blocks.stone, 1, 5)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#ANDESITE"
+replace: "new ItemStack(Blocks.stone, 1, 5)"
+imports: ["net.minecraft.item.ItemStack", "net.minecraft.init.Blocks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.ANDESITE;"
+    after: "Object o = new ItemStack(Blocks.stone, 1, 5);"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-terracotta
+description: "field net.minecraft.world.item.Items#TERRACOTTA -> new ItemStack(Blocks.hardened_clay)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#TERRACOTTA"
+replace: "new ItemStack(Blocks.hardened_clay)"
+imports: ["net.minecraft.item.ItemStack", "net.minecraft.init.Blocks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.TERRACOTTA;"
+    after: "Object o = new ItemStack(Blocks.hardened_clay);"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-white-terracotta
+description: "field net.minecraft.world.item.Items#WHITE_TERRACOTTA -> new ItemStack(Blocks.stained_hardened_clay, 1, 0)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#WHITE_TERRACOTTA"
+replace: "new ItemStack(Blocks.stained_hardened_clay, 1, 0)"
+imports: ["net.minecraft.item.ItemStack", "net.minecraft.init.Blocks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.WHITE_TERRACOTTA;"
+    after: "Object o = new ItemStack(Blocks.stained_hardened_clay, 1, 0);"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-orange-terracotta
+description: "field net.minecraft.world.item.Items#ORANGE_TERRACOTTA -> new ItemStack(Blocks.stained_hardened_clay, 1, 1)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#ORANGE_TERRACOTTA"
+replace: "new ItemStack(Blocks.stained_hardened_clay, 1, 1)"
+imports: ["net.minecraft.item.ItemStack", "net.minecraft.init.Blocks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.ORANGE_TERRACOTTA;"
+    after: "Object o = new ItemStack(Blocks.stained_hardened_clay, 1, 1);"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-magenta-terracotta
+description: "field net.minecraft.world.item.Items#MAGENTA_TERRACOTTA -> new ItemStack(Blocks.stained_hardened_clay, 1, 2)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#MAGENTA_TERRACOTTA"
+replace: "new ItemStack(Blocks.stained_hardened_clay, 1, 2)"
+imports: ["net.minecraft.item.ItemStack", "net.minecraft.init.Blocks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.MAGENTA_TERRACOTTA;"
+    after: "Object o = new ItemStack(Blocks.stained_hardened_clay, 1, 2);"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-light-blue-terracotta
+description: "field net.minecraft.world.item.Items#LIGHT_BLUE_TERRACOTTA -> new ItemStack(Blocks.stained_hardened_clay, 1, 3)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#LIGHT_BLUE_TERRACOTTA"
+replace: "new ItemStack(Blocks.stained_hardened_clay, 1, 3)"
+imports: ["net.minecraft.item.ItemStack", "net.minecraft.init.Blocks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.LIGHT_BLUE_TERRACOTTA;"
+    after: "Object o = new ItemStack(Blocks.stained_hardened_clay, 1, 3);"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-yellow-terracotta
+description: "field net.minecraft.world.item.Items#YELLOW_TERRACOTTA -> new ItemStack(Blocks.stained_hardened_clay, 1, 4)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#YELLOW_TERRACOTTA"
+replace: "new ItemStack(Blocks.stained_hardened_clay, 1, 4)"
+imports: ["net.minecraft.item.ItemStack", "net.minecraft.init.Blocks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.YELLOW_TERRACOTTA;"
+    after: "Object o = new ItemStack(Blocks.stained_hardened_clay, 1, 4);"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-lime-terracotta
+description: "field net.minecraft.world.item.Items#LIME_TERRACOTTA -> new ItemStack(Blocks.stained_hardened_clay, 1, 5)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#LIME_TERRACOTTA"
+replace: "new ItemStack(Blocks.stained_hardened_clay, 1, 5)"
+imports: ["net.minecraft.item.ItemStack", "net.minecraft.init.Blocks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.LIME_TERRACOTTA;"
+    after: "Object o = new ItemStack(Blocks.stained_hardened_clay, 1, 5);"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-pink-terracotta
+description: "field net.minecraft.world.item.Items#PINK_TERRACOTTA -> new ItemStack(Blocks.stained_hardened_clay, 1, 6)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#PINK_TERRACOTTA"
+replace: "new ItemStack(Blocks.stained_hardened_clay, 1, 6)"
+imports: ["net.minecraft.item.ItemStack", "net.minecraft.init.Blocks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.PINK_TERRACOTTA;"
+    after: "Object o = new ItemStack(Blocks.stained_hardened_clay, 1, 6);"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-gray-terracotta
+description: "field net.minecraft.world.item.Items#GRAY_TERRACOTTA -> new ItemStack(Blocks.stained_hardened_clay, 1, 7)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#GRAY_TERRACOTTA"
+replace: "new ItemStack(Blocks.stained_hardened_clay, 1, 7)"
+imports: ["net.minecraft.item.ItemStack", "net.minecraft.init.Blocks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.GRAY_TERRACOTTA;"
+    after: "Object o = new ItemStack(Blocks.stained_hardened_clay, 1, 7);"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-light-gray-terracotta
+description: "field net.minecraft.world.item.Items#LIGHT_GRAY_TERRACOTTA -> new ItemStack(Blocks.stained_hardened_clay, 1, 8)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#LIGHT_GRAY_TERRACOTTA"
+replace: "new ItemStack(Blocks.stained_hardened_clay, 1, 8)"
+imports: ["net.minecraft.item.ItemStack", "net.minecraft.init.Blocks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.LIGHT_GRAY_TERRACOTTA;"
+    after: "Object o = new ItemStack(Blocks.stained_hardened_clay, 1, 8);"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-cyan-terracotta
+description: "field net.minecraft.world.item.Items#CYAN_TERRACOTTA -> new ItemStack(Blocks.stained_hardened_clay, 1, 9)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#CYAN_TERRACOTTA"
+replace: "new ItemStack(Blocks.stained_hardened_clay, 1, 9)"
+imports: ["net.minecraft.item.ItemStack", "net.minecraft.init.Blocks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.CYAN_TERRACOTTA;"
+    after: "Object o = new ItemStack(Blocks.stained_hardened_clay, 1, 9);"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-purple-terracotta
+description: "field net.minecraft.world.item.Items#PURPLE_TERRACOTTA -> new ItemStack(Blocks.stained_hardened_clay, 1, 10)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#PURPLE_TERRACOTTA"
+replace: "new ItemStack(Blocks.stained_hardened_clay, 1, 10)"
+imports: ["net.minecraft.item.ItemStack", "net.minecraft.init.Blocks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.PURPLE_TERRACOTTA;"
+    after: "Object o = new ItemStack(Blocks.stained_hardened_clay, 1, 10);"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-blue-terracotta
+description: "field net.minecraft.world.item.Items#BLUE_TERRACOTTA -> new ItemStack(Blocks.stained_hardened_clay, 1, 11)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#BLUE_TERRACOTTA"
+replace: "new ItemStack(Blocks.stained_hardened_clay, 1, 11)"
+imports: ["net.minecraft.item.ItemStack", "net.minecraft.init.Blocks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.BLUE_TERRACOTTA;"
+    after: "Object o = new ItemStack(Blocks.stained_hardened_clay, 1, 11);"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-brown-terracotta
+description: "field net.minecraft.world.item.Items#BROWN_TERRACOTTA -> new ItemStack(Blocks.stained_hardened_clay, 1, 12)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#BROWN_TERRACOTTA"
+replace: "new ItemStack(Blocks.stained_hardened_clay, 1, 12)"
+imports: ["net.minecraft.item.ItemStack", "net.minecraft.init.Blocks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.BROWN_TERRACOTTA;"
+    after: "Object o = new ItemStack(Blocks.stained_hardened_clay, 1, 12);"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-green-terracotta
+description: "field net.minecraft.world.item.Items#GREEN_TERRACOTTA -> new ItemStack(Blocks.stained_hardened_clay, 1, 13)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#GREEN_TERRACOTTA"
+replace: "new ItemStack(Blocks.stained_hardened_clay, 1, 13)"
+imports: ["net.minecraft.item.ItemStack", "net.minecraft.init.Blocks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.GREEN_TERRACOTTA;"
+    after: "Object o = new ItemStack(Blocks.stained_hardened_clay, 1, 13);"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-red-terracotta
+description: "field net.minecraft.world.item.Items#RED_TERRACOTTA -> new ItemStack(Blocks.stained_hardened_clay, 1, 14)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#RED_TERRACOTTA"
+replace: "new ItemStack(Blocks.stained_hardened_clay, 1, 14)"
+imports: ["net.minecraft.item.ItemStack", "net.minecraft.init.Blocks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.RED_TERRACOTTA;"
+    after: "Object o = new ItemStack(Blocks.stained_hardened_clay, 1, 14);"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-black-terracotta
+description: "field net.minecraft.world.item.Items#BLACK_TERRACOTTA -> new ItemStack(Blocks.stained_hardened_clay, 1, 15)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#BLACK_TERRACOTTA"
+replace: "new ItemStack(Blocks.stained_hardened_clay, 1, 15)"
+imports: ["net.minecraft.item.ItemStack", "net.minecraft.init.Blocks"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.BLACK_TERRACOTTA;"
+    after: "Object o = new ItemStack(Blocks.stained_hardened_clay, 1, 15);"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-netherite-scrap
+description: "field net.minecraft.world.item.Items#NETHERITE_SCRAP -> ModernItems.ABSENT"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#NETHERITE_SCRAP"
+replace: "ModernItems.ABSENT"
+imports: ["dev.porter.shim.mc.ModernItems"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.NETHERITE_SCRAP;"
+    after: "Object o = ModernItems.ABSENT;"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-netherite-ingot
+description: "field net.minecraft.world.item.Items#NETHERITE_INGOT -> ModernItems.ABSENT"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#NETHERITE_INGOT"
+replace: "ModernItems.ABSENT"
+imports: ["dev.porter.shim.mc.ModernItems"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.NETHERITE_INGOT;"
+    after: "Object o = ModernItems.ABSENT;"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-shield
+description: "field net.minecraft.world.item.Items#SHIELD -> ModernItems.ABSENT"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#SHIELD"
+replace: "ModernItems.ABSENT"
+imports: ["dev.porter.shim.mc.ModernItems"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.SHIELD;"
+    after: "Object o = ModernItems.ABSENT;"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-barrier
+description: "field net.minecraft.world.item.Items#BARRIER -> ModernItems.ABSENT"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#BARRIER"
+replace: "ModernItems.ABSENT"
+imports: ["dev.porter.shim.mc.ModernItems"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.BARRIER;"
+    after: "Object o = ModernItems.ABSENT;"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-deepslate
+description: "field net.minecraft.world.item.Items#DEEPSLATE -> ModernItems.ABSENT"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#DEEPSLATE"
+replace: "ModernItems.ABSENT"
+imports: ["dev.porter.shim.mc.ModernItems"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.DEEPSLATE;"
+    after: "Object o = ModernItems.ABSENT;"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-tuff
+description: "field net.minecraft.world.item.Items#TUFF -> ModernItems.ABSENT"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#TUFF"
+replace: "ModernItems.ABSENT"
+imports: ["dev.porter.shim.mc.ModernItems"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.TUFF;"
+    after: "Object o = ModernItems.ABSENT;"
+---
+schemaVersion: 1
+id: r-gen-recipes-items-soul-soil
+description: "field net.minecraft.world.item.Items#SOUL_SOIL -> ModernItems.ABSENT"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#SOUL_SOIL"
+replace: "ModernItems.ABSENT"
+imports: ["dev.porter.shim.mc.ModernItems"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items"
+    before: "Object o = Items.SOUL_SOIL;"
+    after: "Object o = ModernItems.ABSENT;"
+---
+schemaVersion: 1
+id: r-gen-recipes-enchantment-luckofthesea
+description: "field net.minecraft.world.item.enchantment.Enchantment#luckOfTheSea -> Enchantment.field_151370_z"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.enchantment.Enchantment#luckOfTheSea"
+replace: "Enchantment.field_151370_z"
+imports: ["net.minecraft.enchantment.Enchantment"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.enchantment.Enchantment"
+    before: "Object o = Enchantment.luckOfTheSea;"
+    after: "Object o = Enchantment.field_151370_z;"
+---
+schemaVersion: 1
+id: r-gen-recipes-vec3-zero
+description: "field net.minecraft.world.phys.Vec3#ZERO -> Vec3.createVectorHelper(0.0, 0.0, 0.0)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.phys.Vec3#ZERO"
+replace: "Vec3.createVectorHelper(0.0, 0.0, 0.0)"
+imports: ["net.minecraft.util.Vec3"]
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.phys.Vec3"
+    before: "Object o = Vec3.ZERO;"
+    after: "Object o = Vec3.createVectorHelper(0.0, 0.0, 0.0);"
+---
+schemaVersion: 1
+id: r-gen-recipes-soundevents-furnace-fire-crackle
+description: "field net.minecraft.sounds.SoundEvents#FURNACE_FIRE_CRACKLE -> \"fire.fire\""
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.sounds.SoundEvents#FURNACE_FIRE_CRACKLE"
+replace: "\"fire.fire\""
+priority: 5
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.sounds.SoundEvents"
+    before: "Object o = SoundEvents.FURNACE_FIRE_CRACKLE;"
+    after: "Object o = \"fire.fire\";"

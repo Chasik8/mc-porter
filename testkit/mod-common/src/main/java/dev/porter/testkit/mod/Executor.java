@@ -42,6 +42,26 @@ public final class Executor {
         /** @return items actually inserted */
         int insert(JsonObject op) throws Exception;
 
+        /** @return the energy the tile accepted (units of its own system: EU, RF); the step insert_energy */
+        default double energy(JsonObject op) throws Exception {
+            throw new UnsupportedOperationException("insert_energy is not supported on " + version());
+        }
+
+        /** @return a short description of the result of the step invoke_tile (a method call on the block entity) */
+        default String invoke(JsonObject op) throws Exception {
+            throw new UnsupportedOperationException("invoke_tile is not supported on " + version());
+        }
+
+        /** @return a short result description of the step break_block (player or world break, drops spawned) */
+        default String breakBlock(JsonObject op) throws Exception {
+            throw new UnsupportedOperationException("break_block is not supported on " + version());
+        }
+
+        /** @return a short result description of the step explode */
+        default String explode(JsonObject op) throws Exception {
+            throw new UnsupportedOperationException("explode is not supported on " + version());
+        }
+
         /** @return a short result description for the log */
         String interact(JsonObject op) throws Exception;
 
@@ -232,8 +252,20 @@ public final class Executor {
                     if (n == 0) {
                         warn(op, "nothing inserted");
                     }
+                } else if (kind.equals("energy")) {
+                    double n = platform.energy(op);
+                    note(op, "accepted " + n + " energy");
+                    if (n <= 0) {
+                        warn(op, "no energy accepted");
+                    }
+                } else if (kind.equals("invoke")) {
+                    note(op, platform.invoke(op));
                 } else if (kind.equals("interact")) {
                     note(op, platform.interact(op));
+                } else if (kind.equals("break")) {
+                    note(op, platform.breakBlock(op));
+                } else if (kind.equals("explode")) {
+                    note(op, platform.explode(op));
                 } else if (kind.equals("open_gui") || kind.equals("gui_input") || kind.equals("close_gui")) {
                     JsonObject dump = platform.gui(op, guiAttempts++);
                     if (dump == null) {
@@ -483,6 +515,13 @@ public final class Executor {
                 }
             }
             c = c.getSuperclass();
+        }
+        // public interface default methods are not declared by any class of the chain
+        for (java.lang.reflect.Method m : target.getClass().getMethods()) {
+            if (m.getName().equals(name) && m.getParameterTypes().length == 0) {
+                m.setAccessible(true);
+                return m.invoke(target);
+            }
         }
         throw new NoSuchMethodException(name + "() in " + target.getClass().getName());
     }

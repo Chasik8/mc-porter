@@ -1,0 +1,12 @@
+defaults: {wait: 200, max: 2, energy_times: 20}
+machines:
+  - {machine: "demo:press", handles: [{custom: "demo:pressing"}], tier: mv, max: 5}
+  - {machine: "demo:ebf", menu: "demo:press", handles: [{type: blasting}], voltage: 32}
+  - {machine: "demo:washer", menu: "demo:press", handles: [{machine: "demo:washer"}]}
+  - {machine: "demo:still", menu: "demo:press", handles: [{machine: "demo:still"}]}
+  - {machine: "demo:nomenu", handles: [{type: blasting}]}
+  - {machine: "demo:battery_mv", kind: storage, tier: mv}
+  - {machine: "demo:bench", kind: bench, tier: hv, battery_empty: "alias:battery_empty", slot: 1}
+  - {machine: "demo:station", kind: station, battery_full: "alias:battery_full"}
+  - {machine: "demo:gen", kind: generator, fuel: {fluid: "demo:spirit", amount: 1000}, produces: "call:@/getEUProduction"}
+  - {id: "pipe", kind: raw, pre: [{place_block: {at: [1, 0, 0], block: "demomod:pipe"}}], wait: 10, expect: ["block:@[1,0,0] == 'demomod:pipe'"]}

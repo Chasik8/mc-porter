@@ -1,0 +1,246 @@
+# generic-vanilla-forge: generic Minecraft/Forge 1.19.2 -> 1.7.10 mappings promoted from a port profile (no mod names).
+---
+schemaVersion: 1
+id: r-gen-type-mobeffect
+description: "pilot-curated"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: "net.minecraft.world.effect.MobEffect"
+replace: "net.minecraft.potion.Potion"
+confidence: 0.95
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import net.minecraft.world.effect.MobEffect;"
+    after: "import net.minecraft.potion.Potion;"
+---
+schemaVersion: 1
+id: r-gen-component-translatable-args
+description: "pilot-curated"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.network.chat.Component#translatable(java.lang.String,java.lang.Object[])"
+  bind: { args: ["$a0", "$a1"] }
+replace: "new ChatComponentTranslation($a0, $a1)"
+imports: ["net.minecraft.util.ChatComponentTranslation"]
+confidence: 1.0
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "Component c; MutableComponent m; String s; Object[] a; ChatFormatting f; import net.minecraft.network.chat.Component; import net.minecraft.network.chat.MutableComponent; import net.minecraft.ChatFormatting"
+    before: "Object x = Component.translatable(s, a);"
+    after: "Object x = new ChatComponentTranslation(s, a);"
+---
+schemaVersion: 1
+id: r-gen-component-empty
+description: "pilot-curated"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.network.chat.Component#empty()"
+replace: "new ChatComponentText(\"\")"
+imports: ["net.minecraft.util.ChatComponentText"]
+confidence: 1.0
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "Component c; MutableComponent m; String s; Object[] a; ChatFormatting f; import net.minecraft.network.chat.Component; import net.minecraft.network.chat.MutableComponent; import net.minecraft.ChatFormatting"
+    before: "Object x = Component.empty();"
+    after: "Object x = new ChatComponentText(\"\");"
+---
+schemaVersion: 1
+id: r-gen-mutablecomponent-append-component
+description: "pilot-curated"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.network.chat.MutableComponent#append(net.minecraft.network.chat.Component)"
+  bind: { recv: "$r", args: ["$a0"] }
+replace: "$r.appendSibling($a0)"
+confidence: 1.0
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "Component c; MutableComponent m; String s; Object[] a; ChatFormatting f; import net.minecraft.network.chat.Component; import net.minecraft.network.chat.MutableComponent; import net.minecraft.ChatFormatting"
+    before: "Object x = m.append(c);"
+    after: "Object x = m.appendSibling(c);"
+---
+schemaVersion: 1
+id: r-gen-mutablecomponent-append-string
+description: "pilot-curated"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.network.chat.MutableComponent#append(java.lang.String)"
+  bind: { recv: "$r", args: ["$a0"] }
+replace: "$r.appendText($a0)"
+confidence: 1.0
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "Component c; MutableComponent m; String s; Object[] a; ChatFormatting f; import net.minecraft.network.chat.Component; import net.minecraft.network.chat.MutableComponent; import net.minecraft.ChatFormatting"
+    before: "Object x = m.append(s);"
+    after: "Object x = m.appendText(s);"
+---
+schemaVersion: 1
+id: r-gen-mutablecomponent-withstyle
+description: "withStyle(colour) -> setChatStyle(new ChatStyle().setColor(c)); 1.19.2 merges into the existing style, 1.7.10 replaces it (differs only for components that already carry a style)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.network.chat.MutableComponent#withStyle(net.minecraft.ChatFormatting)"
+  bind: { recv: "$r", args: ["$a0"] }
+replace: "$r.setChatStyle(new ChatStyle().setColor($a0))"
+imports: ["net.minecraft.util.ChatStyle"]
+confidence: 0.8
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "Component c; MutableComponent m; String s; Object[] a; ChatFormatting f; import net.minecraft.network.chat.Component; import net.minecraft.network.chat.MutableComponent; import net.minecraft.ChatFormatting"
+    before: "Object x = m.withStyle(f);"
+    after: "Object x = m.setChatStyle(new ChatStyle().setColor(f));"
+---
+schemaVersion: 1
+id: r-gen-component-getstring
+description: "pilot-curated"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.network.chat.Component#getString()"
+  bind: { recv: "$r" }
+replace: "$r.getUnformattedText()"
+confidence: 1.0
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "Component c; MutableComponent m; String s; Object[] a; ChatFormatting f; import net.minecraft.network.chat.Component; import net.minecraft.network.chat.MutableComponent; import net.minecraft.ChatFormatting"
+    before: "String x = c.getString();"
+    after: "String x = c.getUnformattedText();"
+---
+schemaVersion: 1
+id: r-gen-itemstack-hascustomhovername
+description: "accepted from pilot candidate gethovername (javap ItemStack.hasDisplayName)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  call: "net.minecraft.world.item.ItemStack#hasCustomHoverName()"
+  bind: { recv: "$r" }
+replace: "$r.hasDisplayName()"
+confidence: 1.0
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "ItemStack s; import net.minecraft.world.item.ItemStack"
+    before: "boolean b = s.hasCustomHoverName();"
+    after: "boolean b = s.hasDisplayName();"
+---
+schemaVersion: 1
+id: r-gen-items-sugar-cane
+description: "pilot-curated"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  field: "net.minecraft.world.item.Items#SUGAR_CANE"
+replace: "Items.reeds"
+imports: ["net.minecraft.init.Items"]
+confidence: 1.0
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "Object i = Items.SUGAR_CANE;"
+    after: "Object i = Items.reeds;"
+---
+schemaVersion: 1
+id: r-gen-mobeffect-applyinstantenouseffect
+description: "1.7.10 Potion.affectEntity(source, target, amplifier, health) has no indirect-source parameter (accepted from hand-port draft applyinstantenouseffect)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.effect.MobEffect#applyInstantenousEffect(net.minecraft.world.entity.Entity,net.minecraft.world.entity.Entity,net.minecraft.world.entity.LivingEntity,int,double)"
+  bind: { recv: "$r", args: ["$a0", "$a1", "$a2", "$a3", "$a4"] }
+replace: "$r.affectEntity((EntityLivingBase) $a0, $a2, $a3, $a4)"
+imports: ["net.minecraft.entity.EntityLivingBase"]
+preconditions: ["pure:$a1"]
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "MobEffect m; Entity a; Entity b; LivingEntity t; int i; double d; import net.minecraft.world.effect.MobEffect; import net.minecraft.world.entity.Entity; import net.minecraft.world.entity.LivingEntity"
+    before: "m.applyInstantenousEffect(a, b, t, i, d);"
+    after: "m.affectEntity((EntityLivingBase) a, t, i, d);"
+---
+schemaVersion: 1
+id: r-gen-mobeffectinstance-new-5
+description: "1.7.10 PotionEffect(id, duration, amplifier, ambient) has no particle-visibility flag (dropped)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  new: "net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffect, int, int, boolean, boolean)"
+  bind: { args: ["$m", "$d", "$a", "$b", "$v"] }
+replace: "new PotionEffect($m.id, $d, $a, $b)"
+imports: ["net.minecraft.potion.PotionEffect"]
+preconditions: ["pure:$m", "pure:$v"]
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "MobEffect m; MobEffectInstance i; MobEffectInstance j; LivingEntity e; int d; int a; boolean b; boolean v; import net.minecraft.world.effect.MobEffect; import net.minecraft.world.effect.MobEffectInstance; import net.minecraft.world.entity.LivingEntity"
+    before: "Object x = new MobEffectInstance(m, d, a, b, v);"
+    after: "Object x = new PotionEffect(m.id, d, a, b);"
+---
+schemaVersion: 1
+id: r-gen-mobeffectinstance-geteffect
+description: "1.7.10 PotionEffect stores the potion id; the Potion is looked up in Potion.potionTypes"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.effect.MobEffectInstance#getEffect()"
+  bind: { recv: "$r" }
+replace: "Potion.potionTypes[$r.getPotionID()]"
+imports: ["net.minecraft.potion.Potion"]
+preconditions: ["pure:$r"]
+confidence: 1.0
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "MobEffect m; MobEffectInstance i; MobEffectInstance j; LivingEntity e; int d; int a; boolean b; boolean v; import net.minecraft.world.effect.MobEffect; import net.minecraft.world.effect.MobEffectInstance; import net.minecraft.world.entity.LivingEntity"
+    before: "Object x = i.getEffect();"
+    after: "Object x = Potion.potionTypes[i.getPotionID()];"
+---
+schemaVersion: 1
+id: r-gen-mobeffectinstance-update
+description: "update(other) -> combine(other): same merge (longer duration / higher amplifier); the boolean result is unused"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.effect.MobEffectInstance#update(net.minecraft.world.effect.MobEffectInstance)"
+  bind: { recv: "$r", args: ["$a0"] }
+replace: "$r.combine($a0)"
+preconditions: ["statement"]
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "MobEffect m; MobEffectInstance i; MobEffectInstance j; LivingEntity e; int d; int a; boolean b; boolean v; import net.minecraft.world.effect.MobEffect; import net.minecraft.world.effect.MobEffectInstance; import net.minecraft.world.entity.LivingEntity"
+    before: "i.update(j);"
+    after: "i.combine(j);"
+---
+schemaVersion: 1
+id: r-gen-livingentity-removeeffectnoupdate
+description: "both remove the effect from the active map without the removal callbacks"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.world.entity.LivingEntity#removeEffectNoUpdate(net.minecraft.world.effect.MobEffect)"
+  bind: { recv: "$e", args: ["$a0"] }
+replace: "$e.removePotionEffectClient($a0.id)"
+preconditions: ["pure:$a0"]
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "MobEffect m; MobEffectInstance i; MobEffectInstance j; LivingEntity e; int d; int a; boolean b; boolean v; import net.minecraft.world.effect.MobEffect; import net.minecraft.world.effect.MobEffectInstance; import net.minecraft.world.entity.LivingEntity"
+    before: "e.removeEffectNoUpdate(m);"
+    after: "e.removePotionEffectClient(m.id);"

@@ -1,0 +1,89 @@
+# Concepts: systemic 1.19.2 -> 1.7.10 differences that change a signature the same way everywhere.
+# A concept type in a parameter becomes `param.desc` (and the call-site argument is unfolded by `param.expand`);
+# in a return type it becomes `ret.desc` (and the call expression is wrapped by `ret.wrap`).
+#   $a = the argument expression, $e = the call expression.
+# `plan: EXPAND` = the signature differs by this concept only. `shim` = the porter shim class the type stands for.
+# Every helper used in an expression exists in rewrite/shim (checked by ConceptsTest). Generic API only.
+schemaVersion: 1
+concepts:
+  - type: net/minecraft/core/BlockPos
+    plan: EXPAND
+    shim: dev.porter.shim.BlockPos
+    param: {desc: III, expand: ["$a.getX()", "$a.getY()", "$a.getZ()"]}
+  - type: net/minecraft/core/Vec3i
+    plan: EXPAND
+    shim: dev.porter.shim.BlockPos
+    param: {desc: III, expand: ["$a.getX()", "$a.getY()", "$a.getZ()"]}
+  - type: net/minecraft/core/Direction
+    plan: EXPAND
+    shim: dev.porter.shim.Direction
+    param: {desc: I, expand: ["$a.get3DDataValue()"]}
+  - type: net/minecraft/world/level/block/state/BlockState
+    plan: EXPAND
+    shim: dev.porter.shim.mc.BlockState
+    param: {desc: "Lnet/minecraft/block/Block;I", expand: ["$a.getBlock()", "$a.getMeta()"]}
+    ret: {desc: "Lnet/minecraft/block/Block;", wrap: "BlockState.of($e)", imports: [dev.porter.shim.mc.BlockState]}
+  - type: net/minecraft/world/InteractionHand
+    plan: EXPAND
+    shim: dev.porter.shim.mc.InteractionHand
+    param: {desc: "", expand: []}
+  - type: net/minecraft/world/InteractionResult
+    plan: EXPAND
+    shim: dev.porter.shim.mc.InteractionResult
+    ret: {desc: Z, wrap: "InteractionResult.of($e)", imports: [dev.porter.shim.mc.InteractionResult]}
+  - type: net/minecraft/world/InteractionResultHolder
+    plan: EXPAND
+    shim: dev.porter.shim.mc.InteractionResultHolder
+    ret: {desc: "Lnet/minecraft/item/ItemStack;", wrap: "InteractionResultHolder.success($e)", imports: [dev.porter.shim.mc.InteractionResultHolder]}
+  - type: net/minecraft/util/RandomSource
+    plan: EXPAND
+    param: {desc: "Ljava/util/Random;", expand: ["$a"]}
+  - type: net/minecraft/world/level/ItemLike
+    plan: EXPAND
+    param: {desc: "Lnet/minecraft/item/Item;", expand: ["ItemLikes.item($a)"], imports: [dev.porter.shim.mc.ItemLikes]}
+  - type: net/minecraft/core/NonNullList
+    plan: EXPAND
+    shim: dev.porter.shim.mc.NonNullList
+    param: {desc: "[Lnet/minecraft/item/ItemStack;", expand: ["$a.toArray(new net.minecraft.item.ItemStack[0])"]}
+    ret: {desc: "[Lnet/minecraft/item/ItemStack;", wrap: "NonNullList.of((net.minecraft.item.ItemStack) null, $e)", imports: [dev.porter.shim.mc.NonNullList]}
+  - type: net/minecraft/network/chat/Component
+    plan: EXPAND
+    param: {desc: "Lnet/minecraft/util/IChatComponent;", expand: ["$a"]}
+    ret: {desc: "Lnet/minecraft/util/IChatComponent;", wrap: "$e"}
+  - type: net/minecraft/network/chat/MutableComponent
+    plan: EXPAND
+    param: {desc: "Lnet/minecraft/util/IChatComponent;", expand: ["$a"]}
+    ret: {desc: "Lnet/minecraft/util/IChatComponent;", wrap: "$e"}
+  - type: net/minecraft/world/level/BlockGetter
+    plan: EXPAND
+    param: {desc: "Lnet/minecraft/world/IBlockAccess;", expand: ["$a"]}
+  - type: net/minecraft/world/level/LevelAccessor
+    plan: EXPAND
+    param: {desc: "Lnet/minecraft/world/World;", expand: ["$a"]}
+  - type: net/minecraft/world/level/LevelReader
+    plan: EXPAND
+    param: {desc: "Lnet/minecraft/world/World;", expand: ["$a"]}
+  - type: net/minecraft/world/level/Level
+    plan: EXPAND
+    param: {desc: "Lnet/minecraft/world/World;", expand: ["$a"]}
+  - type: net/minecraft/server/level/ServerLevel
+    plan: EXPAND
+    param: {desc: "Lnet/minecraft/world/WorldServer;", expand: ["$a"]}
+  - type: net/minecraft/resources/ResourceKey
+    plan: EXPAND
+    shim: dev.porter.shim.mc.ResourceKey
+    # ResourceKey<Level> is a dimension id; ResourceKey<Item> and the like are not (erased descriptors look alike)
+    whenSignature: "ResourceKey<Lnet/minecraft/world/level/Level;>"
+    param: {desc: I, expand: ["$a.dimensionId()"]}
+  - type: net/minecraft/world/phys/Vec3
+    plan: EXPAND
+    param: {desc: DDD, expand: ["$a.xCoord", "$a.yCoord", "$a.zCoord"]}
+
+# Explicit type plans. A type not named here and not decided by a hand type rule or the lineage is mirrored by a
+# generated shim class (dev.porter.shim.gen.*).
+types:
+  net.minecraft.world.level.block.state.properties.IntegerProperty: {plan: MIRROR, shim: dev.porter.shim.mc.IntegerProperty}
+  net.minecraft.world.level.block.state.properties.BooleanProperty: {plan: MIRROR, shim: dev.porter.shim.mc.BooleanProperty}
+  net.minecraft.world.level.block.state.properties.EnumProperty: {plan: MIRROR, shim: dev.porter.shim.mc.EnumProperty}
+  net.minecraft.world.level.block.state.properties.DirectionProperty: {plan: MIRROR, shim: dev.porter.shim.mc.DirectionProperty}
+  net.minecraft.world.level.block.state.StateDefinition: {plan: MIRROR, shim: dev.porter.shim.mc.StateDefinition}

@@ -88,7 +88,7 @@ public final class AssetsCommand implements Callable<Integer>, PorterSubcommand 
     List<String> include = new ArrayList<>();
 
     @Option(names = "--literals", paramLabel = "<list>", description = "With --select: file listing Java sources (relative to --literals-root) whose "
-            + "string literals that are lang keys are kept too.")
+            + "string literals that are lang keys, and texture/sound paths that exist in the source assets, are kept too.")
     Path literals;
 
     @Option(names = "--literals-root", paramLabel = "<dir>", description = "Root of the --literals paths.")

@@ -28,4 +28,6 @@ steps:
   - gui_input: { key: RIGHT, capture: manual-contents }
   - gui_input: { call: { method: openEntry, args: ["copper_press"] }, capture: manual-article }
   - gui_input: { click: [243, 179], capture: manual-page-2 }
+  - gui_input: { press: { id: 2, via: call } }
+  - gui_input: { press: { label: "Next", kind: button }, capture: manual-page-3 }
   - close_gui: {}

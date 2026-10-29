@@ -211,7 +211,10 @@ public final class GuiCompare {
             for (int[] b : boxes) {
                 inside |= x >= b[0] && y >= b[1] && x + w <= b[0] + b[2] && y + 8 <= b[1] + b[3];
             }
-            if (!inside && overflow++ < 6) {
+            // an empty label (width 0) is an icon-only widget (tab / IconButton with an item icon): nothing is drawn as text,
+            // so it cannot overflow, even when the icon tab sits outside the text frame.
+            boolean blank = w <= 0 && Lang.strip(t.path("text").asString()).isBlank();
+            if (!inside && !blank && overflow++ < 6) {
                 f.add(new Finding(lvl, p + "text overflows its box: \"" + Lang.strip(t.path("text").asString()) + "\" at (" + x + "," + y + ") width " + w));
             }
             if (Lang.looksLikeKey(t.path("text").asString())) {

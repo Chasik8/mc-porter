@@ -10,7 +10,7 @@ public final class ItemLikes {
 
     public static Item item(Object o) {
         if (o instanceof Item) return (Item) o;
-        if (o instanceof Block) return Item.getItemFromBlock((Block) o);
+        if (o instanceof Block) return Item.getItemFromBlock(MetaBlock.host((Block) o));
         if (o instanceof ItemStack) return ((ItemStack) o).getItem();
         return null;
     }
@@ -21,7 +21,7 @@ public final class ItemLikes {
             s.stackSize = count;
             return s;
         }
-        if (o instanceof Block) return new ItemStack((Block) o, count);
+        if (o instanceof Block) return new ItemStack(MetaBlock.host((Block) o), count, MetaBlock.meta((Block) o));
         Item i = item(o);
         return i == null ? null : new ItemStack(i, count);
     }

@@ -43,7 +43,7 @@ hand-adapted classes in place. This RFC makes each of these a declarative part o
   ids, references to a fixpoint, recipes, unknowns, class relocation, legacy names, a screen-class convention) plus
   an overlay (merge patches / additions / removals per node); `--make-overlay <ir>` writes the overlay that turns the
   plain selection into an existing IR, so hand edits of an IR become data.
-- `porter assets --select <ns> [--include <glob>] [--literals <list> --literals-root <dir>]`: convert only the assets
+- `porter assets --select <ns> [--include <glob>] [--literals <list> --literals-root <dir>]`: convert only the assets The literal scan also keeps texture and sound path literals (`"textures/gui/x.png"`, `new ResourceLocation(ns, "...")`, `"ns:..."`) whose file exists in the source assets.
   the given IR references (texture packages and their sprites, menu/block/item/fluid textures, lang keys of the IR and
   string literals of the unit's logic sources).
 - `porter patch make|apply`.

@@ -51,4 +51,8 @@ tasks.jar {
 }
 
 // Tests run on the tooling JDK and only touch the Java 8 main source set.
-tasks.named<JavaCompile>("compileTestJava") { options.release.set(21) }
+tasks.named<JavaCompile>("compileTestJava") {
+    options.release.set(21)
+    // the dependency-free part of the networking bridge (adapters/mc/net) is unit-tested without Minecraft
+    source(fileTree("src/adapters/java") { include("dev/porter/shim/mc/net/*.java") })
+}

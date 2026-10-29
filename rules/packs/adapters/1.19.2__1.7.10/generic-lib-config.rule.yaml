@@ -1,0 +1,122 @@
+# generic-lib-config: generic Minecraft/Forge 1.19.2 -> 1.7.10 mappings promoted from a port profile (no mod names).
+---
+# carbonconfig library adapter rules (private; shim.lib adapters)
+schemaVersion: 1
+id: r-gen-mc-type-configentry
+description: "type carbonconfiglib.config.ConfigEntry -> dev.porter.shim.mc.ConfigEntry"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "carbonconfiglib.config.ConfigEntry"
+replace: "dev.porter.shim.mc.ConfigEntry"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import carbonconfiglib.config.ConfigEntry;"
+    after: "import dev.porter.shim.mc.ConfigEntry;"
+---
+schemaVersion: 1
+id: r-gen-mc-type-configentry-intvalue
+description: "type carbonconfiglib.config.ConfigEntry$IntValue -> dev.porter.shim.mc.ConfigEntry.IntValue"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "carbonconfiglib.config.ConfigEntry$IntValue"
+replace: "dev.porter.shim.mc.ConfigEntry.IntValue"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import carbonconfiglib.config.ConfigEntry.IntValue;"
+    after: "import dev.porter.shim.mc.ConfigEntry.IntValue;"
+---
+schemaVersion: 1
+id: r-gen-mc-type-configentry-doublevalue
+description: "type carbonconfiglib.config.ConfigEntry$DoubleValue -> dev.porter.shim.mc.ConfigEntry.DoubleValue"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "carbonconfiglib.config.ConfigEntry$DoubleValue"
+replace: "dev.porter.shim.mc.ConfigEntry.DoubleValue"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import carbonconfiglib.config.ConfigEntry.DoubleValue;"
+    after: "import dev.porter.shim.mc.ConfigEntry.DoubleValue;"
+---
+schemaVersion: 1
+id: r-gen-mc-type-configentry-floatvalue
+description: "type carbonconfiglib.config.ConfigEntry$FloatValue -> dev.porter.shim.mc.ConfigEntry.FloatValue"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "carbonconfiglib.config.ConfigEntry$FloatValue"
+replace: "dev.porter.shim.mc.ConfigEntry.FloatValue"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import carbonconfiglib.config.ConfigEntry.FloatValue;"
+    after: "import dev.porter.shim.mc.ConfigEntry.FloatValue;"
+---
+schemaVersion: 1
+id: r-gen-mc-type-configentry-longvalue
+description: "type carbonconfiglib.config.ConfigEntry$LongValue -> dev.porter.shim.mc.ConfigEntry.LongValue"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "carbonconfiglib.config.ConfigEntry$LongValue"
+replace: "dev.porter.shim.mc.ConfigEntry.LongValue"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import carbonconfiglib.config.ConfigEntry.LongValue;"
+    after: "import dev.porter.shim.mc.ConfigEntry.LongValue;"
+---
+schemaVersion: 1
+id: r-gen-mc-type-configentry-boolvalue
+description: "type carbonconfiglib.config.ConfigEntry$BoolValue -> dev.porter.shim.mc.ConfigEntry.BoolValue"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "carbonconfiglib.config.ConfigEntry$BoolValue"
+replace: "dev.porter.shim.mc.ConfigEntry.BoolValue"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import carbonconfiglib.config.ConfigEntry.BoolValue;"
+    after: "import dev.porter.shim.mc.ConfigEntry.BoolValue;"
+---
+schemaVersion: 1
+id: r-gen-mc-type-configentry-stringvalue
+description: "type carbonconfiglib.config.ConfigEntry$StringValue -> dev.porter.shim.mc.ConfigEntry.StringValue"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "carbonconfiglib.config.ConfigEntry$StringValue"
+replace: "dev.porter.shim.mc.ConfigEntry.StringValue"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import carbonconfiglib.config.ConfigEntry.StringValue;"
+    after: "import dev.porter.shim.mc.ConfigEntry.StringValue;"
+---
+schemaVersion: 1
+id: r-gen-mc-type-configsection
+description: "type carbonconfiglib.config.ConfigSection -> dev.porter.shim.mc.ConfigSection"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "carbonconfiglib.config.ConfigSection"
+replace: "dev.porter.shim.mc.ConfigSection"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import carbonconfiglib.config.ConfigSection;"
+    after: "import dev.porter.shim.mc.ConfigSection;"

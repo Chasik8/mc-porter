@@ -89,17 +89,40 @@ public final class AssetSelect {
                 }
             }
         }
+        // "x.png.png": an exporter's doubled extension (even when a texture package lists it as "x.png"): code that
+        // asks for "x" never gets it, the file is dropped
+        picked.removeIf(f -> f.endsWith(".png.png"));
         for (String r : refs) {
-            if (Files.isRegularFile(base.resolve(r))) {
+            if (!r.endsWith(".png.png") && Files.isRegularFile(base.resolve(r))) {
                 picked.add(r);
             }
         }
+        Set<String> allSet = new java.util.HashSet<>(all);
         Set<String> lits = new TreeSet<>();
         Pattern lit = Pattern.compile("\"([a-z0-9_.]+)\"");
+        Pattern path = Pattern.compile("\"(?:" + Pattern.quote(ns) + ":)?([A-Za-z0-9_./-]+)\"");
         for (Path p : literalSources) {
-            Matcher m = lit.matcher(read(p));
+            String src = read(p);
+            Matcher m = lit.matcher(src);
             while (m.find()) {
                 lits.add(m.group(1));
+            }
+            // texture / sound path literals ("textures/gui/x.png", new ResourceLocation(modid, "textures/gui/x.png")):
+            // kept when the file exists in the source mod's assets
+            Matcher pm = path.matcher(src);
+            while (pm.find()) {
+                String c = pm.group(1);
+                for (String cand : List.of(c, c + ".png", "textures/" + c, "textures/" + c + ".png", "sounds/" + c + ".ogg",
+                        "sounds/" + c)) {
+                    if ((cand.startsWith("textures/") || cand.startsWith("sounds/")) && !cand.contains("..")
+                            && !cand.endsWith(".png.png") && allSet.contains(cand)) {
+                        picked.add(cand);
+                        if (allSet.contains(cand + ".mcmeta")) {
+                            picked.add(cand + ".mcmeta");
+                        }
+                        break;
+                    }
+                }
             }
         }
         try {

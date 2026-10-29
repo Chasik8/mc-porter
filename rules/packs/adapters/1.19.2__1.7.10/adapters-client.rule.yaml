@@ -489,19 +489,19 @@ tests:
 ---
 schemaVersion: 1
 id: r-closure-mc-field-inventorymenu-block-atlas
-description: "field net.minecraft.world.inventory.InventoryMenu#BLOCK_ATLAS -> TextureMap.locationBlocksTexture"
+description: "field net.minecraft.world.inventory.InventoryMenu#BLOCK_ATLAS -> Atlases.BLOCKS (the same location; TextureMap is a client class, a container built on a dedicated server must not load it)"
 from: forge-1.19.2
 to: forge-1.7.10
 kind: mechanical
 match:
   field: "net.minecraft.world.inventory.InventoryMenu#BLOCK_ATLAS"
-replace: "TextureMap.locationBlocksTexture"
-imports: ["net.minecraft.client.renderer.texture.TextureMap"]
+replace: "Atlases.BLOCKS"
+imports: ["dev.porter.shim.mc.Atlases"]
 confidence: 0.9
 provenance: { source: agent, ref: "porter closure port: one rule per distinct javac symbol; source = 1.19.2 API (mojmap names), target = 1.7.10 API (MCP names) / porter adapter" }
 tests:
   - before: "Object a = InventoryMenu.BLOCK_ATLAS;"
-    after: "Object a = TextureMap.locationBlocksTexture;"
+    after: "Object a = Atlases.BLOCKS;"
 ---
 schemaVersion: 1
 id: r-closure-mc-field-textureatlas-location-blocks

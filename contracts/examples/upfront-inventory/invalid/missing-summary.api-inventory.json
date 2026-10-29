@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 1,
+  "from": "forge-1.19.2",
+  "scope": "addon",
+  "symbols": []
+}

@@ -4,3 +4,5 @@
 *.jar binary
 *.png binary
 *.ogg binary
+CHANGELOG.md merge=union
+**/META-INF/services/* merge=union

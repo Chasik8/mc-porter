@@ -32,6 +32,7 @@ public final class GenOutput {
 
     private final SortedMap<String, byte[]> files = new TreeMap<>();
     private final SortedMap<String, String> stubs = new TreeMap<>();
+    private final SortedMap<String, List<String>> sharedStubs = new TreeMap<>();
 
     /** Adds a generated Java type. */
     public void addJava(String pkg, TypeSpec type) {
@@ -45,8 +46,31 @@ public final class GenOutput {
      */
     public void addStub(String pkg, TypeSpec type, String role) {
         String path = javaPath(pkg, type.name);
-        put(path, render(pkg, type, STUB_HEADER));
-        stubs.put((pkg.isEmpty() ? "" : pkg + ".") + type.name, role);
+        String fqn = (pkg.isEmpty() ? "" : pkg + ".") + type.name;
+        if (sharedStubs.containsKey(fqn)) {
+            sharedStubs.get(fqn).add(role);
+            return;
+        }
+        String text = render(pkg, type, STUB_HEADER);
+        byte[] bytes = utf8Lf(text);
+        if (stubs.containsKey(fqn) && files.containsKey(path) && !Arrays.equals(files.get(path), bytes)) {
+            // one logic class for several IR nodes (blocks, menus, ...) that need different stubs (each has its own
+            // generated base): no single stub fits them all, so none is written; the class must come from the port
+            List<String> roles = new ArrayList<>(List.of(stubs.remove(fqn), role));
+            files.remove(path);
+            sharedStubs.put(fqn, roles);
+            return;
+        }
+        put(path, bytes);
+        stubs.put(fqn, role);
+    }
+
+    /**
+     * Logic classes referenced by several IR nodes whose stubs differ (for example one container class for five
+     * menus, each with its own generated base): no stub is written for them. Value: the roles that asked for it.
+     */
+    public SortedMap<String, List<String>> sharedStubs() {
+        return sharedStubs;
     }
 
     public boolean hasJava(String fqn) {
@@ -63,12 +87,18 @@ public final class GenOutput {
     }
 
     public void put(String path, String text) {
-        put(path, text.replace("\r\n", "\n").getBytes(StandardCharsets.UTF_8));
+        put(path, utf8Lf(text));
+    }
+
+    private static byte[] utf8Lf(String text) {
+        return text.replace("\r\n", "\n").getBytes(StandardCharsets.UTF_8);
     }
 
     public void put(String path, byte[] content) {
         if (files.containsKey(path) && !Arrays.equals(files.get(path), content)) {
-            throw new IllegalStateException("two different contents for " + path);
+            throw new IllegalStateException("two different contents for " + path
+                    + ": two IR nodes generate the same file differently (a generated class and a stub, or two generated"
+                    + " classes with one name); rename one of the logic classes or give the nodes distinct ids");
         }
         files.put(path, content);
     }

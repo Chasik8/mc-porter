@@ -87,9 +87,17 @@ ids; fluids `{fluid, amount, capacity}`.
 | `energy:[x,y,z][@side]` | Forge Energy stored (1.19.2), `getEnergyStored(ForgeDirection)` (1.7.10, RF style); other energy APIs (e.g. EU): use `field:` |
 | `field:[x,y,z]/name[/name...]` | reflective field chain on the block entity (numbers, strings, booleans, enums lower-case, arrays) |
 | `call:[x,y,z]/method[/method...]` | reflective no-argument method chain |
+| `tile:[x,y,z]` | class name of the block entity (`null` = the block has none) |
+| `player:container` | class name of the container the scenario player's last `interact` opened (`null` = none; 1.7.10) |
+| `entity_new:[x,y,z]/<name>` | spawns a fresh entity by its `EntityList` name and returns its class name (`null` = not registered; 1.7.10) |
+| `client_field:[x,y,z]/name[/name...]` | like `field:` but on the CLIENT world's block entity (client runs only): the state the open GUI sees (a segment = field name, else no-arg method) |
+| `real_player:pos`, `real_player:container` | client runs: `[x, y, z, dimension]` / open container class of the player the client controls (`player:pos` is the scenario's fake player) |
+| `player:pos` | `[x, y, z, dimension]` of the scenario's fake player (1.7.10) |
+| `recipes:<registry name>` | number of crafting recipes whose output is that item or block (1.7.10) |
+| `player:effects` | active potion effects of the scenario's fake player `[{id, name, duration, amplifier}]` (1.7.10) |
 | `player:inv`, `player:held` | the scenario's fake player: non-empty slots `{..., slot}` / held stack |
 | `drops:[x,y,z]` | item entities within 3 blocks, sorted |
-| `registry:<blocks\|items\|fluids>[/prefix]` | sorted registry names (for writing id maps) |
+| `registry:<blocks\|items\|fluids\|entities>[/prefix]` | sorted registry names (`entities` = 1.7.10 EntityList names) (for writing id maps) |
 | `spawn_check:[x,y,z]/<entity>` | Forge natural-spawn check (`CheckSpawn`, 1.19.2: `MobSpawnType.NATURAL`) for a fresh entity at the block centre: `allow` / `deny` / `default`. Entity = 1.19.2 id (`minecraft:zombie`) or 1.7.10 `EntityList` name (`Zombie`): map one to the other with `keyMap` |
 | `light:[x,y,z]` | block light at a position (0..15; the 1.19.2 light engine is settled after every tick) |
 
@@ -144,12 +152,20 @@ during mod construction, it is visible for a few seconds) and the mouse never gr
 every tick on 1.19.2). The client creates a flat creative world; the plan runs on the integrated server; GUI ops are
 executed **on the client like a player** (`GuiDriver` in mod-common):
 
+**Never touches the user's mouse or focus (permanent).** The launcher passes `-Dfml.noGrab=true` and writes `pauseOnLostFocus:false`
+into the isolated `options.txt`; the window is created off-screen. `-Dfml.noGrab` alone is not enough on 1.7.10: vanilla
+`MouseHelper.ungrabMouseCursor` calls `Mouse.setCursorPosition` (moves the OS cursor to the window centre) whenever a GUI opens,
+so the 1.7.10 driver replaces `Minecraft.mouseHelper` with a no-op helper (`ClientDriver.NoGrabMouse`) on every client tick. The
+driver never calls `setIngameFocus` or `Mouse.setGrabbed`; clicks are delivered to the screen's own handlers, and `parkMouse`
+only rewrites LWJGL's cached coordinates.
+
 | step | what happens |
 |---|---|
 | `open_gui {at}` | real right-click on the block's top face with an empty hand (events, packets, server-side `openGui`) |
 | `open_gui {item}` | the item is put into hotbar slot 0 and used (`sendUseItem` / `useItem`): item GUIs such as books |
 | `gui_input {click \| key \| call}` | mouse click (GUI-relative), key press (LWJGL2 / GLFW key name) or a public method of the screen (test hook) |
 | `gui_input {}` | just a new capture of the open screen (after steps that changed the block's state) |
+| `gui_input {press: {id\|index\|label\|kind, via?}}` | presses a control like a player (see "Pressing buttons" below) |
 | `close_gui` | closes the screen |
 
 `keepOpen: true` keeps the screen open after the capture (`gui_input` captures always keep it). After 10 ticks of
@@ -158,6 +174,22 @@ position and width), the framebuffer is saved, and the structure is dumped (scre
 The runner crops the frame to the GUI rectangle and writes `<out-dir>/<scenario>-<version>.gui/` (`gui.json` +
 `<capture>.png`; error lines logged while the op ran are kept as `renderErrors`). Non-container screens use
 `check.size` (centred) as GUI rectangle.
+
+**Pressing buttons (1.7.10).** Every capture of an `open_gui` / `gui_input` also dumps `buttons` into the trace's `gui`
+entry: the controls of the screen in a stable order, `[{index, kind, id?, class, label, x, y, width, height, active, visible}]`.
+`kind: button` = `GuiScreen.buttonList` (id = `GuiButton.id`); `kind: widget` = the 1.19.2-style widgets of a ported screen
+(public list `renderables`; the id comes from the screen's public `getWidgets()` id -> widget map when it has one).
+`gui_input: {press: {id: 0}}` (or `index`, `label`, `kind`; all given fields must match) runs the control's own handler on the
+client thread: a `GuiButton` gets `actionPerformed` (`via: call`, default), a widget a mouse click on its centre
+(`via: click`, default), so whatever packet the screen sends (a `ClientTileEventPacket` through the networking bridge) really
+travels client -> integrated server. A hidden / disabled control, or none matching (the error lists what the screen has), is
+a GUI warning in the trace. The screen may close on purpose. After the press the driver waits 10 ticks; use `tick` for more
+and assert the server side with ordinary probes: `field:` / `call:` / `nbt:` of the tile, `player:pos` (the fake player) or
+`real_player:pos` = `[x, y, z, dimension]` of the player the client controls (looked up every time: a dimension change replaces
+the entity; `real_player:container` = class of its open container). Several GUI checks fit one launch: a client scenario may
+open GUIs of many blocks one after another (client scenarios are not batched, so put the cases into one file).
+`invoke_tile` arguments may be objects: `{"$tile": [x,y,z]}` (the block entity there) and `{"$new": "pkg.Class", "args": [...]}`
+(constructed with a public constructor; the arguments may be such objects too), to link machines that are linked by items in the game.
 
 **Comparator** (`test diff` of a client scenario, or `test run` for one version; reusing traces only re-compares):
 - `mode: diff` — structural diff first: GUI size, machine slots matched by position (container order may differ),
@@ -223,3 +255,34 @@ mods only need to compile against named classes and be reobfuscated, which the i
   in CI occasionally; a hung run is killed and relaunched in a fresh directory.
 - Scenarios of mods that are not open-licence stay local and never run in public CI; only `testkit/scenarios` does.
 
+## Runtime smoke of every block (1.7.10)
+
+`scripts/ci/gen-block-smoke.py <names|registry trace> <namespace> <out-dir> [--no-tile RE] [--gui RE] [--skip RE] [--entity NAME]`
+writes one scenario per registered block of the mod: place it, tick, right-click it with an empty hand, tick 100 more;
+it samples `tile:` and `player:container` and asserts that the block exists, that it has a tile entity (not for names
+matching `--no-tile`) and, for names matching `--gui`, that the click opened a container. The names come from a trace of
+a scenario that sampled `registry:blocks/<namespace>:` (the registry dump). Run the scenarios with `porter test run`, then
+`scripts/ci/smoke-log-check.sh <work-dir> <package prefix>` for exceptions in the server logs.
+
+`insert_energy: {at, amount, voltage?, side?}` (1.7.10) puts energy into the block entity through its EU sink (`injectEnergy`) or a CoFH RF receiver; the accepted amount is noted in the trace and a warning is raised when nothing was accepted.
+
+`break_block: {at, by?: player|world, holding?, drops?}` (both versions) breaks the block at a position. `by: player` (default) lets the scenario player harvest it through the normal break path (1.7.10 `ItemInWorldManager.tryHarvestBlock`, 1.19.2 `ServerPlayerGameMode.destroyBlock`: break event, held tool, harvest rules, drops); `by: world` removes it through the world (`World.func_147480_a` / `Level.destroyBlock`) with drops unless `drops: false`. `explode: {at, power?, fire?, destroy?}` (both versions) detonates an explosion without a source entity at the block centre (default power 4, `destroy: false` = no block damage). Example: `- break_block: { at: [0, 64, 0], holding: "minecraft:iron_pickaxe" }`, `- explode: { at: [2, 64, 0], power: 4 }`.
+
+`invoke_tile: {at, method, args?}` (1.7.10) calls a public method of the block entity by name and argument count (numbers incl. `byte`/`short` parameters, booleans, strings; `"$player"` = the scenario player): behaviour a client triggers with a packet (a GUI button) can be driven from a scenario.
+
+Fixture (1.7.10, only while a plan runs): block `portertestkit:tank`, a 16000 mB tank with Forge's `IFluidHandler` on every side; `fill_fluid` and the `fluid:` probe work on it.
+
+## Scenario generator from the IR (`testkit/scengen`)
+
+`python testkit/scengen/scengen.py --ir <recipe/menu IR file|dir>[,...] --machines <machines.yaml> --out <dir> [--ids <idmap>] [--known <registry names>] [--tags <tags.yaml>] [--group N] [--prefix NAME] [--only RE]`
+writes "machine processes recipe" scenarios from the recipe and menu IR nodes and a small machine table (which block
+handles which recipe type, its voltage). Per process case: place the machine, power it (one `insert_energy` packet of the
+machine's voltage per tick), fill the recipe's fluids, insert the ingredients into the input slots (taken from the IR
+`menu` node: slots without a role left of the progress bar), tick, assert the result item (or fluid) is in the machine.
+Further kinds from the same table: `storage` (stored energy rises), `bench` (an empty battery gets charged), `station`
+(a full battery is drained into the machine), `generator` (fuel in, production above zero), `raw` (steps as given,
+`@` / `@[dx,dy,dz]` = the case origin / an offset). Recipes whose ids neither the id map nor the `--known` registry dump
+(a `registry:items/...` sample, one name per line) resolve are skipped with the reason in `scengen-report.json`; the
+table's `fallbacks` rewrite IR prefixes to the names the game registers. One `porter test run --scenario <dir>` runs the
+whole output in one launch. Details: the module docstring; tests: `python -I testkit/scengen/test_scengen.py`
+(synthetic IR in `testkit/scengen/fixtures`).

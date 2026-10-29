@@ -111,7 +111,13 @@ public abstract class GuiDriver {
                 }
                 case SETTLE:
                     if (currentScreen() == null) {
-                        fail("the screen closed by itself");
+                        if (op.has("press") || (op.has("click") && !op.has("capture"))) {
+                            // a pressed button / clicked row may close the screen on purpose (a teleport button): not an error
+                            System.out.println("[porter-testkit] press closed the screen");
+                            finish(new JsonObject());
+                        } else {
+                            fail("the screen closed by itself");
+                        }
                     } else if (ticks >= SETTLE_TICKS) {
                         if (op.has("capture") || op.get("op").getAsString().equals("open_gui")) {
                             state = State.ARMED;
@@ -176,6 +182,9 @@ public abstract class GuiDriver {
             }
             callMethod(s, call.get("method").getAsString(), args);
         }
+        if (op.has("press")) {
+            System.out.println("[porter-testkit] " + press(s, op.getAsJsonObject("press")));
+        }
         state = State.SETTLE;
         ticks = 0;
     }
@@ -218,6 +227,11 @@ public abstract class GuiDriver {
             d.addProperty("capture", name);
             d.add("texts", texts);
             d.add("check", check());
+            try {
+                d.add("buttons", buttons(s));
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
             String dir = System.getProperty("porter.screens");
             File out = new File(dir != null ? dir : "screens", name + ".png");
             out.getParentFile().mkdirs();
@@ -322,6 +336,47 @@ public abstract class GuiDriver {
     protected abstract JsonObject describe(Object screen, JsonObject check) throws Exception;
 
     protected abstract void saveFramebuffer(File png) throws Exception;
+
+    /**
+     * Pressable controls of the open screen, in a stable order: [{index, kind, id?, class, label, x, y, width, height,
+     * active, visible}] with absolute scaled-pixel positions. {@code index} is the position in this list.
+     */
+    protected JsonArray buttons(Object screen) throws Exception {
+        return new JsonArray();
+    }
+
+    /**
+     * Presses the control chosen by {@code sel} ({@code id} | {@code index} | {@code label}, optional {@code via}:
+     * {@code call} = the screen's action handler, {@code click} = a mouse click on the control's centre) and returns a
+     * log line. Throws when nothing matches or the control is hidden / disabled.
+     */
+    protected String press(Object screen, JsonObject sel) throws Exception {
+        throw new UnsupportedOperationException("press is implemented by the 1.7.10 client driver only");
+    }
+
+    /** Index of the control {@code sel} names in {@code list} (see {@link #buttons}), or -1. */
+    public static int selectButton(JsonArray list, JsonObject sel) {
+        for (int i = 0; i < list.size(); i++) {
+            JsonObject b = list.get(i).getAsJsonObject();
+            boolean match = true;
+            if (sel.has("index")) {
+                match = b.get("index").getAsInt() == sel.get("index").getAsInt();
+            }
+            if (match && sel.has("id")) {
+                match = b.has("id") && b.get("id").getAsInt() == sel.get("id").getAsInt();
+            }
+            if (match && sel.has("label")) {
+                match = b.has("label") && b.get("label").getAsString().equals(sel.get("label").getAsString());
+            }
+            if (match && sel.has("kind")) {
+                match = b.get("kind").getAsString().equals(sel.get("kind").getAsString());
+            }
+            if (match) {
+                return i;
+            }
+        }
+        return -1;
+    }
 
     /** Invokes a public method of the screen by name with String/Integer/Boolean arguments (test hook). */
     protected static Object callMethod(Object target, String name, Object[] args) throws Exception {

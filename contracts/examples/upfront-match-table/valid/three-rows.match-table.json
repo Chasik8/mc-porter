@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "rows": [
+    {
+      "key": "method:net.minecraft.world.level.Level#getBlockEntity(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/entity/BlockEntity;",
+      "uses": 3,
+      "area": "block",
+      "resolvedBy": "none",
+      "plan": "EXPAND",
+      "method": "lineage-concept",
+      "confidence": 0.9,
+      "target": { "owner": "net.minecraft.world.World", "name": "getTileEntity", "desc": "(III)Lnet/minecraft/tileentity/TileEntity;", "isStatic": false },
+      "features": { "arity": 1, "name": 0.67, "params": 1, "ret": 1 }
+    },
+    {
+      "key": "method:net.minecraft.world.level.Level#isLoaded(Lnet/minecraft/core/BlockPos;)Z",
+      "uses": 1,
+      "area": "block",
+      "resolvedBy": "none",
+      "plan": "TODO",
+      "method": "none:below-threshold",
+      "confidence": 0.0,
+      "alternatives": [
+        { "owner": "net.minecraft.world.World", "name": "blockExists", "desc": "(III)Z", "score": 0.65 },
+        { "owner": "net.minecraft.world.World", "name": "chunkExists", "desc": "(II)Z", "score": 0.58 }
+      ],
+      "note": "two candidates within margin"
+    },
+    {
+      "key": "field:net.minecraft.world.entity.Entity#tickCount:I",
+      "uses": 1,
+      "area": "rendering",
+      "resolvedBy": "rule",
+      "plan": "MAP",
+      "method": "lineage",
+      "confidence": 1.0,
+      "target": { "owner": "net.minecraft.entity.Entity", "name": "ticksExisted", "desc": "I", "isStatic": false },
+      "ruleId": "vanilla-entity-ticks",
+      "shim": "dev.porter.shim.Entities"
+    }
+  ]
+}

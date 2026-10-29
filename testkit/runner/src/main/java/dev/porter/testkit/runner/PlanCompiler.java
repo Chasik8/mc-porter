@@ -84,6 +84,25 @@ public final class PlanCompiler {
                         op.put("side", a.path("side").asString());
                     }
                 }
+                case "insert_energy" -> {
+                    ObjectNode op = op(ops, "energy", i);
+                    op.set("at", a.path("at").deepCopy());
+                    op.put("amount", a.path("amount").asDouble());
+                    if (a.has("voltage")) {
+                        op.put("voltage", a.path("voltage").asDouble());
+                    }
+                    if (a.has("side")) {
+                        op.put("side", a.path("side").asString());
+                    }
+                }
+                case "invoke_tile" -> {
+                    ObjectNode op = op(ops, "invoke", i);
+                    op.set("at", a.path("at").deepCopy());
+                    op.put("method", a.path("method").asString());
+                    if (a.has("args")) {
+                        op.set("args", a.path("args").deepCopy());
+                    }
+                }
                 case "interact" -> {
                     ObjectNode op = op(ops, "interact", i);
                     op.set("at", a.path("at").deepCopy());
@@ -96,6 +115,25 @@ public final class PlanCompiler {
                     if (a.has("sneaking")) {
                         op.put("sneaking", a.path("sneaking").asBoolean());
                     }
+                    if (a.has("use")) {
+                        op.put("use", a.path("use").asString());
+                    }
+                }
+                case "break_block" -> {
+                    ObjectNode op = op(ops, "break", i);
+                    op.set("at", a.path("at").deepCopy());
+                    op.put("by", a.path("by").asString("player"));
+                    if (a.has("holding")) {
+                        op.set("holding", ids.item(a.path("holding").asString()));
+                    }
+                    op.put("drops", a.path("drops").asBoolean(true));
+                }
+                case "explode" -> {
+                    ObjectNode op = op(ops, "explode", i);
+                    op.set("at", a.path("at").deepCopy());
+                    op.put("power", a.path("power").asDouble(4.0));
+                    op.put("fire", a.path("fire").asBoolean(false));
+                    op.put("destroy", a.path("destroy").asBoolean(true));
                 }
                 case "open_gui" -> {
                     ObjectNode op = op(ops, "open_gui", i);
@@ -121,7 +159,7 @@ public final class PlanCompiler {
                 }
                 case "gui_input" -> {
                     ObjectNode op = op(ops, "gui_input", i);
-                    for (String f : List.of("click", "button", "key", "call", "capture", "check")) {
+                    for (String f : List.of("click", "button", "key", "call", "press", "capture", "check")) {
                         if (a.has(f)) {
                             op.set(f, a.path(f).deepCopy());
                         }

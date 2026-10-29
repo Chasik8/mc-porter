@@ -1,0 +1,14 @@
+schemaVersion: 1
+weights: {name: 0.45, arity: 0.15, ret: 0.20, params: 0.20}
+accept: 0.62
+margin: 0.08
+lineageMin: 0.30
+accessorPenalty: 0.05
+synonyms: {grow: [expand, extend], count: [size]}
+constantPrefixes: []
+conceptOwners:
+  a.src.Vec: net.minecraft.dst.Box
+registryOwners: [a.src.Items]
+areas:
+  - {area: holders, regex: 'a\.src\.(Holder|Sub)'}
+  - {area: other, regex: '.'}

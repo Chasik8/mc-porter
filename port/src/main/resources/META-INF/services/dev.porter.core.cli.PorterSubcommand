@@ -14,3 +14,13 @@ dev.porter.port.patch.PatchCommands$Apply
 dev.porter.port.DecompileCommand
 dev.porter.port.select.SelectCommand
 dev.porter.port.InventoryCommand
+dev.porter.port.PrecheckCommand
+dev.porter.port.upfront.FlatteningCmd
+dev.porter.port.upfront.EmitRulesCommand
+dev.porter.port.upfront.MatchCmd
+dev.porter.port.upfront.ApiInventoryCmd
+dev.porter.port.upfront.ApiIndexCmd
+dev.porter.port.upfront.ShimGenCmd
+dev.porter.port.upfront.TodoBatchCmd
+dev.porter.port.upfront.UpfrontCmd
+dev.porter.port.upfront.BodiesCheckCmd

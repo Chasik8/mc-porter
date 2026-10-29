@@ -46,12 +46,30 @@ public final class PatternMatcher {
 
         /** the element has a usable source range in the file being rewritten. */
         boolean positioned(CtElement e);
+
+        /** source text of a type reference as written in the target (null when it has no position). */
+        default String typeText(CtTypeReference<?> r) {
+            return null;
+        }
     }
 
     /** Bindings of one match: placeholder -> target element (expression, statement or the local's declaration). */
     public static final class Match {
         final Map<String, CtElement> bound = new LinkedHashMap<>();
         final Map<String, String> localNames = new LinkedHashMap<>();
+        /** type metavariable ($T in a cast or a declared type) -> the type as written in the target. */
+        final Map<String, String> types = new LinkedHashMap<>();
+        final Map<String, String> typeSimple = new LinkedHashMap<>();
+        /** holes whose pattern wrote casts: the binding excludes the target's casts (the pattern consumed them). */
+        final java.util.Set<String> castFree = new java.util.LinkedHashSet<>();
+
+        public Map<String, String> types() {
+            return types;
+        }
+
+        public java.util.Set<String> castFree() {
+            return castFree;
+        }
 
         public Map<String, CtElement> bound() {
             return bound;
@@ -61,6 +79,8 @@ public final class PatternMatcher {
             return localNames;
         }
     }
+
+    private static final java.util.regex.Pattern TYPE_TEXT = java.util.regex.Pattern.compile("[A-Za-z0-9_.$<>,? ]+");
 
     private final CodePattern pattern;
     private final Host host;
@@ -102,7 +122,7 @@ public final class PatternMatcher {
         return i < 0 ? s : s.substring(i + 1);
     }
 
-    private boolean castsOk(CtExpression<?> p, CtExpression<?> t) {
+    private boolean castsOk(CtExpression<?> p, CtExpression<?> t, Match m) {
         List<CtTypeReference<?>> pc = p.getTypeCasts();
         if (pc.isEmpty()) {
             return true;
@@ -112,11 +132,39 @@ public final class PatternMatcher {
             return false;
         }
         for (int i = 0; i < pc.size(); i++) {
-            if (!Objects.equals(simpleType(pc.get(i)), simpleType(tc.get(i)))) {
+            if (!typeEq(pc.get(i), tc.get(i), m)) {
                 return false;
             }
         }
         return true;
+    }
+
+    /** Type comparison by simple name; a pattern type {@code $T} (a placeholder) binds to any type, consistently. */
+    private boolean typeEq(CtTypeReference<?> p, CtTypeReference<?> t, Match m) {
+        String pn = p == null ? null : p.getSimpleName();
+        if (pn != null && pn.startsWith("$") && pattern.expressionHole(pn)) {
+            if (t == null) {
+                return false;
+            }
+            String text = host.typeText(t);
+            if (text == null || !TYPE_TEXT.matcher(text).matches()) {
+                text = simpleType(t);
+            }
+            String simple = simpleType(t);
+            String prev = m.typeSimple.putIfAbsent(pn, simple);
+            if (prev == null) {
+                m.types.put(pn, text);
+                return true;
+            }
+            return Objects.equals(prev, simple);
+        }
+        return Objects.equals(simpleType(p), simpleType(t));
+    }
+
+    private static String lastName(String s) {
+        int lt = s.indexOf('<');
+        s = lt < 0 ? s : s.substring(0, lt);
+        return s.substring(Math.max(s.lastIndexOf('.'), s.lastIndexOf('$')) + 1).trim();
     }
 
     private String holeName(CtElement p) {
@@ -157,10 +205,16 @@ public final class PatternMatcher {
         String hole = holeName(p);
         if (hole != null) {
             CtExpression<?> pe = (CtExpression<?>) p;
-            return t instanceof CtExpression<?> te && castsOk(pe, te) && bind(hole, t, m);
+            if (!(t instanceof CtExpression<?> te) || !castsOk(pe, te, m) || !bind(hole, t, m)) {
+                return false;
+            }
+            if (!pe.getTypeCasts().isEmpty()) {
+                m.castFree.add(hole);
+            }
+            return true;
         }
         if (p instanceof CtExpression<?> pe) {
-            if (!(t instanceof CtExpression<?> te) || !castsOk(pe, te)) {
+            if (!(t instanceof CtExpression<?> te) || !castsOk(pe, te, m)) {
                 return false;
             }
         }
@@ -235,7 +289,7 @@ public final class PatternMatcher {
         }
         if (p instanceof CtLocalVariable<?> pl) {
             CtLocalVariable<?> tl = (CtLocalVariable<?>) t;
-            if (!Objects.equals(simpleType(pl.getType()), simpleType(tl.getType()))) {
+            if (!typeEq(pl.getType(), tl.getType(), m)) {
                 return false;
             }
             if (pattern.localHole(pl.getSimpleName())) {

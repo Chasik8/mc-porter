@@ -31,7 +31,7 @@ class PortConfigTest {
         assertTrue(c.root().path("compile").path("processorpath").get(1).asString().startsWith("/home/me/porter-cache/libs/"));
         PortRunner r = new PortRunner(c, System.out);
         assertEquals(PortRunner.STAGES, r.enabled());
-        assertEquals(List.of("closure", "rewrite"), r.plan("closure", "rewrite", null, false));
+        assertEquals(List.of("closure", "upfront", "rewrite"), r.plan("closure", "rewrite", null, false));
         assertEquals(List.of("install"), r.plan(null, null, "install", false));
         assertThrows(IllegalArgumentException.class, () -> r.plan("bogus", null, null, false));
     }

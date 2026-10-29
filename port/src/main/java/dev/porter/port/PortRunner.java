@@ -11,6 +11,7 @@ import dev.porter.port.javac.JavacLog;
 import dev.porter.port.javac.Symbols;
 import dev.porter.port.passes.Adapters;
 import dev.porter.port.passes.HubStubs;
+import dev.porter.port.passes.InertHubCalls;
 import dev.porter.port.passes.SourcePasses;
 import dev.porter.port.passes.SrgMap;
 import dev.porter.port.run.Proc;
@@ -40,6 +41,7 @@ import tools.jackson.databind.JsonNode;
  *   derive    steps that derive the inputs of generate on every run: extract, IR selection, assets, patches
  *   generate  porter generate per unit -> install generated files into the project (regen policy)
  *   closure   dependency closure of the seeds: classes to port + frontier hubs (+ known-identical check), coverage
+ *   upfront   optional: porter upfront on the closure (emitted rules, generated shims, TODO batch)
  *   rewrite   porter rewrite of closure + frontier with the rules (relocated, shim package)
  *   install   stage = closure classes + hub stubs + shim + passes + edits + adapters/overlays -> project
  *   loop      porter loop (compile/classify/fix) on the project
@@ -52,7 +54,7 @@ import tools.jackson.databind.JsonNode;
  * ({@code <work>/port-report.json} and {@code .md}) is rewritten.
  */
 public final class PortRunner {
-    public static final List<String> STAGES = List.of("setup", "derive", "generate", "closure", "rewrite", "install", "loop", "compile", "build", "test");
+    public static final List<String> STAGES = List.of("setup", "derive", "generate", "closure", "upfront", "rewrite", "install", "loop", "compile", "build", "test");
 
     private final PortConfig cfg;
     private final PrintStream out;
@@ -235,6 +237,7 @@ public final class PortRunner {
             case "setup", "derive" -> new Steps(cfg, work, childEnv(), this::detail).run(s, cfg.section(s), summary);
             case "generate" -> generate(summary);
             case "closure" -> closure(summary);
+            case "upfront" -> upfront(summary);
             case "rewrite" -> rewrite(summary);
             case "install" -> install(summary);
             case "loop" -> loop(summary);
@@ -301,6 +304,13 @@ public final class PortRunner {
             }
         }
         rep.put("notPorted", notPorted);
+        List<Object> inert = new ArrayList<>();
+        Path inertFile = work.resolve("inert-hub-calls.json");
+        if (Files.exists(inertFile)) {
+            inert.addAll(Json.json().readValue(Text.read(inertFile), List.class));
+        }
+        rep.put("inertHubCallCount", inert.size());
+        rep.put("inertHubCalls", inert);
         Text.write(work.resolve("port-report.json"), Json.json().writeValueAsString(rep) + "\n");
         StringBuilder md = new StringBuilder();
         md.append("# Port report: ").append(cfg.name()).append("\n\n");
@@ -320,6 +330,17 @@ public final class PortRunner {
             md.append("| ").append(cell(r.get("what"))).append(" | ").append(cell(r.get("subject"))).append(" | ")
                     .append(cell(r.get("reason"))).append(" |\n");
         }
+        if (!inert.isEmpty()) {
+            md.append("\n## Calls into inert hub-stub members (").append(inert.size()).append(")\n\n");
+            md.append("Kept code calls a member whose stub body does nothing: the feature is silently missing.\n\n");
+            md.append("| stub member | file:line | kind | client |\n|---|---|---|---|\n");
+            for (Object o : inert) {
+                Map<String, Object> r = (Map<String, Object>) o;
+                md.append("| ").append(cell(r.get("stub") + "#" + r.get("member"))).append(" | ").append(cell(r.get("file")))
+                        .append(":").append(r.get("line")).append(" | ").append(r.get("kind")).append(" | ")
+                        .append(r.get("client")).append(" |\n");
+            }
+        }
         Text.write(work.resolve("port-report.md"), md.toString());
     }
 
@@ -333,7 +354,7 @@ public final class PortRunner {
 
     // ------------------------------------------------------------------------------------------------ helpers
 
-    private Proc.Result porter(String step, List<String> args, List<String> jvmArgs) {
+    Proc.Result porter(String step, List<String> args, List<String> jvmArgs) {
         List<String> jvm = jvmArgs.isEmpty() ? cfg.jvmArgs() : jvmArgs;
         List<String> cmd = Proc.porter(cfg.queue(), jvm, work.resolve("reports"), work.resolve("args/" + step + ".args"), args);
         detail("   porter " + args.get(0) + " ... (log: " + work.resolve("logs/" + step + ".log") + ")");
@@ -383,7 +404,7 @@ public final class PortRunner {
         return true;
     }
 
-    private static void deleteTree(Path p) {
+    static void deleteTree(Path p) {
         if (!Files.exists(p)) {
             return;
         }
@@ -396,7 +417,7 @@ public final class PortRunner {
         }
     }
 
-    private static void copy(Path from, Path to) {
+    static void copy(Path from, Path to) {
         try {
             Files.createDirectories(to.getParent());
             Files.copy(from, to, StandardCopyOption.REPLACE_EXISTING);
@@ -406,7 +427,7 @@ public final class PortRunner {
     }
 
     /** Overlays every file of {@code from} onto {@code to}; returns the relative paths written. */
-    private static List<String> overlay(Path from, Path to) {
+    static List<String> overlay(Path from, Path to) {
         List<String> res = new ArrayList<>();
         if (!Files.isDirectory(from)) {
             return res;
@@ -431,15 +452,15 @@ public final class PortRunner {
         }
     }
 
-    private List<Relocation> relocations() {
+    List<Relocation> relocations() {
         return PortConfig.strings(cfg.section("rewrite").path("relocate")).stream().map(Relocation::parse).toList();
     }
 
-    private String shimPackage() {
+    String shimPackage() {
         return cfg.section("rewrite").path("shimPackage").asString("dev.porter.shim");
     }
 
-    private SrgMap srgMap() {
+    SrgMap srgMap() {
         JsonNode in = cfg.section("install");
         return in.has("srgMappings") ? SrgMap.fromTiny(cfg.path(in.get("srgMappings").asString())) : SrgMap.empty();
     }
@@ -610,15 +631,119 @@ public final class PortRunner {
         return Files.exists(f) ? Text.words(f) : List.of();
     }
 
+    // ------------------------------------------------------------------------------------------------ upfront
+
+    /** Output directory of the upfront stage ({@code porter upfront --out}). */
+    private Path upfrontDir() {
+        return work.resolve("upfront");
+    }
+
+    private boolean upfront(Map<String, Object> summary) {
+        JsonNode u = cfg.section("upfront");
+        Path o = upfrontDir();
+        List<String> args = new ArrayList<>(List.of("upfront", "--jar", cfg.path(u.path("jar").asString()).toString(),
+                "--out", o.toString(), "--classes", work.resolve("closure/port.txt").toString()));
+        if (cfg.has("closure")) {
+            args.addAll(List.of("--src", cfg.path(cfg.section("closure").path("source").asString()).toString()));
+        }
+        if (cfg.has("rewrite")) {
+            JsonNode r = cfg.section("rewrite");
+            for (Path p : cfg.paths(r.path("rules"))) {
+                args.addAll(List.of("--rules", p.toString()));
+            }
+            List<Path> graph = cfg.paths(r.path("graph"));
+            if (!graph.isEmpty()) {
+                args.addAll(List.of("--graph", graph.get(0).toString()));
+            }
+        }
+        for (String k : List.of("data", "tables", "concepts", "bodies", "sounds")) {
+            if (u.has(k)) {
+                args.addAll(List.of("--" + k, cfg.path(u.get(k).asString()).toString()));
+            }
+        }
+        if (u.has("workers")) {
+            args.addAll(List.of("--workers", Integer.toString(u.get("workers").asInt())));
+        }
+        args.addAll(PortConfig.strings(u.path("args")));
+        Proc.Result res = porter("upfront", args, PortConfig.strings(u.path("jvmArgs")));
+        summary.put("exitCode", res.exitCode());
+        Path rep = o.resolve("upfront-report.json");
+        if (res.ok() && Files.exists(rep)) {
+            JsonNode inv = Json.json().readTree(Text.read(rep)).path("inventory");
+            int open = 0;
+            int total = 0;
+            for (Map.Entry<String, JsonNode> e : inv.properties()) {
+                total += e.getValue().asInt();
+                if (e.getKey().startsWith("todo") || e.getKey().startsWith("registry") || e.getKey().startsWith("emitter skipped")) {
+                    open += e.getValue().asInt();
+                }
+            }
+            summary.put("symbols", total);
+            summary.put("open", open);
+        }
+        return res.ok();
+    }
+
+    /**
+     * Copies the shim sources of {@code porter upfront} ({@code <work>/upfront/gen/src}, package {@code dev.porter.shim.gen})
+     * into the stage, relocated to the shim package like the adapter pack.
+     */
+    private int installGeneratedShims(Path stage) {
+        Path gen = upfrontDir().resolve("gen/src");
+        if (!Files.isDirectory(gen)) {
+            return 0;
+        }
+        String base = "dev.porter.shim";
+        String pkg = shimPackage();
+        int n = 0;
+        try (Stream<Path> w = Files.walk(gen)) {
+            for (Path f : w.filter(p -> p.toString().endsWith(".java")).sorted().toList()) {
+                String rel = gen.relativize(f).toString().replace('\\', '/');
+                if (!rel.startsWith(base.replace('.', '/') + "/")) {
+                    continue;
+                }
+                String text = Text.read(f).replace(base + ".", pkg + ".").replace("package " + base + ";", "package " + pkg + ";");
+                Text.write(stage.resolve(pkg.replace('.', '/') + rel.substring(base.length())), text);
+                n++;
+            }
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+        return n;
+    }
+
     // ------------------------------------------------------------------------------------------------ rewrite
 
     private boolean rewrite(Map<String, Object> summary) {
         JsonNode r = cfg.section("rewrite");
         Path rw = work.resolve("rw");
         deleteTree(rw);
-        List<String> args = new ArrayList<>(List.of("rewrite", "--src", cfg.path(cfg.section("closure").path("source").asString()).toString()));
         List<String> classes = new ArrayList<>(portList());
         classes.addAll(frontierList());
+        Proc.Result res = porter("rewrite", rewriteArgs(classes, rw), PortConfig.strings(r.path("jvmArgs")));
+        summary.put("exitCode", res.exitCode());
+        Path rep = rw.resolve("porter-rewrite.json");
+        if (Files.exists(rep)) {
+            summary.put("totals", Json.json().readTree(Text.read(rep)).path("totals"));
+        }
+        if (res.ok()) {
+            Precheck.recordRules(cfg, work); // what the rules looked like when this output was made (porter precheck diffs against it)
+        }
+        return res.ok();
+    }
+
+    /** Arguments of {@code porter rewrite} for the given classes (dotted names) into {@code out}; the stage and precheck share them. */
+    List<String> rewriteArgs(List<String> classes, Path out) {
+        return rewriteArgs(classes, out, cfg.path(cfg.section("closure").path("source").asString()), null);
+    }
+
+    /** As above with another source root and (precheck) the list of all classes of the port, which relocate although not rewritten. */
+    List<String> rewriteArgs(List<String> classes, Path out, Path src, Path relocateKnown) {
+        JsonNode r = cfg.section("rewrite");
+        List<String> args = new ArrayList<>(List.of("rewrite", "--src", src.toString()));
+        if (relocateKnown != null) {
+            args.addAll(List.of("--relocate-known", relocateKnown.toString()));
+        }
         for (String c : classes) {
             args.addAll(List.of("--include", c.replace('.', '/') + ".java"));
         }
@@ -628,6 +753,9 @@ public final class PortRunner {
         }
         for (Path p : cfg.paths(r.path("rules"))) {
             args.addAll(List.of("--rules", p.toString()));
+        }
+        if (cfg.has("upfront") && cfg.section("upfront").path("emitRules").asBoolean(true) && Files.isDirectory(upfrontDir().resolve("rules"))) {
+            args.addAll(List.of("--rules", upfrontDir().resolve("rules").toString())); // generated rules last: the hand rules win
         }
         for (Path p : cfg.globs(r.path("classpath"))) {
             args.addAll(List.of("--classpath", p.toString()));
@@ -642,14 +770,8 @@ public final class PortRunner {
             args.addAll(List.of("--shim-package", shimPackage()));
         }
         args.addAll(PortConfig.strings(r.path("args")));
-        args.addAll(List.of("--out", rw.toString()));
-        Proc.Result res = porter("rewrite", args, PortConfig.strings(r.path("jvmArgs")));
-        summary.put("exitCode", res.exitCode());
-        Path rep = rw.resolve("porter-rewrite.json");
-        if (Files.exists(rep)) {
-            summary.put("totals", Json.json().readTree(Text.read(rep)).path("totals"));
-        }
-        return res.ok();
+        args.addAll(List.of("--out", out.toString()));
+        return args;
     }
 
     // ------------------------------------------------------------------------------------------------ install
@@ -678,6 +800,45 @@ public final class PortRunner {
             }
         }
         return s;
+    }
+
+    /**
+     * The install passes over {@code stage}. {@code subset}: the stage holds only some of the classes (precheck), so
+     * edits aimed at files that are not in it are skipped.
+     */
+    Map<String, Object> applyPasses(Path stage, JsonNode in, boolean subset) {
+        List<String> passes = in.has("passes") ? PortConfig.strings(in.get("passes")) : List.of("srgmoj", "java8", "tector", "edits", "imports");
+        Map<String, Object> pc = new LinkedHashMap<>();
+        for (String p : passes) {
+            switch (p) {
+                case "srgmoj" -> {
+                    if (in.has("srgMappings")) {
+                        pc.put(p, SourcePasses.srgToMojmap(stage, srgMap()));
+                    }
+                }
+                case "java8" -> pc.put(p, SourcePasses.java8(stage));
+                case "tector" -> pc.put(p, SourcePasses.tileConstructors(stage));
+                case "edits" -> {
+                    if (in.has("edits")) {
+                        pc.put(p, SourcePasses.edits(stage, subset ? onlyPresent(stage, SourcePasses.readEdits(cfg.path(in.get("edits").asString()))) : SourcePasses.readEdits(cfg.path(in.get("edits").asString()))));
+                    }
+                }
+                case "imports" -> pc.put(p, SourcePasses.unusedImports(stage));
+                case "assetns" -> {
+                    List<SourcePasses.AssetNamespace> moves = new ArrayList<>();
+                    for (JsonNode m : in.path("assetNamespaces")) {
+                        moves.add(new SourcePasses.AssetNamespace(m.path("from").asString(), m.path("to").asString(), PortConfig.strings(m.path("paths"))));
+                    }
+                    pc.put(p, SourcePasses.assetNamespaces(stage, moves));
+                }
+                default -> throw new IllegalArgumentException("unknown pass '" + p + "' (srgmoj, java8, tector, edits, assetns, imports)");
+            }
+        }
+        return pc;
+    }
+
+    private static List<SourcePasses.SourceEdit> onlyPresent(Path stage, List<SourcePasses.SourceEdit> edits) {
+        return edits.stream().filter(e -> Files.exists(stage.resolve(e.file()))).toList();
     }
 
     private boolean install(Map<String, Object> summary) {
@@ -725,42 +886,30 @@ public final class PortRunner {
         if (Files.isDirectory(rw.resolve(shimPath))) {
             summary.put("shim", overlay(rw.resolve(shimPath), stage.resolve(shimPath)).size());
         }
-        List<String> passes = in.has("passes") ? PortConfig.strings(in.get("passes")) : List.of("srgmoj", "java8", "tector", "edits", "imports");
-        Map<String, Object> pc = new LinkedHashMap<>();
-        for (String p : passes) {
-            switch (p) {
-                case "srgmoj" -> {
-                    if (in.has("srgMappings")) {
-                        pc.put(p, SourcePasses.srgToMojmap(stage, srgMap()));
-                    }
-                }
-                case "java8" -> pc.put(p, SourcePasses.java8(stage));
-                case "tector" -> pc.put(p, SourcePasses.tileConstructors(stage));
-                case "edits" -> {
-                    if (in.has("edits")) {
-                        pc.put(p, SourcePasses.edits(stage, SourcePasses.readEdits(cfg.path(in.get("edits").asString()))));
-                    }
-                }
-                case "imports" -> pc.put(p, SourcePasses.unusedImports(stage));
-                case "assetns" -> {
-                    List<SourcePasses.AssetNamespace> moves = new ArrayList<>();
-                    for (JsonNode m : in.path("assetNamespaces")) {
-                        moves.add(new SourcePasses.AssetNamespace(m.path("from").asString(), m.path("to").asString(), PortConfig.strings(m.path("paths"))));
-                    }
-                    pc.put(p, SourcePasses.assetNamespaces(stage, moves));
-                }
-                default -> throw new IllegalArgumentException("unknown pass '" + p + "' (srgmoj, java8, tector, edits, assetns, imports)");
-            }
-        }
+        Map<String, Object> pc = applyPasses(stage, in, false);
         summary.put("passes", pc);
         if (in.path("adapters").asString("none").equals("bundled")) {
             summary.put("adapters", Adapters.write(stage, shimPackage()));
+        }
+        if (cfg.has("upfront") && cfg.section("upfront").path("shimgen").asBoolean(true)) {
+            summary.put("upfrontShims", installGeneratedShims(stage));
         }
         int ov = 0;
         for (Path d : cfg.paths(in.path("overlays"))) {
             ov += overlay(d, stage).size();
         }
         summary.put("overlayFiles", ov);
+        // calls from kept code into inert hub-stub members: silent feature loss, listed in the report
+        List<InertHubCalls.Hit> inertCalls = InertHubCalls.scan(stage);
+        Text.write(work.resolve("inert-hub-calls.json"), Json.json().writeValueAsString(
+                inertCalls.stream().map(InertHubCalls.Hit::toMap).toList()) + "\n");
+        summary.put("inertHubCalls", inertCalls.size());
+        if (!inertCalls.isEmpty()) {
+            out.println("   WARNING: " + inertCalls.size() + " call site(s) of inert hub-stub members (feature not ported):");
+            for (String l : InertHubCalls.summary(inertCalls)) {
+                out.println("     " + l);
+            }
+        }
         // replace the previous install in the project
         Path src = cfg.sources();
         Path manifest = work.resolve("installed.txt");
@@ -776,6 +925,7 @@ public final class PortRunner {
         List<String> installed = new ArrayList<>(new TreeSet<>(overlay(stage, src)));
         Text.writeLines(manifest, installed);
         summary.put("installed", installed.size());
+        Precheck.recordFiles(cfg, work);
         if (in.has("langKeys")) {
             JsonNode lk = in.get("langKeys");
             Map<String, String> locales = new LinkedHashMap<>();
@@ -793,7 +943,10 @@ public final class PortRunner {
     // --------------------------------------------------------------------------------------------------- loop
 
     private Path generatedSources() {
-        Path d = work.resolve("gen-src");
+        return generatedSources(work.resolve("gen-src"));
+    }
+
+    Path generatedSources(Path d) {
         deleteTree(d);
         for (JsonNode g : cfg.section("compile").path("generatedSources")) {
             Text.write(d.resolve(g.path("path").asString()), g.path("content").asString());
@@ -802,28 +955,43 @@ public final class PortRunner {
     }
 
     private boolean loop(Map<String, Object> summary) {
+        return loopOn("loop", cfg.project(), cfg.sources(), work.resolve("loop"), work.resolve("gen-src"), List.of(), List.of(), summary);
+    }
+
+    /**
+     * The loop stage on {@code project} (sources in {@code sources}). The precheck runs it on a scratch project with
+     * {@code extraCp} / {@code extraJavacOpts} (class output and source path of the real project).
+     */
+    boolean loopOn(String step, Path project, Path sources, Path loopWork, Path genDir, List<Path> extraCp,
+            List<String> extraJavacOpts, Map<String, Object> summary) {
         JsonNode l = cfg.section("loop");
-        List<String> args = new ArrayList<>(List.of("loop", "--project", cfg.project().toString(), "--from", cfg.from(), "--to", cfg.to(),
-                "--work", work.resolve("loop").toString()));
+        List<String> args = new ArrayList<>(List.of("loop", "--project", project.toString(), "--from", cfg.from(), "--to", cfg.to(),
+                "--work", loopWork.toString()));
         if (l.path("useClasspath").asBoolean(false)) {
-            args.addAll(List.of("--src", cfg.sources().toString()));
-            Path gen = generatedSources();
+            args.addAll(List.of("--src", sources.toString()));
+            Path gen = generatedSources(genDir);
             if (Files.exists(gen)) {
                 args.addAll(List.of("--src", gen.toString()));
             }
             for (Path p : cfg.classpath()) {
                 args.addAll(List.of("--classpath", p.toString()));
             }
+            for (Path p : extraCp) {
+                args.addAll(List.of("--classpath", p.toString()));
+            }
         }
         args.addAll(PortConfig.strings(l.path("args")));
-        Proc.Result r = porter("loop", args, PortConfig.strings(l.path("jvmArgs")));
+        for (String o : extraJavacOpts) {
+            args.add("--javac-opt=" + o);
+        }
+        Proc.Result r = porter(step, args, PortConfig.strings(l.path("jvmArgs")));
         summary.put("exitCode", r.exitCode());
         // the loop's shim-aware rules write dev.porter.shim references: relocate them like the rewriter does
         String pkg = shimPackage();
         int relocated = 0;
         if (!pkg.equals("dev.porter.shim")) {
             List<Relocation> rel = relocations();
-            Path root = rel.isEmpty() ? cfg.sources() : cfg.sources().resolve(rel.get(0).to().replace('.', '/'));
+            Path root = rel.isEmpty() ? sources : sources.resolve(rel.get(0).to().replace('.', '/'));
             for (Path p : Text.javaFiles(root)) {
                 String s = Text.read(p);
                 if (s.contains("dev.porter.shim")) {
@@ -847,17 +1015,31 @@ public final class PortRunner {
 
     /** One javac run over the project; returns the log text. */
     private String javacOnce(int round) {
+        return javacOnce(round, Target.full(this));
+    }
+
+    /**
+     * Where a javac run reads and writes: the whole project (the compile stage) or the scratch project of the precheck.
+     * {@code extraArgs}: e.g. {@code -sourcepath}; {@code extraCp}: class dirs of the last build.
+     */
+    record Target(Path project, Path sources, Path classes, Path logs, Path gen, String tag, List<String> extraArgs, List<Path> extraCp) {
+        static Target full(PortRunner r) {
+            return new Target(r.cfg.project(), r.cfg.sources(), r.work.resolve("classes"), r.work, r.work.resolve("gen-src"), "", List.of(), List.of());
+        }
+    }
+
+    String javacOnce(int round, Target t) {
         JsonNode c = cfg.section("compile");
-        Path project = cfg.project();
-        Path gen = generatedSources();
+        Path project = t.project();
+        Path gen = generatedSources(t.gen());
         List<String> files = new ArrayList<>();
-        for (Path p : Text.javaFiles(cfg.sources())) {
+        for (Path p : Text.javaFiles(t.sources())) {
             files.add(project.relativize(p).toString().replace('\\', '/'));
         }
         for (Path p : Text.javaFiles(gen)) {
             files.add(p.toString());
         }
-        Path classes = work.resolve("classes");
+        Path classes = t.classes();
         deleteTree(classes);
         List<String> args = new ArrayList<>(List.of("-Xlint:-options", "-encoding", "UTF-8", "-nowarn", "-Xmaxerrs",
                 c.path("maxErrors").asString("100000")));
@@ -867,7 +1049,10 @@ public final class PortRunner {
             args.addAll(List.of("-processorpath", String.join(java.io.File.pathSeparator, pp.stream().map(Path::toString).toList())));
         }
         args.add("-proc:none");
-        args.addAll(List.of("-cp", String.join(java.io.File.pathSeparator, cfg.classpath().stream().map(Path::toString).toList())));
+        List<Path> cp = new ArrayList<>(cfg.classpath());
+        cp.addAll(t.extraCp());
+        args.addAll(List.of("-cp", String.join(java.io.File.pathSeparator, cp.stream().map(Path::toString).toList())));
+        args.addAll(t.extraArgs());
         args.addAll(List.of("-d", classes.toString()));
         args.addAll(files);
         List<String> cmd = new ArrayList<>();
@@ -875,41 +1060,75 @@ public final class PortRunner {
         for (String j : PortConfig.strings(c.path("jvmArgs"))) {
             cmd.add("-J" + j);
         }
-        cmd.add(Proc.argFile(work.resolve("args/javac.args"), args));
-        Path log = work.resolve("logs/compile-" + round + ".log");
-        Proc.Result res = Proc.run(Proc.queued(cfg.queue(), cmd, work.resolve("args/javac.cmd")), project, Proc.classpathEnv(), log, null);
+        cmd.add(Proc.argFile(work.resolve("args/" + t.tag() + "javac.args"), args));
+        Path log = work.resolve("logs/" + t.tag() + "compile-" + round + ".log");
+        Proc.Result res = Proc.run(Proc.queued(cfg.queue(), cmd, work.resolve("args/" + t.tag() + "javac.cmd")), project, Proc.classpathEnv(), log, null);
         String text = Text.read(log);
         if (res.exitCode() != 0 && JavacLog.errorLines(text) == 0) {
             throw new IllegalStateException("javac did not run (exit " + res.exitCode() + "), see " + log);
         }
-        Text.write(work.resolve("compile.log"), text); // the last round's log is the stage result
+        Text.write(t.logs().resolve(t.tag() + "compile.log"), text); // the last round's log is the stage result
         return text;
     }
 
+    /** Upper bound of the error-driven fix rounds; the loop also stops when a round leaves javac's errors unchanged. */
+    static final int CASTFIX_ROUNDS = 10;
+
+    /**
+     * True when another castfix round is worth running: the last round changed the set of javac errors. (The count may
+     * stay or even rise: javac reports flow errors such as definite assignment only after the attribution errors are gone.)
+     */
+    static boolean castfixProgress(String beforeLog, String afterLog) {
+        return !errorKeys(beforeLog).equals(errorKeys(afterLog));
+    }
+
+    private static java.util.Set<String> errorKeys(String log) {
+        java.util.Set<String> keys = new java.util.HashSet<>();
+        for (JavacLog.Error e : JavacLog.parse(log)) {
+            keys.add(e.file() + ":" + e.line() + ":" + e.message());
+        }
+        return keys;
+    }
+
     private boolean compile(Map<String, Object> summary) {
+        return compileOn(Target.full(this), work.resolve("symbols.json"), summary) != null;
+    }
+
+    /** javac + castfix rounds on {@code t}; returns the final log when it compiles, null otherwise (errors in {@code summary}). */
+    String compileOn(Target t, Path symbolsFile, Map<String, Object> summary) {
         JsonNode c = cfg.section("compile");
-        int rounds = c.path("castfixRounds").asInt(3);
-        String log = javacOnce(0);
+        int rounds = c.path("castfixRounds").asInt(CASTFIX_ROUNDS);
+        String log = javacOnce(0, t);
         List<Integer> fixes = new ArrayList<>();
         for (int k = 1; k <= rounds; k++) {
-            int n = CastFix.apply(log, cfg.project());
+            int n = CastFix.apply(log, t.project());
             fixes.add(n);
             if (n == 0) {
                 break;
             }
-            log = javacOnce(k);
+            String next = javacOnce(k, t);
+            boolean progress = castfixProgress(log, next);
+            log = next;
+            if (!progress) {
+                break; // fixes were applied but javac reports exactly the same errors: further rounds would only cycle
+            }
         }
         summary.put("castfix", fixes);
         Symbols.Result r = Symbols.aggregate(JavacLog.parse(log), srgMap(), cfg.fromBare());
-        Text.write(work.resolve("symbols.json"), Json.json().writeValueAsString(r.toJson()) + "\n");
+        Text.write(symbolsFile, Json.json().writeValueAsString(r.toJson()) + "\n");
+        Text.write(symbolsFile.resolveSibling(symbolsFile.getFileName().toString().replace(".json", "") + "-classes.tsv"), ErrorClasses.tsv(r));
         summary.put("errors", r.errors());
         summary.put("distinctSymbols", r.distinct());
-        detail("   errors " + r.errors() + ", distinct symbols " + r.distinct() + " -> " + work.resolve("symbols.json"));
+        detail("   errors " + r.errors() + ", distinct symbols " + r.distinct() + " -> " + symbolsFile);
         for (Symbols.Entry e : r.symbols().subList(0, Math.min(15, r.symbols().size()))) {
             detail(String.format("   %5d  %s", e.count(), e.key()));
         }
-        return r.errors() == 0;
+        lastErrors = r;
+        return r.errors() == 0 ? log : null;
     }
+
+    /** Aggregated errors of the last {@link #compileOn} (null before the first). */
+    Symbols.Result lastErrors;
 
     // -------------------------------------------------------------------------------------------------- build
 

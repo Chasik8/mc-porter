@@ -33,7 +33,7 @@ public record Rule(int schemaVersion, String id, String description, String from
     public record Bind(String recv, List<String> args, String type, String result) {
     }
 
-    /** @param source graph | manual | agent | mined */
+    /** @param source graph | manual | agent | mined | upfront */
     public record Provenance(String source, String ref, List<String> chain) {
     }
 

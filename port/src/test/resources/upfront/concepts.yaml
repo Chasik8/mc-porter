@@ -1,0 +1,16 @@
+schemaVersion: 1
+concepts:
+  - type: net/minecraft/core/BlockPos
+    plan: EXPAND
+    shim: dev.porter.shim.BlockPos
+    param: {desc: III, expand: ["$a.getX()", "$a.getY()", "$a.getZ()"]}
+  - type: net/minecraft/core/Direction
+    plan: EXPAND
+    param: {desc: I, expand: ["$a.get3DDataValue()"]}
+  - type: net/minecraft/world/InteractionHand
+    plan: EXPAND
+    param: {desc: "", expand: []}
+  - type: net/minecraft/world/level/block/state/BlockState
+    plan: EXPAND
+    param: {desc: "Lnet/minecraft/block/Block;I", expand: ["$a.getBlock()", "$a.getMeta()"]}
+    ret: {desc: "Lnet/minecraft/block/Block;", wrap: "BlockState.of($e)", imports: [dev.porter.shim.mc.BlockState]}

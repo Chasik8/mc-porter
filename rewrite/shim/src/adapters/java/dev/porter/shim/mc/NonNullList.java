@@ -8,6 +8,8 @@ import java.util.Collection;
 
 public class NonNullList<E> extends ArrayList<E> {
     private final E defaultValue;
+    /** withSize / of lists have a fixed size: clear() resets the slots (to null on 1.7.10, where EMPTY is null) */
+    private boolean fixedSize;
 
     protected NonNullList(Collection<E> c, E def) {
         super(c);
@@ -21,7 +23,9 @@ public class NonNullList<E> extends ArrayList<E> {
     public static <E> NonNullList<E> withSize(int size, E def) {
         ArrayList<E> l = new ArrayList<>(size);
         for (int i = 0; i < size; i++) l.add(def);
-        return new NonNullList<>(l, def);
+        NonNullList<E> n = new NonNullList<>(l, def);
+        n.fixedSize = true;
+        return n;
     }
 
     @SafeVarargs
@@ -29,7 +33,7 @@ public class NonNullList<E> extends ArrayList<E> {
 
     @Override
     public void clear() {
-        if (defaultValue == null) {
+        if (defaultValue == null && !fixedSize) {
             super.clear();
         } else {
             for (int i = 0; i < size(); i++) set(i, defaultValue);

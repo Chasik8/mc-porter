@@ -26,6 +26,16 @@ public final class Proc {
     }
 
     /**
+     * Gives the heap this JVM no longer uses back to the OS before a child (rewrite, decompile, javac, Gradle) starts:
+     * the child does the heavy work while this process only waits, and without a full GC the parent kept its peak
+     * heap (about 1.4 GB after closure/install) next to the child's. With the launcher's
+     * {@code -XX:MaxHeapFreeRatio=30} the collector uncommits the free part.
+     */
+    static void releaseHeap() {
+        System.gc();
+    }
+
+    /**
      * @param command full command (queue prefix included)
      * @param cwd     working directory
      * @param env     extra environment variables
@@ -37,6 +47,7 @@ public final class Proc {
             Files.createDirectories(log.getParent());
             ProcessBuilder pb = new ProcessBuilder(command).directory(cwd.toFile()).redirectErrorStream(true);
             pb.environment().putAll(env);
+            releaseHeap();
             Process p = pb.start();
             p.getOutputStream().close();
             try (BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream(), StandardCharsets.UTF_8));

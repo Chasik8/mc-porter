@@ -1,0 +1,546 @@
+key: "method:net.minecraft.server.level.ServerPlayer#getAddEntityPacket()Lnet/minecraft/network/protocol/Packet;"
+body: |
+  return new net.minecraft.network.play.server.S0CPacketSpawnPlayer(self);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.server.level.ServerPlayer#giveExperiencePoints(I)V"
+body: |
+  self.addExperience(i);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.BlockGetter#clip(Lnet/minecraft/world/level/ClipContext;)Lnet/minecraft/world/phys/BlockHitResult;"
+body: |
+  Object o = this;
+  if (o instanceof net.minecraft.world.World) {
+      return dev.porter.shim.mc.ClipContext.clip((net.minecraft.world.World) o, clipContext);
+  }
+  net.minecraft.util.Vec3 to = clipContext.getTo();
+  return dev.porter.shim.mc.BlockHitResult.miss(to, dev.porter.shim.Direction.UP,
+      new dev.porter.shim.BlockPos(to.xCoord, to.yCoord, to.zCoord));
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.BlockGetter#getBlockEntity(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/entity/BlockEntity;"
+body: |
+  Object o = this;
+  if (o instanceof net.minecraft.world.IBlockAccess) {
+      return ((net.minecraft.world.IBlockAccess) o).getTileEntity(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+  }
+  return null;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.BlockGetter#getBlockState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;"
+body: |
+  Object o = this;
+  if (o instanceof net.minecraft.world.IBlockAccess) {
+      return dev.porter.shim.mc.Levels.getBlockState((net.minecraft.world.IBlockAccess) o, blockPos);
+  }
+  return dev.porter.shim.mc.BlockState.of(net.minecraft.init.Blocks.air);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.LevelAccessor#getRandom()Lnet/minecraft/util/RandomSource;"
+body: |
+  Object o = this;
+  java.util.Random rand = o instanceof net.minecraft.world.World ? ((net.minecraft.world.World) o).rand : null;
+  return new dev.porter.shim.gen.util.BRandomSource(rand);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.LevelAccessor#playSound(Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/core/BlockPos;Lnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FF)V"
+body: |
+  Object o = this;
+  if (o instanceof net.minecraft.world.World && soundEvent != null && soundEvent.getLocation() != null) {
+      ((net.minecraft.world.World) o).playSoundEffect(blockPos.getX() + 0.5D, blockPos.getY() + 0.5D,
+          blockPos.getZ() + 0.5D, soundEvent.getLocation().toString(), f, f2);
+  }
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.LevelAccessor#scheduleTick(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/Block;I)V"
+body: |
+  Object o = this;
+  if (o instanceof net.minecraft.world.World && block != null) {
+      ((net.minecraft.world.World) o).scheduleBlockUpdate(blockPos.getX(), blockPos.getY(), blockPos.getZ(), block, i);
+  }
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.LevelAccessor#scheduleTick(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/material/Fluid;I)V"
+body: |
+  Object o = this;
+  net.minecraft.block.Block block = fluid == null ? null : fluid.getBlock();
+  if (o instanceof net.minecraft.world.World && block != null) {
+      ((net.minecraft.world.World) o).scheduleBlockUpdate(blockPos.getX(), blockPos.getY(), blockPos.getZ(), block, i);
+  }
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.LevelHeightAccessor#getMaxBuildHeight()I"
+body: |
+  return 256;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.LevelReader#canSeeSkyFromBelowWater(Lnet/minecraft/core/BlockPos;)Z"
+body: |
+  Object o = this;
+  return o instanceof net.minecraft.world.World
+      && dev.porter.shim.mc.EnergyWorld.canSeeSkyFromBelowWater((net.minecraft.world.World) o, blockPos);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.LevelReader#getMaxLocalRawBrightness(Lnet/minecraft/core/BlockPos;)I"
+body: |
+  Object o = this;
+  if (o instanceof net.minecraft.world.World) {
+      return ((net.minecraft.world.World) o).getBlockLightValue_do(blockPos.getX(), blockPos.getY(), blockPos.getZ(), false);
+  }
+  return 0;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.LevelReader#getMinBuildHeight()I"
+body: |
+  return 0;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.LevelWriter#addFreshEntity(Lnet/minecraft/world/entity/Entity;)Z"
+body: |
+  Object o = this;
+  return o instanceof net.minecraft.world.World && ((net.minecraft.world.World) o).spawnEntityInWorld(entity);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.LevelWriter#destroyBlock(Lnet/minecraft/core/BlockPos;Z)Z"
+body: |
+  Object o = this;
+  return o instanceof net.minecraft.world.World
+      && dev.porter.shim.mc.Levels.destroyBlock((net.minecraft.world.World) o, blockPos, flag);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.LevelWriter#setBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;I)Z"
+body: |
+  Object o = this;
+  return o instanceof net.minecraft.world.World
+      && dev.porter.shim.mc.Levels.setBlock((net.minecraft.world.World) o, blockPos, blockState, i);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity#load(Lnet/minecraft/nbt/CompoundTag;)V"
+body: |
+  // the base block entity reads nothing itself: the furnace fields have no 1.7.10 backing here
+  return;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity#saveAdditional(Lnet/minecraft/nbt/CompoundTag;)V"
+body: |
+  // the base block entity writes nothing itself: the furnace fields have no 1.7.10 backing here
+  return;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.entity.BannerBlockEntity#getUpdateTag()Lnet/minecraft/nbt/CompoundTag;"
+body: |
+  net.minecraft.nbt.NBTTagCompound tag = new net.minecraft.nbt.NBTTagCompound();
+  this.writeToNBT(tag);
+  return tag;
+imports: []
+verified: compile
+---
+key: "field:net.minecraft.world.level.block.entity.BlockEntity#worldPosition:Lnet/minecraft/core/BlockPos;"
+body: |
+  return new dev.porter.shim.BlockPos(self.xCoord, self.yCoord, self.zCoord);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.entity.BlockEntity#<init>(Lnet/minecraft/world/level/block/entity/BlockEntityType;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)V"
+body: |
+  return blockEntityType.create(blockPos, blockState);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.entity.BlockEntity#getBlockPos()Lnet/minecraft/core/BlockPos;"
+body: |
+  if (self instanceof dev.porter.shim.mc.ModernTileEntity) {
+      return ((dev.porter.shim.mc.ModernTileEntity) self).getBlockPos();
+  }
+  return new dev.porter.shim.BlockPos(self.xCoord, self.yCoord, self.zCoord);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.entity.BlockEntity#getCapability(Lnet/minecraftforge/common/capabilities/Capability;Lnet/minecraft/core/Direction;)Lnet/minecraftforge/common/util/LazyOptional;"
+body: |
+  return dev.porter.shim.mc.Caps.get(self, capability, direction);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.entity.BlockEntity#getPersistentData()Lnet/minecraft/nbt/CompoundTag;"
+body: |
+  return dev.porter.shim.mc.TileData.get(self);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.entity.BlockEntity#getUpdateTag()Lnet/minecraft/nbt/CompoundTag;"
+body: |
+  if (self instanceof dev.porter.shim.mc.ModernTileEntity) {
+      return ((dev.porter.shim.mc.ModernTileEntity) self).getUpdateTag();
+  }
+  return new net.minecraft.nbt.NBTTagCompound();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.entity.BlockEntity#handleUpdateTag(Lnet/minecraft/nbt/CompoundTag;)V"
+body: |
+  if (self instanceof dev.porter.shim.mc.ModernTileEntity) {
+      ((dev.porter.shim.mc.ModernTileEntity) self).handleUpdateTag(nBTTagCompound);
+  } else if (nBTTagCompound != null) {
+      self.readFromNBT(nBTTagCompound);
+  }
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.entity.BlockEntity#saveWithoutMetadata()Lnet/minecraft/nbt/CompoundTag;"
+body: |
+  net.minecraft.nbt.NBTTagCompound tag = new net.minecraft.nbt.NBTTagCompound();
+  self.writeToNBT(tag);
+  tag.removeTag("id");
+  tag.removeTag("x");
+  tag.removeTag("y");
+  tag.removeTag("z");
+  return tag;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.chunk.LevelChunk#getBlockEntity(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/entity/BlockEntity;"
+body: |
+  return dev.porter.shim.mc.Levels.getBlockEntity(self, blockPos);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.chunk.LevelChunk#getBlockState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;"
+body: |
+  return dev.porter.shim.mc.Levels.getBlockState(self, blockPos);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.saveddata.SavedData#<init>()V"
+body: |
+  return new dev.porter.shim.mc.SavedDataBase() {
+      @Override
+      public net.minecraft.nbt.NBTTagCompound save(net.minecraft.nbt.NBTTagCompound tag) {
+          return tag;
+      }
+  };
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.saveddata.SavedData#save(Lnet/minecraft/nbt/CompoundTag;)Lnet/minecraft/nbt/CompoundTag;"
+body: |
+  if (self instanceof dev.porter.shim.mc.SavedDataBase) {
+      return ((dev.porter.shim.mc.SavedDataBase) self).save(nBTTagCompound);
+  }
+  self.writeToNBT(nBTTagCompound);
+  return nBTTagCompound;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.nbt.ByteArrayTag#<init>([B)V"
+body: |
+  dev.porter.shim.gen.nbt.BState.put(this, "v", bytes);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.nbt.ByteArrayTag#getAsByteArray()[B"
+body: |
+  Object v = dev.porter.shim.gen.nbt.BState.get(this, "v");
+  return v instanceof byte[] ? (byte[]) v : new byte[0];
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.nbt.ByteTag#getAsDouble()D"
+body: |
+  return self.func_150286_g();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.nbt.ByteTag#getAsFloat()F"
+body: |
+  return self.func_150288_h();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.nbt.ByteTag#getAsInt()I"
+body: |
+  return self.func_150287_d();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.nbt.ByteTag#getAsLong()J"
+body: |
+  return self.func_150291_c();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.nbt.ByteTag#getAsShort()S"
+body: |
+  return self.func_150289_e();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.nbt.ByteTag#valueOf(B)Lnet/minecraft/nbt/ByteTag;"
+body: |
+  return new net.minecraft.nbt.NBTTagByte(b);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.nbt.CompoundTag#copy()Lnet/minecraft/nbt/CompoundTag;"
+body: |
+  return (net.minecraft.nbt.NBTTagCompound) self.copy();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.nbt.CompoundTag#getAllKeys()Ljava/util/Set;"
+body: |
+  return self.func_150296_c();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.nbt.CompoundTag#getLongArray(Ljava/lang/String;)[J"
+body: |
+  return dev.porter.shim.mc.Nbt.getLongArray(self, string);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.nbt.CompoundTag#getUUID(Ljava/lang/String;)Ljava/util/UUID;"
+body: |
+  return dev.porter.shim.mc.Nbt.getUUID(self, string);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.nbt.CompoundTag#merge(Lnet/minecraft/nbt/CompoundTag;)Lnet/minecraft/nbt/CompoundTag;"
+body: |
+  return dev.porter.shim.mc.Nbt.merge(self, nBTTagCompound);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.nbt.CompoundTag#put(Ljava/lang/String;Lnet/minecraft/nbt/Tag;)Lnet/minecraft/nbt/Tag;"
+body: |
+  net.minecraft.nbt.NBTBase previous = self.getTag(string);
+  net.minecraft.nbt.NBTBase value = dev.porter.shim.gen.nbt.BNbt.unwrap(tag);
+  if (value != null) {
+      self.setTag(string, value);
+  }
+  return dev.porter.shim.gen.nbt.BNbt.wrap(previous);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.nbt.CompoundTag#putLongArray(Ljava/lang/String;[J)V"
+body: |
+  dev.porter.shim.mc.Nbt.putLongArray(self, string, longs);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.nbt.CompoundTag#putUUID(Ljava/lang/String;Ljava/util/UUID;)V"
+body: |
+  dev.porter.shim.mc.Nbt.putUUID(self, string, uUID);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.nbt.CompoundTag#size()I"
+body: |
+  return self.func_150296_c().size();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.nbt.FloatTag#valueOf(F)Lnet/minecraft/nbt/FloatTag;"
+body: |
+  return new net.minecraft.nbt.NBTTagFloat(f);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.nbt.IntArrayTag#<init>([I)V"
+body: |
+  dev.porter.shim.gen.nbt.BState.put(this, "v", ints);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.nbt.IntArrayTag#getAsIntArray()[I"
+body: |
+  Object v = dev.porter.shim.gen.nbt.BState.get(this, "v");
+  return v instanceof int[] ? (int[]) v : new int[0];
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.nbt.IntTag#valueOf(I)Lnet/minecraft/nbt/IntTag;"
+body: |
+  return new net.minecraft.nbt.NBTTagInt(i);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.nbt.ListTag#add(Ljava/lang/Object;)Z"
+body: |
+  net.minecraft.nbt.NBTBase value = dev.porter.shim.gen.nbt.BNbt.unwrap(object);
+  if (value == null) {
+      return false;
+  }
+  self.appendTag(value);
+  return true;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.nbt.ListTag#get(I)Lnet/minecraft/nbt/Tag;"
+body: |
+  return dev.porter.shim.gen.nbt.BNbt.wrap(dev.porter.shim.mc.Nbt.get(self, i));
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.nbt.ListTag#isEmpty()Z"
+body: |
+  return self.tagCount() == 0;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.nbt.ListTag#iterator()Ljava/util/Iterator;"
+body: |
+  return dev.porter.shim.mc.Nbt.iterate(self).iterator();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.nbt.ListTag#size()I"
+body: |
+  return self.tagCount();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.nbt.LongArrayTag#getAsLongArray()[J"
+body: |
+  Object v = dev.porter.shim.gen.nbt.BState.get(this, "v");
+  return v instanceof long[] ? (long[]) v : new long[0];
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.nbt.LongTag#getAsLong()J"
+body: |
+  return self.func_150291_c();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.nbt.LongTag#valueOf(J)Lnet/minecraft/nbt/LongTag;"
+body: |
+  return new net.minecraft.nbt.NBTTagLong(l);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.nbt.NbtUtils#readBlockState(Lnet/minecraft/nbt/CompoundTag;)Lnet/minecraft/world/level/block/state/BlockState;"
+body: |
+  return dev.porter.shim.mc.Nbt.readBlockState(nBTTagCompound);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.nbt.NbtUtils#writeBlockState(Lnet/minecraft/world/level/block/state/BlockState;)Lnet/minecraft/nbt/CompoundTag;"
+body: |
+  return dev.porter.shim.mc.Nbt.writeBlockState(blockState);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.nbt.NumericTag#getAsDouble()D"
+body: |
+  return self.func_150286_g();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.nbt.NumericTag#getAsFloat()F"
+body: |
+  return self.func_150288_h();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.nbt.NumericTag#getAsInt()I"
+body: |
+  return self.func_150287_d();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.nbt.NumericTag#getAsLong()J"
+body: |
+  return self.func_150291_c();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.nbt.NumericTag#getAsShort()S"
+body: |
+  return self.func_150289_e();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.nbt.ShortTag#getAsInt()I"
+body: |
+  return self.func_150287_d();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.nbt.ShortTag#valueOf(S)Lnet/minecraft/nbt/ShortTag;"
+body: |
+  return new net.minecraft.nbt.NBTTagShort(s);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.nbt.StringTag#valueOf(Ljava/lang/String;)Lnet/minecraft/nbt/StringTag;"
+body: |
+  return new dev.porter.shim.gen.nbt.BStringTag(new net.minecraft.nbt.NBTTagString(string));
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.nbt.TagParser#parseTag(Ljava/lang/String;)Lnet/minecraft/nbt/CompoundTag;"
+body: |
+  return dev.porter.shim.mc.Nbt.parseTag(string);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.advancements.Advancement$Builder#addCriterion(Ljava/lang/String;Lnet/minecraft/advancements/CriterionTriggerInstance;)Lnet/minecraft/advancements/Advancement$Builder;"
+body: |
+  // advancements do not exist on 1.7.10: the builder chain is accepted and ignored
+  return this;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.advancements.Advancement$Builder#advancement()Lnet/minecraft/advancements/Advancement$Builder;"
+body: |
+  return new dev.porter.shim.gen.advancements.Advancement.Builder();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.advancements.Advancement$Builder#display(Lnet/minecraft/advancements/DisplayInfo;)Lnet/minecraft/advancements/Advancement$Builder;"
+body: |
+  // advancements do not exist on 1.7.10: the builder chain is accepted and ignored
+  return this;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.advancements.Advancement$Builder#parent(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/advancements/Advancement$Builder;"
+body: |
+  // advancements do not exist on 1.7.10: the builder chain is accepted and ignored
+  return this;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.advancements.Advancement$Builder#rewards(Lnet/minecraft/advancements/AdvancementRewards$Builder;)Lnet/minecraft/advancements/Advancement$Builder;"
+body: |
+  // advancements do not exist on 1.7.10: the builder chain is accepted and ignored
+  return this;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.advancements.Advancement$Builder#rewards(Lnet/minecraft/advancements/AdvancementRewards;)Lnet/minecraft/advancements/Advancement$Builder;"
+body: |
+  // advancements do not exist on 1.7.10: the builder chain is accepted and ignored
+  return this;
+imports: []
+verified: compile

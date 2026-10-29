@@ -58,7 +58,7 @@ public final class CastFix {
     private static final Pattern CFR_ASSIGN = Pattern.compile("(\\s*)(.+?)\\[(\\w+)\\.(\\w+)\\(\\)\\] = \\3 = (.+);");
     private static final Pattern INCOMPATIBLE = Pattern.compile("incompatible types: (.+?) cannot be converted to (.+)$");
     private static final Pattern CAST_TYPE = Pattern.compile("\\s*[A-Za-z_][\\w.$]*(?:<[^()]*>)?(?:\\[\\])*\\s*");
-    private static final Pattern SIMPLE_TYPE = Pattern.compile("[A-Z]\\w*");
+    private static final Pattern SIMPLE_TYPE = Pattern.compile("[A-Z]\\w*(?:\\[\\])?");
 
     private record Err(int col, String msg) {
     }
@@ -97,8 +97,8 @@ public final class CastFix {
             int ln = Integer.parseInt(k.substring(k.lastIndexOf('\u0000') + 1));
             List<Err> errs = en.getValue();
             Path p = root.resolve(f.replace('\\', '/'));
-            if (!Files.exists(p)) {
-                continue;
+            if (!Files.exists(p) || !p.toAbsolutePath().normalize().startsWith(root.toAbsolutePath().normalize())) {
+                continue; // missing, or outside the project (e.g. found on a source path): never edited
             }
             List<String> lines = new ArrayList<>(List.of(Text.read(p).split("\n", -1)));
             String s = lines.get(ln - 1);
@@ -166,6 +166,12 @@ public final class CastFix {
                         s = s.substring(0, pc[1]) + "(Object)" + s.substring(pc[1]);
                         changed = true;
                         n++;
+                    } else if (src.contains("<") && dst.contains("<") && !dst.contains("CAP#")) {
+                        // generic arguments that only compiled against the source's types: a raw cast (unchecked) bridges them
+                        int at = exprStart(s, col);
+                        s = s.substring(0, at) + "(" + dst.substring(0, dst.indexOf('<')) + ") " + s.substring(at);
+                        changed = true;
+                        n++;
                     } else if (SIMPLE_TYPE.matcher(dst).matches()) {
                         int at = exprStart(s, col);
                         s = s.substring(0, at) + "(" + dst + ") " + s.substring(at);
@@ -179,7 +185,7 @@ public final class CastFix {
                 Text.write(p, String.join("\n", lines));
             }
         }
-        return n;
+        return n + DeclFix.apply(log, root);
     }
 
     /** {start, end} of a cast written right before position col, else null. */

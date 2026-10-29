@@ -1,0 +1,257 @@
+# upfront-expand
+---
+schemaVersion: 1
+id: "r-1.19.2-1.7.10-upfront-call-level-getblockentity-27419489"
+description: "Generated from the match table: method:net.minecraft.world.level.Level#getBlockEntity(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/entity/BlockEntity;\
+  \ (EXPAND)"
+from: "forge-1.19.2"
+to: "forge-1.7.10"
+kind: "adapter"
+match:
+  call: "net.minecraft.world.level.Level#getBlockEntity(net.minecraft.core.BlockPos)"
+  bind:
+    recv: "$r"
+    args:
+    - "$a0"
+replace: "$r.getTileEntity($a0.getX(), $a0.getY(), $a0.getZ())"
+preconditions:
+- "pure:$a0"
+priority: 10
+confidence: 0.9
+provenance:
+  source: "upfront"
+  ref: "lineage 0.90"
+tests:
+- context: "Level r; BlockPos a0; import net.minecraft.core.BlockPos;"
+  before: "Object x = r.getBlockEntity(a0);"
+  after: "Object x = r.getTileEntity(a0.getX(), a0.getY(), a0.getZ());"
+---
+schemaVersion: 1
+id: "r-1.19.2-1.7.10-upfront-call-level-getblockstate-d42ceda3"
+description: "Generated from the match table: method:net.minecraft.world.level.Level#getBlockState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;\
+  \ (EXPAND)"
+from: "forge-1.19.2"
+to: "forge-1.7.10"
+kind: "adapter"
+match:
+  call: "net.minecraft.world.level.Level#getBlockState(net.minecraft.core.BlockPos)"
+  bind:
+    recv: "$r"
+    args:
+    - "$a0"
+replace: "BlockState.of($r.getBlock($a0.getX(), $a0.getY(), $a0.getZ()))"
+imports:
+- "dev.porter.shim.mc.BlockState"
+preconditions:
+- "pure:$a0"
+priority: 10
+confidence: 0.9
+provenance:
+  source: "upfront"
+  ref: "lineage 0.90"
+tests:
+- context: "Level r; BlockPos a0; import net.minecraft.core.BlockPos;"
+  before: "Object x = r.getBlockState(a0);"
+  after: "Object x = BlockState.of(r.getBlock(a0.getX(), a0.getY(), a0.getZ()));"
+---
+schemaVersion: 1
+id: "r-1.19.2-1.7.10-upfront-helper-level-getblockentity-80a20e76"
+description: "Generated from the match table: method:net.minecraft.world.level.Level#getBlockEntity(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/entity/BlockEntity;\
+  \ (EXPAND)"
+from: "forge-1.19.2"
+to: "forge-1.7.10"
+kind: "adapter"
+match:
+  call: "net.minecraft.world.level.Level#getBlockEntity(net.minecraft.core.BlockPos)"
+  bind:
+    recv: "$r"
+    args:
+    - "$a0"
+replace: "LevelExt.getBlockEntity($r, $a0)"
+imports:
+- "dev.porter.shim.gen.net.minecraft.world.level.LevelExt"
+priority: 0
+confidence: 0.9
+provenance:
+  source: "upfront"
+  ref: "lineage 0.90"
+tests:
+- context: "Level r; BlockPos a0; import net.minecraft.core.BlockPos;"
+  before: "Object x = r.getBlockEntity(a0);"
+  after: "Object x = LevelExt.getBlockEntity(r, a0);"
+---
+schemaVersion: 1
+id: "r-1.19.2-1.7.10-upfront-helper-level-getblockstate-dd5a56ca"
+description: "Generated from the match table: method:net.minecraft.world.level.Level#getBlockState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;\
+  \ (EXPAND)"
+from: "forge-1.19.2"
+to: "forge-1.7.10"
+kind: "adapter"
+match:
+  call: "net.minecraft.world.level.Level#getBlockState(net.minecraft.core.BlockPos)"
+  bind:
+    recv: "$r"
+    args:
+    - "$a0"
+replace: "BlockState.of(LevelExt.getBlockState($r, $a0))"
+imports:
+- "dev.porter.shim.gen.net.minecraft.world.level.LevelExt"
+- "dev.porter.shim.mc.BlockState"
+priority: 0
+confidence: 0.9
+provenance:
+  source: "upfront"
+  ref: "lineage 0.90"
+tests:
+- context: "Level r; BlockPos a0; import net.minecraft.core.BlockPos;"
+  before: "Object x = r.getBlockState(a0);"
+  after: "Object x = BlockState.of(LevelExt.getBlockState(r, a0));"
+# upfront-ext
+---
+schemaVersion: 1
+id: "r-1.19.2-1.7.10-upfront-ext-level-isloaded-c2645a42"
+description: "Generated from the match table: method:net.minecraft.world.level.Level#isLoaded(Lnet/minecraft/core/BlockPos;)Z\
+  \ (HINT)"
+from: "forge-1.19.2"
+to: "forge-1.7.10"
+kind: "adapter"
+match:
+  call: "net.minecraft.world.level.Level#isLoaded(net.minecraft.core.BlockPos)"
+  bind:
+    recv: "$r"
+    args:
+    - "$a0"
+replace: "LevelExt.isLoaded($r, $a0)"
+imports:
+- "dev.porter.shim.gen.net.minecraft.world.level.LevelExt"
+priority: -10
+confidence: 0.9
+provenance:
+  source: "upfront"
+  ref: "lineage 0.90"
+tests:
+- context: "Level r; BlockPos a0; import net.minecraft.core.BlockPos;"
+  before: "Object x = r.isLoaded(a0);"
+  after: "Object x = LevelExt.isLoaded(r, a0);"
+# upfront-map
+---
+schemaVersion: 1
+id: "r-1.19.2-1.7.10-upfront-call-entity-getid-bfd94f29"
+description: "Generated from the match table: method:net.minecraft.world.entity.Entity#getId()I\
+  \ (MAP)"
+from: "forge-1.19.2"
+to: "forge-1.7.10"
+kind: "mechanical"
+match:
+  call: "net.minecraft.world.entity.Entity#getId()"
+  bind:
+    recv: "$r"
+replace: "$r.getEntityId()"
+priority: -10
+confidence: 0.9
+provenance:
+  source: "upfront"
+  ref: "lineage 0.90"
+tests:
+- context: "Entity r;"
+  before: "r.getId();"
+  after: "r.getEntityId();"
+---
+schemaVersion: 1
+id: "r-1.19.2-1.7.10-upfront-override-entity-getid-3af28444"
+description: "Generated from the match table: method:net.minecraft.world.entity.Entity#getId()I\
+  \ (MAP)"
+from: "forge-1.19.2"
+to: "forge-1.7.10"
+kind: "mechanical"
+match:
+  override: "net.minecraft.world.entity.Entity#getId()"
+replace: "getEntityId"
+priority: -10
+confidence: 0.9
+provenance:
+  source: "upfront"
+  ref: "lineage 0.90"
+tests:
+- before: "public int getId() { throw new UnsupportedOperationException(); }"
+  after: "public int getEntityId() { throw new UnsupportedOperationException(); }"
+---
+schemaVersion: 1
+id: "r-1.19.2-1.7.10-upfront-type-entity-e4e54789"
+description: "Generated from the match table: type:net.minecraft.world.entity.Entity\
+  \ (MAP)"
+from: "forge-1.19.2"
+to: "forge-1.7.10"
+kind: "mechanical"
+match:
+  type: "net.minecraft.world.entity.Entity"
+replace: "net.minecraft.entity.Entity"
+priority: -10
+confidence: 0.9
+provenance:
+  source: "upfront"
+  ref: "lineage 0.90"
+tests:
+- before: "import net.minecraft.world.entity.Entity;"
+  after: "import net.minecraft.entity.Entity;"
+---
+schemaVersion: 1
+id: "r-1.19.2-1.7.10-upfront-type-level-fa89d4bf"
+description: "Generated from the match table: type:net.minecraft.world.level.Level\
+  \ (MAP)"
+from: "forge-1.19.2"
+to: "forge-1.7.10"
+kind: "mechanical"
+match:
+  type: "net.minecraft.world.level.Level"
+replace: "net.minecraft.world.World"
+priority: -10
+confidence: 0.9
+provenance:
+  source: "upfront"
+  ref: "lineage 0.90"
+tests:
+- before: "import net.minecraft.world.level.Level;"
+  after: "import net.minecraft.world.World;"
+# upfront-mirror
+---
+schemaVersion: 1
+id: "r-1.19.2-1.7.10-upfront-type-integerproperty-0baea2ea"
+description: "Generated from the match table: type:net.minecraft.world.level.block.state.properties.IntegerProperty\
+  \ (MIRROR)"
+from: "forge-1.19.2"
+to: "forge-1.7.10"
+kind: "mechanical"
+match:
+  type: "net.minecraft.world.level.block.state.properties.IntegerProperty"
+replace: "dev.porter.shim.mc.IntegerProperty"
+priority: -10
+confidence: 0.9
+provenance:
+  source: "upfront"
+  ref: "lineage 0.90"
+tests:
+- before: "import net.minecraft.world.level.block.state.properties.IntegerProperty;"
+  after: "import dev.porter.shim.mc.IntegerProperty;"
+# upfront-registry
+---
+schemaVersion: 1
+id: "r-1.19.2-1.7.10-upfront-field-items-iron_ingot-b45592a4"
+description: "Generated from the match table: field:net.minecraft.world.item.Items#IRON_INGOT:Lnet/minecraft/world/item/Item;\
+  \ (REGISTRY)"
+from: "forge-1.19.2"
+to: "forge-1.7.10"
+kind: "mechanical"
+match:
+  field: "net.minecraft.world.item.Items#IRON_INGOT"
+replace: "Items.iron_ingot"
+imports:
+- "net.minecraft.init.Items"
+priority: -10
+confidence: 0.9
+provenance:
+  source: "upfront"
+  ref: "lineage 0.90"
+tests:
+- before: "Object x = Items.IRON_INGOT;"
+  after: "Object x = Items.iron_ingot;"

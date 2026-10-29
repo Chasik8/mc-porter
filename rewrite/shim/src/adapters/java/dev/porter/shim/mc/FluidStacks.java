@@ -33,4 +33,9 @@ public final class FluidStacks {
     public static FluidStack withAmount(FluidStack s, int amount) {
         return isEmpty(s) ? null : new FluidStack(s, amount);
     }
+
+    /** new FluidStack(fluid, amount) where the rewriter could not tell a Fluid from a FluidStack (a generated fluid). */
+    public static FluidStack withAmount(net.minecraftforge.fluids.Fluid f, int amount) {
+        return f == null ? null : new FluidStack(f, amount);
+    }
 }

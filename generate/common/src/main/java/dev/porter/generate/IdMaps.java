@@ -55,6 +55,15 @@ public final class IdMaps {
                 out.putIfAbsent(id, ref);
             }
         }
+        // tags: {tagId: "oreDictName"} -> key "#tagId" (OreDictionary name of an ingredient tag with no conventional name)
+        JsonNode tags = root.get("tags");
+        if (tags != null && tags.isObject()) {
+            for (Map.Entry<String, JsonNode> e : tags.properties()) {
+                if (e.getValue().isString() && !e.getValue().asString().isBlank()) {
+                    out.putIfAbsent("#" + e.getKey(), e.getValue().asString());
+                }
+            }
+        }
         return out;
     }
 }

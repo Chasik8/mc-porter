@@ -39,11 +39,13 @@ public final class ItemStacks {
 
     /**
      * ItemStack#sameItem: same item (1.7.10: and the same damage value unless the item is damageable, since 1.7.10 keeps
-     * item variants in the damage); false when either stack is empty, like 1.19.2.
+     * item variants in the damage) unless {@code a} carries the 1.7.10 wildcard damage 32767 (vanilla furnace recipes are
+     * keyed that way, so any variant matches); false when either stack is empty, like 1.19.2.
      */
     public static boolean sameItemAs(ItemStack a, ItemStack b) {
         if (isEmpty(a) || isEmpty(b)) return false;
-        return a.getItem() == b.getItem() && (a.getItem().isDamageable() || a.getItemDamage() == b.getItemDamage());
+        return a.getItem() == b.getItem() && (a.getItem().isDamageable() || a.getItemDamage() == b.getItemDamage()
+            || a.getItemDamage() == net.minecraftforge.oredict.OreDictionary.WILDCARD_VALUE);
     }
 
     /** ItemStack.isSame (item + damage) */

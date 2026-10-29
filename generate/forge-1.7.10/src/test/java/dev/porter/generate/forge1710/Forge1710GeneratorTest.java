@@ -309,6 +309,34 @@ class Forge1710GeneratorTest {
         assertTrue(ctx.decisions().stream().anyMatch(d -> d.code().equals("shared-logic-class")));
     }
 
+    /** --id-map "tags" section: OreDictionary name of an ingredient tag that has no conventional name. Synthetic. */
+    @Test
+    void idMapTagOreName(@TempDir Path tmp) throws Exception {
+        String prov = "\"provenance\": {\"file\": \"Items.java\", \"line\": 1, \"version\": \"forge-1.19.2\"}";
+        String ir = """
+                {"schemaVersion": 1, "source": {"version": "forge-1.19.2", "modId": "demo", "tool": "test"}, "nodes": [
+                 {"kind": "mod", "id": "demo", "name": "Demo", "version": "1.0", "mainClass": "org.demo.Demo", PROV},
+                 {"kind": "item", "id": "demo:gadget", PROV},
+                 {"kind": "recipe", "id": "demo:gadget", "recipeType": "shapeless",
+                  "ingredients": [{"tag": "demo:rubber"}, {"item": "minecraft:stick"}],
+                  "result": {"item": "demo:gadget"}, PROV}
+                ]}
+                """.replace("PROV", prov);
+        Path f = tmp.resolve("demo.ir.json");
+        Files.writeString(f, ir);
+        Path ids = tmp.resolve("ids.yaml");
+        Files.writeString(ids, "version: forge-1.7.10\ntags:\n  \"demo:rubber\": \"itemRubber\"\n");
+        Map<String, String> idMap = dev.porter.generate.IdMaps.load(ids);
+        assertEquals(Map.of("#demo:rubber", "itemRubber"), idMap);
+        GenOptions o = new GenOptions("1.7.10", "org.demo.gen", "demo", null, null, true, GenOptions.IntRange.parse("50-69"),
+                GenOptions.IntRange.parse("25-31"), null, null, null, GenOptions.LegacyNames.NS_CAMEL, true, idMap);
+        GenContext ctx = Generate.run(new Forge1710Generator(), IrIndex.load(List.of(f)), o).context();
+        String recipes = file(ctx, "src/main/java/org/demo/gen/recipe/DemoRecipes.java");
+        assertTrue(recipes.contains("\"itemRubber\""), recipes);
+        assertFalse(recipes.contains("demo:rubber\""), recipes);
+        assertTrue(ctx.decisions().stream().noneMatch(d -> d.code().equals("oredict-unresolved")));
+    }
+
     /** NEI integration: custom recipe types with fluids/machines/notes, multiblocks, hidden items (RFC 003). */
     @Test
     void neiIntegration() {

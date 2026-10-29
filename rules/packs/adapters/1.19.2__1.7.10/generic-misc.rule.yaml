@@ -1,0 +1,366 @@
+# generic-misc: generic Minecraft/Forge 1.19.2 -> 1.7.10 mappings promoted from a port profile (no mod names).
+---
+schemaVersion: 1
+id: r-gen-dpipe-pattern-adddataslots
+description: "this.addDataSlots(data): 1.7.10 containers have no data slots, the ContainerData stays server-side (GUI values are read from the tile / InventoryData directly), so registering it is dropped"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  pattern: "this.addDataSlots($d);"
+replace: ""
+confidence: 0.8
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.inventory.AbstractContainerMenu; import net.minecraft.world.inventory.ContainerData; extends AbstractContainerMenu; ContainerData data"
+    before: |
+      this.addDataSlots(this.data);
+      int checked = 0;
+    after: "int checked = 0;"
+---
+schemaVersion: 1
+id: r-gen-energy-idiom-biome-noprecipitation
+description: "biome.getPrecipitation() == Biome.Precipitation.NONE -> EnergyWorld.noPrecipitation(biome)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  pattern: "$b.getPrecipitation() == Biome.Precipitation.NONE"
+replace: "EnergyWorld.noPrecipitation($b)"
+imports: ["dev.porter.shim.mc.EnergyWorld"]
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.level.biome.Biome; Biome biome"
+    before: "boolean n = biome.getPrecipitation() == Biome.Precipitation.NONE;"
+    after: "boolean n = EnergyWorld.noPrecipitation(biome);"
+---
+schemaVersion: 1
+id: r-gen-energy-idiom-dimension-hasskylight
+description: "level.dimensionType().hasSkyLight() -> EnergyWorld.hasSkyLight(level)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  pattern: "$w.dimensionType().hasSkyLight()"
+replace: "EnergyWorld.hasSkyLight($w)"
+imports: ["dev.porter.shim.mc.EnergyWorld"]
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.level.Level; Level level"
+    before: "boolean s = level.dimensionType().hasSkyLight();"
+    after: "boolean s = EnergyWorld.hasSkyLight(level);"
+---
+schemaVersion: 1
+id: r-gen-energy-idiom-dimension-coordinatescale
+description: "level.dimensionType().coordinateScale() -> EnergyWorld.coordinateScale(level)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  pattern: "$w.dimensionType().coordinateScale()"
+replace: "EnergyWorld.coordinateScale($w)"
+imports: ["dev.porter.shim.mc.EnergyWorld"]
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.level.Level; Level level"
+    before: "double s = level.dimensionType().coordinateScale();"
+    after: "double s = EnergyWorld.coordinateScale(level);"
+---
+schemaVersion: 1
+id: r-gen-heavya-pattern-villager-hero-effect
+description: "Villager.addEffect(new MobEffectInstance(MobEffects.HERO_OF_THE_VILLAGE, n)): no such effect on 1.7.10, dropped"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  pattern: "$v.m_7292_(new MobEffectInstance(MobEffects.f_19619_, $n));"
+replace: ""
+priority: 50
+confidence: 0.8
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.entity.npc.Villager; import net.minecraft.world.effect.MobEffectInstance; import net.minecraft.world.effect.MobEffects; Villager villager"
+    before: |
+      villager.m_7292_(new MobEffectInstance(MobEffects.f_19619_, 200));
+      int checked = 0;
+    after: "int checked = 0;"
+---
+schemaVersion: 1
+id: r-gen-heavya-pattern-forgehooks-setcraftingplayer
+description: "ForgeHooks.setCraftingPlayer(player): no 1.7.10 counterpart (the crafting event takes the player directly), dropped"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  pattern: "ForgeHooks.setCraftingPlayer($p);"
+replace: ""
+confidence: 0.8
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraftforge.common.ForgeHooks; Object player"
+    before: |
+      ForgeHooks.setCraftingPlayer(player);
+      int checked = 0;
+    after: "int checked = 0;"
+---
+schemaVersion: 1
+id: r-gen-heavya-pattern-adddataslot
+description: "this.addDataSlot(slot): 1.7.10 containers have no data slots; the holder stays server-side, so registering it is dropped"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  pattern: "this.addDataSlot($d);"
+replace: ""
+confidence: 0.8
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.inventory.AbstractContainerMenu; import net.minecraft.world.inventory.DataSlot; extends AbstractContainerMenu; DataSlot saving"
+    before: |
+      this.addDataSlot(this.saving);
+      int checked = 0;
+    after: "int checked = 0;"
+---
+schemaVersion: 1
+id: r-gen-heavya-pattern-blockentity-getcapability-itemhandler-down
+description: "tile.getCapability(ForgeCapabilities.ITEM_HANDLER, Direction.DOWN) -> Caps.get(...) (the generic BlockEntity#getCapability rule does not fire on this chained call)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  pattern: "$t.getCapability(ForgeCapabilities.ITEM_HANDLER, Direction.DOWN)"
+replace: "Caps.get($t, ForgeCapabilities.ITEM_HANDLER, Direction.DOWN)"
+imports: ["dev.porter.shim.mc.Caps"]
+priority: 50
+confidence: 0.8
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.level.block.entity.BlockEntity; import net.minecraftforge.common.capabilities.ForgeCapabilities; import net.minecraft.core.Direction; BlockEntity tile"
+    before: "Object h = tile.getCapability(ForgeCapabilities.ITEM_HANDLER, Direction.DOWN);"
+    after: "Object h = Caps.get(tile, ForgeCapabilities.ITEM_HANDLER, Direction.DOWN);"
+---
+schemaVersion: 1
+id: r-gen-heavya-pattern-villager-class-literal
+description: "Villager.class (a class literal is not reached by the type rule) -> EntityVillager.class"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  pattern: "Villager.class"
+replace: "EntityVillager.class"
+imports: ["net.minecraft.entity.passive.EntityVillager"]
+priority: 50
+confidence: 0.8
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.entity.npc.Villager; Object w"
+    before: "Object l = w.getEntitiesOfClass(Villager.class, null);"
+    after: "Object l = w.getEntitiesOfClass(EntityVillager.class, null);"
+---
+schemaVersion: 1
+id: r-gen-heavyb-instanceof-bucketpickup
+description: "$b instanceof BucketPickup -> Pumps.isPickup($b) (BlockLiquid / IFluidBlock)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  pattern: "$b instanceof BucketPickup"
+replace: "Pumps.isPickup($b)"
+imports: ["dev.porter.shim.mc.Pumps"]
+priority: 10
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "Object o; import net.minecraft.world.level.block.BucketPickup"
+    before: "boolean b = o instanceof BucketPickup;"
+    after: "boolean b = Pumps.isPickup(o);"
+---
+schemaVersion: 1
+id: r-gen-heavyb-instanceof-liquidblock
+description: "$b instanceof LiquidBlock -> Pumps.isLiquid($b) (BlockLiquid / IFluidBlock)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  pattern: "$b instanceof LiquidBlock"
+replace: "Pumps.isLiquid($b)"
+imports: ["dev.porter.shim.mc.Pumps"]
+priority: 10
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "Object o; import net.minecraft.world.level.block.LiquidBlock"
+    before: "boolean b = o instanceof LiquidBlock;"
+    after: "boolean b = Pumps.isLiquid(o);"
+---
+schemaVersion: 1
+id: r-gen-heavyb-instanceof-bubblecolumnblock
+description: "$b instanceof BubbleColumnBlock -> false (no bubble columns on 1.7.10)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  pattern: "$b instanceof BubbleColumnBlock"
+replace: "false"
+priority: 10
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "Object o; import net.minecraft.world.level.block.BubbleColumnBlock"
+    before: "boolean b = o instanceof BubbleColumnBlock;"
+    after: "boolean b = false;"
+---
+schemaVersion: 1
+id: r-gen-heavyb-type-vector3f
+description: "type com.mojang.math.Vector3f -> java.lang.Object (only an import is left after the DustParticleOptions rule)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "com.mojang.math.Vector3f"
+replace: "java.lang.Object"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import com.mojang.math.Vector3f;"
+    after: "import java.lang.Object;"
+---
+schemaVersion: 1
+id: r-gen-heavyb-call-rocket-load-nbt
+description: "rocket.load(this.nbt) of MiningRocketEntity -> HeavyB.loadKeepPos: the saved data has no position, the landed tile keeps its own"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  pattern: "$r.load(this.nbt)"
+replace: "HeavyB.loadKeepPos($r, this.nbt)"
+imports: ["dev.porter.shim.mc.HeavyB"]
+priority: 20
+confidence: 0.8
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "BlockEntity r; CompoundTag nbt; import net.minecraft.world.level.block.entity.BlockEntity; import net.minecraft.nbt.CompoundTag"
+    before: "r.load(this.nbt);"
+    after: "HeavyB.loadKeepPos(r, this.nbt);"
+---
+schemaVersion: 1
+id: r-gen-lead-charcoal-stack
+description: "new ItemStack(Items.CHARCOAL) (SRG f_42414_: patterns match the decompiled SRG text, before the srgmoj pass): charcoal is coal with damage 1 in 1.7.10"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  pattern: "new ItemStack((ItemLike) Items.f_42414_)"
+replace: "new ItemStack(Items.coal, 1, 1)"
+imports: ["net.minecraft.init.Items"]
+priority: 20
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items; import net.minecraft.world.item.ItemStack; import net.minecraft.world.level.ItemLike"
+    before: "Object o = new ItemStack((ItemLike) Items.f_42414_);"
+    after: "Object o = new ItemStack(Items.coal, 1, 1);"
+---
+schemaVersion: 1
+id: r-gen-lead-charcoal-compare
+description: "stack.getItem() == Items.CHARCOAL: coal with damage 1"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  pattern: "$s.m_41720_() == Items.f_42414_"
+replace: "(($s).getItem() == Items.coal && ($s).getItemDamage() == 1)"
+imports: ["net.minecraft.init.Items"]
+priority: 20
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "import net.minecraft.world.item.Items; import net.minecraft.world.item.ItemStack; ItemStack st"
+    before: "boolean b = st.m_41720_() == Items.f_42414_;"
+    after: "boolean b = ((st).getItem() == Items.coal && (st).getItemDamage() == 1);"
+---
+schemaVersion: 1
+id: r-gen-lead-soundevent-getlocation
+description: "SoundEvent#getLocation(): sounds are strings in 1.7.10 (07b maps the SoundEvents constants to strings)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  call: "net.minecraft.sounds.SoundEvent#getLocation()"
+  bind: { recv: "$s" }
+replace: "new net.minecraft.util.ResourceLocation(String.valueOf($s))"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "SoundEvent s; import net.minecraft.sounds.SoundEvent"
+    before: "Object o = s.getLocation();"
+    after: "Object o = new net.minecraft.util.ResourceLocation(String.valueOf(s));"
+---
+schemaVersion: 1
+id: r-gen-pump-pickup-cast-local
+description: "BucketPickup bucket = (BucketPickup) block; -> Object bucket = block; (1.7.10 fluid blocks do not implement the marker interface)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  pattern: "$T $v = (BucketPickup) $e;"
+replace: "Object $v = $e;"
+preconditions: []
+priority: 10
+confidence: 0.8
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "Object block"
+    before: "BucketPickup bucket = (BucketPickup) block;"
+    after: "Object bucket = block;"
+---
+schemaVersion: 1
+id: r-gen-pump-pickup-cast-call
+description: "((BucketPickup) x).pickupBlock(w, p, s) -> Pumps.pickupBlock(x, w, p, s) (1.7.10 fluid blocks do not implement the marker interface: no cast)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: idiom
+match:
+  pattern: "((BucketPickup) $e).pickupBlock($w, $p, $s)"
+replace: "Pumps.pickupBlock($e, $w, $p, $s)"
+priority: 20
+imports: ["dev.porter.shim.mc.Pumps"]
+confidence: 0.8
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - context: "Object state; Object w; Object p"
+    before: "((BucketPickup) state.getBlock()).pickupBlock(w, p, state);"
+    after: "Pumps.pickupBlock(state.getBlock(), w, p, state);"
+---
+schemaVersion: 1
+id: r-gen-tele-type-builtinregistries
+description: "type net.minecraft.data.BuiltinRegistries -> empty compat.more.tele.RegistriesGone (its only user, getDistanceScale, gets a new body)"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: adapter
+match:
+  type: "net.minecraft.data.BuiltinRegistries"
+replace: "dev.porter.shim.mc.RegistriesGone"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import net.minecraft.data.BuiltinRegistries;"
+    after: "import dev.porter.shim.mc.RegistriesGone;"
+---
+schemaVersion: 1
+id: r-gen-widgets-tuple-type
+description: "type net.minecraft.util.Tuple (generic in the source) -> dev.porter.shim.mc.Tuple"
+from: forge-1.19.2
+to: forge-1.7.10
+kind: mechanical
+match:
+  type: "net.minecraft.util.Tuple"
+replace: "dev.porter.shim.mc.Tuple"
+confidence: 0.9
+provenance: { source: agent, ref: "generic mapping promoted from a port profile" }
+tests:
+  - before: "import net.minecraft.util.Tuple;"
+    after: "import dev.porter.shim.mc.Tuple;"

@@ -67,6 +67,8 @@ position of every block, in priority order), anything else one expression.
 | type names | by simple name, generics erased |
 | method/field names | by name or through an SRG alias (`--graph`) |
 | casts | only when the pattern writes them (decompiler casts are ignored); parentheses never matter |
+| `(T) $e`, `((T) $e).m($a)` | a cast the pattern writes must be there, and is consumed: `$e` binds the expression without it, and a root cast is replaced with the rest, so `(Pickup) $e` -> `$e` drops the cast |
+| `$T` in a cast or a declared type | any type, written as in the target; repeated `$T` must name the same type; `$T` in `replace` writes it back |
 
 Lambdas, loops, `switch`, anonymous classes do not match inside patterns. An empty `replace` (statement patterns
 only) removes the statements with their lines. An expression pattern that matches owns the node: call/field/type
@@ -168,6 +170,28 @@ ported mods never share classes).
   `install.adapters: bundled`).
 - Mapping rules for a mod's own API (e.g. an addon's host mod between its versions) are a separate pack, kept with
   the port profile or locally.
+
+## Networking bridge (adapter pack)
+
+Forge 1.19.2 `SimpleChannel` code (`NetworkRegistry.newSimpleChannel`, `registerMessage`, `send`, `sendToServer`,
+`reply`, `PacketDistributor.X.with(..)/noArg()`, `NetworkEvent.Context`) runs unchanged on 1.7.10 through
+`dev.porter.shim.mc.SimpleChannel` and friends (rules: `modern-api-networking.rule.yaml`, generated from
+`modern_api_spec.py`; one type rule per class plus an identity rule per member, because a member of a platform type
+without a rule is a `no-rule` TODO).
+
+- One 1.7.10 `SimpleNetworkWrapper` per channel (name = the `ResourceLocation`, cut to 20 characters with a hash
+  suffix when longer, an FML limit). Every message is wrapped in the single `NetBridgeMessage` (varint id + the bytes
+  the 1.19.2 encoder wrote), registered with discriminator 0 on both sides. The channel's `MessageTable` (id -> class,
+  encoder, decoder, handler; dependency-free, unit-tested) decodes and dispatches by id in the receiving handler.
+- Targets: `PLAYER`, `ALL`, `SERVER`, `DIMENSION`, `TRACKING_CHUNK` (players watching the chunk),
+  `TRACKING_ENTITY` / `TRACKING_ENTITY_AND_SELF`, `NEAR` (`TargetPoint`, with the optional excluded player).
+  A `DIMENSION`/`NEAR` key is a `ResourceKey` (`ResourceKey.dimension(world)`).
+- `NetworkEvent.Context`: `getSender()` (the player on the server, `null` on the client), `getDirection()`,
+  `enqueueWork(Runnable)` (a `CompletableFuture`; runs at the end of the next server tick on the server or client
+  tick on the client), `setPacketHandled`/`getPacketHandled`.
+- Not bridged: protocol version negotiation (predicates are ignored), `sendTo(msg, Connection, direction)`, the
+  message builder API, login packets, `NMLIST`. The channel must be created during mod init (FML closes channel
+  registration at server start). Handlers run on the network thread unless they call `enqueueWork`, as in 1.19.2.
 
 ## Known limits
 

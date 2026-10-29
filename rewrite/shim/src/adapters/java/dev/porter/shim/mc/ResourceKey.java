@@ -7,6 +7,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public final class ResourceKey<T> {
+    // 1.19.2 keys are interned and compared with ==; every factory returns the one instance per (registry, location)
+    private static final java.util.concurrent.ConcurrentHashMap<String, ResourceKey<?>> INTERNED = new java.util.concurrent.ConcurrentHashMap<>();
+
     private final ResourceLocation registry;
     private final ResourceLocation location;
 
@@ -15,12 +18,17 @@ public final class ResourceKey<T> {
         this.location = location;
     }
 
+    @SuppressWarnings("unchecked")
+    private static <T> ResourceKey<T> intern(ResourceLocation registry, ResourceLocation location) {
+        return (ResourceKey<T>) INTERNED.computeIfAbsent(registry + "|" + location, k -> new ResourceKey<T>(registry, location));
+    }
+
     public static <T> ResourceKey<T> create(ResourceKey<? extends Registry<T>> registry, ResourceLocation location) {
-        return new ResourceKey<>(registry.location, location);
+        return intern(registry.location, location);
     }
 
     public static <T> ResourceKey<Registry<T>> createRegistryKey(ResourceLocation location) {
-        return new ResourceKey<>(new ResourceLocation("minecraft", "root"), location);
+        return intern(new ResourceLocation("minecraft", "root"), location);
     }
 
     public ResourceLocation location() { return location; }
@@ -32,7 +40,7 @@ public final class ResourceKey<T> {
 
     public static ResourceKey<World> dimension(int id) {
         String n = id == 0 ? "overworld" : id == -1 ? "the_nether" : id == 1 ? "the_end" : null;
-        return new ResourceKey<>(Registry.DIMENSION_REGISTRY.location, n != null ? new ResourceLocation("minecraft", n) : new ResourceLocation("porter", "dim_" + id));
+        return intern(Registry.DIMENSION_REGISTRY.location, n != null ? new ResourceLocation("minecraft", n) : new ResourceLocation("porter", "dim_" + id));
     }
 
     /** the 1.7.10 dimension id of a dimension key. */

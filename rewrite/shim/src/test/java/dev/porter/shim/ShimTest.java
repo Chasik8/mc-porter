@@ -122,4 +122,14 @@ class ShimTest {
             }
         }
     }
+
+    /** The adapter needs the 1.7.10 jar to run, so guard the source: 1.19.2 code compares ResourceKeys with ==, every factory must intern. */
+    @Test
+    void resourceKeyFactoriesIntern() throws Exception {
+        java.nio.file.Path p = java.nio.file.Path.of("src/adapters/java/dev/porter/shim/mc/ResourceKey.java");
+        String src = java.nio.file.Files.readString(p);
+        assertTrue(src.contains("ConcurrentHashMap"));
+        int news = src.split("new ResourceKey<", -1).length - 1;
+        assertEquals(1, news, "only intern() may construct a ResourceKey");
+    }
 }

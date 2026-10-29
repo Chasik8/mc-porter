@@ -1,0 +1,32 @@
+{
+ "schemaVersion": 1,
+ "type": "graph",
+ "versions": [
+  {
+   "id": "1.19.2",
+   "canonical": "mojmap",
+   "namespaces": [
+    "mojmap",
+    "obf",
+    "srg"
+   ]
+  }
+ ],
+ "symbols": [
+  {
+   "ref": {
+    "version": "1.19.2",
+    "kind": "field",
+    "owner": "net.minecraft.world.level.Level",
+    "name": "NETHER",
+    "desc": "Lnet/minecraft/resources/ResourceKey;"
+   },
+   "names": {
+    "mojmap": "NETHER",
+    "obf": "j",
+    "srg": "f_46429_"
+   }
+  }
+ ],
+ "edges": []
+}

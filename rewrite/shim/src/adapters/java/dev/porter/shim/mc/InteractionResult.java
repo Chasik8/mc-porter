@@ -15,4 +15,7 @@ public enum InteractionResult {
     public boolean shouldAwardStats() { return this == SUCCESS || this == CONSUME; }
 
     public static InteractionResult sidedSuccess(boolean client) { return client ? SUCCESS : CONSUME; }
+
+    /** a 1.7.10 "handled" flag as a result: true = SUCCESS, false = PASS */
+    public static InteractionResult of(boolean handled) { return handled ? SUCCESS : PASS; }
 }

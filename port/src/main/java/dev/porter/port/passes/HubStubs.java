@@ -48,7 +48,7 @@ public final class HubStubs {
 
     private static final Pattern STRINGS = Text.re("\"(?:\\\\.|[^\"\\\\])*\"|'(?:\\\\.|[^'\\\\])*'");
     private static final Pattern ANNOT = Text.re("@\\w+(?:\\.\\w+)*(?:\\s*\\([^)]*\\))?");
-    private static final Pattern WORD = Text.re("\\b\\w+\\b");
+    private static final Pattern WORD = Text.re("(?<![\\w$])[\\w$]+");
     private static final Pattern QUAL = Text.re("\\b([A-Z]\\w*)\\s*\\.\\s*(\\w+)\\b");
     private static final Pattern NEW = Text.re("\\bnew\\s+(?:[A-Z]\\w*\\s*\\.\\s*)*([A-Z]\\w*)\\s*[(<]"); // Outer.Nested: the nested name
     private static final Pattern EXTENDS = Text.re("\\bextends\\s+([A-Z]\\w*)");
@@ -60,10 +60,10 @@ public final class HubStubs {
     private static final Pattern STATIC_BLOCK = Text.re("\\s*static\\s*");
     private static final Pattern TYPE_DECL = Text.re("\\b(class|interface|enum|record)\\s+\\w+");
     private static final Pattern TYPE_DECL_NAME = Text.re("\\b(?:class|interface|enum|record)\\s+(\\w+)");
-    private static final Pattern CALL = Text.re("(\\w+)\\s*\\(");
+    private static final Pattern CALL = Text.re("([\\w$]+)\\s*\\(");
     private static final Pattern STATIC_WORD = Text.re("\\bstatic\\b");
     private static final Pattern OVERRIDE = Text.re("@Override\\s*");
-    private static final Pattern LAST_NAME = Text.re("(\\w+)\\s*$");
+    private static final Pattern LAST_NAME = Text.re("([\\w$]+)\\s*$");
     private static final Pattern LOCAL_CALL = Text.re("(?<![\\w.])([a-z]\\w*)\\s*\\(");
     private static final Pattern FINAL = Text.re("\\bfinal\\s+");
     private static final Pattern BLANK_LINES = Text.re("^\\s*$\\n", Pattern.MULTILINE);
@@ -352,7 +352,8 @@ public final class HubStubs {
         if (ctor) {
             return "// porter:hub-stub inert";
         }
-        String t = MODIFIERS.matcher(beforeName).replaceAll(" ");
+        // a decompiler marker such as "private /* synthetic */ void" must not be read as the return type
+        String t = MODIFIERS.matcher(beforeName.replaceAll("(?s)/\\*.*?\\*/", " ")).replaceAll(" ");
         t = TYPE_PARAMS.matcher(t.strip()).replaceFirst(" ").strip();
         String empty = EMPTY_DEFAULT.get(rawSimpleName(t));
         String body = empty != null ? "return " + empty + ";" : PRIM_DEFAULT.getOrDefault(t, "return null;");
@@ -376,6 +377,35 @@ public final class HubStubs {
             return raw;
         }
         return raw.substring(raw.lastIndexOf('.') + 1);
+    }
+
+    /** Replaces every use of the type {@code name} (with its type arguments) in {@code text} by {@code Object}. */
+    static String openType(String text, String name) {
+        Matcher m = Text.re("(?<![\\w$.])" + Pattern.quote(name) + "(?![\\w$])").matcher(text);
+        StringBuilder out = new StringBuilder();
+        int pos = 0;
+        while (m.find(pos)) {
+            out.append(text, pos, m.start()).append("Object");
+            int end = m.end();
+            int k = end;
+            while (k < text.length() && Character.isWhitespace(text.charAt(k))) {
+                k++;
+            }
+            if (k < text.length() && text.charAt(k) == '<') {
+                int depth = 0;
+                for (; k < text.length(); k++) {
+                    if (text.charAt(k) == '<') {
+                        depth++;
+                    } else if (text.charAt(k) == '>' && --depth == 0) {
+                        k++;
+                        break;
+                    }
+                }
+                end = k;
+            }
+            pos = end;
+        }
+        return out.append(text.substring(pos)).toString();
     }
 
     private String stubMember(String m, String kind, Ctx ctx) {
@@ -415,10 +445,18 @@ public final class HubStubs {
             } else if (!used.contains(name) || (isStatic && !qual.contains(cname + "#" + name))) {
                 return null;
             }
-            if (!ctx.badNames(hb).isEmpty()) {
+            Set<String> bad = ctx.badNames(hb);
+            if (!bad.isEmpty() && !name.equals(cname)) {
                 return null;
             }
             String sig = OVERRIDE.matcher(head.stripTrailing()).replaceAll("");
+            if (!bad.isEmpty()) {
+                // a constructor the closure calls: dropping it would leave the stub without any constructor (and
+                // without one the superclass can use); the parameter types that do not exist here become Object
+                for (String b : bad) {
+                    sig = openType(sig, b);
+                }
+            }
             if (m.stripTrailing().endsWith(";") && m.indexOf('{') < 0) {
                 return OVERRIDE.matcher(m).replaceAll(""); // abstract / interface method
             }

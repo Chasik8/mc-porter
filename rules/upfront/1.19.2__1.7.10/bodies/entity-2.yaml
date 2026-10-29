@@ -1,0 +1,663 @@
+key: "method:net.minecraft.world.level.block.BaseRailBlock#neighborChanged(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/Block;Lnet/minecraft/core/BlockPos;Z)V"
+body: |-
+  int x = blockPos.getX();
+  int y = blockPos.getY();
+  int z = blockPos.getZ();
+  if (!world.isRemote && !net.minecraft.world.World.doesBlockHaveSolidTopSurface(world, x, y - 1, z)) {
+      world.getBlock(x, y, z).dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z), 0);
+      world.setBlockToAir(x, y, z);
+  }
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.DispenserBlock#registerBehavior(Lnet/minecraft/world/level/ItemLike;Lnet/minecraft/core/dispenser/DispenseItemBehavior;)V"
+body: |-
+  net.minecraft.block.BlockDispenser.dispenseBehaviorRegistry.putObject(dev.porter.shim.mc.ItemLikes.item(itemLike), iBehaviorDispenseItem);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.DragonEggBlock#attack(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/entity/player/Player;)V"
+body: |-
+  net.minecraft.block.Block b = world.getBlock(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+  if (b instanceof net.minecraft.block.BlockDragonEgg) {
+      b.onBlockClicked(world, blockPos.getX(), blockPos.getY(), blockPos.getZ(), entityPlayer);
+  }
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.KelpBlock#canPlaceLiquid(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/material/Fluid;)Z"
+body: |-
+  return false;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.LayeredCauldronBlock#lowerFillLevel(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)V"
+body: |-
+  int x = blockPos.getX();
+  int y = blockPos.getY();
+  int z = blockPos.getZ();
+  int m = world.getBlockMetadata(x, y, z);
+  if (m > 0) {
+      net.minecraft.init.Blocks.cauldron.func_150024_a(world, x, y, z, m - 1);
+  }
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.block.LeavesBlock#getLightBlock(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)I"
+body: |-
+  return 1;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.network.chat.Component#empty()Lnet/minecraft/network/chat/MutableComponent;"
+body: |-
+  return Comp.literal("");
+imports: [dev.porter.shim.gen.helpers.fa.Comp]
+verified: compile
+---
+key: "method:net.minecraft.network.chat.Component#getString()Ljava/lang/String;"
+body: |-
+  return Comp.text(this);
+imports: [dev.porter.shim.gen.helpers.fa.Comp]
+verified: compile
+---
+key: "method:net.minecraft.network.chat.Component#getVisualOrderText()Lnet/minecraft/util/FormattedCharSequence;"
+body: |-
+  final String text = Comp.text(this);
+  return new dev.porter.shim.gen.util.FormattedCharSequence() {
+      @Override
+      public boolean accept(dev.porter.shim.gen.util.FormattedCharSink sink) {
+          net.minecraft.util.ChatStyle style = new net.minecraft.util.ChatStyle();
+          for (int i = 0; i < text.length(); i++) {
+              if (!sink.accept(i, style, text.charAt(i))) {
+                  return false;
+              }
+          }
+          return true;
+      }
+  };
+imports: [dev.porter.shim.gen.helpers.fa.Comp]
+verified: compile
+---
+key: "method:net.minecraft.network.chat.Component#literal(Ljava/lang/String;)Lnet/minecraft/network/chat/MutableComponent;"
+body: |-
+  return Comp.literal(string);
+imports: [dev.porter.shim.gen.helpers.fa.Comp]
+verified: compile
+---
+key: "method:net.minecraft.network.chat.Component#translatable(Ljava/lang/String;)Lnet/minecraft/network/chat/MutableComponent;"
+body: |-
+  return Comp.translatable(string);
+imports: [dev.porter.shim.gen.helpers.fa.Comp]
+verified: compile
+---
+key: "method:net.minecraft.network.chat.Component#translatable(Ljava/lang/String;[Ljava/lang/Object;)Lnet/minecraft/network/chat/MutableComponent;"
+body: |-
+  return Comp.translatable(string, objects);
+imports: [dev.porter.shim.gen.helpers.fa.Comp]
+verified: compile
+---
+key: "method:net.minecraft.network.chat.Component$Serializer#toJson(Lnet/minecraft/network/chat/Component;)Ljava/lang/String;"
+body: |-
+  return net.minecraft.util.IChatComponent.Serializer.func_150696_a(Comp.unwrap(component));
+imports: [dev.porter.shim.gen.helpers.fa.Comp]
+verified: compile
+---
+key: "method:net.minecraft.network.chat.FormattedText#getString()Ljava/lang/String;"
+body: |-
+  return Comp.text(this);
+imports: [dev.porter.shim.gen.helpers.fa.Comp]
+verified: compile
+---
+key: "method:net.minecraft.network.chat.HoverEvent#<init>(Lnet/minecraft/network/chat/HoverEvent$Action;Ljava/lang/Object;)V"
+body: |-
+  Object o = object;
+  if (o instanceof net.minecraft.item.ItemStack) {
+      o = new net.minecraft.util.ChatComponentText(((net.minecraft.item.ItemStack) o).writeToNBT(new net.minecraft.nbt.NBTTagCompound()).toString());
+  }
+  return new net.minecraft.event.HoverEvent(action, Comp.unwrap(o));
+imports: [dev.porter.shim.gen.helpers.fa.Comp]
+verified: compile
+---
+key: "method:net.minecraft.network.chat.MutableComponent#withStyle(Lnet/minecraft/ChatFormatting;)Lnet/minecraft/network/chat/MutableComponent;"
+body: |-
+  dev.porter.shim.mc.Chat.withStyle(Comp.unwrap(this), enumChatFormatting);
+  return this;
+imports: [dev.porter.shim.gen.helpers.fa.Comp]
+verified: compile
+---
+key: "method:net.minecraft.network.chat.MutableComponent#withStyle([Lnet/minecraft/ChatFormatting;)Lnet/minecraft/network/chat/MutableComponent;"
+body: |-
+  dev.porter.shim.mc.Chat.withStyle(Comp.unwrap(this), enumChatFormattings);
+  return this;
+imports: [dev.porter.shim.gen.helpers.fa.Comp]
+verified: compile
+---
+key: "field:net.minecraft.network.chat.Style#EMPTY:Lnet/minecraft/network/chat/Style;"
+body: |-
+  return new net.minecraft.util.ChatStyle();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.network.chat.Style#applyFormat(Lnet/minecraft/ChatFormatting;)Lnet/minecraft/network/chat/Style;"
+body: |-
+  return dev.porter.shim.mc.Chat.applyFormat(self, enumChatFormatting);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.network.chat.TextColor#fromRgb(I)Lnet/minecraft/network/chat/TextColor;"
+body: |-
+  dev.porter.shim.gen.network.chat.TextColor c = new dev.porter.shim.gen.network.chat.TextColor();
+  GenAttach.put(c, "rgb", Integer.valueOf(i & 0xFFFFFF));
+  return c;
+imports: [dev.porter.shim.gen.helpers.fa.GenAttach]
+verified: compile
+---
+key: "method:net.minecraft.network.chat.TextColor#serialize()Ljava/lang/String;"
+body: |-
+  Integer rgb = (Integer) GenAttach.get(this, "rgb", Integer.valueOf(0));
+  return String.format("#%06X", rgb);
+imports: [dev.porter.shim.gen.helpers.fa.GenAttach]
+verified: compile
+---
+key: "method:net.minecraft.world.effect.MobEffect#applyInstantenousEffect(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/entity/LivingEntity;ID)V"
+body: |-
+  net.minecraft.potion.Potion p = Eff.potion(this);
+  if (p != null) {
+      p.affectEntity(entity instanceof net.minecraft.entity.EntityLivingBase ? (net.minecraft.entity.EntityLivingBase) entity : null, entityLivingBase, i, d);
+  }
+imports: [dev.porter.shim.gen.helpers.fa.Eff]
+verified: compile
+---
+key: "method:net.minecraft.world.effect.MobEffect#getCategory()Lnet/minecraft/world/effect/MobEffectCategory;"
+body: |-
+  return dev.porter.shim.mc.MobEffectCategory.of(Eff.potion(this));
+imports: [dev.porter.shim.gen.helpers.fa.Eff]
+verified: compile
+---
+key: "method:net.minecraft.world.effect.MobEffectInstance#<init>(Lnet/minecraft/world/effect/MobEffect;I)V"
+body: |-
+  return new net.minecraft.potion.PotionEffect(Eff.id(mobEffect), i);
+imports: [dev.porter.shim.gen.helpers.fa.Eff]
+verified: compile
+---
+key: "method:net.minecraft.world.effect.MobEffectInstance#<init>(Lnet/minecraft/world/effect/MobEffect;II)V"
+body: |-
+  return new net.minecraft.potion.PotionEffect(Eff.id(mobEffect), i, i2);
+imports: [dev.porter.shim.gen.helpers.fa.Eff]
+verified: compile
+---
+key: "method:net.minecraft.world.effect.MobEffectInstance#<init>(Lnet/minecraft/world/effect/MobEffect;IIZZ)V"
+body: |-
+  return new net.minecraft.potion.PotionEffect(Eff.id(mobEffect), i, i2, flag);
+imports: [dev.porter.shim.gen.helpers.fa.Eff]
+verified: compile
+---
+key: "method:net.minecraft.world.effect.MobEffectInstance#getEffect()Lnet/minecraft/world/effect/MobEffect;"
+body: |-
+  int id = self.getPotionID();
+  return id >= 0 && id < net.minecraft.potion.Potion.potionTypes.length ? Eff.wrap(net.minecraft.potion.Potion.potionTypes[id]) : null;
+imports: [dev.porter.shim.gen.helpers.fa.Eff]
+verified: compile
+---
+key: "method:net.minecraft.world.effect.MobEffectInstance#isVisible()Z"
+body: |-
+  return true;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.effect.MobEffectInstance#update(Lnet/minecraft/world/effect/MobEffectInstance;)Z"
+body: |-
+  int duration = self.getDuration();
+  int amplifier = self.getAmplifier();
+  self.combine(potionEffect);
+  return duration != self.getDuration() || amplifier != self.getAmplifier();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.entity.AreaEffectCloud#getDimensions(Lnet/minecraft/world/entity/Pose;)Lnet/minecraft/world/entity/EntityDimensions;"
+body: |-
+  dev.porter.shim.gen.world.entity.EntityDimensions d = new dev.porter.shim.gen.world.entity.EntityDimensions();
+  d.width = ((net.minecraft.entity.Entity) (Object) this).width;
+  return d;
+imports: [dev.porter.shim.gen.helpers.fa.GenAttach]
+verified: compile
+---
+key: "field:net.minecraft.world.entity.Entity#entityData:Lnet/minecraft/network/syncher/SynchedEntityData;"
+body: |-
+  Object w = GenAttach.get(self, "entityData");
+  if (w == null) {
+      w = new dev.porter.shim.gen.network.syncher.SynchedEntityData();
+      GenAttach.put(w, "watcher", self.getDataWatcher());
+      GenAttach.put(self, "entityData", w);
+  }
+  return (dev.porter.shim.gen.network.syncher.SynchedEntityData) w;
+imports: [dev.porter.shim.gen.helpers.fa.GenAttach]
+verified: compile
+---
+key: "field:net.minecraft.world.entity.Entity#verticalCollisionBelow:Z"
+body: |-
+  return self.onGround;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.entity.Entity#<init>(Lnet/minecraft/world/entity/EntityType;Lnet/minecraft/world/level/Level;)V"
+body: |-
+  try {
+      return (net.minecraft.entity.Entity) entityType.getEntityClass().getConstructor(net.minecraft.world.World.class).newInstance(world);
+  } catch (Exception e) {
+      throw new IllegalStateException("cannot create entity " + entityType, e);
+  }
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.entity.Entity#blockPosition()Lnet/minecraft/core/BlockPos;"
+body: |-
+  return dev.porter.shim.mc.Levels.blockPosition(self);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.entity.Entity#getBoundingBox()Lnet/minecraft/world/phys/AABB;"
+body: |-
+  return self.boundingBox;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.entity.Entity#getCommandSenderWorld()Lnet/minecraft/world/level/Level;"
+body: |-
+  return self.worldObj;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.entity.Entity#getDimensions(Lnet/minecraft/world/entity/Pose;)Lnet/minecraft/world/entity/EntityDimensions;"
+body: |-
+  dev.porter.shim.gen.world.entity.EntityDimensions d = new dev.porter.shim.gen.world.entity.EntityDimensions();
+  d.width = self.width;
+  return d;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.entity.Entity#getEyePosition(F)Lnet/minecraft/world/phys/Vec3;"
+body: |-
+  if (self instanceof net.minecraft.entity.EntityLivingBase) {
+      return dev.porter.shim.mc.EntityExt.eyePosition((net.minecraft.entity.EntityLivingBase) self, f);
+  }
+  return net.minecraft.util.Vec3.createVectorHelper(self.prevPosX + (self.posX - self.prevPosX) * f, self.prevPosY + (self.posY - self.prevPosY) * f + self.getEyeHeight(), self.prevPosZ + (self.posZ - self.prevPosZ) * f);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.entity.Entity#getRootVehicle()Lnet/minecraft/world/entity/Entity;"
+body: |-
+  return dev.porter.shim.mc.EntityExt.rootVehicle(self);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.entity.Entity#getX()D"
+body: |-
+  return self.posX;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.entity.Entity#getXRot()F"
+body: |-
+  return self.rotationPitch;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.entity.Entity#getY()D"
+body: |-
+  return self.boundingBox != null ? self.boundingBox.minY : self.posY;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.entity.Entity#getYRot()F"
+body: |-
+  return self.rotationYaw;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.entity.Entity#getZ()D"
+body: |-
+  return self.posZ;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.entity.Entity#interactAt(Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/phys/Vec3;Lnet/minecraft/world/InteractionHand;)Lnet/minecraft/world/InteractionResult;"
+body: |-
+  return dev.porter.shim.mc.InteractionResult.of(self.interactFirst(entityPlayer));
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.entity.Entity#move(Lnet/minecraft/world/entity/MoverType;Lnet/minecraft/world/phys/Vec3;)V"
+body: |-
+  self.moveEntity(vec3.xCoord, vec3.yCoord, vec3.zCoord);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.entity.Entity#remove(Lnet/minecraft/world/entity/Entity$RemovalReason;)V"
+body: |-
+  self.setDead();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.entity.Entity#sendSystemMessage(Lnet/minecraft/network/chat/Component;)V"
+body: |-
+  if (self instanceof net.minecraft.command.ICommandSender) {
+      ((net.minecraft.command.ICommandSender) self).addChatMessage(Comp.unwrap(component));
+  }
+imports: [dev.porter.shim.gen.helpers.fa.Comp]
+verified: compile
+---
+key: "method:net.minecraft.world.entity.Entity#unRide()V"
+body: |-
+  if (self.riddenByEntity != null) {
+      self.riddenByEntity.mountEntity(null);
+  }
+  self.mountEntity(null);
+imports: []
+verified: compile
+---
+key: "field:net.minecraft.world.entity.EntitySelector#NO_SPECTATORS:Ljava/util/function/Predicate;"
+body: |-
+  return e -> true;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.entity.LivingEntity#addEffect(Lnet/minecraft/world/effect/MobEffectInstance;)Z"
+body: |-
+  self.addPotionEffect(potionEffect);
+  return true;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.entity.LivingEntity#broadcastBreakEvent(Lnet/minecraft/world/InteractionHand;)V"
+body: |-
+  dev.porter.shim.mc.EntityExt.broadcastBreak(self, interactionHand);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.entity.LivingEntity#broadcastBreakEvent(Lnet/minecraft/world/entity/EquipmentSlot;)V"
+body: |-
+  dev.porter.shim.mc.EntityExt.broadcastBreak(self, equipmentSlot);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.entity.LivingEntity#getEquipmentSlotForItem(Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/world/entity/EquipmentSlot;"
+body: |-
+  if (itemStack != null && itemStack.getItem() instanceof net.minecraft.item.ItemArmor) {
+      int index = 3 - ((net.minecraft.item.ItemArmor) itemStack.getItem()).armorType;
+      for (dev.porter.shim.mc.EquipmentSlot s : dev.porter.shim.mc.EquipmentSlot.values()) {
+          if (s.getType() == dev.porter.shim.mc.EquipmentSlot.Type.ARMOR && s.getIndex() == index) {
+              return s;
+          }
+      }
+  }
+  return dev.porter.shim.mc.EquipmentSlot.MAINHAND;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.entity.LivingEntity#getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack;"
+body: |-
+  return dev.porter.shim.mc.EquipmentSlot.get(self, equipmentSlot);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.entity.LivingEntity#getRandom()Lnet/minecraft/util/RandomSource;"
+body: |-
+  return Rnd.of(self.getRNG());
+imports: [dev.porter.shim.gen.helpers.fa.Rnd]
+verified: compile
+---
+key: "method:net.minecraft.world.entity.LivingEntity#removeAllEffects()Z"
+body: |-
+  boolean had = !self.getActivePotionEffects().isEmpty();
+  self.clearActivePotions();
+  return had;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.entity.LivingEntity#startUsingItem(Lnet/minecraft/world/InteractionHand;)V"
+body: |-
+  if (self instanceof net.minecraft.entity.player.EntityPlayer) {
+      net.minecraft.entity.player.EntityPlayer p = (net.minecraft.entity.player.EntityPlayer) self;
+      net.minecraft.item.ItemStack held = p.getHeldItem();
+      if (held != null) {
+          p.setItemInUse(held, held.getMaxItemUseDuration());
+      }
+  }
+imports: []
+verified: compile
+---
+key: "field:net.minecraft.world.entity.MobCategory#MISC:Lnet/minecraft/world/entity/MobCategory;"
+body: |-
+  return net.minecraft.entity.EnumCreatureType.ambient;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.entity.animal.Sheep#getColor()Lnet/minecraft/world/item/DyeColor;"
+body: |-
+  return dev.porter.shim.mc.DyeColor.byId(self.getFleeceColor());
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.entity.animal.Sheep#setColor(Lnet/minecraft/world/item/DyeColor;)V"
+body: |-
+  self.setFleeceColor(dyeColor.getId());
+imports: []
+verified: compile
+---
+key: "field:net.minecraft.world.entity.player.Inventory#offhand:Lnet/minecraft/core/NonNullList;"
+body: |-
+  return dev.porter.shim.mc.PlayerInv.offhand(self);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.entity.player.Player#addItem(Lnet/minecraft/world/item/ItemStack;)Z"
+body: |-
+  return self.inventory.addItemStackToInventory(itemStack);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.entity.player.Player#displayClientMessage(Lnet/minecraft/network/chat/Component;Z)V"
+body: |-
+  self.addChatComponentMessage(Comp.unwrap(component));
+imports: [dev.porter.shim.gen.helpers.fa.Comp]
+verified: compile
+---
+key: "method:net.minecraft.world.entity.player.Player#getCapability(Lnet/minecraftforge/common/capabilities/Capability;Lnet/minecraft/core/Direction;)Lnet/minecraftforge/common/util/LazyOptional;"
+body: |-
+  return dev.porter.shim.mc.Caps.get(self, capability, direction);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.entity.player.Player#getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack;"
+body: |-
+  return dev.porter.shim.mc.EquipmentSlot.get(self, equipmentSlot);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.entity.player.Player#getName()Lnet/minecraft/network/chat/Component;"
+body: |-
+  return Comp.wrap(new net.minecraft.util.ChatComponentText(self.getCommandSenderName()));
+imports: [dev.porter.shim.gen.helpers.fa.Comp]
+verified: compile
+---
+key: "method:net.minecraft.world.entity.player.Player#isCreative()Z"
+body: |-
+  return self.capabilities.isCreativeMode;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.entity.raid.Raids#save(Lnet/minecraft/nbt/CompoundTag;)Lnet/minecraft/nbt/CompoundTag;"
+body: |-
+  nBTTagCompound.setInteger("NextAvailableID", 1);
+  nBTTagCompound.setInteger("Tick", 0);
+  nBTTagCompound.setTag("Raids", new net.minecraft.nbt.NBTTagList());
+  return nBTTagCompound;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.util.FormattedCharSequence#accept(Lnet/minecraft/util/FormattedCharSink;)Z"
+body: |-
+  return true;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.util.FormattedCharSink#accept(ILnet/minecraft/network/chat/Style;I)Z"
+body: |-
+  return true;
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.util.Mth#getSeed(Lnet/minecraft/core/Vec3i;)J"
+body: |-
+  return dev.porter.shim.mc.Levels.getSeed(blockPos);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.util.RandomSource#create()Lnet/minecraft/util/RandomSource;"
+body: |-
+  return Rnd.of(new java.util.Random());
+imports: [dev.porter.shim.gen.helpers.fa.Rnd]
+verified: compile
+---
+key: "method:net.minecraft.util.RandomSource#create(J)Lnet/minecraft/util/RandomSource;"
+body: |-
+  return Rnd.of(new java.util.Random(l));
+imports: [dev.porter.shim.gen.helpers.fa.Rnd]
+verified: compile
+---
+key: "method:net.minecraft.util.RandomSource#nextBoolean()Z"
+body: |-
+  return java.util.concurrent.ThreadLocalRandom.current().nextBoolean();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.util.RandomSource#nextDouble()D"
+body: |-
+  return java.util.concurrent.ThreadLocalRandom.current().nextDouble();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.util.RandomSource#nextFloat()F"
+body: |-
+  return java.util.concurrent.ThreadLocalRandom.current().nextFloat();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.util.RandomSource#nextInt()I"
+body: |-
+  return java.util.concurrent.ThreadLocalRandom.current().nextInt();
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.util.RandomSource#nextInt(I)I"
+body: |-
+  return java.util.concurrent.ThreadLocalRandom.current().nextInt(i);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.util.StringRepresentable#getSerializedName()Ljava/lang/String;"
+body: |-
+  return this instanceof Enum ? ((Enum) this).name().toLowerCase(java.util.Locale.ROOT) : String.valueOf(this);
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.Clearable#clearContent()V"
+body: |-
+  if (this instanceof net.minecraft.inventory.IInventory) {
+      net.minecraft.inventory.IInventory inv = (net.minecraft.inventory.IInventory) this;
+      for (int i = 0; i < inv.getSizeInventory(); i++) {
+          inv.setInventorySlotContents(i, null);
+      }
+  }
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.world.level.portal.PortalInfo#<init>(Lnet/minecraft/world/phys/Vec3;Lnet/minecraft/world/phys/Vec3;FF)V"
+body: |-
+  GenAttach.put(this, "position", vec3);
+  GenAttach.put(this, "speed", vec32);
+  GenAttach.put(this, "yRot", Float.valueOf(f));
+  GenAttach.put(this, "xRot", Float.valueOf(f2));
+imports: [dev.porter.shim.gen.helpers.fa.GenAttach]
+verified: compile
+---
+key: "method:net.minecraftforge.common.extensions.IForgeBlock#onDestroyedByPlayer(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/entity/player/Player;ZLnet/minecraft/world/level/material/FluidState;)Z"
+body: |-
+  return world.setBlockToAir(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+imports: []
+verified: compile
+---
+key: "method:net.minecraft.core.BlockPos$MutableBlockPos#<init>()V"
+body: |-
+  MutPos.real(this);
+imports: [dev.porter.shim.gen.helpers.fa.MutPos]
+verified: compile
+---
+key: "method:net.minecraft.core.BlockPos$MutableBlockPos#<init>(DDD)V"
+body: |-
+  GenAttach.put(this, "mut", new dev.porter.shim.BlockPos.MutableBlockPos(d, d2, d3));
+imports: [dev.porter.shim.gen.helpers.fa.GenAttach]
+verified: compile
+---
+key: "method:net.minecraft.core.BlockPos$MutableBlockPos#<init>(III)V"
+body: |-
+  MutPos.init(this, i, i2, i3);
+imports: [dev.porter.shim.gen.helpers.fa.MutPos]
+verified: compile
+---
+key: "method:net.minecraft.core.BlockPos$MutableBlockPos#immutable()Lnet/minecraft/core/BlockPos;"
+body: |-
+  return MutPos.real(this).immutable();
+imports: [dev.porter.shim.gen.helpers.fa.MutPos]
+verified: compile
+---
+key: "method:net.minecraft.core.BlockPos$MutableBlockPos#move(Lnet/minecraft/core/Direction;)Lnet/minecraft/core/BlockPos$MutableBlockPos;"
+body: |-
+  MutPos.real(this).move(direction);
+  return this;
+imports: [dev.porter.shim.gen.helpers.fa.MutPos]
+verified: compile
+---
+key: "method:net.minecraft.core.BlockPos$MutableBlockPos#move(Lnet/minecraft/core/Direction;I)Lnet/minecraft/core/BlockPos$MutableBlockPos;"
+body: |-
+  MutPos.real(this).move(direction, i);
+  return this;
+imports: [dev.porter.shim.gen.helpers.fa.MutPos]
+verified: compile
+---
+key: "method:net.minecraft.core.BlockPos$MutableBlockPos#set(III)Lnet/minecraft/core/BlockPos$MutableBlockPos;"
+body: |-
+  MutPos.real(this).set(i, i2, i3);
+  return this;
+imports: [dev.porter.shim.gen.helpers.fa.MutPos]
+verified: compile
+---
+key: "method:net.minecraft.core.BlockPos$MutableBlockPos#set(J)Lnet/minecraft/core/BlockPos$MutableBlockPos;"
+body: |-
+  MutPos.real(this).set(l);
+  return this;
+imports: [dev.porter.shim.gen.helpers.fa.MutPos]
+verified: compile
+---
+key: "method:net.minecraft.core.BlockPos$MutableBlockPos#set(Lnet/minecraft/core/Vec3i;)Lnet/minecraft/core/BlockPos$MutableBlockPos;"
+body: |-
+  MutPos.real(this).set(blockPos);
+  return this;
+imports: [dev.porter.shim.gen.helpers.fa.MutPos]
+verified: compile
+---
+key: "method:net.minecraft.core.BlockPos$MutableBlockPos#setY(I)Lnet/minecraft/core/BlockPos$MutableBlockPos;"
+body: |-
+  dev.porter.shim.BlockPos.MutableBlockPos m = MutPos.real(this);
+  m.set(m.getX(), i, m.getZ());
+  return this;
+imports: [dev.porter.shim.gen.helpers.fa.MutPos]
+verified: compile
+---
+key: "method:net.minecraft.sounds.SoundEvent#getLocation()Lnet/minecraft/resources/ResourceLocation;"
+body: |-
+  return (net.minecraft.util.ResourceLocation) GenAttach.get(this, "location");
+imports: [dev.porter.shim.gen.helpers.fa.GenAttach]
+verified: compile

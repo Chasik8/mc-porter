@@ -1,0 +1,10 @@
+# match-text fragments of idiom rules that are generic Minecraft/Forge mappings (reviewed by hand); no mod names
+ModelData.EMPTY
+this.addDataSlots($d);
+this.addDataSlot($d);
+MobEffects.f_19619_
+ForgeHooks.setCraftingPlayer
+instanceof BubbleColumnBlock
+Items.f_42414_
+(BucketPickup) $e
+ForgeCapabilities.ITEM_HANDLER, Direction.DOWN

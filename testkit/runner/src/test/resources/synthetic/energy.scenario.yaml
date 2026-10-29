@@ -1,0 +1,11 @@
+schemaVersion: 1
+id: mini-energy
+world: flat-void
+maxTicks: 50
+tolerance:
+  "*": { abs: 0 }
+steps:
+  - place_block: { at: [0, 64, 0], block: "examplemod:machine" }
+  - insert_energy: { at: [0, 64, 0], amount: 128.5, voltage: 32, side: up }
+  - tick: 5
+  - invoke_tile: { at: [0, 64, 0], method: onClientDataReceived, args: ["$player", 1, 0] }

@@ -1,0 +1,12 @@
+schemaVersion: 1
+id: mini-break
+world: flat-void
+maxTicks: 50
+tolerance:
+  "*": { abs: 0 }
+steps:
+  - place_block: { at: [0, 64, 0], block: "examplemod:machine" }
+  - break_block: { at: [0, 64, 0], by: player, holding: "examplemod:machine" }
+  - place_block: { at: [0, 64, 0], block: "examplemod:machine" }
+  - break_block: { at: [0, 64, 0], by: world, drops: false }
+  - explode: { at: [0, 64, 0], power: 3, fire: true }
